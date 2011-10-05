@@ -18,6 +18,7 @@ function Kembalikan(){
 	var idpinjam = document.getElementById('idpinjam').value;
 	var denda = document.getElementById('denda').value;
 	var telat = document.getElementById('telat').value;
+	var keterangan = document.getElementById('keterangan').value;
 	var msg;
 	if (isNaN(denda))
 	{	
@@ -33,7 +34,7 @@ function Kembalikan(){
 	}
 	if (confirm(msg))
 	{
-		document.location.href = "kembali.php?op=KembalikanPustaka&idpinjam="+idpinjam+"&denda="+denda+"&kodepustaka="+kodepustaka+"&telat="+telat;
+		document.location.href = "kembali.php?op=KembalikanPustaka&idpinjam="+idpinjam+"&denda="+denda+"&kodepustaka="+kodepustaka+"&telat="+telat+"&keterangan="+keterangan;
 	}
 }
 function KeyPress(elemName, evt) {

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -48,7 +48,7 @@ class CPengguna{
 		<?
     }
     function Content(){
-		$sql = "SELECT h.login, h.aktif, h.lastlogin, h.departemen, h.tingkat FROM ".get_db_name('user').".hakakses h, ".get_db_name('user').".login l WHERE h.modul='SIMTAKA' AND l.login=h.login";
+		$sql = "SELECT h.login, h.aktif, h.lastlogin, h.departemen, h.tingkat, h.keterangan FROM ".get_db_name('user').".hakakses h, ".get_db_name('user').".login l WHERE h.modul='SIMTAKA' AND l.login=h.login";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
 		?>
@@ -66,6 +66,7 @@ class CPengguna{
             <td height="30" align="center" class="header">Nama</td>
             <td align="center" class="header">Tingkat</td>
             <td align="center" class="header">Perpustakaan</td>
+			<td align="center" class="header">Keterangan</td>
             <? if (IsAdmin()) { ?>
 			<td align="center" class="header">&nbsp;</td>
             <td height="30" align="center" class="header">&nbsp;</td>
@@ -94,6 +95,7 @@ class CPengguna{
 				<td height="25" align="center"><div class="tab_content"><?=$namapeg?></div></td>
 				<td align="center"><?=$namatingkat?></td>
 				<td align="center"><?=$namaperpus?></td>
+				<td align="left"><?=$row[5]?></td>
 				<? if (IsAdmin()) { ?>
 				<td align="center">
                 	<? if ($row[1]==1) { ?>

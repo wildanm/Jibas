@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ function HitungRataSiswa($idkelas, $idsemester, $idaturan, $nis, &$success)
 		
 	$sql = "SELECT replid, idpelajaran, idjenis 
 			  FROM ujian 
-			 WHERE idkelas = $idkelas AND idsemester = $idsemester AND idaturan = $idaturan";
+			 WHERE idkelas = '$idkelas' AND idsemester = '$idsemester' AND idaturan = '$idaturan'";
 	$result	= QueryDb($sql);
 	$cnt = 0;
 	while ($row	= @mysql_fetch_row($result))
@@ -89,7 +89,7 @@ function HitungRataKelas($idkelas, $idsemester, $idaturan, &$success)
 		
 	$sql = "SELECT replid, idpelajaran, idjenis 
 			  FROM ujian 
-			 WHERE idkelas=$idkelas AND idsemester=$idsemester AND idaturan=$idaturan";
+			 WHERE idkelas='$idkelas' AND idsemester='$idsemester' AND idaturan='$idaturan'";
 	$result	= QueryDb($sql);
 	while ($row	= @mysql_fetch_row($result))
 	{
@@ -176,7 +176,7 @@ function GetRataSiswa2($idpelajaran, $idjenis, $idkelas, $idsemester, $idaturan,
 
 function GetRataSiswa($idkelas, $idsemester, $idaturan, $nis)
 {
-	$sql = "SELECT replid, idpelajaran, idjenis FROM ujian WHERE idkelas=$idkelas AND idsemester=$idsemester AND idaturan=$idaturan";
+	$sql = "SELECT replid, idpelajaran, idjenis FROM ujian WHERE idkelas='$idkelas' AND idsemester='$idsemester' AND idaturan='$idaturan'";
 	$result	= QueryDb($sql);
 	$cnt	= 0;
 	while ($row	= @mysql_fetch_row($result)){

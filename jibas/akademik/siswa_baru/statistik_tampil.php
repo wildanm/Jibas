@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -87,7 +87,7 @@ if ($iddasar==""){
 	} if ($departemen<>"-1" && $idproses<0) {	
 		$query1 = "SELECT s.nopendaftaran,s.nama,s.foto,k.kelompok,s.replid,a.departemen,s.nisn FROM calonsiswa s, prosespenerimaansiswa a, kelompokcalonsiswa k WHERE a.replid = s.idproses AND s.idkelompok = k.replid AND a.departemen = '$departemen' AND $filter ORDER BY $urut $urutan";	
 	} if ($departemen<>"-1" && $idproses>0) {	
-		$query1 = "SELECT s.nopendaftaran,s.nama,s.foto,k.kelompok,s.replid,a.departemen,s.nisn FROM calonsiswa s, prosespenerimaansiswa a, kelompokcalonsiswa k WHERE a.replid = s.idproses AND s.idkelompok = k.replid AND a.departemen = '$departemen' AND s.idproses = $idproses AND $filter ORDER BY $urut $urutan";	
+		$query1 = "SELECT s.nopendaftaran,s.nama,s.foto,k.kelompok,s.replid,a.departemen,s.nisn FROM calonsiswa s, prosespenerimaansiswa a, kelompokcalonsiswa k WHERE a.replid = s.idproses AND s.idkelompok = k.replid AND a.departemen = '$departemen' AND s.idproses = '$idproses' AND $filter ORDER BY $urut $urutan";	
 	}
 	
 	$result1 = QueryDb($query1);
@@ -100,7 +100,7 @@ if ($iddasar==""){
 	if ($departemen<>"-1" && $idproses<0)
 		$kondisi=" AND a.departemen='$departemen' AND a.replid=s.idproses AND k.replid = s.idkelompok";
 	if ($departemen<>"-1" && $idproses>0)
-		$kondisi=" AND s.idproses=$idproses AND a.replid=s.idproses AND a.departemen='$departemen' AND k.replid = s.idkelompok ";
+		$kondisi=" AND s.idproses='$idproses' AND a.replid=s.idproses AND a.departemen='$departemen' AND k.replid = s.idkelompok ";
 	
 	if ($keyword=="1")
 	$query1 = "SELECT s.nopendaftaran,s.nama,s.foto,k.kelompok,s.replid,a.departemen,s.nisn FROM calonsiswa s, prosespenerimaansiswa a, kelompokcalonsiswa k WHERE  s.aktif = '1' AND s.idkelompok = k.replid AND s.penghasilanayah+s.penghasilanibu <> 0 AND s.penghasilanayah+s.penghasilanibu<1000000 $kondisi ORDER BY $urut $urutan";

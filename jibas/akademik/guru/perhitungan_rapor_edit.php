@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -49,7 +49,7 @@ OpenDb();
 $sql = "SELECT j.departemen, j.nama, p.nip, p.nama, t.tingkat 
 		  FROM guru g, jbssdm.pegawai p, pelajaran j, tingkat t 
 		 WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND t.departemen = j.departemen 
-		   AND t.replid = $id_tingkat AND j.replid = $id_pelajaran AND g.nip = '$nip_guru'"; 
+		   AND t.replid = '$id_tingkat' AND j.replid = '$id_pelajaran' AND g.nip = '$nip_guru'"; 
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -233,8 +233,8 @@ function simpan(evt)
 		{
 			$sql1 = "SELECT a.bobot, j.jenisujian, a.replid 
 						  FROM aturannhb a, jenisujian j 
-						 WHERE a.idpelajaran = $id_pelajaran AND a.nipguru = '$nip_guru' AND a.idtingkat = $id_tingkat 
-						   AND a.dasarpenilaian = '$aspek' AND a.idjenisujian = $row[replid] AND a.idjenisujian = j.replid"; 
+						 WHERE a.idpelajaran = '$id_pelajaran' AND a.nipguru = '$nip_guru' AND a.idtingkat = '$id_tingkat' 
+						   AND a.dasarpenilaian = '$aspek' AND a.idjenisujian = '$row[replid]' AND a.idjenisujian = j.replid"; 
 			$result1 = QueryDb($sql1);
 			$row1 = @mysql_fetch_row($result1);	?>		
 		<tr>

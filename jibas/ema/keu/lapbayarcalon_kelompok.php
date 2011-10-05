@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -285,26 +285,26 @@ if (isset($_REQUEST[showpembayaran]))
 						  FROM ((SELECT c.replid, count(p.replid) as jumlah 
 								   FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsakad.calonsiswa c 
 								  WHERE p.idbesarjttcalon = b.replid AND b.idcalon = c.replid AND b.info2='$idtahunbuku'
-								    AND b.idpenerimaan = $idpenerimaan GROUP BY c.replid) AS x);";
+								    AND b.idpenerimaan = '$idpenerimaan' GROUP BY c.replid) AS x);";
 			else
 				$sql = "SELECT MAX(jumlah) 
 						  FROM ((SELECT c.replid, count(p.replid) as jumlah 
 								   FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsakad.calonsiswa c 
 								  WHERE p.idbesarjttcalon = b.replid AND b.idcalon = c.replid AND b.info2='$idtahunbuku'
-								    AND c.idkelompok = $kelompok AND b.idpenerimaan = $idpenerimaan GROUP BY c.replid) AS x);";
+								    AND c.idkelompok = '$kelompok' AND b.idpenerimaan = '$idpenerimaan' GROUP BY c.replid) AS x);";
 		else
 			if ($kelompok == -1)
 				$sql = "SELECT MAX(jumlah) 
 						  FROM ((SELECT c.replid, count(p.replid) as jumlah 
 								   FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsakad.calonsiswa c 
 								  WHERE p.idbesarjttcalon = b.replid AND b.idcalon = c.replid AND b.info2='$idtahunbuku' 
-								    AND b.idpenerimaan = $idpenerimaan AND b.lunas = $statuslunas GROUP BY c.replid) AS x);";
+								    AND b.idpenerimaan = '$idpenerimaan' AND b.lunas = '$statuslunas' GROUP BY c.replid) AS x);";
 			else
 				$sql = "SELECT MAX(jumlah) 
 						  FROM ((SELECT c.replid, count(p.replid) as jumlah 
 								   FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsakad.calonsiswa c 
 								  WHERE p.idbesarjttcalon = b.replid AND b.idcalon = c.replid AND b.info2='$idtahunbuku' 
-								    AND c.idkelompok = $kelompok AND b.idpenerimaan = $idpenerimaan AND b.lunas = $statuslunas GROUP BY c.replid) AS x);";
+								    AND c.idkelompok = '$kelompok' AND b.idpenerimaan = '$idpenerimaan' AND b.lunas = '$statuslunas' GROUP BY c.replid) AS x);";
 		
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
@@ -312,13 +312,13 @@ if (isset($_REQUEST[showpembayaran]))
 		$table_width = 810 + $max_n_cicilan * 90;
 		
 		//Dapatkan namapenerimaan
-		$sql = "SELECT d.nama, d.departemen FROM jbsfina.datapenerimaan d WHERE d.replid=$idpenerimaan";
+		$sql = "SELECT d.nama, d.departemen FROM jbsfina.datapenerimaan d WHERE d.replid='$idpenerimaan'";
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
 		$namapenerimaan = $row[0];
 		$departemen = $row[1];
 		
-		$sql = "SELECT kelompok FROM jbsakad.kelompokcalonsiswa WHERE replid=$kelompok";
+		$sql = "SELECT kelompok FROM jbsakad.kelompokcalonsiswa WHERE replid='$kelompok'";
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
 		$namakelompok = $row[0];
@@ -363,25 +363,25 @@ if (isset($_REQUEST[showpembayaran]))
 			{
 				$sql_tot = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 							  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-							 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku' AND c.idkelompok = k.replid 
+							 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku' AND c.idkelompok = k.replid 
 							 ORDER BY c.nama";
 				
 				$sql = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 						  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-						 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
+						 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
 						   AND c.idkelompok = k.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 			} 
 			else 
 			{
 				$sql_tot = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 							  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-							 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
-							   AND c.idkelompok = $kelompok AND c.idkelompok = k.replid ORDER BY c.nama";
+							 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
+							   AND c.idkelompok = '$kelompok' AND c.idkelompok = k.replid ORDER BY c.nama";
 				
 				$sql = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 						  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-						 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku' 
-						   AND c.idkelompok = $kelompok AND c.idkelompok = k.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+						 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku' 
+						   AND c.idkelompok = '$kelompok' AND c.idkelompok = k.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 			}
 		} 
 		else 
@@ -390,25 +390,25 @@ if (isset($_REQUEST[showpembayaran]))
 			{
 				$sql_tot = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 							  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-							 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
-							   AND c.idkelompok = k.replid AND b.lunas = $statuslunas";
+							 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
+							   AND c.idkelompok = k.replid AND b.lunas = '$statuslunas'";
 			
 				$sql = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 						  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b
-						 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku' 
-						   AND c.idkelompok = k.replid AND b.lunas = $statuslunas ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+						 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku' 
+						   AND c.idkelompok = k.replid AND b.lunas = '$statuslunas' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 			} 
 			else 
 			{
 				$sql_tot = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas
 							  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b
-							 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
-							   AND c.idkelompok = $kelompok AND c.idkelompok = k.replid AND b.lunas = $statuslunas"; 
+							 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
+							   AND c.idkelompok = '$kelompok' AND c.idkelompok = k.replid AND b.lunas = '$statuslunas'"; 
 				
 				$sql = "SELECT c.nopendaftaran, c.nama, k.kelompok, b.replid AS id, b.besar, b.keterangan, b.lunas 
 						  FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsfina.besarjttcalon b 
-						 WHERE c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
-					 	   AND c.idkelompok = $kelompok AND c.idkelompok = k.replid AND b.lunas = $statuslunas ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+						 WHERE c.replid = b.idcalon AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
+					 	   AND c.idkelompok = '$kelompok' AND c.idkelompok = k.replid AND b.lunas = '$statuslunas' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 			}
 		}
 		
@@ -427,7 +427,7 @@ if (isset($_REQUEST[showpembayaran]))
 		
 		while ($rowall = mysql_fetch_array($result_tot)) {
 			$totalbesarjtt += $rowall['besar'];
-			$sqlall2 = "SELECT jumlah FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = $rowall[id] ORDER BY tanggal";
+			$sqlall2 = "SELECT jumlah FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = '$rowall[id]' ORDER BY tanggal";
 			$resall2 = QueryDb($sqlall2);
 			while ($rowall2 = mysql_fetch_row($resall2)) {
 				$totalbiayaall2 += $rowall2[0];
@@ -455,7 +455,7 @@ if (isset($_REQUEST[showpembayaran]))
 				<td><?=$row['nama'] ?></td>
 				<td align="center"><?=$row['kelompok'] ?></td>
 			<?
-			$sql = "SELECT count(*) FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+			$sql = "SELECT count(*) FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 			$result2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($result2);
 			$nbayar = $row2[0];
@@ -463,7 +463,7 @@ if (isset($_REQUEST[showpembayaran]))
 			$totalbayar = 0;
 			
 			if ($nbayar > 0) {
-				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt ORDER BY tanggal";
+				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' ORDER BY tanggal";
 				$result2 = QueryDb($sql);
 				while ($row2 = mysql_fetch_row($result2)) {
 					$totalbayar = $totalbayar + $row2[1]; ?>
@@ -570,13 +570,13 @@ if (isset($_REQUEST[showpembayaran]))
 		if ($kelompok == -1)
 			$sql = "SELECT max(jml) FROM ((SELECT s.replid, COUNT(p.replid) as jml 
 											 FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s 
-											WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-											  AND p.idcalon = s.replid AND p.idpenerimaan = $idpenerimaan GROUP BY s.replid) as X)";
+											WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+											  AND p.idcalon = s.replid AND p.idpenerimaan = '$idpenerimaan' GROUP BY s.replid) as X)";
 		else
 			$sql = "SELECT max(jml) FROM ((SELECT s.replid, COUNT(p.replid) as jml 
 											 FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s 
-											WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-											  AND p.idcalon = s.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan GROUP BY s.replid) as X)";
+											WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+											  AND p.idcalon = s.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan' GROUP BY s.replid) as X)";
 		
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
@@ -584,13 +584,13 @@ if (isset($_REQUEST[showpembayaran]))
 		$table_width = 520 + $max_n_bayar * 100;
 		
 		//Dapatkan namapenerimaan
-		$sql = "SELECT d.nama, d.departemen FROM jbsfina.datapenerimaan d WHERE d.replid=$idpenerimaan";
+		$sql = "SELECT d.nama, d.departemen FROM jbsfina.datapenerimaan d WHERE d.replid='$idpenerimaan'";
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
 		$namapenerimaan = $row[0];
 		$departemen = $row[1];
 		
-		$sql = "SELECT kelompok FROM jbsakad.kelompokcalonsiswa WHERE replid=$kelompok";
+		$sql = "SELECT kelompok FROM jbsakad.kelompokcalonsiswa WHERE replid='$kelompok'";
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
 		$namakelompok = $row[0];
@@ -627,26 +627,26 @@ if (isset($_REQUEST[showpembayaran]))
 		{
 			$sql_tot = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 						  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-						   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = $idpenerimaan ORDER BY s.nama";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+						   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
 			
 			$sql = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 					  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-					   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = $idpenerimaan 
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+					   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = '$idpenerimaan' 
 				  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 		} 
 		else 
 		{
 			$sql_tot = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 						  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-						   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan ORDER BY s.nama";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+						   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
 			
 			$sql = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 					  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-					   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan 
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+					   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan' 
 				  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 		}
 		
@@ -659,8 +659,8 @@ if (isset($_REQUEST[showpembayaran]))
 		while ($rowall = mysql_fetch_array($result_tot)) {
 			$sqlall2 = "SELECT jumlah 
 					      FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-						   AND idcalon = $rowall[replid] AND idpenerimaan = $idpenerimaan";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+						   AND idcalon = '$rowall[replid]' AND idpenerimaan = '$idpenerimaan'";
 			$resall2 = QueryDb($sqlall2);
 			while ($rowall2 = mysql_fetch_row($resall2)) {
 				$totalall2 += $rowall2[0]; 
@@ -683,8 +683,8 @@ if (isset($_REQUEST[showpembayaran]))
 				<td align="center"><?=$row['kelompok'] ?></td>
 		<?		$sql = "SELECT date_format(p.tanggal, '%d-%b-%y') as tanggal, jumlah 
 						  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-						   AND idcalon = $replid AND idpenerimaan = $idpenerimaan";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+						   AND idcalon = '$replid' AND idpenerimaan = '$idpenerimaan'";
 				$result2 = QueryDb($sql);
 				$nbayar = mysql_num_rows($result2);
 				$nblank = $max_n_bayar - $nbayar;

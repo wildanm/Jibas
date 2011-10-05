@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ $page = $_REQUEST['page'];
 $total = $_REQUEST['total'];
 
 OpenDb();
-$sql = "SELECT p.proses, k.kelompok, k.keterangan FROM kelompokcalonsiswa k, prosespenerimaansiswa p WHERE k.idproses = $proses AND k.replid = $kelompok";
+$sql = "SELECT p.proses, k.kelompok, k.keterangan FROM kelompokcalonsiswa k, prosespenerimaansiswa p WHERE k.idproses = '$proses' AND k.replid = '$kelompok'";
 $result = QueryDb($sql);
 $row =@mysql_fetch_array($result);
 $namaproses = $row['proses'];
@@ -98,14 +98,14 @@ $keterangan = $row['keterangan'];
     <td align="center" class="header" width="10%" rowspan="2">Status</td>   
 </tr>
 <?		
-	$sqlset = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = $proses";
+	$sqlset = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = '$proses'";
 	$resset = QueryDb($sqlset);
 	$rowset = mysql_fetch_row($resset);
 	$ndata = $rowset[0];
 	
 	if ($ndata > 0)
 	{
-		$sqlset = "SELECT * FROM settingpsb WHERE idproses = $proses";
+		$sqlset = "SELECT * FROM settingpsb WHERE idproses = '$proses'";
 		$resset = QueryDb($sqlset);
 		$rowset = mysql_fetch_array($resset);
 		
@@ -128,7 +128,7 @@ $keterangan = $row['keterangan'];
 </tr>    
 <? 	$sql = "SELECT nopendaftaran,nama,asalsekolah,sum1,sum2,ujian1,ujian2,ujian3,ujian4,ujian5,". 
 		   "c.aktif,c.replid,replidsiswa,c.nisn FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
-		   "WHERE c.idproses = $proses AND c.idkelompok = $kelompok AND k.idproses = p.replid ".
+		   "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		   "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan ";
 	$result = QueryDb($sql);
 	if ($page==0)
@@ -138,7 +138,7 @@ $keterangan = $row['keterangan'];
 	while ($row = @mysql_fetch_array($result)) {
 		$siswa = "";
 		if ($row["replidsiswa"] <> 0) {
-			$sql3 = "SELECT nis FROM jbsakad.siswa WHERE replid = $row[replidsiswa]";
+			$sql3 = "SELECT nis FROM jbsakad.siswa WHERE replid = '$row[replidsiswa]'";
 			$result3 = QueryDb($sql3);
 			$row3 = @mysql_fetch_array($result3);
 			$siswa = "<br>NIS Siswa:<br><b>".$row3['nis']."</b>";

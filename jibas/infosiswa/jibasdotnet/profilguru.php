@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -50,7 +50,7 @@ if (isset($_REQUEST[op2]))
 	$op2=$_REQUEST[op2];
 if ($op2=="fh873jh62ft6dsg7h7whgufdte3"){
 OpenDb();
-$sql="DELETE FROM jbsvcr.galerifoto WHERE replid=".$_REQUEST[replid];
+$sql="DELETE FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'";
 $result=QueryDb($sql);
 CloseDb();
 if ($op=="ubah"){
@@ -68,7 +68,7 @@ if ($op=="ubah"){
 }
 }
 OpenDb();
-$sql="SELECT * FROM jbsvcr.profil WHERE nip=".SI_USER_ID();
+$sql="SELECT * FROM jbsvcr.profil WHERE nip='".SI_USER_ID()."'";
 $result=QueryDb($sql);
 $row=@mysql_fetch_array($result);
 $nama=$row[nama];
@@ -81,7 +81,7 @@ $buku=$row[buku];
 $riwayat=$row[riwayat];
 $tentang=$row[tentang];
 $replid=$row[replid];
-$sql2="SELECT replid FROM jbsvcr.galerifoto WHERE idguru=".SI_USER_ID();
+$sql2="SELECT replid FROM jbsvcr.galerifoto WHERE idguru='".SI_USER_ID()."'";
 $result2=QueryDb($sql2);
 $jatahfoto=20-@mysql_num_rows($result2);
 
@@ -144,12 +144,12 @@ CloseDb();
 }
 delete($filename);
 OpenDb();
-$sql="SELECT replid FROM jbsvcr.galerifoto WHERE idguru=".SI_USER_ID();
+$sql="SELECT replid FROM jbsvcr.galerifoto WHERE idguru='".SI_USER_ID()."'";
 $result=QueryDb($sql);
 
 while ($row=@mysql_fetch_array($result)){
 	$ket=$_REQUEST["ket".$row[replid]];
-	$sql2="UPDATE jbsvcr.galerifoto SET keterangan='$ket' WHERE replid=$row[replid]";
+	$sql2="UPDATE jbsvcr.galerifoto SET keterangan='$ket' WHERE replid='$row[replid]'";
 	$result2=QueryDb($sql2);
 }
 CloseDb();

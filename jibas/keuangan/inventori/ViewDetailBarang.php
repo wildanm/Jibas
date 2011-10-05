@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -45,18 +45,18 @@ $row = @mysql_fetch_array($result);
   <tr>
     <td width="29%" align="right"><strong>Kode Barang</strong></td>
     <td width="2" align="right"><strong>:</strong></td>
-    <td width="33%"><?=$row[kode]?></td>
+    <td width="33%"><?=stripslashes($row[kode])?></td>
     <td width="38%" rowspan="4" align="center" valign="middle"><img src="gambar.php?table=jbsfina.barang&replid=<?=$row[replid]?>" align="left" style="padding:2px" /></td>
   </tr>
   <tr>
     <td align="right"><strong>Nama Barang</strong></td>
     <td width="2" align="right"><strong>:</strong></td>
-    <td><?=$row[nama]?></td>
+    <td><?=stripslashes($row[nama])?></td>
   </tr>
   <tr>
     <td align="right"><strong>Jumlah</strong></td>
     <td width="2" align="right"><strong>:</strong></td>
-    <td><?=$row[jumlah]?>&nbsp;<?=$row[satuan]?></td>
+    <td><?=$row[jumlah]?>&nbsp;<?=stripslashes($row[satuan])?></td>
   </tr>
   <tr>
     <td align="right"><strong>Tanggal Perolehan</strong></td>
@@ -66,12 +66,12 @@ $row = @mysql_fetch_array($result);
   <tr>
     <td align="right"><strong>Kondisi</strong></td>
     <td width="2" align="right"><strong>:</strong></td>
-    <td colspan="2"><?=$row[kondisi]?></td>
+    <td colspan="2"><?=stripslashes($row[kondisi])?></td>
   </tr>
   <tr>
     <td align="right"><strong>Keterangan</strong></td>
     <td width="2" align="right"><strong>:</strong></td>
-    <td colspan="2"><?=$row[keterangan]?></td>
+    <td colspan="2"><?=stripslashes($row[keterangan])?></td>
   </tr>
   <tr>
     <td colspan="4" align="center"><input type="button" value="Tutup" onclick="window.close()" class="but" /></td>

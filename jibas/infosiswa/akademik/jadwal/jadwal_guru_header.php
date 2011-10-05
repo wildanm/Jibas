@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -43,12 +43,12 @@ if (isset($_REQUEST['op']))
 
 if ($op=="dw8dxn8w9ms8zs22"){
 	OpenDb();
-	$sql_update_aktif = "UPDATE jbsakad.infojadwal SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql_update_aktif = "UPDATE jbsakad.infojadwal SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql_update_aktif);
 	CloseDb();
 } else if ($op=="xm8r389xemx23xb2378e23"){
 	OpenDb();
-	$sql_delete = "DELETE FROM jbsakad.infojadwal WHERE replid = $_REQUEST[info_jadwal]";
+	$sql_delete = "DELETE FROM jbsakad.infojadwal WHERE replid = '$_REQUEST[info_jadwal]'";
 	$result=QueryDb($sql_delete);
 	if ($result){
 	?>
@@ -210,7 +210,7 @@ function focusNext(elemName, evt) {
         <td><strong>Info Jadwal</strong></td>
         <td colspan="3"><select name="info_jadwal" id="info_jadwal" onChange="change(0)" style="width:285px">
           <? 	OpenDb();
-            $sql_info_jadwal="SELECT i.replid, i.deskripsi, i.aktif FROM jbsakad.infojadwal i, tahunajaran a WHERE i.idtahunajaran = a.replid AND a.departemen = '$departemen' AND i.idtahunajaran = $tahunajaran ORDER BY i.aktif DESC";						            
+            $sql_info_jadwal="SELECT i.replid, i.deskripsi, i.aktif FROM jbsakad.infojadwal i, tahunajaran a WHERE i.idtahunajaran = a.replid AND a.departemen = '$departemen' AND i.idtahunajaran = '$tahunajaran' ORDER BY i.aktif DESC";						            
 			$result_info_jadwal=QueryDb($sql_info_jadwal);
             while ($row_info_jadwal=@mysql_fetch_array($result_info_jadwal)){
                 if ($info_jadwal=="")

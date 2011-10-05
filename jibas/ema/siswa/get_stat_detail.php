@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ if ($departemen == "-1")
 if ($departemen != "-1" && $angkatan == "")
 	$filter="AND a.departemen='$departemen' AND a.replid=s.idangkatan ";
 if ($departemen != "-1" && $angkatan != "")
-	$filter="AND s.idangkatan=$angkatan AND a.replid=s.idangkatan AND a.departemen='$departemen' ";
+	$filter="AND s.idangkatan='$angkatan' AND a.replid=s.idangkatan AND a.departemen='$departemen' ";
 
 $field = array('','s.agama','s.asalsekolah','s.darah','s.kelamin','s.warga','s.kodepossiswa','s.kondisi','s.pekerjaanayah','s.pekerjaanibu','s.pendidikanayah','s.pendidikanibu','','s.aktif','s.status','s.suku','YEAR(s.tgllahir)','');
 

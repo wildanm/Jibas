@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -68,13 +68,13 @@ CloseDb();
 //chmod($GALLERY_DIR."thumbnails\\", 0644);
 if ($op=="14075BUSYCODACALLDIFF"){
 	OpenDb();
-	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid=$_REQUEST[replid]"));
+	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'"));
 	//echo $GALLERY_DIR."photos\\".$r[filename];
 	//echo $GALLERY_DIR."thumbnails\\X".$r[filename]; exit;
 	if (file_exists($GALLERY_DIR."photos\\".$r[filename]) && file_exists($GALLERY_DIR."thumbnail\\".$r[filename])){
 		delete($GALLERY_DIR."photos\\".$r[filename]);
 		delete($GALLERY_DIR."thumbnail\\".$r[filename]);
-		QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid=$_REQUEST[replid]");
+		QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'");
 		//echo $GALLERY_DIR."photos\\".$r[filename]; exit;
 	} else {
 		//echo "none";
@@ -92,7 +92,7 @@ if ($op=="14075BUSYCODACALLDIFF"){
 }
 if ($op=="DIFFBUSYCODACALL14077"){
 	OpenDb();
-	$sql = "UPDATE jbsvcr.galerifoto SET nama='$_REQUEST[newName]',keterangan='$_REQUEST[newKet]' WHERE replid=$_REQUEST[replid]";
+	$sql = "UPDATE jbsvcr.galerifoto SET nama='$_REQUEST[newName]',keterangan='$_REQUEST[newKet]' WHERE replid='$_REQUEST[replid]'";
 	//echo($sql);
 	QueryDb($sql);
 	CloseDb();

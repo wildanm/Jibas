@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -369,7 +369,7 @@ if (isset($_REQUEST[showpembayaran]))
             $sql = "SELECT d.replid AS id, d.nama, SUM(p.jumlah) AS jumlah 
 			  FROM jbsfina.pengeluaran p, jbsfina.datapengeluaran d, jbsfina.jurnal j
 			 WHERE p.idpengeluaran = d.replid AND d.departemen = '$departemen' 
-			   AND p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
+			   AND p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
 			   AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' GROUP BY d.replid, d.nama ORDER BY d.nama";
             
             $result = QueryDb($sql);    

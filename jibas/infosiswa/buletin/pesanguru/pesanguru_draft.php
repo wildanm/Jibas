@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -54,7 +54,7 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 	while ($x<=$numdel){
 		if ($msg[$x]!=""){
 		OpenDb();
-			$sql="SELECT idpesan,direktori, namafile FROM jbsvcr.lampirandraft WHERE idpesan=".$msg[$x];
+			$sql="SELECT idpesan,direktori, namafile FROM jbsvcr.lampirandraft WHERE idpesan='$msg[$x]'";
 		//	echo $sql;
 			$result=QueryDb($sql);
 			$cntdel=0;
@@ -72,12 +72,12 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 		delete($mydir[1]);
 		delete($mydir[2]);
 		OpenDb();
-		$sql="DELETE FROM jbsvcr.lampirandraft WHERE idpesan=".$msg[$x];
+		$sql="DELETE FROM jbsvcr.lampirandraft WHERE idpesan='$msg[$x]'";
 		$result=QueryDb($sql);
 		CloseDb();
 		//Hapus tabel beritaguru
 		OpenDb();
-		$sql="DELETE FROM jbsvcr.draft WHERE replid=".$msg[$x];
+		$sql="DELETE FROM jbsvcr.draft WHERE replid='$msg[$x]'";
 		$result=QueryDb($sql);
 		CloseDb();
 		}

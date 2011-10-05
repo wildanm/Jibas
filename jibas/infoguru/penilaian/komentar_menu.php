@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -119,11 +119,11 @@ function change_urut(urut,urutan)
 	OpenDb();		
 	$sql = "SELECT DISTINCT k.replid, s.nis, s.nama, k.komentar 
 			  FROM siswa s, komennap k, infonap i 
-			 WHERE s.idkelas = $kelas AND k.nis = s.nis AND k.idinfo = i.replid 
-			   AND i.idkelas = $kelas AND i.idpelajaran = $pelajaran AND i.idsemester= $semester ORDER BY $urut $urutan";
+			 WHERE s.idkelas = '$kelas' AND k.nis = s.nis AND k.idinfo = i.replid 
+			   AND i.idkelas = '$kelas' AND i.idpelajaran = '$pelajaran' AND i.idsemester= '$semester' ORDER BY $urut $urutan";
 	$sql = "SELECT nis, nama
 			  FROM siswa
-			 WHERE idkelas = $kelas AND aktif = 1
+			 WHERE idkelas = '$kelas' AND aktif = 1
 		  ORDER BY $urut $urutan";			   
 	$result = QueryDb($sql);		
 	$cnt = 1;

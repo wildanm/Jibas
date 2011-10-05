@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -154,7 +154,7 @@ alert ('Maaf nis <?=$nis?> sudah digunakan');
 <?
 } else {
 
-$sql="INSERT INTO jbsakad.siswa SET nis='$nis',nama='$nama',panggilan='$panggilan',tahunmasuk=$tahunmasuk,idangkatan=$idangkatan,idkelas=$idkelas,suku='$suku',agama='$agama',status='$status',kondisi='$kondisi',kelamin='$kelamin',tmplahir='$tmplahir',tgllahir='$lahir',warga='$warga',anakke=$urutananak,jsaudara=$jumlahanak,bahasa='$bahasa',berat=$berat,tinggi=$tinggi,darah='$gol',foto='$foto_data',alamatsiswa='$alamatsiswa',kodepossiswa='$kodepos',telponsiswa='$telponsiswa',hpsiswa='$hpsiswa',emailsiswa='$emailsiswa',kesehatan='$kesehatan',asalsekolah='$sekolah',ketsekolah='$ketsekolah',namaayah='$namaayah',namaibu='$namaibu',almayah=$almayah,almibu=$almibu,pendidikanayah='$pendidikanayah',pendidikanibu='$pendidikanibu',pekerjaanayah='$pekerjaanayah',pekerjaanibu='$pekerjaanibu',wali='$namawali',penghasilanayah=$penghasilanayah,penghasilanibu=$penghasilanibu,alamatortu='$alamatortu',telponortu='$telponortu',hportu='$hportu',emailortu='$emailortu',alamatsurat='$alamatsurat',keterangan='$keterangan'";
+$sql="INSERT INTO jbsakad.siswa SET nis='$nis',nama='$nama',panggilan='$panggilan',tahunmasuk='$tahunmasuk',idangkatan='$idangkatan',idkelas=$idkelas,suku='$suku',agama='$agama',status='$status',kondisi='$kondisi',kelamin='$kelamin',tmplahir='$tmplahir',tgllahir='$lahir',warga='$warga',anakke=$urutananak,jsaudara=$jumlahanak,bahasa='$bahasa',berat=$berat,tinggi=$tinggi,darah='$gol',foto='$foto_data',alamatsiswa='$alamatsiswa',kodepossiswa='$kodepos',telponsiswa='$telponsiswa',hpsiswa='$hpsiswa',emailsiswa='$emailsiswa',kesehatan='$kesehatan',asalsekolah='$sekolah',ketsekolah='$ketsekolah',namaayah='$namaayah',namaibu='$namaibu',almayah=$almayah,almibu=$almibu,pendidikanayah='$pendidikanayah',pendidikanibu='$pendidikanibu',pekerjaanayah='$pekerjaanayah',pekerjaanibu='$pekerjaanibu',wali='$namawali',penghasilanayah=$penghasilanayah,penghasilanibu=$penghasilanibu,alamatortu='$alamatortu',telponortu='$telponortu',hportu='$hportu',emailortu='$emailortu',alamatsurat='$alamatsurat',keterangan='$keterangan'";
 QueryDbTrans($sql,$success);
 
 

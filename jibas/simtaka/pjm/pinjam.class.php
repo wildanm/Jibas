@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -27,6 +27,15 @@ class CPinjam
 	function OnStart()
 	{
 		$this->state = $_REQUEST[state];
+		
+		$this->jenisanggota = $_REQUEST['jenisanggota'];
+		$jenis = 'pegawai';
+
+		switch($this->jenisanggota){
+			case '0' : $jenis = 'pegawai'; break;
+			case '1' : $jenis = 'siswa'; break;
+			case '2' : $jenis = 'lain'; break;
+		}
 		$this->noanggota = $_REQUEST[noanggota];
 		$this->nama = $_REQUEST[nama];
 		$this->numcode = 0;
@@ -52,7 +61,7 @@ class CPinjam
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
 			if ($num==0){
-				$sql = "INSERT INTO pinjam SET kodepustaka='$_REQUEST[kodepustaka]',tglpinjam='".MySqlDateFormat($_REQUEST[tglpinjam])."',tglkembali='".MySqlDateFormat($_REQUEST[tglkembali])."',idanggota='$_REQUEST[noanggota]',keterangan='$_REQUEST[keterangan]'";
+				$sql = "INSERT INTO pinjam SET kodepustaka='$_REQUEST[kodepustaka]',tglpinjam='".MySqlDateFormat($_REQUEST[tglpinjam])."',tglkembali='".MySqlDateFormat($_REQUEST[tglkembali])."',idanggota='$_REQUEST[noanggota]',keterangan='".CQ($_REQUEST['keterangan'])."',info1='$jenis'";
 				QueryDb($sql);
 			}
 			$this->replid = '';
@@ -165,7 +174,7 @@ class CPinjam
           <tr>
             <td>
                 <fieldset><legend class="welc">Pilih Anggota</legend>
-<table width="100%" border="0" cellspacing="3" cellpadding="0">
+					<table width="100%" border="0" cellspacing="3" cellpadding="0">
                       <tr>
                         <td width="9%" align="right"><span class="news_content1">Status&nbsp;Peminjam</span></td>
                   		<td width="91%">

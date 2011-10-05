@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ class CDaftarKembali{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM format WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM format WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		$this->kriteria='all';
@@ -63,22 +63,22 @@ class CDaftarKembali{
 		$row = @mysql_fetch_row($result);
 		$now = $row[0];
 		if ($this->kriteria=='all')
-			$sql = "SELECT * FROM pinjam WHERE status=2 ORDER BY tglpinjam";
+			$sql = "SELECT * FROM pinjam WHERE status=2 ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='tglpinjam')
-			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND tglpinjam BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglpinjam";
+			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND tglpinjam BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='tglkembali')
-			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND tglkembali BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglpinjam";
+			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND tglkembali BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='nip' || ($this->kriteria=='nis'))
-			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND idanggota='$this->noanggota' AND tglkembali<='".$now."' ORDER BY tglpinjam";
+			$sql = "SELECT *,replid FROM pinjam WHERE status=2 AND idanggota='$this->noanggota' AND tglkembali<='".$now."' ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='denda'){
 			if ($this->denda==0)
-				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda='0' ORDER BY p.tglpinjam";
+				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda='0' ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==1)
-				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<5000 ORDER BY p.tglpinjam";
+				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<5000 ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==2)
-				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<10000 ORDER BY p.tglpinjam";
+				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<10000 ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==3)
-				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>10000 ORDER BY p.tglpinjam";			
+				$sql = "SELECT *,p.replid AS replid FROM pinjam p,denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>10000 ORDER BY p.tglditerima DESC";			
 		}
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);

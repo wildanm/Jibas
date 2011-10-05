@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,7 +31,7 @@ $kelas = $_REQUEST['kelas'];
 $nis = $_REQUEST['nis'];
 
 OpenDb();
-$sql = "SELECT t.departemen, a.tahunajaran, k.kelas, t.tingkat, s.nama, a.tglmulai, a.tglakhir FROM tahunajaran a, kelas k, tingkat t, siswa s WHERE k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND k.replid = $kelas AND s.nis = '$nis'";  
+$sql = "SELECT t.departemen, a.tahunajaran, k.kelas, t.tingkat, s.nama, a.tglmulai, a.tglakhir FROM tahunajaran a, kelas k, tingkat t, siswa s WHERE k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND k.replid = '$kelas' AND s.nis = '$nis'";  
 
 $result = QueryDB($sql);	
 $row = mysql_fetch_array($result);
@@ -88,7 +88,7 @@ $kls = $row['kelas'];
 <tr>
 	<td colspan="2" align="center"> 
 <? 	OpenDb();
-	$sql1 = "SELECT CONCAT(DATE_FORMAT(tanggal,'%b'),' ',YEAR(tanggal)) AS blnthn, SUM(IF(statushadir = 0,1,0)), SUM(IF(statushadir = 1,1,0)), SUM(IF(statushadir = 2,1,0)), SUM(IF(statushadir = 4,1,0)), SUM(IF(statushadir = 3,1,0)), MONTH(tanggal) FROM presensipelajaran p, ppsiswa pp WHERE pp.nis = '$nis' AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' GROUP BY blnthn ORDER BY YEAR(tanggal), MONTH(tanggal)";
+	$sql1 = "SELECT CONCAT(DATE_FORMAT(tanggal,'%b'),' ',YEAR(tanggal)) AS blnthn, SUM(IF(statushadir = 0,1,0)), SUM(IF(statushadir = 1,1,0)), SUM(IF(statushadir = 2,1,0)), SUM(IF(statushadir = 4,1,0)), SUM(IF(statushadir = 3,1,0)), MONTH(tanggal) FROM presensipelajaran p, ppsiswa pp WHERE pp.nis = '$nis' AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' GROUP BY blnthn ORDER BY YEAR(tanggal), MONTH(tanggal)";
 
 	$result1 = QueryDb($sql1);
 	$num = mysql_num_rows($result1);

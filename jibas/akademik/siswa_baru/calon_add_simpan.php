@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -128,7 +128,7 @@ $kelompok=$_REQUEST['kelompok'];
 <?
 OpenDb();
 if ($_REQUEST['action'] == 'ubah') {
-	$sql="UPDATE calonsiswa SET nopendaftaran='$no',nama='$nama',panggilan='$panggilan',tahunmasuk=$tahunmasuk,idproses=$proses,idkelompok=$kelompok,suku='$suku',agama='$agama',status='$status',kondisi='$kondisi',kelamin='$kelamin',tmplahir='$tmplahir',tgllahir='$lahir',warga='$warga',anakke=$urutananak,jsaudara=$jumlahanak,bahasa='$bahasa',berat=$berat,tinggi=$tinggi,darah='$gol',foto='$foto',alamatsiswa='$alamatsiswa',kodepossiswa='$kodepos',telponsiswa='$telponsiswa',hpsiswa='$hpsiswa',emailsiswa='$emailsiswa',kesehatan='$kesehatan',asalsekolah='$sekolah',ketsekolah='$ketsekolah',namaayah='$namaayah',namaibu='$namaibu',almayah=$almayah,almibu=$almibu,pendidikanayah='$pendidikanayah',pendidikanibu='$pendidikanibu',pekerjaanayah='$pekerjaanayah',pekerjaanibu='$pekerjaanibu',wali='$namawali',penghasilanayah=$penghasilanayah,penghasilanibu=$penghasilanibu,alamatortu='$alamatortu',telponortu='$telponortu',hportu='$hportu',emailortu='$emailortu',alamatsurat='$alamatsurat',keterangan='$keterangan' WHERE replid=$_REQUEST[replid]";
+	$sql="UPDATE calonsiswa SET nopendaftaran='$no',nama='$nama',panggilan='$panggilan',tahunmasuk=$tahunmasuk,idproses=$proses,idkelompok=$kelompok,suku='$suku',agama='$agama',status='$status',kondisi='$kondisi',kelamin='$kelamin',tmplahir='$tmplahir',tgllahir='$lahir',warga='$warga',anakke=$urutananak,jsaudara=$jumlahanak,bahasa='$bahasa',berat=$berat,tinggi=$tinggi,darah='$gol',foto='$foto',alamatsiswa='$alamatsiswa',kodepossiswa='$kodepos',telponsiswa='$telponsiswa',hpsiswa='$hpsiswa',emailsiswa='$emailsiswa',kesehatan='$kesehatan',asalsekolah='$sekolah',ketsekolah='$ketsekolah',namaayah='$namaayah',namaibu='$namaibu',almayah=$almayah,almibu=$almibu,pendidikanayah='$pendidikanayah',pendidikanibu='$pendidikanibu',pekerjaanayah='$pekerjaanayah',pekerjaanibu='$pekerjaanibu',wali='$namawali',penghasilanayah=$penghasilanayah,penghasilanibu=$penghasilanibu,alamatortu='$alamatortu',telponortu='$telponortu',hportu='$hportu',emailortu='$emailortu',alamatsurat='$alamatsurat',keterangan='$keterangan' WHERE replid='$_REQUEST[replid]'";
 
 $result = QueryDb($sql);
 CloseDb();

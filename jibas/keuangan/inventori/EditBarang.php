@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -27,7 +27,7 @@ require_once('../include/common.php');
 require_once('../../akademik/include/imageresizer.php');
 
 OpenDb();
-$sql = "SELECT * FROM jbsfina.barang WHERE replid=$_REQUEST[idbarang]";
+$sql = "SELECT * FROM jbsfina.barang WHERE replid='$_REQUEST[idbarang]'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $kode = $row[kode];
@@ -38,7 +38,7 @@ $keterangan = $row[keterangan];
 $satuan = $row[satuan];
 $tgl = substr($row[tglperolehan],8,2)."-".substr($row[tglperolehan],5,2)."-".substr($row[tglperolehan],0,4);
 if (isset($_REQUEST[Simpan])){
-	$sql = "SELECT kode FROM jbsfina.barang WHERE kode='$_REQUEST[kode]' AND replid<>$_REQUEST[idbarang]";
+	$sql = "SELECT kode FROM jbsfina.barang WHERE kode='$_REQUEST[kode]' AND replid<>'$_REQUEST[idbarang]'";
 	$result = QueryDb($sql);
 	$num = @mysql_num_rows($result);
 	if ($num>0){
@@ -73,7 +73,7 @@ if (isset($_REQUEST[Simpan])){
 		
 		$tgl = MySqlDateFormat($_REQUEST[tgl]);
 		
-		$sql = "UPDATE jbsfina.barang SET kode='".trim($_REQUEST[kode])."', nama='".trim($_REQUEST[nama])."', jumlah='".trim($_REQUEST[jumlah])."',kondisi='".addslashes(trim($_REQUEST[kondisi]))."',tglperolehan='$tgl',keterangan='".addslashes(trim($_REQUEST[keterangan]))."',idkelompok='$_REQUEST[idkelompok]',satuan='$_REQUEST[satuan]' $isifoto WHERE replid=$_REQUEST[idbarang]";
+		$sql = "UPDATE jbsfina.barang SET kode='".trim($_REQUEST[kode])."', nama='".trim($_REQUEST[nama])."', jumlah='".trim($_REQUEST[jumlah])."',kondisi='".addslashes(trim($_REQUEST[kondisi]))."',tglperolehan='$tgl',keterangan='".addslashes(trim($_REQUEST[keterangan]))."',idkelompok='$_REQUEST[idkelompok]',satuan='$_REQUEST[satuan]' $isifoto WHERE replid='$_REQUEST[idbarang]'";
 		//echo  $sql; exit;
 		$result = QueryDb($sql);
 		if ($result){
@@ -91,7 +91,7 @@ if (isset($_REQUEST[Simpan])){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Tambah Barang</title>
+<title>Ubah Barang</title>
 <link href="../style/style.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../script/tools.js"></script>
 <script language="javascript">
@@ -107,7 +107,7 @@ function validate(){
 	var nama = document.getElementById('nama').value;
 	var jumlah = document.getElementById('jumlah').value;
 	var tgl = document.getElementById('tgl').value;
-	
+	var foto = document.getElementById('foto').value;
 	if (kode.length==0){
 		alert ('Anda harus mengisikan data untuk Kode Barang!');
 		document.getElementById('kode').focus();
@@ -161,6 +161,22 @@ function validate(){
 			return false;
 		}
 	}
+
+	if (foto.length>0){
+		var ext = "";
+		var i = 0;
+		var string4split='.';
+
+		z = foto.split(string4split);
+		ext = z[z.length-1];
+		
+		if (ext!='JPG' && ext!='jpg' && ext!='Jpg' && ext!='JPg' && ext!='JPEG' && ext!='jpeg'){
+			alert ('Format Gambar harus ber-extensi jpg atau JPG !');
+			//document.getElementById('cover').value='';
+	
+			return false;
+		} 
+	}
 }
 </script>
 </head>
@@ -173,17 +189,17 @@ function validate(){
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td width="14%" align="right"><strong>Kode&nbsp;Barang</strong></td>
-    <td width="86%"><input type="text" id="kode" name="kode" maxlength="20" value="<?=$kode?>" /></td>
+    <td width="86%"><input type="text" id="kode" name="kode" maxlength="20" value="<?=stripslashes($kode)?>" /></td>
     <td width="86%" rowspan="5" align="center" valign="middle"><img src="gambar.php?table=jbsfina.barang&replid=<?=$_REQUEST[idbarang]?>" style="padding:2px" /></td>
   </tr>
   <tr>
     <td align="right"><strong>Nama&nbsp;Barang</strong></td>
-    <td><input type="text" id="nama" name="nama" style="width:95%" maxlength="50" value="<?=$nama?>" /></td>
+    <td><input type="text" id="nama" name="nama" style="width:95%" maxlength="50" value="<?=stripslashes($nama)?>" /></td>
     </tr>
   <tr>
     <td align="right"><strong>Jumlah</strong></td>
-    <td><input type="text" id="jumlah" name="jumlah" size="5" maxlength="10" value="<?=$jumlah?>" />
-    &nbsp;Satuan&nbsp;<input type="text" id="satuan" name="satuan" size="10" maxlength="20" value="<?=$satuan?>" /></td>
+    <td><input type="text" id="jumlah" name="jumlah" size="5" maxlength="10" value="<?=stripslashes($jumlah)?>" />
+    &nbsp;Satuan&nbsp;<input type="text" id="satuan" name="satuan" size="10" maxlength="20" value="<?=stripslashes($satuan)?>" /></td>
     </tr>
   
   <tr>
@@ -196,11 +212,11 @@ function validate(){
     </tr>
   <tr>
     <td align="right">Kondisi</td>
-    <td colspan="2"><textarea name="kondisi" id="kondisi"  style="width:95%"><?=$kondisi?></textarea></td>
+    <td colspan="2"><textarea name="kondisi" id="kondisi"  style="width:95%"><?=stripslashes($kondisi)?></textarea></td>
     </tr>
   <tr>
     <td align="right">Keterangan</td>
-    <td colspan="2"><textarea name="keterangan" rows="4" id="keterangan"  style="width:95%"><?=$keterangan?></textarea></td>
+    <td colspan="2"><textarea name="keterangan" rows="4" id="keterangan"  style="width:95%"><?=stripslashes($keterangan)?></textarea></td>
     </tr>
   <tr>
     <td colspan="3" align="center"><input name="Simpan" type="submit" class="but" value="Simpan" />

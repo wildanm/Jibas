@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,7 +34,7 @@ if (isset($_REQUEST['departemen']))
 if (isset($_REQUEST['kelas']))
 	$kelas = $_REQUEST['kelas'];
 if (isset($_REQUEST['info']))
-	$info = $_REQUEST['info'];
+	$info = CQ($_REQUEST['info']);
 if (isset($_REQUEST['maxJam']))
 	$maxJam = (int)$_REQUEST['maxJam'];
 if (isset($_REQUEST['jam']))
@@ -46,7 +46,7 @@ $pelajaran = "";
 if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];	
+	$keterangan = CQ($_REQUEST['keterangan']);	
 if (isset($_REQUEST['jam2']))
 	$jam2 = (int)$_REQUEST['jam2'];	
 if (isset($_REQUEST['nipguru']))
@@ -59,66 +59,40 @@ $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) 
 {		
 	OpenDb();
-	
-	$dayname = array("", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu");
-	
 	$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
 	$res = QueryDb($sql);
-	$idinfo_aktif = "";
-	while($row = mysql_fetch_row($res))
-	{
-		if (strlen($idinfo_aktif) > 0)
-			$idinfo_aktif .= ",";
-		$idinfo_aktif .= $row[0];	
-	}
-	
-	// Cek jadwal guru yang bentrok di kelas lain di hari yang sama
-	$sqljam = "";
-	for($i = $jam; $i <= $jam2; $i++)
-	{
-		if (strlen($sqljam) != 0)
-			$sqljam .= " OR ";
-		$sqljam .= "($i >= jamke AND $i <= jamke + njam - 1 AND nipguru = '$nipguru')";
-	}
-	
-	$sql = "SELECT ij.deskripsi, pg.nama, p.nama AS pelajaran, k.kelas, j.departemen, j.hari, j.jamke AS jam1, j.jamke + j.njam - 1 AS jam2 
-	           FROM infojadwal ij, jadwal j, jbssdm.pegawai pg, pelajaran p, kelas k 
-			  WHERE ij.replid = j.infojadwal AND j.nipguru = pg.nip AND j.idpelajaran = p.replid 
-			    AND j.idkelas = k.replid 
-				AND ij.replid IN ($idinfo_aktif) AND hari = $hari
-				AND ($sqljam)";
-	$result = QueryDb($sql);
-	if (mysql_num_rows($result) > 0)
-	{
-		$ket = "";
-		while ($row = mysql_fetch_array($result))
+	$num = mysql_num_rows($res);
+	if ($num>0){
+		$dayname = array("", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu");
+		
+		$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
+		$res = QueryDb($sql);
+		$idinfo_aktif = "";
+		while($row = mysql_fetch_row($res))
 		{
-			if (strlen($ket) > 0)
-				$ket .= "\\r\\n";
-			$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];  	
+			if (strlen($idinfo_aktif) > 0)
+				$idinfo_aktif .= "','";
+			$idinfo_aktif .= $row[0];	
 		}
-		CloseDb();		
-		$ERROR_MSG = "Jadwal guru di kelas lain yang bentrok:\\r\\n$ket";
-	}
-	else
-	{
-		// Cek jadwal guru yang bentrok di kelas yang sama
+		
+		$idinfo_aktif = "'".$idinfo_aktif."'";
+		
+		// Cek jadwal guru yang bentrok di kelas lain di hari yang sama
 		$sqljam = "";
 		for($i = $jam; $i <= $jam2; $i++)
 		{
 			if (strlen($sqljam) != 0)
 				$sqljam .= " OR ";
-			$sqljam .= "($i >= jamke AND $i <= jamke + njam - 1)";
+			$sqljam .= "('$i' >= jamke AND '$i' <= jamke + njam - 1 AND nipguru = '$nipguru')";
 		}
 		
 		$sql = "SELECT ij.deskripsi, pg.nama, p.nama AS pelajaran, k.kelas, j.departemen, j.hari, j.jamke AS jam1, j.jamke + j.njam - 1 AS jam2 
-		          FROM infojadwal ij, jadwal j, jbssdm.pegawai pg, pelajaran p, kelas k 
-				 WHERE ij.replid = j.infojadwal AND j.nipguru = pg.nip AND j.idpelajaran = p.replid 
-				   AND j.idkelas = k.replid 
-				   AND ij.replid IN ($idinfo_aktif) AND hari = $hari AND idkelas=$kelas
-				   AND ($sqljam)";
+				   FROM infojadwal ij, jadwal j, jbssdm.pegawai pg, pelajaran p, kelas k 
+				  WHERE ij.replid = j.infojadwal AND j.nipguru = pg.nip AND j.idpelajaran = p.replid 
+					AND j.idkelas = k.replid 
+					AND ij.replid IN ($idinfo_aktif) AND hari = '$hari'
+					AND ($sqljam)";
 		$result = QueryDb($sql);
-		
 		if (mysql_num_rows($result) > 0)
 		{
 			$ket = "";
@@ -129,44 +103,78 @@ if (isset($_REQUEST['Simpan']))
 				$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];  	
 			}
 			CloseDb();		
-			$ERROR_MSG = "Jadwal bentrok di kelas yang sama:\\r\\n$ket";
+			$ERROR_MSG = "Jadwal guru di kelas lain yang bentrok:\\r\\n$ket";
 		}
-	}
-	
-	if (strlen($ERROR_MSG) == 0)
-	{
-		$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = $jam";
-		$result1 = QueryDb($sql1);
-		$row1 = mysql_fetch_array($result1);
-		$rep1 = $row1['replid'];
-		$jm1 = $row1['jam1'];
+		else
+		{
+			// Cek jadwal guru yang bentrok di kelas yang sama
+			$sqljam = "";
+			for($i = $jam; $i <= $jam2; $i++)
+			{
+				if (strlen($sqljam) != 0)
+					$sqljam .= " OR ";
+				$sqljam .= "($i >= jamke AND $i <= jamke + njam - 1)";
+			}
+			
+			$sql = "SELECT ij.deskripsi, pg.nama, p.nama AS pelajaran, k.kelas, j.departemen, j.hari, j.jamke AS jam1, j.jamke + j.njam - 1 AS jam2 
+					  FROM infojadwal ij, jadwal j, jbssdm.pegawai pg, pelajaran p, kelas k 
+					 WHERE ij.replid = j.infojadwal AND j.nipguru = pg.nip AND j.idpelajaran = p.replid 
+					   AND j.idkelas = k.replid 
+					   AND ij.replid IN ($idinfo_aktif) AND hari = $hari AND idkelas=$kelas
+					   AND ($sqljam)";
+			$result = QueryDb($sql);
+			
+			if (mysql_num_rows($result) > 0)
+			{
+				$ket = "";
+				while ($row = mysql_fetch_array($result))
+				{
+					if (strlen($ket) > 0)
+						$ket .= "\\r\\n";
+					$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];  	
+				}
+				CloseDb();		
+				$ERROR_MSG = "Jadwal bentrok di kelas yang sama:\\r\\n$ket";
+			}
+		}
 		
-		$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = $jam2";
-		$result2 = QueryDb($sql2);
-		$row2 = mysql_fetch_array($result2);
-		$rep2 = $row2['replid'];
-		$jm2 = $row2['jam2'];
-		
-		$jum = $jam2 - $jam + 1;
-		
-		$sql = "INSERT INTO jadwal SET idkelas=$kelas, nipguru='$nipguru', idpelajaran = $pelajaran, departemen = '$departemen', 
-				infojadwal = $info, hari = $hari, jamke = $jam, njam = $jum, sifat = 1, status = $status, keterangan='$keterangan', 
-				jam1 = '$jm1', jam2 = '$jm2', idjam1 = $rep1, idjam2 = $rep2";
-		$result = QueryDb($sql);
-		CloseDb();
-		
-		if ($result) 
-		{ ?>
-			<script language="javascript">
-				opener.parent.footer.refresh();
-				window.close();
-			</script> 
-<?		}
+		if (strlen($ERROR_MSG) == 0)
+		{
+			$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam'";
+			$result1 = QueryDb($sql1);
+			$row1 = mysql_fetch_array($result1);
+			$rep1 = $row1['replid'];
+			$jm1 = $row1['jam1'];
+			
+			$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam2'";
+			$result2 = QueryDb($sql2);
+			$row2 = mysql_fetch_array($result2);
+			$rep2 = $row2['replid'];
+			$jm2 = $row2['jam2'];
+			
+			$jum = $jam2 - $jam + 1;
+			
+			$sql = "INSERT INTO jadwal SET idkelas=$kelas, nipguru='$nipguru', idpelajaran = '$pelajaran', departemen = '$departemen', 
+					infojadwal = '$info', hari = '$hari', jamke = '$jam', njam = '$jum', sifat = 1, status = '$status', keterangan='$keterangan', 
+					jam1 = '$jm1', jam2 = '$jm2', idjam1 = '$rep1', idjam2 = '$rep2'";
+			$result = QueryDb($sql);
+			CloseDb();
+			
+			if ($result) 
+			{ ?>
+				<script language="javascript">
+					opener.parent.footer.refresh();
+					window.close();
+				</script> 
+	<?		}
+		}
+	} else {
+		$ERROR_MSG = "Tidak ada Info jadwal yang aktif, silakan aktifkan salah satu Info Jadwal\\r\\n";
 	}
 }
 
 OpenDb();	
-$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, k.kelas FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, kelas k WHERE i.replid = $info AND t.replid = i.idtahunajaran AND k.replid = '$kelas' AND k.idtahunajaran = t.replid ";
+$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, k.kelas FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, kelas k WHERE i.replid = '$info' AND t.replid = i.idtahunajaran AND k.replid = '$kelas' AND k.idtahunajaran = t.replid ";
 
 $result1 = QueryDb($sql1);
 $row1 = mysql_fetch_array($result1); 
@@ -316,7 +324,7 @@ function changepel()
 <tr>
 	<td align="left"><strong>Pelajaran</strong></td>
  	<td><div id ="InfoPelajaran">
-      	<select name="pelajaran" id="pelajaran" onchange="changepel()" onKeyPress="return focusNext('nip', event)" onFocus="panggil('pelajaran')" >
+      	<select name="pelajaran" id="pelajaran" onChange="changepel()" onKeyPress="return focusNext('nip', event)" onFocus="panggil('pelajaran')" >
    	<?	OpenDb();
 		$sql = "SELECT replid,nama FROM pelajaran WHERE departemen = '$departemen' AND aktif=1 ORDER BY nama";
 		$result = QueryDb($sql);

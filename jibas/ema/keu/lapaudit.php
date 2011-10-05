@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -433,7 +433,7 @@ if (isset($_REQUEST[showpembayaran]))
             <? 	OpenDb();
                 $sql = "SELECT a.sumber, count(a.replid) 
 						  FROM jbsfina.auditinfo a, jbsfina.jurnal j 
-						 WHERE a.info1 = j.replid AND j.idtahunbuku = $idtahunbuku AND a.departemen = '$departemen' 
+						 WHERE a.info1 = j.replid AND j.idtahunbuku = '$idtahunbuku' AND a.departemen = '$departemen' 
 						   AND a.tanggal >= '$tanggal1 00:00:00' AND a.tanggal <= '$tanggal2 23:59:59' 
 						 GROUP BY a.sumber 
 						 ORDER BY a.sumber";

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ class PresensiAjax{
 		$dep = $_REQUEST['dep'];
 		$this->dep = $dep;
 
-		$NewFormat = $_REQUEST['NewFormat'];
+		$NewFormat = CQ($_REQUEST['NewFormat']);
 		$this->NewFormat = $NewFormat;
 		
 		if ($op=='getKelas')
@@ -64,7 +64,6 @@ class PresensiAjax{
         <?
 	}
 	function SaveFormat(){
-		//echo $this->NewFormat; exit;
 		$sql = "SELECT * FROM format WHERE tipe=0";
         $res = QueryDb($sql);
 		$num = @mysql_num_rows($res);

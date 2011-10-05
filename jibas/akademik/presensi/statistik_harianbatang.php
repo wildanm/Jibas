@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,9 +37,9 @@ OpenDb();
 */
 //echo 'nis'.$_REQUEST['nis'];
 if ($_REQUEST['nis']) {
-	$sql = "SELECT SUM(hadir), SUM(ijin), SUM(sakit),  SUM(alpa),SUM(cuti) FROM presensiharian p, phsiswa ph WHERE ph.nis = '$_REQUEST[nis]' AND ph.idpresensi = p.replid AND p.idkelas = $_REQUEST[kelas] AND p.idsemester = $_REQUEST[semester] AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";
+	$sql = "SELECT SUM(hadir), SUM(ijin), SUM(sakit),  SUM(alpa),SUM(cuti) FROM presensiharian p, phsiswa ph WHERE ph.nis = '$_REQUEST[nis]' AND ph.idpresensi = p.replid AND p.idkelas = '$_REQUEST[kelas]' AND p.idsemester = '$_REQUEST[semester]' AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";
 } else {
-	$sql = "SELECT SUM(hadir), SUM(ijin), SUM(sakit), SUM(alpa), SUM(cuti), COUNT(DISTINCT ph.nis) FROM presensiharian p, phsiswa ph WHERE ph.idpresensi = p.replid AND p.idkelas = $_REQUEST[kelas] AND p.idsemester = $_REQUEST[semester] AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";	
+	$sql = "SELECT SUM(hadir), SUM(ijin), SUM(sakit), SUM(alpa), SUM(cuti), COUNT(DISTINCT ph.nis) FROM presensiharian p, phsiswa ph WHERE ph.idpresensi = p.replid AND p.idkelas = '$_REQUEST[kelas]' AND p.idsemester = '$_REQUEST[semester]' AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";	
 }
 
 //echo 'sql '.$sql;
@@ -56,7 +56,7 @@ if (!$_REQUEST['nis']) {
 	//$sql1 = "SELECT SUM(DATEDIFF(tanggal2, tanggal1) + 1) FROM presensiharian p WHERE p.idkelas = $_REQUEST[kelas] AND p.idsemester = $_REQUEST[semester] AND ((MONTH(tanggal1) = '$_REQUEST[bln1]' AND YEAR(tanggal1) = '$_REQUEST[th1]') OR (MONTH(tanggal2) = '$_REQUEST[bln2]') AND YEAR(tanggal2) = '$_REQUEST[th2]') ORDER BY p.tanggal1 ";
 	
 	//$sql1 = "SELECT SUM(DATEDIFF(tanggal2, tanggal1) + 1) FROM presensiharian p WHERE p.idkelas = $_REQUEST[kelas] AND p.idsemester = $_REQUEST[semester] AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";
-	$sql1 = "SELECT SUM(hariaktif) FROM presensiharian p WHERE p.idkelas = $_REQUEST[kelas] AND p.idsemester = $_REQUEST[semester] AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";
+	$sql1 = "SELECT SUM(hariaktif) FROM presensiharian p WHERE p.idkelas = '$_REQUEST[kelas]' AND p.idsemester = '$_REQUEST[semester]' AND (((p.tanggal1 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]') OR (p.tanggal2 BETWEEN '$_REQUEST[tglawal]' AND '$_REQUEST[tglakhir]')) OR (('$_REQUEST[tglawal]' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$_REQUEST[tglakhir]' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY p.tanggal1 ";
 	
 	//echo '<br> '.$sql1;
 	$result1 = QueryDb($sql1);

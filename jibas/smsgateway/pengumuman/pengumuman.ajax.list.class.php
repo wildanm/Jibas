@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -41,7 +41,7 @@ class PengumumanListAjax{
 		$DestNumb = $_REQUEST['DestNumb'];
 		$this->DestNumb = str_replace(' 62','0',$DestNumb);
 		
-		$Txt = $_REQUEST['Txt'];
+		$Txt = CQ($_REQUEST['Txt']);
 		$this->Txt = $Txt;
 
 		if ($op=='GetInfoGenList')
@@ -72,10 +72,10 @@ class PengumumanListAjax{
 		$SenderID = $row['SenderID'];
 		$CreatorID = $row['SenderID'];
 		
-		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 
-		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 		
 		$this->GetDetailInfoGenList($IdInfoGen);
@@ -91,7 +91,7 @@ class PengumumanListAjax{
 		$SenderID = $row['SenderID'];
 		$CreatorID = $row['SenderID'];
 		
-		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 
 		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID', idsmsgeninfo=$IdInfoGen";
@@ -126,11 +126,11 @@ class PengumumanListAjax{
 		<table width="300" class="tab" border="1" cellspacing="0" cellpadding="0" id="Table1">
 		  <tr class="Header">
 			<td>No</td>
-			<td>Tanggal</td>
+			<td>Info/Tanggal</td>
 			<td>&nbsp;</td>
 		  </tr>
 		  <?
-		  $sql = "SELECT replid,info FROM smsgeninfo WHERE tipe=2 AND YEAR(tanggal)='".$this->Thn."' AND MONTH(tanggal)='".$this->Bln."' ORDER BY replid DESC";
+		  $sql = "SELECT replid,info,DATE_FORMAT(tanggal,'%e %b %Y') FROM smsgeninfo WHERE tipe=2 AND YEAR(tanggal)='".$this->Thn."' AND MONTH(tanggal)='".$this->Bln."' ORDER BY replid DESC";
 		  //echo $sql;
 		  $res = QueryDb($sql);
 		  $num = @mysql_num_rows($res);
@@ -140,7 +140,7 @@ class PengumumanListAjax{
 			  ?>
 			  <tr class="td">
 				<td align="center" valign="top" class="td"><?=$cnt?></td>
-				<td class="td" style="cursor:pointer" onclick="SelectInfoGenList('<?=$row[0]?>')"><?=$row[1]?></td>
+				<td class="td" style="cursor:pointer" onclick="SelectInfoGenList('<?=$row[0]?>')"><?="$row[1]<br><i>$row[2]</i>"?></td>
 				<td class="td" align="center"><img onclick="DeleteInfoGenList('<?=$row[0]?>')" src="../images/ico/hapus.png" width="16" height="16" border="0" style="cursor:pointer" /></td>
 			  </tr>
 			  <?

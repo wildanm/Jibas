@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -73,7 +73,7 @@ function refresh() {
     	<td width="100%" class="header" align="center"><?=$row[0];?></td>
     </tr>
     <?		
-		$sql1 = "SELECT p.nama,p.replid FROM guru g, pelajaran p WHERE g.idpelajaran = p.replid AND g.nip 		='$_REQUEST[nip]' AND p.departemen = '$row[0]' GROUP BY p.nama";
+		$sql1 = "SELECT p.nama,p.replid FROM guru g, pelajaran p WHERE g.idpelajaran = p.replid AND g.nip ='$_REQUEST[nip]' AND p.departemen = '$row[0]' GROUP BY p.nama";
 		$result1 = QueryDb($sql1); 				
 		while ($row1 = @mysql_fetch_array($result1)) {
 	?>

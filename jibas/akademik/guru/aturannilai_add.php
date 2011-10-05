@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -44,8 +44,8 @@ if (isset($_REQUEST['aspek']))
 OpenDb();
 $sql = "SELECT j.departemen, j.nama, p.nip, p.nama, t.tingkat 
 		FROM guru g, jbssdm.pegawai p, pelajaran j, tingkat t 
-		WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND t.departemen = j.departemen AND t.replid = $idtingkat 
-		AND j.replid = $id AND g.nip = '$nip'"; 
+		WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND t.departemen = j.departemen AND t.replid = '$idtingkat' 
+		AND j.replid = '$id' AND g.nip = '$nip'"; 
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -250,7 +250,7 @@ function focusNext(elemName, evt) {
 				WHERE dasarpenilaian NOT IN 
 					(SELECT dasarpenilaian FROM aturangrading g, tingkat t 
 					 WHERE t.replid = g.idtingkat AND g.idpelajaran = $id 
-					 AND g.idtingkat = $idtingkat AND g.nipguru = '$nip' GROUP BY g.dasarpenilaian)
+					 AND g.idtingkat = '$idtingkat' AND g.nipguru = '$nip' GROUP BY g.dasarpenilaian)
 				ORDER BY keterangan";    
 		$result = QueryDb($sql);	
 		while ($row = @mysql_fetch_array($result)) 

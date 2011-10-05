@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,25 +32,23 @@ require_once('../cek.php');
 if (isset($_REQUEST['replid']))
 	$replid = $_REQUEST['replid'];
 
-$departemen=$_REQUEST['departemen'];
-$sekolah=$_REQUEST['sekolah'];
+$departemen=CQ($_REQUEST['departemen']);
+$sekolah=CQ($_REQUEST['sekolah']);
 
 $ERROR_MSG = "";
 if (isset($_POST['simpan'])) {
 	OpenDb();	
 	//echo $departemen;	
-	$sql_cek ="SELECT * FROM jbsakad.asalsekolah where sekolah='$sekolah' AND replid <> $replid AND departemen='$departemen'";
+	$sql_cek ="SELECT * FROM jbsakad.asalsekolah where sekolah='$sekolah' AND replid <> '$replid' AND departemen='$departemen'";
 	$hasil=QueryDb($sql_cek);
 	if (mysql_num_rows($hasil)>0) {
 		CloseDb();
 		$ERROR_MSG = "Nama Sekolah $sekolah sudah digunakan!";
 	} else {
-		$sql = "UPDATE jbsakad.asalsekolah SET sekolah='$sekolah',departemen='$departemen' WHERE replid=$replid";
+		$sql = "UPDATE jbsakad.asalsekolah SET sekolah='$sekolah',departemen='$departemen' WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
-	
 		if ($result) { 
-		
 		?>
 		<script language="javascript">
 			opener.refresh('<?=$departemen?>');

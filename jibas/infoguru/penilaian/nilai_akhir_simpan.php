@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -46,16 +46,16 @@ if ($_REQUEST['action'] <> "manual")
 		if ($cek)
 		{
 			if ($id == "")
-				$sql = "INSERT INTO bobotnau SET idujian = $ujian, bobot = $bobot, idaturan = $idaturan";
+				$sql = "INSERT INTO bobotnau SET idujian = '$ujian', bobot = '$bobot', idaturan = '$idaturan'";
 			else
-				$sql = "UPDATE bobotnau SET bobot = $bobot WHERE replid = $id";
+				$sql = "UPDATE bobotnau SET bobot = '$bobot' WHERE replid = '$id'";
 			QueryDbTrans($sql, $success);
 		}
 		else
 		{
 			if ($id != "")
 			{
-				$sql = "DELETE FROM bobotnau WHERE replid = $id";
+				$sql = "DELETE FROM bobotnau WHERE replid = '$id'";
 				QueryDbTrans($sql, $success);
 			}
 		}
@@ -65,7 +65,7 @@ if ($_REQUEST['action'] <> "manual")
 // ambil idjenisujian dan idpelajaran
 $sql = "SELECT idpelajaran, idjenisujian 
 		FROM jbsakad.aturannhb 
-		WHERE replid = $idaturan";
+		WHERE replid = '$idaturan'";
 $res = QueryDb($sql);
 $row = mysql_fetch_array($res);
 $jenis = $row['idjenisujian'];
@@ -73,7 +73,7 @@ $pelajaran = $row['idpelajaran'];
 	
 $sql = "SELECT nis 
 	 	FROM jbsakad.siswa 
-		WHERE idkelas = $idkelas AND aktif = 1 
+		WHERE idkelas = '$idkelas' AND aktif = 1 
 		ORDER BY nama ASC ";
 $result_get_nis_siswa = QueryDb($sql);
 
@@ -85,7 +85,7 @@ while ($success && ($row_get_nis_siswa = @mysql_fetch_array($result_get_nis_sisw
 	{	
 		$sql = "SELECT replid 
 				FROM jbsakad.ujian 
-			    WHERE idkelas = $idkelas AND idsemester = $idsemester AND idaturan = $idaturan";
+			    WHERE idkelas = '$idkelas' AND idsemester = '$idsemester' AND idaturan = '$idaturan'";
 		$result_get_ujian = QueryDb($sql);
 		
 		$ujian_culip = 0;
@@ -96,13 +96,13 @@ while ($success && ($row_get_nis_siswa = @mysql_fetch_array($result_get_nis_sisw
 			$idujian = $row_get_ujian['replid'];
 			
 			//Ambil bobot
-			$sql = "SELECT bobot FROM jbsakad.bobotnau WHERE idujian = $idujian";
+			$sql = "SELECT bobot FROM jbsakad.bobotnau WHERE idujian = '$idujian'";
 			$result_get_bobot = QueryDb($sql);
 			$row_get_bobot = @mysql_fetch_array($result_get_bobot);
 			$b = (float)$row_get_bobot['bobot'];
 			
 			//Ambil nilai ujian
-			$sql = "SELECT nilaiujian FROM jbsakad.nilaiujian WHERE idujian = $idujian AND nis = '$nis'";
+			$sql = "SELECT nilaiujian FROM jbsakad.nilaiujian WHERE idujian = '$idujian' AND nis = '$nis'";
 			$result_get_nilai = QueryDb($sql);
 			$row_get_nilai = @mysql_fetch_array($result_get_nilai);
 			$nu = (float)$row_get_nilai['nilaiujian'];
@@ -116,7 +116,7 @@ while ($success && ($row_get_nis_siswa = @mysql_fetch_array($result_get_nis_sisw
 	
 		$sql = 	"SELECT nilaiAU, replid, keterangan 
 				 FROM jbsakad.nau 
-				 WHERE nis = '$nis' AND idkelas = $idkelas AND idsemester =$idsemester AND idaturan = $idaturan";
+				 WHERE nis = '$nis' AND idkelas = '$idkelas' AND idsemester ='$idsemester' AND idaturan = '$idaturan'";
 		$result_nau = QueryDb($sql);
 	
 		if (mysql_num_rows($result_nau) > 0) 
@@ -124,14 +124,14 @@ while ($success && ($row_get_nis_siswa = @mysql_fetch_array($result_get_nis_sisw
 			$row_nau = mysql_fetch_row($result_nau);
 			$id_nau  = $row_nau[1];
 			
-			$sql_insert_nau = "UPDATE jbsakad.nau SET nilaiAU = $ratabulat WHERE replid = $id_nau";
+			$sql_insert_nau = "UPDATE jbsakad.nau SET nilaiAU = '$ratabulat' WHERE replid = '$id_nau'";
 		}
 		else
 		{
 			$sql_insert_nau = 
 				"INSERT INTO jbsakad.nau 
-				 SET nis = '$nis', idkelas = $idkelas, idsemester = $idsemester, idjenis = $jenis, 
-				     idpelajaran = $pelajaran, nilaiAU = '$ratabulat', idaturan = $idaturan";
+				 SET nis = '$nis', idkelas = '$idkelas', idsemester = '$idsemester', idjenis = '$jenis', 
+				     idpelajaran = '$pelajaran', nilaiAU = '$ratabulat', idaturan = '$idaturan'";
 		}
 	} 
 	else 
@@ -142,13 +142,13 @@ while ($success && ($row_get_nis_siswa = @mysql_fetch_array($result_get_nis_sisw
 			if ($key == $nis) 
 			{
 				if ($value[1]) 
-					$sql_insert_nau = "UPDATE jbsakad.nau SET nilaiAU = $value[0], keterangan = 'Manual' WHERE replid = $value[1]";
+					$sql_insert_nau = "UPDATE jbsakad.nau SET nilaiAU = '$value[0]', keterangan = 'Manual' WHERE replid = '$value[1]'";
 				else 
 					$sql_insert_nau = 
 						"INSERT INTO jbsakad.nau 
-						 SET nis = '$key', idkelas = $idkelas, idsemester = $idsemester,
-						     idjenis = $jenis, idpelajaran = $pelajaran, nilaiAU = $value[0],
-							 idaturan = $idaturan, keterangan = 'Manual'";				
+						 SET nis = '$key', idkelas = '$idkelas', idsemester = '$idsemester',
+						     idjenis = '$jenis', idpelajaran = '$pelajaran', nilaiAU = '$value[0]',
+							 idaturan = '$idaturan', keterangan = 'Manual'";				
 			}		
 		}
 	}	

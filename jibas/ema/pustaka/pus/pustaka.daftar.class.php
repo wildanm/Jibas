@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,36 +25,36 @@ class CPustaka{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="Gtytc6yt665476d6"){
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka=$_REQUEST[replid] AND perpustakaan='$_REQUEST[perpustakaan]'";
+			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
 			$res = QueryDb($sql);
 			$numdel = @mysql_num_rows($res);
 
-			$sql = "SELECT * FROM pustaka WHERE replid=$_REQUEST[replid]";
+			$sql = "SELECT * FROM pustaka WHERE replid='$_REQUEST[replid]'";
 			$res = QueryDb($sql);
 			$row = @mysql_fetch_array($res);
 			$idkatalog = $row[katalog];
 
-			$sql = "SELECT * FROM katalog WHERE replid=$idkatalog";
+			$sql = "SELECT * FROM katalog WHERE replid='$idkatalog'";
 			$res = QueryDb($sql);
 			$row = @mysql_fetch_array($res);
 			$counter = $row[counter];
 
 			$diff = $counter - $numdel;
 
-			$sql = "UPDATE katalog SET counter=$diff WHERE replid=$idkatalog";
+			$sql = "UPDATE katalog SET counter=$diff WHERE replid='$idkatalog'";
 			$res = QueryDb($sql);
 			
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka=$_REQUEST[replid] AND perpustakaan='$_REQUEST[perpustakaan]'";
+			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
 			$res = QueryDb($sql);
 			$numdel = @mysql_num_rows($res);
 
-			$sql = "DELETE FROM daftarpustaka WHERE pustaka=$_REQUEST[replid] AND perpustakaan='$_REQUEST[perpustakaan]'";
+			$sql = "DELETE FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
 			QueryDb($sql);
 
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka=$_REQUEST[replid] AND perpustakaan<>'$_REQUEST[perpustakaan]'";
+			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan<>'$_REQUEST[perpustakaan]'";
 			$res = QueryDb($sql);
 			if (@mysql_num_rows($res)==0) {
-				$sql = "DELETE FROM pustaka WHERE replid=$_REQUEST[replid]";
+				$sql = "DELETE FROM pustaka WHERE replid='$_REQUEST[replid]'";
 				QueryDb($sql);	
 			}
 		}

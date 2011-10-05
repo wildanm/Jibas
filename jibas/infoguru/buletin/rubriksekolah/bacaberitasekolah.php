@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,7 +31,7 @@ if (isset($_REQUEST['replid']))
 if (isset($_REQUEST['idpengirim']))
     $idpengirim=$_REQUEST['idpengirim'];
 OpenDb();
-$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita, b.idpengirim as idpengirim FROM jbsvcr.beritasekolah b WHERE b.replid=$replid";
+$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita, b.idpengirim as idpengirim FROM jbsvcr.beritasekolah b WHERE b.replid='$replid'";
 //echo $sql;
 $result=QueryDb($sql);
 $row=@mysql_fetch_array($result);

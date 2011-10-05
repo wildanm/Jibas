@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -41,7 +41,7 @@ if ($status == "calon")
 				   j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, 
 				   p.petugas, j.idtahunbuku 
 			  FROM penerimaanjttcalon p, besarjttcalon b, jurnal j, jbsakad.calonsiswa c 
-			 WHERE p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal AND b.idcalon = c.replid AND p.replid = $id 
+			 WHERE p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal AND b.idcalon = c.replid AND p.replid = '$id'
 		  ORDER BY p.tanggal, p.replid";
 } 
 else 
@@ -50,7 +50,7 @@ else
 				   j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, 
 				   p.petugas, j.idtahunbuku 
 			  FROM penerimaanjtt p, besarjtt b, jurnal j, jbsakad.siswa s 
-			 WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.nis = s.nis AND p.replid = $id 
+			 WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.nis = s.nis AND p.replid = '$id' 
 		  ORDER BY p.tanggal, p.replid";
 } 
 
@@ -72,12 +72,12 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $tglcetak = $row[0];
 
-$sql = "SELECT sum(jumlah) FROM penerimaanjtt$status WHERE idbesarjtt$status = $idbesarjtt";
+$sql = "SELECT sum(jumlah) FROM penerimaanjtt$status WHERE idbesarjtt$status = '$idbesarjtt'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $jumlahbayar = $row[0];
 
-$sql = "SELECT departemen FROM tahunbuku WHERE replid=$idtahunbuku";
+$sql = "SELECT departemen FROM tahunbuku WHERE replid='$idtahunbuku'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 $departemen=$row[departemen];

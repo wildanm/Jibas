@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -45,7 +45,7 @@ $tahunajaran=$row_get_kls[1];
 $departemen=$row_get_kls[3];
 $namakelas=$row_get_kls[4];
 
-$sql_get_info="SELECT replid FROM jbsakad.infojadwal WHERE idtahunajaran=$tahunajaran AND aktif=1";
+$sql_get_info="SELECT replid FROM jbsakad.infojadwal WHERE idtahunajaran='$tahunajaran' AND aktif=1";
 //echo $sql_get_info;
 $res_get_info=QueryDb($sql_get_info);
 $row_get_info=@mysql_fetch_array($res_get_info);
@@ -65,7 +65,7 @@ if ($op == "xm8r389xemx23xb2378e23") {
 		$filter = 'replid';
 	
 	OpenDb();
-	$sql = "DELETE FROM jadwal WHERE $filter = $_REQUEST[replid]";
+	$sql = "DELETE FROM jadwal WHERE $filter = '$_REQUEST[replid]'";
 	QueryDb($sql);
 	CloseDb();
 }	
@@ -90,10 +90,10 @@ function loadJadwal($departemen,$kelas,$info) {
 	       "l.nama AS pelajaran, p.nama AS guru, ".
 	       "CASE j.status WHEN 0 THEN 'Belajar' WHEN 1 THEN 'Asistensi' WHEN 2 THEN 'Tambahan' END AS status ".
 	       "FROM jadwal j, pelajaran l, jbssdm.pegawai p ".
-	       "WHERE j.idkelas = ".$kelas.
-	       " AND j.departemen = '".$departemen.
-	       "' AND j.infojadwal = ".$info.
-	       " AND j.nipguru = p.nip ".
+	       "WHERE j.idkelas = '".$kelas.
+	       "' AND j.departemen = '".$departemen.
+	       "' AND j.infojadwal = '".$info.
+	       "' AND j.nipguru = p.nip ".
 	       "AND j.idpelajaran = l.replid";
 	
 	$result = QueryDb($sql);

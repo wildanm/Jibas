@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,17 +34,17 @@ $replid=$_REQUEST['replid'];
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
 	$jenismutasi=$_REQUEST['jenismutasi'];
-	$keterangan=$_REQUEST['keterangan'];
+	$keterangan=CQ($_REQUEST['keterangan']);
 	
 	OpenDb();
-	$sql="SELECT * FROM jbsakad.jenismutasi WHERE jenismutasi='$jenismutasi' AND replid <> $replid";
+	$sql="SELECT * FROM jbsakad.jenismutasi WHERE jenismutasi='$jenismutasi' AND replid <> '$replid'";
 	$result=QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0){
 		CloseDb();
 		$ERROR_MSG = "Jenis mutasi $jenismutasi sudah digunakan!";	
 	} else {
-		$sql="UPDATE jbsakad.jenismutasi SET jenismutasi='$jenismutasi',keterangan='$keterangan' WHERE replid=$replid";
+		$sql="UPDATE jbsakad.jenismutasi SET jenismutasi='$jenismutasi',keterangan='$keterangan' WHERE replid='$replid'";
 		$result=QueryDb($sql);
 		CloseDb();
 		if ($result){
@@ -59,7 +59,7 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();
-$sql_tampil="SELECT * FROM jbsakad.jenismutasi WHERE replid=$replid";
+$sql_tampil="SELECT * FROM jbsakad.jenismutasi WHERE replid='$replid'";
 $result_tampil=QueryDb($sql_tampil);
 $row_tampil=mysql_fetch_array($result_tampil);
 $jenismutasi = $row_tampil['jenismutasi'];

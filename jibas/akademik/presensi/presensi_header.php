@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -60,7 +60,7 @@ if (isset($_REQUEST['tanggal']))
 
 if ($_REQUEST['replid']<> "") {	
 	OpenDb();
-	$sql = "SELECT p.replid, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, p.jam, k.idtahunajaran, a.departemen, k.idtingkat FROM presensipelajaran p, tahunajaran a, kelas k WHERE p.replid = $_REQUEST[replid] AND k.replid = p.idkelas AND a.replid = k.idtahunajaran";
+	$sql = "SELECT p.replid, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, p.jam, k.idtahunajaran, a.departemen, k.idtingkat FROM presensipelajaran p, tahunajaran a, kelas k WHERE p.replid = '".$_REQUEST['replid']."' AND k.replid = p.idkelas AND a.replid = k.idtahunajaran";
 	$result = QueryDb($sql);
 	CloseDb();
 	$row = @mysql_fetch_array($result);
@@ -80,7 +80,7 @@ $ERROR_MSG = "";
 if (isset($_REQUEST['tampil'])) {	
 	$date = MySqlDateFormat($tgl);
 	OpenDb();
-	$sql = "SELECT * FROM tahunajaran WHERE replid = $tahunajaran AND '$date' BETWEEN tglmulai AND tglakhir";
+	$sql = "SELECT * FROM tahunajaran WHERE replid = '$tahunajaran' AND '$date' BETWEEN tglmulai AND tglakhir";
 	
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {

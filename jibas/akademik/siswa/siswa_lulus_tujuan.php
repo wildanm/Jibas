@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -111,7 +111,7 @@ if ($op=="hgiu82kjs98uqjq89wuj89sga"){
 		}		
 		
 		if ($success){//aktifkan lagi nis di dep sebelumnya
-			$sql_lulus_update_kelas="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE replid=$replid_kelas";
+			$sql_lulus_update_kelas="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE replid='$replid_kelas'";
 			QueryDbTrans($sql_lulus_update_kelas, $success);
 		}	
 		
@@ -202,9 +202,9 @@ $ERROR_MSG = "";
 if ($op=="x2378e23dkofh73n25ki9234"){
 	//cek kapasitas kelas tujuan
 	$nis=$_REQUEST['nis'];
-	$nisbaru=$_REQUEST['nisbaru'];
+	$nisbaru=CQ($_REQUEST['nisbaru']);
 	$kelasawal=$_REQUEST['kelasawal'];
-	$ket=$_REQUEST['ket'];
+	$ket=CQ($_REQUEST['ket']);
 
 	OpenDb();
 	$sql_kap_kelas_tujuan="SELECT kapasitas, idtingkat FROM jbsakad.kelas WHERE replid='$kelas'";
@@ -249,7 +249,7 @@ if ($op=="x2378e23dkofh73n25ki9234"){
 					QueryDbTrans($sql_lulus_insert_dep, $success);
 				}				
 				if ($success){
-					$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$sekarang', tktakhir=$tingkatawal, klsakhir=$kelasawal, departemen = '$departemenawal'";
+					$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$sekarang', tktakhir='$tingkatawal', klsakhir='$kelasawal', departemen = '$departemenawal'";
 					QueryDbTrans($sql_alumni,$success);
 				}				
 				if ($success){
@@ -331,7 +331,7 @@ if ($op=="x2378e23dkofh73n25ki9234"){
 					QueryDbTrans($sql_lulus_update_dept, $success);
 				}	
 				if ($success){
-					$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$sekarang', tktakhir=$tingkatawal, klsakhir=$kelasawal, departemen = '$departemenawal'";
+					$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$sekarang', tktakhir='$tingkatawal', klsakhir='$kelasawal', departemen = '$departemenawal'";
 					QueryDbTrans($sql_alumni,$success);
 				}			
 				if ($success){
@@ -616,7 +616,7 @@ function focusNext(elemName, evt) {
 			while ($row_kelas=@mysql_fetch_array($result_kelas)){
 				if ($kelas=="")
 					$kelas=$row_kelas['replid'];
-				$sql_terisi="SELECT COUNT(*) FROM jbsakad.siswa WHERE idkelas='$row_kelas[replid]' AND aktif=1 AND idangkatan = $angkatan";
+				$sql_terisi="SELECT COUNT(*) FROM jbsakad.siswa WHERE idkelas='$row_kelas[replid]' AND aktif=1 AND idangkatan = '$angkatan'";
 				$result_terisi=QueryDb($sql_terisi);
 				$row_terisi=@mysql_fetch_row($result_terisi);
 			?>  
@@ -639,7 +639,7 @@ function focusNext(elemName, evt) {
 		OpenDb();    
 	
 		//$sql_tot = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1 AND s.idangkatan = $angkatan";
-		$sql_tot = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s WHERE s.idkelas = $kelas AND s.aktif=1 AND s.idangkatan = $angkatan";
+		$sql_tot = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s WHERE s.idkelas = '$kelas' AND s.aktif=1 AND s.idangkatan = '$angkatan'";
 		//echo($sql_tot);
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
@@ -647,7 +647,7 @@ function focusNext(elemName, evt) {
 		$akhir = ceil($jumlah/5)*5;
 		
 		//$sql_siswa = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1 AND s.idangkatan = $angkatan ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
-		$sql_siswa = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s WHERE s.idkelas = $kelas AND s.aktif=1 AND s.idangkatan = $angkatan ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+		$sql_siswa = "SELECT s.replid,s.nis,s.nama FROM jbsakad.siswa s WHERE s.idkelas = '$kelas' AND s.aktif=1 AND s.idangkatan = '$angkatan' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		
 		$result_siswa = QueryDb($sql_siswa);
 		$jum = @mysql_num_rows($result_siswa);

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -99,7 +99,7 @@ $jenis = $row['replid'];
             <td><strong>: <?=$namajenis?></strong></td>  
 <? 	$sql_cek_ujian = "SELECT u.replid, u.tanggal, u.deskripsi, u.idrpp 
 						FROM jbsakad.ujian u 
-					   WHERE u.idaturan=$idaturan AND u.idkelas=$kelas AND u.idsemester=$semester ORDER by u.tanggal ASC";
+					   WHERE u.idaturan='$idaturan' AND u.idkelas='$kelas' AND u.idsemester='$semester' ORDER by u.tanggal ASC";
     $result_cek_ujian = QueryDb($sql_cek_ujian);		
 	$jumlahujian = @mysql_num_rows($result_cek_ujian); ?>            
   		</tr>
@@ -114,7 +114,7 @@ $jenis = $row['replid'];
        
         $i=1;
         while ($row_cek_ujian=@mysql_fetch_array($result_cek_ujian)){
-			$sql_get_rpp_name = "SELECT rpp FROM rpp WHERE replid=$row_cek_ujian[idrpp]";
+			$sql_get_rpp_name = "SELECT rpp FROM rpp WHERE replid='$row_cek_ujian[idrpp]'";
 			if (!empty($row_cek_ujian[idrpp])) {
 				$res_get_rpp_name = QueryDb($sql_get_rpp_name);
 				$rpp = @mysql_fetch_array($res_get_rpp_name);
@@ -152,7 +152,7 @@ $jenis = $row['replid'];
     <td height="25" align="left"><?=$row_siswa['nama']?></td>
     <? 	for ($j=1;$j<=count($idujian);$j++) { ?>
             <td align="center">							
-			<?	$sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian=$idujian[$j] AND nis='$row_siswa[nis]'";
+			<?	$sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian='$idujian[$j]' AND nis='$row_siswa[nis]'";
                 $result_cek_nilai_ujian=QueryDb($sql_cek_nilai_ujian);
                	
                     $row_cek_nilai_ujian=@mysql_fetch_array($result_cek_nilai_ujian);

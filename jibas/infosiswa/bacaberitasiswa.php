@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,13 +29,13 @@ $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
 OpenDb();
-$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita,  p.nama as nama FROM jbsvcr.beritasiswa b, jbsakad.siswa p WHERE p.nis=b.idpengirim AND b.replid=$replid";
+$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita,  p.nama as nama FROM jbsvcr.beritasiswa b, jbsakad.siswa p WHERE p.nis=b.idpengirim AND b.replid='$replid'";
 $result=QueryDb($sql);
 $num = @mysql_num_rows($result);
 if ($num>0){
 $row=@mysql_fetch_array($result);
 } else {
-$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita,  p.nama as nama FROM jbsvcr.beritasiswa b, jbssdm.pegawai p WHERE p.nip=b.idpengirim AND b.replid=$replid";
+$sql="SELECT YEAR(b.tanggal) as thn,MONTH(b.tanggal) as bln,DAY(b.tanggal) as tgl,b.replid as replid,b.judul as judul,b.abstrak as abstrak ,b.isi as berita,  p.nama as nama FROM jbsvcr.beritasiswa b, jbssdm.pegawai p WHERE p.nip=b.idpengirim AND b.replid='$replid'";
 $result=QueryDb($sql);
 $row=@mysql_fetch_array($result);
 }
@@ -112,7 +112,7 @@ $tglberita=$row['tgl']." ".$namabulan[$row['bln']-1]." ".$row['thn'];
                 <td align="left" valign="top" scope="row"><strong>:</strong></td>
                 <td scope="row" align="left"><?
         OpenDb();
-        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitasiswa WHERE idberita=$row[replid]";
+        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitasiswa WHERE idberita='$row[replid]'";
         $result2=QueryDb($sql2);
         while ($row2=@mysql_fetch_array($result2)){
             echo "<a title='Buka lampiran ini!' href='".$row2[direktori].$row2[namafile]."' target='_blank'><img border='0' src='images/ico/titik.png' width='5' height='5'/> ".$row2['namafile']."</a><br>";

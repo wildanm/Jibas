@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -112,15 +112,15 @@ $aspekket = $row2[0];
                     $sql	=	"SELECT MIN(nilaiangka) as nmin, MAX(nilaiangka) AS nmax ".
                                 "FROM nap n, aturannhb a, infonap i, kelas k ".
                                 "WHERE n.idaturan = a.replid ".
-                                "AND a.idtingkat = $tingkat ".
-                                "AND a.idpelajaran = $pelajaran ".
+                                "AND a.idtingkat = '$tingkat' ".
+                                "AND a.idpelajaran = '$pelajaran' ".
                                 "AND a.dasarpenilaian = '$dasarpenilaian' ".
                                 "AND n.idinfo = i.replid ".
-                                "AND i.idpelajaran = $pelajaran ".
-                                "AND i.idsemester = $semester ".
+                                "AND i.idpelajaran = '$pelajaran' ".
+                                "AND i.idsemester = '$semester' ".
                                 "AND i.idkelas = k.replid ".
-                                "AND k.idtahunajaran = $tahunajaran ".
-                                "AND k.idtingkat = $tingkat ";	
+                                "AND k.idtahunajaran = '$tahunajaran' ".
+                                "AND k.idtingkat = '$tingkat' ";	
                     //echo $sql;
                     $result=Querydb($sql);
                     $row = @mysql_fetch_array($result);
@@ -145,15 +145,15 @@ $aspekket = $row2[0];
                              "SUM(IF(nilaiangka<$rentang[8],1,0)) as j9 ".
                              "FROM nap n, aturannhb a, infonap i, kelas k ".
                              "WHERE n.idaturan = a.replid ".
-                                "AND a.idtingkat = $tingkat ".
-                                "AND a.idpelajaran = $pelajaran ".
+                                "AND a.idtingkat = '$tingkat' ".
+                                "AND a.idpelajaran = '$pelajaran' ".
                                 "AND a.dasarpenilaian = '$dasarpenilaian' ".
                                 "AND n.idinfo = i.replid ".
-                                "AND i.idpelajaran = $pelajaran ".
-                                "AND i.idsemester = $semester ".
+                                "AND i.idpelajaran = '$pelajaran' ".
+                                "AND i.idsemester = '$semester' ".
                                 "AND i.idkelas = k.replid ".
-                                "AND k.idtahunajaran = $tahunajaran ".
-                                "AND k.idtingkat = $tingkat ";	
+                                "AND k.idtahunajaran = '$tahunajaran' ".
+                                "AND k.idtingkat = '$tingkat' ";	
                     //echo $query;
                     $result=Querydb($query) or die(mysql_error());
                     $lab="";

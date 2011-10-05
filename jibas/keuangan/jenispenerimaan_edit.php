@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ $departemen = $_REQUEST['departemen'];
 
 if (isset($_REQUEST['simpan'])) {
 	OpenDb();
-	$sql = "SELECT replid FROM datapenerimaan WHERE nama = '$_REQUEST[nama]' AND replid <> $id";
+	$sql = "SELECT replid FROM datapenerimaan WHERE nama = '$_REQUEST[nama]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
@@ -46,9 +46,9 @@ if (isset($_REQUEST['simpan'])) {
 		$norekpiutang = $_REQUEST['norekpiutang'];
 		$norekpiutang = trim($norekpiutang);
 		if (strlen($norekpiutang) == 0) 
-			$sql = "UPDATE datapenerimaan SET nama='$_REQUEST[nama]', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='$_REQUEST[keterangan]' WHERE replid= $id";
+			$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid= $id";
 		else
-			$sql = "UPDATE datapenerimaan SET nama='$_REQUEST[nama]', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', keterangan='$_REQUEST[keterangan]' WHERE replid= $id";
+			$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid= $id";
 			
 		$result = QueryDb($sql);
 		CloseDb();
@@ -68,7 +68,7 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $kategori = $row[0];
 
-$sql = "SELECT * FROM datapenerimaan WHERE replid = $id";
+$sql = "SELECT * FROM datapenerimaan WHERE replid = '$id'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $nama = $row['nama'];

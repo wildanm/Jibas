@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -77,14 +77,14 @@ function travsearch($iddir)
 	$idroot = $_REQUEST[iddir];
 	
 	OpenDb();
-	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot=$iddir";
+	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot='$iddir'";
 	$result = QueryDb($sql);
 	while ($row = @mysql_fetch_array($result))
 	{
-		$sql1="DELETE FROM jbsvcr.dirshare WHERE replid=$row[replid]";
+		$sql1="DELETE FROM jbsvcr.dirshare WHERE replid='$row[replid]'";
 		QueryDb($sql1);
 		
-		$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir=$row[replid]";
+		$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir='$row[replid]'";
 		QueryDb($sql2);
 		
 		travsearch($row[replid]);
@@ -100,12 +100,12 @@ if ($op == "q836bzsda53cx5429h3cs52")
 	$iddir=$_REQUEST[iddir];
 	
 	OpenDb();
-	$sql_dir="SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid=$iddir";
+	$sql_dir="SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid='$iddir'";
 	$result_dir=QueryDb($sql_dir);
 	$row_dir=@mysql_fetch_array($result_dir);
 	$dirfullpath=str_replace($WEB_UPLOAD_DIR,$UPLOAD_DIR,$row_dir[dirfullpath]);
 	$dirpath=str_replace("/",GetOSSlash(),$dirfullpath);
-	$sql_file="SELECT * FROM jbsvcr.fileshare WHERE iddir=$iddir";
+	$sql_file="SELECT * FROM jbsvcr.fileshare WHERE iddir='$iddir'";
 	$result_file=QueryDb($sql_file);
 	
 	if (@mysql_num_rows($result_file) > 0)
@@ -122,10 +122,10 @@ if ($op == "q836bzsda53cx5429h3cs52")
 			//echo $dirpath.$row_file[filename];
 			delete($dirpath.$row_file[filename]);
 		 }
-		 $sql_del_file="DELETE FROM jbsvcr.fileshare WHERE iddir=$iddir";
+		 $sql_del_file="DELETE FROM jbsvcr.fileshare WHERE iddir='$iddir'";
 		 QueryDb($sql_del_file);
 	}
-	$sql_del_dir="DELETE FROM jbsvcr.dirshare WHERE replid=$iddir";
+	$sql_del_dir="DELETE FROM jbsvcr.dirshare WHERE replid='$iddir'";
 	QueryDb($sql_del_dir);
 	$dirpath=str_replace("/",GetOSSlash(),$dirfullpath);
 	$dirpath=str_replace("root\\",$UPLOAD_DIR."fileshare".GetOSSlash(),$dirpath);//GetOSSlash()
@@ -146,7 +146,7 @@ if ($op=="cx5429zsda53h3cs52q836b"){ ///Kalo NOT EOF
 		global $idroot;
 		$idroot = $iddir;
 	OpenDb();
-	$sql0="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE replid=$iddir";
+	$sql0="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE replid='$iddir'";
 	$result0=QueryDb($sql0);
 	$row0 = @mysql_fetch_array($result0);
 	$dir = str_replace($WEB_UPLOAD_DIR,$UPLOAD_DIR,$row0[dirfullpath]);
@@ -157,20 +157,20 @@ if ($op=="cx5429zsda53h3cs52q836b"){ ///Kalo NOT EOF
 	//echo "2".$dirnya;
 	//exit;
 	deldir($dirnya);
-	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot=$iddir";
+	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot='$iddir'";
 	$result=QueryDb($sql);
 	while ($row = @mysql_fetch_array($result)){
-		$sql1="DELETE FROM jbsvcr.dirshare WHERE replid=$row[replid]";
+		$sql1="DELETE FROM jbsvcr.dirshare WHERE replid='$row[replid]'";
 		QueryDb($sql1);
-		$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir=$row[replid]";
+		$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir='$row[replid]'";
 		QueryDb($sql2);
 		travsearch($row[replid]);
 	}
 	CloseDb();
 OpenDb();
-$sql="DELETE FROM jbsvcr.dirshare WHERE replid=$_REQUEST[iddir]";
+$sql="DELETE FROM jbsvcr.dirshare WHERE replid='$_REQUEST[iddir]'";
 QueryDb($sql);
-$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir=$_REQUEST[iddir]";
+$sql2="DELETE FROM jbsvcr.fileshare WHERE iddir='$_REQUEST[iddir]'";
 QueryDb($sql2);
 CloseDb();
 }
@@ -228,7 +228,7 @@ function get_fresh(){
 function getNSubDir($idroot) {
 	global $idvolume;
 	
-	$sql = "SELECT count(*) FROM jbsvcr.dirshare WHERE idroot=$idroot";
+	$sql = "SELECT count(*) FROM jbsvcr.dirshare WHERE idroot='$idroot'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	return $row[0];
@@ -244,7 +244,7 @@ function spacing($count) {
 function traverse($iddir, $count) {
 	global $idvolume;
 	
-	$sql = "SELECT d.replid, d.dirname, d.idguru, p.nama FROM jbsvcr.dirshare d, jbssdm.pegawai p WHERE d.idroot=$iddir AND p.nip=d.idguru ORDER BY d.dirname";
+	$sql = "SELECT d.replid, d.dirname, d.idguru, p.nama FROM jbsvcr.dirshare d, jbssdm.pegawai p WHERE d.idroot='$iddir' AND p.nip=d.idguru ORDER BY d.dirname";
 	$result = QueryDb($sql);
 	$space = spacing($count);
 	

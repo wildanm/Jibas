@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ class CDaftarKembali{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM $db_name_perpus.format WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM $db_name_perpus.format WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		$this->kriteria='all';
@@ -90,7 +90,7 @@ class CDaftarKembali{
           <tr>
             <td width="9%">Tampilkan&nbsp;berdasarkan</td>
             <td width="91%">
-            <select name="kriteria" id="kriteria" onchange="chgKrit()">
+            <select name="kriteria" id="kriteria" onchange="chgKrit()" class='cmbfrm'>
            	  <option value="all" <?=StringIsSelected('all',$this->kriteria)?> >Semua Pengembalian</option>
               <option value="tglpinjam" <?=StringIsSelected('tglpinjam',$this->kriteria)?>>Tanggal Peminjaman</option>
               <option value="tglkembali" <?=StringIsSelected('tglkembali',$this->kriteria)?>>Jadwal Pengembalian</option>

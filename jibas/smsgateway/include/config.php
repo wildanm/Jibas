@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -78,4 +78,8 @@ define(G_START_YEAR, $G_START_YEAR);
 define(G_VERSION, $G_VERSION);
 define(G_BUILDDATE, $G_BUILDDATE);
 define(G_COPYRIGHT, $G_COPYRIGHT);
+
+//Pagination
+define('showList',25);// Jumlah record yg ditampilkan per halaman
+define('pageList',15);// Jumlah daftar halaman yg maksimum ditampilkan
 ?>

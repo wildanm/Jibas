@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ if(isset($_REQUEST["tipe"]))
 
 OpenDb();
 
-$query = "SELECT s.nama, s.nis, j.jenisujian FROM nau n, siswa s, jenisujian j, ujian u WHERE n.replid = $replid AND n.nis = s.nis AND n.idjenis = j.replid AND u.idkelas = n.idkelas AND u.idsemester = n.idsemester AND u.idaturan = n.idaturan";
+$query = "SELECT s.nama, s.nis, j.jenisujian FROM nau n, siswa s, jenisujian j, ujian u WHERE n.replid = '$replid' AND n.nis = s.nis AND n.idjenis = j.replid AND u.idkelas = n.idkelas AND u.idsemester = n.idsemester AND u.idaturan = n.idaturan";
 //$query = "SELECT s.nama, s.nis, j.jenisujian, round(SUM(b.bobot*nu.nilaiujian)/SUM(b.bobot),2) as nilai FROM nau n, siswa s, jenisujian j, ujian u, nilaiujian nu, bobotnau b WHERE n.replid = $replid AND n.nis = s.nis AND n.idjenis = j.replid AND b.idujian = u.replid AND u.idkelas = n.idkelas AND u.idsemester = n.idsemester AND u.idaturan = n.idaturan AND nu.idujian = u.replid AND nu.nis = n.nis GROUP BY nu.nis";
 
 $result = QueryDb($query);
@@ -47,7 +47,7 @@ $nama = $row['nama'];
 $jenis = $row['jenisujian'];
 
 if ($tipe == "otomatis") {
-	$sql  = "SELECT round(SUM(b.bobot*nu.nilaiujian)/SUM(b.bobot),2) as nilai FROM nau n, ujian u, bobotnau b, nilaiujian nu WHERE n.replid = $replid AND b.idujian = u.replid AND u.idkelas = n.idkelas AND u.idsemester = n.idsemester AND u.idaturan = n.idaturan AND nu.idujian = u.replid AND nu.nis = '$nis' AND n.nis = '$nis'";
+	$sql  = "SELECT round(SUM(b.bobot*nu.nilaiujian)/SUM(b.bobot),2) as nilai FROM nau n, ujian u, bobotnau b, nilaiujian nu WHERE n.replid = '$replid' AND b.idujian = u.replid AND u.idkelas = n.idkelas AND u.idsemester = n.idsemester AND u.idaturan = n.idaturan AND nu.idujian = u.replid AND nu.nis = '$nis' AND n.nis = '$nis'";
 	$result1 = QueryDb($sql);
 	$row1 = @mysql_fetch_array($result1);
 	$nilai = 0;
@@ -62,7 +62,7 @@ if ($tipe == "otomatis") {
 }	
 	
 if(isset($_REQUEST["simpan"])) {
-	$query = "UPDATE jbsakad.nau SET nilaiAU = $_REQUEST[nilai] $ket WHERE replid = $replid ";
+	$query = "UPDATE jbsakad.nau SET nilaiAU = '$_REQUEST[nilai]' $ket WHERE replid = '$replid' ";
    	$result=QueryDb($query);
 	
 	if ($result) {
@@ -170,7 +170,7 @@ function focusNext(elemName, evt) {
 			</tr>
      	<?
 			
-			$sql="SELECT b.replid, b.bobot, u.tanggal FROM bobotnau b, ujian u, nau n WHERE b.idujian=u.replid AND u.idkelas=n.idkelas AND u.idsemester=n.idsemester AND u.idaturan=n.idaturan AND n.replid = $replid  ORDER by u.tanggal ASC";								
+			$sql="SELECT b.replid, b.bobot, u.tanggal FROM bobotnau b, ujian u, nau n WHERE b.idujian=u.replid AND u.idkelas=n.idkelas AND u.idsemester=n.idsemester AND u.idaturan=n.idaturan AND n.replid = '$replid'  ORDER by u.tanggal ASC";								
 			$result=QueryDb($sql);
 			$cnt = 0;
 			while ($row=@mysql_fetch_array($result)){										

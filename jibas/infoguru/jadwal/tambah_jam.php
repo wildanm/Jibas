@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -65,21 +65,21 @@ if (isset($_REQUEST['simpan'])) {
 	$jam2=$jam2simpan.":".$menit2simpan;
 	
 	OpenDb();
-	$sql = "SELECT * FROM jam WHERE jamke = $jamke AND departemen = '$departemen'";
+	$sql = "SELECT * FROM jam WHERE jamke = '$jamke' AND departemen = '$departemen'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {
 		CloseDb();
 		$ERROR_MSG = "Urutan jam ke ".$jamke." sudah digunakan!";		
 	} else {
 		if ($jamke_asli==$jamke){		
-			$sql_jam_sebelumnya="SELECT replid as replidsebelumnya, jamke as jamkesebelumnya, HOUR(jam2) As jamakhirsebelumnya, MINUTE(jam2) As menitakhirsebelumnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke<$jamke ORDER BY jamke DESC LIMIT 1";
+			$sql_jam_sebelumnya="SELECT replid as replidsebelumnya, jamke as jamkesebelumnya, HOUR(jam2) As jamakhirsebelumnya, MINUTE(jam2) As menitakhirsebelumnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke<'$jamke' ORDER BY jamke DESC LIMIT 1";
 			$result_jam_sebelumnya=QueryDb($sql_jam_sebelumnya);
 			$row_jam_sebelumnya=@mysql_fetch_array($result_jam_sebelumnya);
 			$jum_sebelumnya=((int)$row_jam_sebelumnya['jamakhirsebelumnya']*60)+(int)$row_jam_sebelumnya['menitakhirsebelumnya'];
 			if ($jum_awal<$jum_sebelumnya){			
 				$ERROR_MSG = "Jam mulai tidak boleh berpotongan dengan jam akhir urutan sebelumnya!";				
 			} else {	
-				$sql_jam_simpan="INSERT INTO jbsakad.jam SET jamke=$jamke,jam1='$jam1',jam2='$jam2',departemen='$departemen'";
+				$sql_jam_simpan="INSERT INTO jbsakad.jam SET jamke='$jamke',jam1='$jam1',jam2='$jam2',departemen='$departemen'";
 				$result_jam_simpan=QueryDb($sql_jam_simpan);
 				if ($result_jam_simpan){
 				?>
@@ -94,12 +94,12 @@ if (isset($_REQUEST['simpan'])) {
 		} else {
 		
 			//kalo jamkenya brubah
-			$sql_jam_sebelumnya="SELECT replid as replidsebelumnya, jamke as jamkesebelumnya, HOUR(jam2) As jamakhirsebelumnya, MINUTE(jam2) As menitakhirsebelumnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke<$jamke ORDER BY jamke DESC LIMIT 1";
+			$sql_jam_sebelumnya="SELECT replid as replidsebelumnya, jamke as jamkesebelumnya, HOUR(jam2) As jamakhirsebelumnya, MINUTE(jam2) As menitakhirsebelumnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke<'$jamke' ORDER BY jamke DESC LIMIT 1";
 			$result_jam_sebelumnya=QueryDb($sql_jam_sebelumnya);				
 			$row_jam_sebelumnya=@mysql_fetch_array($result_jam_sebelumnya);
 			$jum_sebelumnya=((int)$row_jam_sebelumnya['jamakhirsebelumnya']*60)+(int)$row_jam_sebelumnya['menitakhirsebelumnya'];			
 			
-			$sql_jam_sesudahnya="SELECT replid as replidsesudahnya, jamke as jamkesesudahnya, HOUR(jam1) As jamawalsesudahnya, MINUTE(jam1) As menitawalsesudahnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke>$jamke ORDER BY jamke ASC LIMIT 1";
+			$sql_jam_sesudahnya="SELECT replid as replidsesudahnya, jamke as jamkesesudahnya, HOUR(jam1) As jamawalsesudahnya, MINUTE(jam1) As menitawalsesudahnya FROM jbsakad.jam WHERE departemen='$departemen' AND jamke>'$jamke' ORDER BY jamke ASC LIMIT 1";
 			$result_jam_sesudahnya=QueryDb($sql_jam_sesudahnya);
 			$row_jam_sesudahnya=@mysql_fetch_array($result_jam_sesudahnya);
 			$jum_sesudahnya=((int)$row_jam_sesudahnya['jamawalsesudahnya']*60)+(int)$row_jam_sesudahnya['menitawalsesudahnya'];
@@ -112,7 +112,7 @@ if (isset($_REQUEST['simpan'])) {
 				} else {
 					//proses simpan data
 					
-					$sql_jam_simpan="INSERT INTO jbsakad.jam SET jamke=$jamke,jam1='$jam1',jam2='$jam2',departemen='$departemen'";
+					$sql_jam_simpan="INSERT INTO jbsakad.jam SET jamke='$jamke',jam1='$jam1',jam2='$jam2',departemen='$departemen'";
 					$result_jam_simpan=QueryDb($sql_jam_simpan);
 					if ($result_jam_simpan){
 						?>

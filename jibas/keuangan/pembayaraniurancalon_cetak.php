@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -90,7 +90,7 @@ $departemen = $row[0];
 <tr>
 	<td><strong>Jenis Penerimaan</strong></td>
     <td><strong>:
-<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan"; 			
+<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'"; 			
 	$result = QueryDb($sql);    
 	$row = mysql_fetch_row($result);
 	echo  $row[0]; ?>
@@ -101,7 +101,7 @@ $departemen = $row[0];
 <?
 $sql = "SELECT c.nopendaftaran, c.nama, c.telponsiswa as telpon, c.hpsiswa as hp, k.kelompok, c.alamatsiswa as alamattinggal, p.proses
          FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p 
-		   WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = $replid";
+		   WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = '$replid'";
 
 
 $result = QueryDb($sql);
@@ -120,7 +120,7 @@ if (mysql_num_rows($result) == 0) {
 
 }
 
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -183,8 +183,8 @@ $namapenerimaan = $row[0];
 <?  
 $sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas 
           FROM penerimaaniurancalon p, jurnal j 
-			WHERE j.replid = p.idjurnal AND j.idtahunbuku = $idtahunbuku AND p.idpenerimaan = $idpenerimaan 
-			  AND p.idcalon = $replid 
+			WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = '$idpenerimaan' 
+			  AND p.idcalon = '$replid' 
 	   ORDER BY p.tanggal, p.replid";
 
 $result = QueryDb($sql);    

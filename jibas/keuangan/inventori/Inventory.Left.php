@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,7 +29,7 @@ $op="";
 if (isset($_REQUEST[op]))
 	$op = $_REQUEST[op];
 if ($op=="EraseGroup"){
-	$sql = "DELETE FROM jbsfina.groupbarang WHERE replid=$_REQUEST[idgroup]";
+	$sql = "DELETE FROM jbsfina.groupbarang WHERE replid='$_REQUEST[idgroup]'";
 	$result = mysql_query($sql);
 	$MYSQL_ERRNO = mysql_errno();
 	if ($MYSQL_ERRNO>0){
@@ -44,7 +44,7 @@ if ($op=="EraseGroup"){
 }
 
 if ($op=="EraseKelompok"){
-	$sql = "DELETE FROM jbsfina.kelompokbarang WHERE replid=$_REQUEST[idkelompok]";
+	$sql = "DELETE FROM jbsfina.kelompokbarang WHERE replid='$_REQUEST[idkelompok]'";
 	$result = mysql_query($sql);
 	$MYSQL_ERRNO = mysql_errno();
 	if ($MYSQL_ERRNO>0){
@@ -61,7 +61,7 @@ if ($op=="EraseKelompok"){
 function getNSubDir($idroot) {
 	global $idvolume;
 	
-	$sql = "SELECT count(*) FROM jbsfina.kelompokbarang WHERE idgroup=$idroot";
+	$sql = "SELECT count(*) FROM jbsfina.kelompokbarang WHERE idgroup='$idroot'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	return $row[0];
@@ -147,9 +147,9 @@ $class="liOpen";
 if (getNSubDir($row[0])==0)
 	$class="liClose";
 ?>
-<li class="liOpen" style="cursor:default">&nbsp;<img src='../images/ico/folder.gif' border='0'>&nbsp;<strong><?=$row[1]?></strong>&nbsp;<a href="javascript:AddKelompok('<?=$row[0]?>')"><img src="../images/ico/tambah.png" border='0' title="Tambah Kelompok"></a><a href="javascript:EditGroup('<?=$row[0]?>')"><img src="../images/ico/ubah.png" border='0' title="Ubah Group"></a><a href="javascript:EraseGroup('<?=$row[0]?>')"><img src="../images/ico/hapus.png" border='0' title="Hapus Group"></a>
+<li class="liOpen" style="cursor:default">&nbsp;<img src='../images/ico/folder.gif' border='0'>&nbsp;<strong><?=stripslashes($row[1])?></strong>&nbsp;<a href="javascript:AddKelompok('<?=$row[0]?>')"><img src="../images/ico/tambah.png" border='0' title="Tambah Kelompok"></a><a href="javascript:EditGroup('<?=$row[0]?>')"><img src="../images/ico/ubah.png" border='0' title="Ubah Group"></a><a href="javascript:EraseGroup('<?=$row[0]?>')"><img src="../images/ico/hapus.png" border='0' title="Hapus Group"></a>
 <?
-$sql2 = "SELECT replid,kelompok FROM jbsfina.kelompokbarang WHERE idgroup=$row[0]"; 
+$sql2 = "SELECT replid,kelompok FROM jbsfina.kelompokbarang WHERE idgroup='$row[0]'"; 
 $result2 = QueryDb($sql2);
 $num2 = @mysql_num_rows($result2);
 if ($num2>0){
@@ -158,7 +158,7 @@ while ($row2 = @mysql_fetch_row($result2)){
 ?>
 <li class="liOpen" id="liOpen<?=$row2[0]?>" onMouseOver="Hover('liOpen<?=$row2[0]?>','1')" onMouseOut="Hover('liOpen<?=$row2[0]?>','0')" onClick="SelectKelompok('<?=$row2[0]?>')">
 <!--<span >-->
-<span ><img src='../images/ico/page.gif' border='0'>&nbsp;<?=$row2[1]?></span>&nbsp;<img src="../images/ico/ubah.png" border='0' onClick="EditKelompok('<?=$row2[0]?>')" title="Ubah Kelompok" style="cursor:pointer"><img src="../images/ico/hapus.png" border='0' onClick="EraseKelompok('<?=$row2[0]?>')" title="Hapus Kelompok" style="cursor:pointer">
+<span ><img src='../images/ico/page.gif' border='0'>&nbsp;<?=stripslashes($row2[1])?></span>&nbsp;<img src="../images/ico/ubah.png" border='0' onClick="EditKelompok('<?=$row2[0]?>')" title="Ubah Kelompok" style="cursor:pointer"><img src="../images/ico/hapus.png" border='0' onClick="EraseKelompok('<?=$row2[0]?>')" title="Hapus Kelompok" style="cursor:pointer">
 <!--</span>-->
 </li>
 <?

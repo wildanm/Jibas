@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -61,7 +61,7 @@ if (isset($_REQUEST['urutan']))
 
 	
 OpenDb();
-$sql="SELECT t.tingkat, t.departemen, p.nama, s.semester FROM tingkat t, pelajaran p, semester s WHERE t.replid = $tingkat AND s.replid = $semester AND p.replid = $pelajaran";
+$sql="SELECT t.tingkat, t.departemen, p.nama, s.semester FROM tingkat t, pelajaran p, semester s WHERE t.replid = '$tingkat' AND s.replid = '$semester' AND p.replid = '$pelajaran'";
 
 $result=QueryDb($sql);
 $row=@mysql_fetch_array($result);
@@ -73,7 +73,7 @@ $namapelajaran = $row['nama'];
 $op = $_REQUEST['op'];
 if ($op == "dw8dxn8w9ms8zs22") {
 	//OpenDb();
-	$sql_upd = "UPDATE jbsakad.rpp SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql_upd = "UPDATE jbsakad.rpp SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	$result_upd = QueryDb($sql_upd);
 	if ($result_upd) { 
 		//CloseDb();
@@ -85,7 +85,7 @@ if ($op == "dw8dxn8w9ms8zs22") {
 	//CloseDb();			
 } else if ($op == "xm8r389xemx23xb2378e23") {
 	//OpenDb();
-	$sql_del = "DELETE FROM jbsakad.rpp WHERE replid = $_REQUEST[replid]";
+	$sql_del = "DELETE FROM jbsakad.rpp WHERE replid = '$_REQUEST[replid]'";
 	$result_del = QueryDb($sql_del);
 	if ($result_del) { 
 		//CloseDb();
@@ -291,14 +291,14 @@ function ByeWin() {
         <td><input type="text" readonly value="<?=$namapelajaran?>" class="disabled"  size="27"/></td>
     <? 	
 		OpenDb();
-		$sql_tot = "SELECT replid, koderpp, rpp, deskripsi, aktif FROM rpp WHERE idtingkat=$tingkat AND idsemester=$semester AND idpelajaran=$pelajaran";
+		$sql_tot = "SELECT replid, koderpp, rpp, deskripsi, aktif FROM rpp WHERE idtingkat='$tingkat' AND idsemester='$semester' AND idpelajaran='$pelajaran'";
 		
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 		$jumlah = mysql_num_rows($result_tot);
 		$akhir = ceil($jumlah/5)*5;
 
-		$sql = "SELECT replid, koderpp, rpp, deskripsi, aktif FROM rpp WHERE idtingkat=$tingkat AND idsemester=$semester AND idpelajaran=$pelajaran ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+		$sql = "SELECT replid, koderpp, rpp, deskripsi, aktif FROM rpp WHERE idtingkat='$tingkat' AND idsemester='$semester' AND idpelajaran='$pelajaran' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		$result = QueryDb($sql);	
 		if (@mysql_num_rows($result) > 0){ 
 	?>	

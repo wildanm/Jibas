@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -65,7 +65,7 @@ if ($jenis <> ""){
 			$string = "WHERE s.nis LIKE '%$nis%' AND s.nama LIKE '%$nama%'";
 	} else {
 		if ($jenis == "combo") 			
-			$string = "WHERE s.idkelas = $idkelas";
+			$string = "WHERE s.idkelas = '$idkelas'";
 	}
 }
 
@@ -75,11 +75,11 @@ $idkelastujuan = $_REQUEST['idkelastujuan'];
 
 if ($op == "x2378e23dkofh73n25ki9234") {
 	OpenDb();
-	$sql_cek_jumlah="SELECT COUNT(s.nis) FROM jbsakad.siswa s WHERE s.idkelas=$idkelastujuan AND aktif = 1";	
+	$sql_cek_jumlah="SELECT COUNT(s.nis) FROM jbsakad.siswa s WHERE s.idkelas='$idkelastujuan' AND aktif = 1";	
 	$result_cek_jumlah=QueryDb($sql_cek_jumlah);
 	$row_cek_jumlah=@mysql_fetch_row($result_cek_jumlah);
 	
-	$sql_cek_kapasitas="SELECT kapasitas FROM jbsakad.kelas WHERE replid=$idkelastujuan";
+	$sql_cek_kapasitas="SELECT kapasitas FROM jbsakad.kelas WHERE replid='$idkelastujuan'";
 	$result_cek_kapasitas=QueryDb($sql_cek_kapasitas);
 	$row_cek_kapasitas=@mysql_fetch_row($result_cek_kapasitas);
 		
@@ -99,7 +99,7 @@ if ($op == "x2378e23dkofh73n25ki9234") {
 		OpenDb();
 		BeginTrans();
 		$success=0;
-		$sql="UPDATE jbsakad.siswa SET idkelas=$idkelastujuan WHERE nis='$_REQUEST[id]'";
+		$sql="UPDATE jbsakad.siswa SET idkelas='$idkelastujuan' WHERE nis='$_REQUEST[id]'";
 		QueryDbTrans($sql,$success);
 		if ($success){
 			$sql="UPDATE jbsakad.riwayatkelassiswa SET aktif=0 WHERE nis='$_REQUEST[id]'";	
@@ -107,7 +107,7 @@ if ($op == "x2378e23dkofh73n25ki9234") {
 		}
 		
 		if ($success){
-			$sql="INSERT INTO jbsakad.riwayatkelassiswa SET nis='$_REQUEST[id]', idkelas=$idkelastujuan, mulai='$tgl', aktif=1, status=3";	
+			$sql="INSERT INTO jbsakad.riwayatkelassiswa SET nis='$_REQUEST[id]', idkelas='$idkelastujuan', mulai='$tgl', aktif=1, status=3";	
 			QueryDbTrans($sql,$success);
 		}
 		
@@ -253,14 +253,14 @@ function change_baris() {
 
 <? 	if ($jenis <> ""){ 
 		OpenDb();
-		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = $idtingkat AND s.idkelas = k.replid AND k.idtahunajaran = $idtahunajaran AND s.aktif=1 ORDER BY $urut $urutan";  
+		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = '$idtingkat' AND s.idkelas = k.replid AND k.idtahunajaran = '$idtahunajaran' AND s.aktif=1 ORDER BY $urut $urutan";  
 		
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 		$jumlah = mysql_num_rows($result_tot);
 		$akhir = ceil($jumlah/5)*5;	
 		
-		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = $idtingkat AND s.idkelas = k.replid AND k.idtahunajaran = $idtahunajaran AND s.aktif=1 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = '$idtingkat' AND s.idkelas = k.replid AND k.idtahunajaran = '$idtahunajaran' AND s.aktif=1 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		//echo $sql_siswa;
 		$result_siswa = QueryDb($sql_siswa);
 		

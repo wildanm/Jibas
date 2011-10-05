@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,19 +25,19 @@ class CRakEdit{
 	var $rak, $replid, $keterangan;
 	function OnStart(){
 		if (isset($_REQUEST[simpan])){
-			$sql = "SELECT rak FROM rak WHERE rak='$_REQUEST[rak]' AND replid <> $_REQUEST[replid]";
+			$sql = "SELECT rak FROM rak WHERE rak='".CQ($_REQUEST['rak'])."' AND replid <> '$_REQUEST[replid]'";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "UPDATE rak SET rak='$_REQUEST[rak]', keterangan='$_REQUEST[keterangan]' WHERE replid=$_REQUEST[replid]";
+				$sql = "UPDATE rak SET rak='".CQ($_REQUEST['rak'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$_REQUEST[replid]'";
 				$result = QueryDb($sql);
 				if ($result)
 					$this->success();
 			}
 		} else {
-			$sql = "SELECT * FROM rak WHERE replid=$_REQUEST[id]";
+			$sql = "SELECT * FROM rak WHERE replid='$_REQUEST[id]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->replid = $_REQUEST[id];

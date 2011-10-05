@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -58,22 +58,50 @@ if ($username == "landlord")
 } 
 else 
 {
-	$sql = "SELECT p.aktif FROM $db_name_user.login l, $db_name_sdm.pegawai p WHERE l.login=p.nip AND l.login='$username' ";
+	$sql = "SELECT l.password,h.tingkat FROM $db_name_user.login l,$db_name_user.hakakses h WHERE l.login=h.login AND l.login='$username' AND h.modul='SMSG'";
+	
+	//$sql = "SELECT p.aktif FROM $db_name_user.login l, $db_name_sdm.pegawai p WHERE l.login=p.nip AND l.login='$username' ";
 	$result = QueryDb($sql);
-	$row = mysql_fetch_array($result);
+	
 	$jum = mysql_num_rows($result);
-	if ($jum > 0) 
-	{
-		if ($row['aktif'] == 0) 
-		{
+	if ($jum < 1){
+		?>
+		<script language="JavaScript">
+			alert("Username tidak terdaftar!");
+			document.location.href = "../smsgateway";
+		</script>
+		<? 
+		$user_exists = false;
+	} else {
+		$row = mysql_fetch_row($result);
+		$level = $row[1];
+		if ($row[0]!=md5($password)){
 			?>
 			<script language="JavaScript">
-				alert("Status pengguna sedang tidak aktif!");
+				alert("Password Anda salah!");
 				document.location.href = "../smsgateway";
 			</script>
-			<?
-		} 
-		$user_exists = false;
+			<? 
+			$user_exists = false;
+		} else {
+			$sql = "SELECT p.aktif,p.nama FROM $db_name_user.login l, $db_name_sdm.pegawai p WHERE l.login=p.nip AND l.login='$username' ";
+			$result = QueryDb($sql);
+			$row = mysql_fetch_row($result);
+			if ($row[0]=='0'){
+				?>
+				<script language="JavaScript">
+					alert("Pengguna sedang tidak aktif!");
+					document.location.href = "../smsgateway";
+				</script>
+				<? 
+				$user_exists = false;
+			} else {
+				$_SESSION['login'] = "$username";
+				$_SESSION['tingkat'] = $level;
+				$_SESSION['nama'] = "$row[1]";
+				$user_exists = true;
+			}
+		}
 	}		
 }
 
@@ -89,9 +117,10 @@ if(!$user_exists)
 else
 {
 	if ($username=="landlord")
-	{
-    	$query = "UPDATE $db_name_user.landlord SET lastlogin='".date("Y-m-d H:I:s")."' WHERE password='".md5($password)."'";
-    } 
+		$query = "UPDATE $db_name_user.landlord SET lastlogin=now() WHERE password='".md5($password)."'";
+    else
+		$query = "UPDATE $db_name_user.hakakses SET lastlogin=now() WHERE login='$username' AND modul='SMSG'";
+		
 	$result = queryDb($query);
 	
 	if (isset($_SESSION['login']) && isset($_SESSION['tingkat']))

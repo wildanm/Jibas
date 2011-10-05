@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,10 +37,21 @@ if (isset($_REQUEST['Simpan'])) {
 		$sql1="SELECT * FROM jbsumum.identitas WHERE departemen='$departemen'";
 		$result1=QueryDb($sql1);
 		$row1 = mysql_fetch_array($result1);
+		$nama = CQ($_REQUEST['nama']);
+		$situs = CQ($_REQUEST['situs']);
+		$email = CQ($_REQUEST['email']);
+		$alamat1 = CQ($_REQUEST['alamat1']);
+		$alamat2 = CQ($_REQUEST['alamat2']);
+		$tlp1 = CQ($_REQUEST['tlp1']);
+		$tlp2 = CQ($_REQUEST['tlp2']);
+		$tlp3 = CQ($_REQUEST['tlp3']);
+		$tlp4 = CQ($_REQUEST['tlp4']);
+		$fax1 = CQ($_REQUEST['fax1']);
+		$fax2 = CQ($_REQUEST['fax2']);
 		if (mysql_num_rows($result1) > 0) {
-			$sql = "UPDATE jbsumum.identitas SET nama='$_REQUEST[nama]', situs='$_REQUEST[situs]', email='$_REQUEST[email]', alamat1='$_REQUEST[alamat1]', alamat2='$_REQUEST[alamat2]', telp1='$_REQUEST[tlp1]', telp2='$_REQUEST[tlp2]', telp3='$_REQUEST[tlp3]', telp4='$_REQUEST[tlp4]', fax1='$_REQUEST[fax1]', fax2='$_REQUEST[fax2]' WHERE departemen = '$departemen'";
+			$sql = "UPDATE jbsumum.identitas SET nama='nama', situs='$situs', email='$email', alamat1='$alamat1', alamat2='$alamat2', telp1='$tlp1', telp2='$tlp2', telp3='$tlp3', telp4='$tlp4', fax1='$fax1', fax2='$fax2' WHERE departemen = '$departemen'";
 		} else {
-			$sql = "INSERT INTO jbsumum.identitas SET nama='$_REQUEST[nama]', situs='$_REQUEST[situs]', email='$_REQUEST[email]', alamat1='$_REQUEST[alamat1]', alamat2='$_REQUEST[alamat2]', telp1='$_REQUEST[tlp1]', telp2='$_REQUEST[tlp2]', telp3='$_REQUEST[tlp3]', telp4='$_REQUEST[tlp4]', fax1='$_REQUEST[fax1]', fax2='$_REQUEST[fax2]', departemen='$departemen'";
+			$sql = "INSERT INTO jbsumum.identitas SET nama='$nama', situs='$situs', email='$email', alamat1='$alamat1', alamat2='$alamat2', telp1='$tlp1', telp2='$tlp2', telp3='$tlp3', telp4='$tlp4', fax1='$fax1', fax2='$fax2', departemen='$departemen'";
 		}
 		//echo $sql; exit;
 		$result = QueryDb($sql);

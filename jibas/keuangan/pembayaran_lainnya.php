@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -47,8 +47,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$jbayar = UnformatRupiah($jbayar);
 	$tbayar = $_REQUEST['tcicilan'];
 	$tbayar = MySqlDateFormat($tbayar);
-	$kbayar = $_REQUEST['kbayar'];
-	$sumber = $_REQUEST['sumber'];
+	$kbayar = CQ($_REQUEST['kbayar']);
+	$sumber = CQ($_REQUEST['sumber']);
 	
 	$petugas = getUserName();
 	
@@ -57,7 +57,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$rekkas = "";
 	$rekpendapatan = "";
 	$rekpiutang = "";
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid=$idpenerimaan";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid='$idpenerimaan'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) 
 	{
@@ -74,7 +74,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	}
 	
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) 
 	{
@@ -103,10 +103,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 	if ($success) $success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	QueryDbTrans($sql, $success);
 	
-	$sql = "INSERT INTO penerimaanlain SET idpenerimaan=$idpenerimaan, idjurnal=$idjurnal, sumber='$sumber', jumlah=$jbayar, tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
+	$sql = "INSERT INTO penerimaanlain SET idpenerimaan='$idpenerimaan', idjurnal='$idjurnal', sumber='$sumber', jumlah='$jbayar', tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
 	QueryDbTrans($sql, $success);
 	
 	if ($success) 
@@ -120,7 +120,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 }
 
 //Muncul pertama kali
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -305,7 +305,7 @@ function panggil(elem){
 <?      $sql = "SELECT p.replid AS id, j.nokas, p.sumber,  date_format(p.tanggal, '%d-%b-%Y') as tanggal, 
 					   p.keterangan, p.jumlah, p.petugas 
 				  FROM penerimaanlain p, jurnal j 
-				 WHERE j.replid = p.idjurnal AND p.idpenerimaan = $idpenerimaan ORDER BY p.tanggal, p.replid";
+				 WHERE j.replid = p.idjurnal AND p.idpenerimaan = '$idpenerimaan' ORDER BY p.tanggal, p.replid";
         $result = QueryDb($sql);
         if (mysql_num_rows($result) > 0) 
 		{ ?>            

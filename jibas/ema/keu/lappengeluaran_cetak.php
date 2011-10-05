@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,7 +39,7 @@ if (isset($_REQUEST['idtahunbuku']))
 	$idtahunbuku = $_REQUEST['idtahunbuku'];
 
 OpenDb();
-$sql = "SELECT nama FROM $db_name_fina.datapengeluaran WHERE replid = $idpengeluaran";
+$sql = "SELECT nama FROM $db_name_fina.datapengeluaran WHERE replid = '$idpengeluaran'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $nama = $row[0];
@@ -98,7 +98,7 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
         <td class="header" width="7%">Petugas</td>
         </tr>
 <?
-	$sql = "SELECT p.replid AS id, p.keperluan, p.keterangan, p.jenispemohon, p.nip, p.nis, p.pemohonlain, p.penerima, date_format(p.tanggal, '%d-%b-%Y') as tanggal, date_format(p.tanggalkeluar, '%d-%b-%Y') as tanggalkeluar, p.petugas, p.jumlah FROM $db_name_fina.pengeluaran p, $db_name_fina.datapengeluaran d WHERE p.idpengeluaran = d.replid AND d.replid = $idpengeluaran AND d.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY p.tanggal";
+	$sql = "SELECT p.replid AS id, p.keperluan, p.keterangan, p.jenispemohon, p.nip, p.nis, p.pemohonlain, p.penerima, date_format(p.tanggal, '%d-%b-%Y') as tanggal, date_format(p.tanggalkeluar, '%d-%b-%Y') as tanggalkeluar, p.petugas, p.jumlah FROM $db_name_fina.pengeluaran p, $db_name_fina.datapengeluaran d WHERE p.idpengeluaran = d.replid AND d.replid = '$idpengeluaran' AND d.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY p.tanggal";
 	//echo $sql;
 	OpenDb();
 	$result = QueryDb($sql);
@@ -116,7 +116,7 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
 			$jenisinfo = "siswa";
 		} else {
 			$idpemohon = "";
-			$sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = " . $row[pemohonlain];
+			$sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = '$row[pemohonlain]'" ;
 			$jenisinfo = "pemohon lain";
 		}
 		$result2 = QueryDb($sql);

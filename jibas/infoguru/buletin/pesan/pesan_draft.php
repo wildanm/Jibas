@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 	while ($x<=$numdel){
 		if ($msg[$x]!=""){
 		OpenDb();
-			$sql="SELECT idpesan,direktori, namafile FROM jbsvcr.lampirandraft WHERE idpesan=".$msg[$x];
+			$sql="SELECT idpesan,direktori, namafile FROM jbsvcr.lampirandraft WHERE idpesan='$msg[$x]'";
 		//	echo $sql;
 			$result=QueryDb($sql);
 			$cntdel=0;
@@ -302,7 +302,7 @@ function delpesan(){
   } 
   } else {?>
    <tr>
-    <td scope="row" colspan="8"><div align="center">Tidak ada pesan guru yang tersimpan di kotak Draft Anda</div></th>   </tr>
+    <td scope="row" colspan="8"><div align="center" class="divNotif">Tidak ada pesan yang tersimpan di kotak Draft Anda</div></td>   </tr>
   <? } ?>
 </table>		
 	</td>

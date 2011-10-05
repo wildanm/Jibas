@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,13 +33,13 @@ if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
 
 OpenDb();
-$sql1 = "SELECT m.nis,m.jenismutasi,m.tglmutasi,m.keterangan FROM mutasisiswa m WHERE m.replid = $replid";
+$sql1 = "SELECT m.nis,m.jenismutasi,m.tglmutasi,m.keterangan FROM mutasisiswa m WHERE m.replid = '$replid'";
 $result1 = QueryDb($sql1);
 $row1 = mysql_fetch_array($result1);
 $nis = $row1['nis'];
 $mutasi = $row1['jenismutasi'];
 $tanggal = TglText($row1['tglmutasi']);
-$keterangan = $row1['keterangan'];
+$keterangan = CQ($row1['keterangan']);
 
 if (isset($_REQUEST['tanggal']))
 	$tanggal=$_REQUEST['tanggal'];
@@ -48,7 +48,7 @@ if (isset($_REQUEST['mutasi']))
 	$mutasi=$_REQUEST['mutasi'];
 
 if (isset($_REQUEST['keterangan']))
-	$keterangan=$_REQUEST['keterangan'];	
+	$keterangan=CQ($_REQUEST['keterangan']);	
 	
 $sql = "SELECT s.nama,a.angkatan,t.tingkat,k.kelas,t.departemen,k.idtingkat,s.idkelas FROM siswa s, angkatan a, tingkat t, kelas k WHERE s.nis = '$nis' AND t.replid = k.idtingkat AND k.replid = s.idkelas AND s.idangkatan = a.replid";
 
@@ -66,7 +66,7 @@ if (isset($_REQUEST['Simpan'])) {
 	$tglmutasi=TglDb($tanggal);
 	
 	OpenDb();
-	$sql = "UPDATE jbsakad.mutasisiswa SET jenismutasi=$mutasi, tglmutasi='$tglmutasi', keterangan='$keterangan', departemen='$departemen' WHERE replid = $replid";
+	$sql = "UPDATE jbsakad.mutasisiswa SET jenismutasi='$mutasi', tglmutasi='$tglmutasi', keterangan='$keterangan', departemen='$departemen' WHERE replid = '$replid'";
 	$result = QueryDb($sql);
 	if ($result) { ?>
 	<script type="text/javascript" language="javascript">

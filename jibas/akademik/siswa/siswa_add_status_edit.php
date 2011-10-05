@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,10 +32,10 @@ require_once('../cek.php');
 $cek = 0;
 if (isset($_POST['simpan'])) {
 	OpenDb();
-	$sql_cek = "SELECT * FROM jbsakad.statussiswa where status='$_REQUEST[status]' AND replid <> $_REQUEST[orig_status]";
+	$sql_cek = "SELECT * FROM jbsakad.statussiswa where status='$_REQUEST[status]' AND replid <> '$_REQUEST[orig_status]'";
 	$hasil=QueryDb($sql_cek);
 	
-	$sql1 = "SELECT * FROM jbsakad.statussiswa WHERE urutan = '$_REQUEST[urutan]' AND replid <> $_REQUEST[orig_status]";
+	$sql1 = "SELECT * FROM jbsakad.statussiswa WHERE urutan = '$_REQUEST[urutan]' AND replid <> '$_REQUEST[orig_status]'";
 	$result1 = QueryDb($sql1);
 	
 	if (mysql_num_rows($hasil) > 0){
@@ -46,7 +46,7 @@ if (isset($_POST['simpan'])) {
 		$ERROR_MSG = "Urutan $_REQUEST[urutan] sudah digunakan!";
 		$cek = 1;		
 	} else {
-		$sql = "UPDATE jbsakad.statussiswa SET status='$_POST[status]',urutan='$_POST[urutan]' WHERE replid = '$_REQUEST[orig_status]'";
+		$sql = "UPDATE jbsakad.statussiswa SET status='".CQ($_POST['status'])."',urutan='$_POST[urutan]' WHERE replid = '$_REQUEST[orig_status]'";
 		$result = QueryDb($sql);
 	
 		if ($result) { ?>

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -143,7 +143,7 @@ function change_urutan(urutan) {
 		$nis=$row_siswa['nis'];
 		$nama=$row_siswa['nama'];
 		$idkelas=$row_siswa[idkelas];
-				$sql_gabung = "SELECT t.replid,t.departemen,k.replid,k.kelas,k.idtingkat from jbsakad.tingkat t,jbsakad.kelas k WHERE k.replid=$idkelas AND t.replid=k.idtingkat AND t.departemen = '$departemen'"; 
+				$sql_gabung = "SELECT t.replid,t.departemen,k.replid,k.kelas,k.idtingkat from jbsakad.tingkat t,jbsakad.kelas k WHERE k.replid='$idkelas' AND t.replid=k.idtingkat AND t.departemen = '$departemen'"; 
 				$result_gabung = QueryDb($sql_gabung);
 				if ($row_gabung = @mysql_fetch_row($result_gabung)) {
 				$kelas=$row_gabung[3];

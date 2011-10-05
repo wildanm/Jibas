@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -97,14 +97,14 @@ $row = mysql_fetch_row($result);
 $last_date = $row[0];
 
 $sql = "SELECT SUM(jd.kredit - jd.debet) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-		WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+		WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 			  j.tanggal BETWEEN '$tanggal1' AND '$last_date' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $totalpendapatan = (float)$row[0];
 
 $sql = "SELECT SUM(jd.debet - jd.kredit) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 		      j.tanggal BETWEEN '$tanggal1' AND '$last_date' AND ra.kategori = 'BIAYA'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
@@ -113,28 +113,28 @@ $totalbiaya = (float)$row[0];
 $modalawal = $totalpendapatan - $totalbiaya;
 
 $sql = "SELECT SUM(jd.kredit - jd.debet) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 		      j.tanggal BETWEEN '$first_date' AND '$tanggal2' AND ra.kategori = 'MODAL' AND jd.kredit > 0";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $jinvestasi = (float)$row[0];
 
 $sql = "SELECT SUM(jd.debet - jd.kredit) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+	    WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 		      j.tanggal BETWEEN '$first_date' AND '$tanggal2' AND ra.kategori = 'MODAL' AND jd.debet > 0";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $jpengambilan = (float)$row[0];
 
 $sql = "SELECT SUM(jd.kredit - jd.debet) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-        WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+        WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 		      j.tanggal BETWEEN '$first_date' AND '$tanggal2' AND ra.kategori = 'PENDAPATAN'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $jpendapatan = (float)$row[0];
 
 $sql = "SELECT SUM(jd.debet - jd.kredit) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd 
-        WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND 
+        WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND 
 		      j.tanggal BETWEEN '$first_date' AND '$tanggal2' AND ra.kategori = 'BIAYA'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);

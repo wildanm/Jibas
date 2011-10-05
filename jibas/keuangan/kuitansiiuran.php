@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,9 +32,9 @@ require_once('include/db_functions.php');
 require_once('include/getheader.php');
 $id = $_REQUEST['id'];
 if ($_REQUEST['status'] == 'calon') {
-	$sql = "SELECT p.replid AS id, c.nopendaftaran, c.nama, j.nokas, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas, j.idtahunbuku FROM penerimaaniurancalon p, jurnal j, jbsakad.calonsiswa c WHERE j.replid = p.idjurnal AND p.idcalon = c.replid AND p.replid = $id";
+	$sql = "SELECT p.replid AS id, c.nopendaftaran, c.nama, j.nokas, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas, j.idtahunbuku FROM penerimaaniurancalon p, jurnal j, jbsakad.calonsiswa c WHERE j.replid = p.idjurnal AND p.idcalon = c.replid AND p.replid = '$id'";
 } else {
-	$sql = "SELECT p.replid AS id, p.nis, s.nama, j.nokas, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas, j.idtahunbuku FROM penerimaaniuran p, jurnal j, jbsakad.siswa s WHERE j.replid = p.idjurnal AND p.nis = s.nis AND p.replid = $id";
+	$sql = "SELECT p.replid AS id, p.nis, s.nama, j.nokas, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas, j.idtahunbuku FROM penerimaaniuran p, jurnal j, jbsakad.siswa s WHERE j.replid = p.idjurnal AND p.nis = s.nis AND p.replid = '$id'";
 }
 OpenDb();
 $result = QueryDb($sql);
@@ -53,7 +53,7 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $tglcetak = $row[0];
 
-$sql = "SELECT departemen FROM tahunbuku WHERE replid=$idtahunbuku";
+$sql = "SELECT departemen FROM tahunbuku WHERE replid='$idtahunbuku'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 $departemen=$row[departemen];

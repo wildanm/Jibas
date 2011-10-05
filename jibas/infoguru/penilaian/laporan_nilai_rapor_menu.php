@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -136,7 +136,7 @@ function cetak_rapor_kelas()
 <input type="hidden" name="tahunajaran" id="tahunajaran" value="<?=$tahunajaran ?>" />
 <input type="hidden" name="kelas" id="kelas" value="<?=$kelas ?>" />
 <? 
-	$sql = "SELECT s.nis, s.nama FROM siswa s WHERE s.idkelas = $kelas AND s.aktif=1 AND s.alumni=0 ORDER BY s.nama ASC";
+	$sql = "SELECT s.nis, s.nama FROM siswa s WHERE s.idkelas = '$kelas' AND s.aktif=1 AND s.alumni=0 ORDER BY s.nama ASC";
 	$result = QueryDb($sql);		
 	$cnt = 1;
 	$jum = @mysql_num_rows($result);

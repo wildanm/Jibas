@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -77,10 +77,10 @@ if ($op == "xm8r389xemx23xb2378e23") {
 	BeginTrans();
 	$success=0;
 	
-	$sql = "DELETE FROM siswa WHERE replid = $_REQUEST[replid]";
+	$sql = "DELETE FROM siswa WHERE replid = '$_REQUEST[replid]'";
 	QueryDbTrans($sql,$success);	
 	
-	$sql_calon="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = $_REQUEST[replid]";
+	$sql_calon="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = '$_REQUEST[replid]'";
 	if ($success)
 		QueryDbTrans($sql_calon,$success);
 	
@@ -270,9 +270,9 @@ function refresh_daftar() {
 <? 	
 	
 	OpenDb();
-	$sql = "SELECT replid,nopendaftaran,nama,replidsiswa,nisn FROM calonsiswa WHERE idproses =$proses";  
+	$sql = "SELECT replid,nopendaftaran,nama,replidsiswa,nisn FROM calonsiswa WHERE idproses ='$proses'";  
 	if ($cari == "tampil") {
-		$sql = $sql." AND idkelompok = $kelompok"; 
+		$sql = $sql." AND idkelompok = '$kelompok'"; 
 	}
 	if ($cari == "cari") {
 		if ($nama <> "") 
@@ -353,7 +353,7 @@ function refresh_daftar() {
 		while ($row = @mysql_fetch_array($result)) {
 			if ($row['replidsiswa'] <> NULL) {
 				OpenDb();	
-				$sql1 = "SELECT s.nis, k.kelas FROM siswa s, kelas k WHERE s.replid =$row[replidsiswa] AND s.idkelas = k.replid";  				
+				$sql1 = "SELECT s.nis, k.kelas FROM siswa s, kelas k WHERE s.replid ='$row[replidsiswa]' AND s.idkelas = k.replid";  				
 				$result1 = QueryDb($sql1);
 				CloseDb();
 				$row1 = @mysql_fetch_array($result1);

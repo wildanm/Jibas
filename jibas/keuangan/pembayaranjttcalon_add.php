@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -44,7 +44,7 @@ $row = FetchSingleRow($sql);
 $nama = $row[0];
 $no = $row[1];
 
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $namapenerimaan = FetchSingle($sql);
 
 $tanggal = date('d-m-Y');
@@ -62,10 +62,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$tcicilan = MySqlDateFormat($tcicilan);
 	$jcicilan = $_REQUEST['jcicilan'];
 	$jcicilan = UnformatRupiah($jcicilan);
-	$kcicilan = $_REQUEST['kcicilan'];
+	$kcicilan = CQ($_REQUEST['kcicilan']);
 		
 	//// Ambil nama penerimaan
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = $idpenerimaan";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 	$row = FetchSingleRow($sql);
 	$namapenerimaan = $row[0];
 	$rekkas = $row[1];
@@ -73,7 +73,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$rekpiutang = $row[3];
 	
 	//// Ambil nama calon siswa
-	$sql = "SELECT nama, nopendaftaran FROM jbsakad.calonsiswa WHERE replid=$replid";
+	$sql = "SELECT nama, nopendaftaran FROM jbsakad.calonsiswa WHERE replid='$replid'";
 	$row = FetchSingleRow($sql);
 	$namasiswa = $row[0];
 	$no = $row[1];
@@ -86,7 +86,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	
 	$sql = "SELECT b.replid AS id, b.besar, b.keterangan, b.lunas 
 			    FROM besarjttcalon b
-			   WHERE b.idcalon = $replid AND b.idpenerimaan = $idpenerimaan AND b.info2 = '$idtahunbuku'";
+			   WHERE b.idcalon = '$replid' AND b.idpenerimaan = '$idpenerimaan' AND b.info2 = '$idtahunbuku'";
 	$res = QueryDb($sql);
 	$row = mysql_fetch_row($res);
 	$idbesarjtt = $row[0];
@@ -95,7 +95,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	//// Cari tahu jumlah pembayaran cicilan yang sudah terjadi
 	$jml = 0;
 	$cicilan = 1;
-	$sql = "SELECT jumlah FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+	$sql = "SELECT jumlah FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 	$result = QueryDb($sql);
 	while ($row = mysql_fetch_row($result)) 
 	{
@@ -121,7 +121,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	}
 		
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM jbsfina.tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM jbsfina.tahunbuku WHERE replid = '$idtahunbuku'";
 	$row = FetchSingleRow($sql);
 	$awalan = $row[0];
 	$cacah = $row[1];
@@ -144,12 +144,12 @@ if (1 == (int)$_REQUEST['issubmit'])
 		$success = SimpanDetailJurnal($idjurnal, "K", $rekpiutang, $jcicilan);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
 	
 	//simpan data cicilan di penerimaanjtt
-	$sql = "INSERT INTO penerimaanjttcalon SET idbesarjttcalon=$idbesarjtt, idjurnal=$idjurnal, tanggal='$tcicilan', 
+	$sql = "INSERT INTO penerimaanjttcalon SET idbesarjttcalon='$idbesarjtt', idjurnal='$idjurnal', tanggal='$tcicilan', 
 	        jumlah='$jcicilan', keterangan='$kcicilan', petugas='$petugas'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
@@ -162,7 +162,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 			$sql = "SET @DISABLE_TRIGGERS = 1;";
 			QueryDb($sql);
 				
-			$sql = "UPDATE besarjttcalon SET lunas=1 WHERE replid=$idbesarjtt";
+			$sql = "UPDATE besarjttcalon SET lunas=1 WHERE replid='$idbesarjtt'";
 			QueryDbTrans($sql, $success);
 			
 			$sql = "SET @DISABLE_TRIGGERS = NULL;";

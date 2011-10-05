@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -46,9 +46,9 @@ if (isset($_REQUEST['simpan'])) {
 		if ($besar == "") $besar = 0;
 		$besar = UnformatRupiah($besar);
 		
-		$sql = "INSERT INTO datapengeluaran SET departemen='$_REQUEST[departemen]', nama='$_REQUEST[nama]', besar=$besar, rekkredit='$_REQUEST[norekkredit]', rekdebet='$_REQUEST[norekdebet]', keterangan='$_REQUEST[keterangan]', aktif=1";
+		$sql = "INSERT INTO datapengeluaran SET departemen='$_REQUEST[departemen]', nama='".CQ($_REQUEST['nama'])."', besar='$besar', rekkredit='$_REQUEST[norekkredit]', rekdebet='$_REQUEST[norekdebet]', keterangan='$_REQUEST[keterangan]', aktif=1";
 		
-		echo  $sql;
+		//echo  $sql;
 		$result = QueryDb($sql);
 		CloseDb();
 	

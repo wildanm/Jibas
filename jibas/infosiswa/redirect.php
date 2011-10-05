@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -44,7 +44,8 @@ if ($username == "landlord")
 {
 	$sql_la = "SELECT password FROM jbsuser.landlord";
 	$result_la = QueryDb($sql_la) or die(mysql_error());
-	if (md5($password==$result_la[password]))
+	$row_la = @mysql_fetch_row($result_la);
+	if (md5($password)==$row_la[0])
 	{
 		$_SESSION['login'] = "landlord";
 		$_SESSION['nama'] = "landlord";
@@ -57,7 +58,8 @@ elseif ($username=="adminsiswa")
 {
 	$sql_la = "SELECT password FROM jbsuser.adminsiswa";
 	$result_la = QueryDb($sql_la) or die(mysql_error());
-	if (md5($password==$result_la[password]))
+	$row_la = @mysql_fetch_row($result_la);
+	if (md5($password)==$row_la[0])
 	{
 		$_SESSION['login'] = "adminsiswa";
 		$_SESSION['nama'] = "adminsiswa";
@@ -94,18 +96,18 @@ else
 {
 	if ($username=="landlord")
 	{
-		$query = "UPDATE jbsuser.landlord SET lastlogin='NOW()' WHERE password='".md5($password)."'";
+		$query = "UPDATE jbsuser.landlord SET lastlogin=NOW() WHERE password='".md5($password)."'";
     } 
 	elseif ($username=="adminsiswa")
 	{
-		$query = "UPDATE jbsuser.adminsiswa SET lastlogin='NOW()' WHERE password='".md5($password)."'";
+		$query = "UPDATE jbsuser.adminsiswa SET lastlogin=NOW() WHERE password='".md5($password)."'";
     } 
 	else 
 	{
 		$sql = "SELECT * FROM jbsuser.hakakses WHERE modul='INFOSISWA' AND login='$username'";
 		$result = QueryDb($sql);
 		$num=@mysql_num_rows($result);
-		$query = "UPDATE jbsuser.hakaksesinfosiswa SET lastlogin='NOW()' WHERE nis='$username'";
+		$query = "UPDATE jbsuser.hakaksesinfosiswa SET lastlogin=NOW() WHERE nis='$username'";
 	}
 	$result = QueryDb($query);
 	?>

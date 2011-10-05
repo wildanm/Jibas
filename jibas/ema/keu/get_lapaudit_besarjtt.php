@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -99,7 +99,7 @@ function cetak() {
 	                ab.replid AS id, ab.idaudit, ab.statusdata, j.nokas, date_format(j.tanggal, '%d-%b-%Y') AS tanggal, 
 						 ab.pengguna AS petugas, ab.keterangan, ab.besar AS jumlah, ai.alasan 
 		 	     FROM jbsfina.auditbesarjtt$calon ab, jbsfina.auditinfo ai, jbsfina.jurnal j 
-				 WHERE j.replid = ab.info1 AND j.idtahunbuku = $idtahunbuku AND ab.idaudit = ai.replid AND ai.departemen = '$departemen' 
+				 WHERE j.replid = ab.info1 AND j.idtahunbuku = '$idtahunbuku' AND ab.idaudit = ai.replid AND ai.departemen = '$departemen' 
 				   AND ai.sumber='besarjtt$calon' AND ai.tanggal BETWEEN '$tanggal1 00:00:00' AND '$tanggal2 23:59:59' 
 			 ORDER BY ab.idaudit DESC, ai.tanggal DESC, ab.statusdata ASC";
    	//echo $sql;

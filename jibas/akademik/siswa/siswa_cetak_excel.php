@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -112,6 +112,7 @@ Data Siswa per Kelas
 <tr height="30">
 <td width="3" valign="middle" bgcolor="#666666"><div align="center" class="style1">No.</div></td>
 <td width="20" valign="middle" bgcolor="#666666"><div align="center" class="style1">NIS</div></td>
+<td width="20" valign="middle" bgcolor="#666666"><div align="center" class="style1">NISN</div></td>
 <td valign="middle" bgcolor="#666666"><div align="center" class="style1">PIN</div></td>
 <td valign="middle" bgcolor="#666666"><div align="center" class="style1">Nama</div></td>
 <td valign="middle" bgcolor="#666666"><div align="center" class="style1">Kelamin</div></td>
@@ -158,6 +159,7 @@ Data Siswa per Kelas
 	<tr height="25">
 	<td width="3" align="center"><?=$cnt?></td>
 	<td align="left"><?=$row['nis']?></td>
+    <td align="left"><?=$row['nisn']?></td>
    <td align="left"><?=$row['pinsiswa']?></td>
 	<td align="left"><?=$row['nama']?></td>
 	<td align="left"><?=$row['kelamin']?></td>

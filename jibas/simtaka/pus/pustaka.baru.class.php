@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ class CPustaka{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM format WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM format WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		if (isset($_REQUEST[simpan]))
@@ -257,7 +257,7 @@ class CPustaka{
 	}
 	function GetPustaka(){
 		 if (SI_USER_LEVEL()==2){
-			$sql = "SELECT * FROM perpustakaan WHERE replid=".SI_USER_DEPT()." ORDER BY nama";
+			$sql = "SELECT * FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
 		 } else {
 			$sql = "SELECT * FROM perpustakaan ORDER BY nama";
 		 }
@@ -341,13 +341,13 @@ class CPustaka{
 			$fill_cover = ", cover='$cover_binary'"; 
 		}
 
-		$sql = "SELECT * FROM pustaka WHERE judul='$judul' AND penulis=$penulis AND format=$format AND katalog=$katalog AND penerbit=$penerbit";
+		$sql = "SELECT * FROM pustaka WHERE judul='$judul' AND penulis='$penulis' AND format='$format' AND katalog='$katalog' AND penerbit='$penerbit'";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
 		$goon=0;
 		if ($num==0) 
 		{
-			$sql = "INSERT INTO pustaka SET harga='$harga', judul='$judul', abstraksi='$abstraksi', keyword='$keyword', tahun=$tahun, keteranganfisik='$keteranganfisik', penulis=$penulis, format=$format, katalog=$katalog, penerbit=$penerbit, keterangan='$keterangan' $fill_cover ";
+			$sql = "INSERT INTO pustaka SET harga='$harga', judul='$judul', abstraksi='$abstraksi', keyword='$keyword', tahun='$tahun', keteranganfisik='$keteranganfisik', penulis='$penulis', format='$format', katalog='$katalog', penerbit='$penerbit', keterangan='$keterangan' $fill_cover ";
 			$result = QueryDb($sql);
 			if ($result) 
 			{
@@ -360,7 +360,7 @@ class CPustaka{
 		} 
 		else 
 		{
-			$sql = "SELECT replid FROM pustaka WHERE judul='$judul' AND penulis=$penulis AND format=$format AND katalog=$katalog AND penerbit=$penerbit ORDER BY replid DESC LIMIT 1";
+			$sql = "SELECT replid FROM pustaka WHERE judul='$judul' AND penulis='$penulis' AND format='$format' AND katalog='$katalog' AND penerbit='$penerbit' ORDER BY replid DESC LIMIT 1";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_row($result);
 			$lastid = $row[0];
@@ -369,7 +369,7 @@ class CPustaka{
 		
 		if ($goon==1)
 		{
-			$sql = "SELECT counter FROM katalog WHERE replid=$katalog";
+			$sql = "SELECT counter FROM katalog WHERE replid='$katalog'";
 			$result = QueryDb($sql);
 			$r = @mysql_fetch_row($result);
 			$counter = $r[0];
@@ -378,10 +378,10 @@ class CPustaka{
 				if ($_REQUEST['jumlah'.$i]!="" && $_REQUEST['jumlah'.$i]>0){
 					for ($j=1;$j<=$_REQUEST['jumlah'.$i];$j++){
 						$counter++;
-						$sql = "UPDATE katalog SET counter=".$counter." WHERE replid=$katalog";
+						$sql = "UPDATE katalog SET counter=".$counter." WHERE replid='$katalog'";
 						QueryDb($sql);
 						$kodepustaka = $this->GenKodePustaka($katalog,$penulis,$judul,$format,$counter);
-						$sql = "INSERT INTO daftarpustaka SET pustaka=$lastid, perpustakaan=$replid, kodepustaka='$kodepustaka'";
+						$sql = "INSERT INTO daftarpustaka SET pustaka='$lastid', perpustakaan='$replid', kodepustaka='$kodepustaka'";
 						//echo $sql."<br>";
 						QueryDb($sql);
 					}
@@ -393,17 +393,17 @@ class CPustaka{
 		$this->reload_page();	
 	}
 	function GenKodePustaka($katalog,$penulis,$judul,$format,$counter){
-		$sql = "SELECT kode FROM katalog WHERE replid=$katalog";
+		$sql = "SELECT kode FROM katalog WHERE replid='$katalog'";
 		$result = QueryDb($sql);
 		$ktlg = @mysql_fetch_row($result);
 
-		$sql = "SELECT kode FROM penulis WHERE replid=$penulis";
+		$sql = "SELECT kode FROM penulis WHERE replid='$penulis'";
 		$result = QueryDb($sql);
 		$pnls = @mysql_fetch_row($result);
 		
 		$jdl = substr($judul,0,1);
 	
-		$sql = "SELECT kode FROM format WHERE replid=$format";
+		$sql = "SELECT kode FROM format WHERE replid='$format'";
 		$result = QueryDb($sql);
 		$frmt = @mysql_fetch_row($result);
 		

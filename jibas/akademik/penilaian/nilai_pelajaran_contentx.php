@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -401,7 +401,7 @@ function hapus_nau(){
         </table>
         <br />
 	<?
-    $sql_cek_ujian = "SELECT * FROM jbsakad.ujian WHERE idaturan=$idaturan AND idkelas=$kelas AND idsemester=$semester ORDER by tanggal ASC";
+    $sql_cek_ujian = "SELECT * FROM jbsakad.ujian WHERE idaturan='$idaturan' AND idkelas='$kelas' AND idsemester='$semester' ORDER by tanggal ASC";
     
     $result_cek_ujian=QueryDb($sql_cek_ujian);
     $jumlahujian=@mysql_num_rows($result_cek_ujian);
@@ -432,7 +432,7 @@ function hapus_nau(){
     ?>
             <td height="30" class="headerlong" align="center">Rata2 Siswa</td>
             <td height="30" class="headerlong" align="center">NA <?=$namajenis?>
-<? $sql_get_nau_per_kelas="SELECT nilaiAU,keterangan FROM jbsakad.nau WHERE idkelas=$kelas AND idsemester=$semester AND idaturan=$idaturan";
+<? $sql_get_nau_per_kelas="SELECT nilaiAU,keterangan FROM jbsakad.nau WHERE idkelas='$kelas' AND idsemester='$semester' AND idaturan='$idaturan'";
 		
 	$result_get_nau_per_kelas=QueryDb($sql_get_nau_per_kelas);
 	if (@mysql_num_rows($result_get_nau_per_kelas)<>0){           
@@ -464,7 +464,7 @@ function hapus_nau(){
 	<?          
         $uji=1;			
         for ($j=1;$j<=count($idujian);$j++) {		
-            $sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian=$idujian[$j] AND nis='$row_siswa[nis]'";
+            $sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian='$idujian[$j]' AND nis='$row_siswa[nis]'";
             //echo $sql_cek_nilai_ujian;
             $result_cek_nilai_ujian=QueryDb($sql_cek_nilai_ujian);
             $row_cek_nilai_ujian=@mysql_fetch_array($result_cek_nilai_ujian);

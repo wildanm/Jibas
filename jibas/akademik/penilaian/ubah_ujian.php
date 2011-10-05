@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,7 +36,7 @@ $query = "SELECT u.idrpp, u.deskripsi, u.idsemester, u.idpelajaran, u.tanggal, k
 $result = QueryDb($query);
 $row = @mysql_fetch_array($result);
 $idrpp = $row['idrpp'];
-$deskripsi = $row['deskripsi'];
+$deskripsi = CQ($row['deskripsi']);
 $tingkat = $row['idtingkat'];
 $semester = $row['idsemester'];
 $pelajaran = $row['idpelajaran'];
@@ -44,7 +44,7 @@ $tanggal = format_tgl_blnnmr($row['tanggal']);
 $kode = $row['kode'];
 
 if(isset($_REQUEST["deskripsi"]))
-	$deskripsi = $_REQUEST["deskripsi"];
+	$deskripsi = CQ($_REQUEST["deskripsi"]);
 if(isset($_REQUEST["tanggal"]))
 	$tanggal = $_REQUEST["tanggal"];
 if(isset($_REQUEST["idrpp"]))
@@ -56,12 +56,12 @@ if(isset($_REQUEST["kode"]))
 //$ERROR_MSG = "";
 if(isset($_REQUEST["ubah"])){
 	$tanggal=unformat_tgl($_REQUEST["tanggal"]);
-	$deskripsi=$_REQUEST["deskripsi"];
+	$deskripsi=CQ($_REQUEST["deskripsi"]);
 	
 	if ($idrpp == "")
-		$sql_simpan="UPDATE jbsakad.ujian SET idrpp=NULL, deskripsi='$deskripsi',tanggal='$tanggal', kode = '$kode' WHERE replid=$replid";
+		$sql_simpan="UPDATE jbsakad.ujian SET idrpp=NULL, deskripsi='$deskripsi',tanggal='$tanggal', kode = '$kode' WHERE replid='$replid'";
 	else
-		$sql_simpan="UPDATE jbsakad.ujian SET idrpp=$idrpp, deskripsi='$deskripsi',tanggal='$tanggal', kode = '$kode' WHERE replid=$replid";
+		$sql_simpan="UPDATE jbsakad.ujian SET idrpp='$idrpp', deskripsi='$deskripsi',tanggal='$tanggal', kode = '$kode' WHERE replid='$replid'";
 	$result_simpan=QueryDb($sql_simpan);
 	if ($result_simpan) {
 ?>
@@ -152,7 +152,7 @@ function focusNext(elemName, evt) {
       	<td colspan="2">
         	<select name="idrpp" id="idrpp" style="width:170px;" onkeypress="return focusNext('deskripsi', event)">
             <option value="" <?=IntIsSelected("", $idrpp) ?> >Tanpa RPP</option>
-      	<? $sql_rpp="SELECT * FROM rpp WHERE idtingkat=$tingkat AND idsemester=$semester AND idpelajaran=$pelajaran AND aktif=1 ORDER BY rpp";
+      	<? $sql_rpp="SELECT * FROM rpp WHERE idtingkat='$tingkat' AND idsemester='$semester' AND idpelajaran='$pelajaran' AND aktif=1 ORDER BY rpp";
       		$result_rpp=QueryDb($sql_rpp);
       		while ($row_rpp=@mysql_fetch_array($result_rpp)){
 				if ($idrpp == "")

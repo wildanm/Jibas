@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -30,7 +30,7 @@ $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
 OpenDb();
-$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid=$replid";
+$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='$replid'";
 //echo $sql;
 //exit;
 $result=QueryDb($sql);
@@ -38,14 +38,14 @@ $row=@mysql_fetch_array($result);
 $idpesan=$row[idpesan];
 //echo $idpesan;
 //exit;
-$sql2="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, pg.nis as nis FROM jbsvcr.pesan pg WHERE pg.replid=$idpesan";
+$sql2="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, pg.nis as nis FROM jbsvcr.pesan pg WHERE pg.replid='$idpesan'";
 $result2=QueryDb($sql2);
 $row2=@mysql_fetch_array($result2);
 $sql_nama="SELECT nama FROM jbsakad.siswa WHERE nis='$row2[nis]'";
 $result_nama=QueryDb($sql_nama);
 $row_nama=@mysql_fetch_array($result_nama);
 $nama=$row_nama[nama];
-$sql3="SELECT * FROM jbsvcr.lampiranpesan WHERE idpesan=$idpesan";
+$sql3="SELECT * FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
 $result3=QueryDb($sql3);
 CloseDb();	
 ?>

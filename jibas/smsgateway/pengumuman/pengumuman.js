@@ -231,6 +231,10 @@ function Send(){
 	
 	var Sender = document.getElementById('Sender').value;
 	var Message = document.getElementById('Message').value;
+	Message = Message.replace(/\&/g,'^');
+	Message = addslashes(Message);
+	//alert(Message);
+	//return false;
 	var tbl = parseInt(document.getElementById('ReceiptTable').rows.length)-1;
 	if (Sender.length==0){
 		ShowError('ErrSender','Pengirim harus diisi!','Sender');
@@ -408,12 +412,24 @@ function SearchOrtu(){
 }
 
 function PengumumanAfterSend(nope){
-	var msg = "Berhasil mengirim pengumuman ke "+nope+" penerima.";
-	//var tbl = document.getElementById('TableLogs');
-	//var row = tbl.insertRow(0);
-	//var cell = row.insertCell(0);
-		//cell.innerHTML = msg;
-	document.getElementById('DivLogs').innerHTML = msg;
+	if (nope>0){
+		var msg = "<div style='border:1px solid #FF6600; background-color:#FFCC66; padding:2px;'>Berhasil mengirim pengumuman ke <span style='font-weight:bold;font-size:16px;'>"+nope+"</span> penerima.</div>";
+		document.getElementById('DivLogs').innerHTML = msg;
+		document.getElementById('Sender').value = "";
+		document.getElementById('Message').value = "";
+		document.getElementById('CharLeft').value = "160";
+		
+		setTimeout(function(){
+			document.getElementById('DivLogs').innerHTML = "";
+		},2000)
+	} else {
+		var msg = "<div style='border:1px solid #FF6600; background-color:#FFCC66; padding:2px;'>Tidak ada penerima pesan pengumuman, pastikan penerima memiliki Nomor Ponsel.</div>";
+		document.getElementById('DivLogs').innerHTML = msg;
+		
+		setTimeout(function(){
+			document.getElementById('DivLogs').innerHTML = "";
+		},5000)
+	}
 }
 function ResizeTabHeight() {
   var WinHeight = 0;
@@ -428,4 +444,21 @@ function ResizeTabHeight() {
   //alert(WinHeight+'px');DIVReceiptTable
   document.getElementById('MainTable').style.height = (parseInt(WinHeight)-90)+"px";
   document.getElementById('DIVReceiptTable').style.height = (parseInt(WinHeight)-385)+"px";
+}
+
+function addslashes(str) {
+str=str.replace(/\\/g,'\\\\');
+str=str.replace(/\'/g,'\\\'');
+str=str.replace(/\"/g,'\\"');
+str=str.replace(/\0/g,'\\0');
+str=str.replace(/\&/g,'\\&');
+return str;
+}
+function stripslashes(str) {
+str=str.replace(/\\'/g,'\'');
+str=str.replace(/\\"/g,'"');
+str=str.replace(/\\&/g,'&');
+str=str.replace(/\\0/g,'\0');
+str=str.replace(/\\\\/g,'\\');
+return str;
 }

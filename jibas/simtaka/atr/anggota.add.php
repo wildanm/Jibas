@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,6 +25,7 @@ require_once('../inc/config.php');
 require_once('../inc/fileinfo.php');
 require_once('../inc/imageresizer.php');
 require_once('../inc/db_functions.php');
+require_once('../inc/common.php');
 require_once('anggota.add.class.php');
 OpenDb();
 $AA = new CAnggotaAdd();

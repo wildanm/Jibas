@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -51,7 +51,7 @@ if (isset($_REQUEST['tingkattujuan']))
 if (isset($_REQUEST['tahunajarantujuan']))
 	$tahunajarantujuan=$_REQUEST['tahunajarantujuan'];
 if (isset($_REQUEST['ket']))
-	$ket=$_REQUEST['ket'];
+	$ket=CQ($_REQUEST['ket']);
 if (isset($_REQUEST['tahunajaranawal']))
 	$tahunajaranawal=$_REQUEST['tahunajaranawal'];
 if (isset($_REQUEST['tingkatawal']))
@@ -88,7 +88,7 @@ if ($jenis <> ""){
 		if ($nisdicari <> "" && $namadicari <> "")
 			$string = "s.nis LIKE '%$nisdicari%' AND s.nama LIKE '%$namadicari%' AND";
 	} else if ($jenis == "combo") {			
-		$string = "s.idkelas = $kelas AND";
+		$string = "s.idkelas = '$kelas' AND";
 	} 
 	//$page=0;
 	//$hal=0;
@@ -309,14 +309,14 @@ function refresh_pilih(i) {
 
 <? 	if ($jenis <> ""){ 
 		OpenDb();
-		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = $tahunajaran AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = $tingkat"; 
+		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = '$tingkat'"; 
 		//echo $sql_tot;
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 		$jumlah = mysql_num_rows($result_tot);
 		$akhir = ceil($jumlah/5)*5;	
 		
-		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = $tahunajaran AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = $tingkat ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = '$tingkat' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		
 		$result_siswa = QueryDb($sql_siswa);
 		if (@mysql_num_rows($result_siswa)>0) {

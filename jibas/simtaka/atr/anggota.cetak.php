@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -65,11 +65,11 @@ $departemen='yayasan';
 			  while ($row=@mysql_fetch_array($result)){
 			  ?>
 			  <tr>
-				<td height="25" align="center"><?=$row[noregistrasi]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[nama]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[email]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[telpon]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[keterangan]?></td>
+				<td height="25" align="center"><?=stripslashes($row[noregistrasi])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[nama])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[email])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[telpon])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[keterangan])?></td>
 			  </tr>
 			  <?
 			  }

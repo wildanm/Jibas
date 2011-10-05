@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,10 +37,10 @@ if (isset($_REQUEST['Simpan']))
 {
 	OpenDb();
 	
-	$sql = "SELECT * FROM tingkat WHERE tingkat = '$_REQUEST[tingkat]' AND replid <> $replid AND departemen = '$departemen'";
+	$sql = "SELECT * FROM tingkat WHERE tingkat = '$_REQUEST[tingkat]' AND replid <> '$replid' AND departemen = '$departemen'";
 	$result = QueryDb($sql);
 	
-	$sql1 = "SELECT * FROM tingkat WHERE urutan = '$_REQUEST[urutan]' AND replid <> $replid AND departemen = '$departemen'";
+	$sql1 = "SELECT * FROM tingkat WHERE urutan = '$_REQUEST[urutan]' AND replid <> '$replid' AND departemen = '$departemen'";
 	$result1 = QueryDb($sql1);
 	
 	if (@mysql_num_rows($result) > 0) 
@@ -57,7 +57,7 @@ if (isset($_REQUEST['Simpan']))
 	} 
 	else 
 	{
-		$sql = "UPDATE tingkat SET tingkat='$_REQUEST[tingkat]',keterangan='$_REQUEST[keterangan]',urutan=$_REQUEST[urutan] WHERE replid=$replid";
+		$sql = "UPDATE tingkat SET tingkat='".CQ($_REQUEST['tingkat'])."',keterangan='".CQ($_REQUEST['keterangan'])."',urutan='$_REQUEST[urutan]' WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	

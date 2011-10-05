@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,7 +39,7 @@ if (isset($_REQUEST['idpenerimaan']))
 	$idpenerimaan = (int)$_REQUEST['idpenerimaan'];
 
 OpenDb();
-$sql = "SELECT departemen FROM $db_name_fina.datapenerimaan  WHERE replid=$idpenerimaan";
+$sql = "SELECT departemen FROM $db_name_fina.datapenerimaan  WHERE replid='$idpenerimaan'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -71,13 +71,13 @@ $idtahunbuku = FetchSingle($sql);
 if ($kelompok == -1)
 	$sql = "SELECT max(jml) FROM ((SELECT s.replid, COUNT(p.replid) as jml 
 									 FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s 
-									WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-									  AND p.idcalon = s.replid AND p.idpenerimaan = $idpenerimaan GROUP BY s.replid) as X)";
+									WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+									  AND p.idcalon = s.replid AND p.idpenerimaan = '$idpenerimaan' GROUP BY s.replid) as X)";
 else
 	$sql = "SELECT max(jml) FROM ((SELECT s.replid, COUNT(p.replid) as jml 
 									 FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s 
-									WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-									  AND p.idcalon = s.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan GROUP BY s.replid) as X)";
+									WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+									  AND p.idcalon = s.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan' GROUP BY s.replid) as X)";
 		
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
@@ -116,25 +116,25 @@ if ($kelompok == -1)
 {
 	$sql_tot = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 				  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-				   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = $idpenerimaan ORDER BY s.nama";
+				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+				   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
 	
 	$sql = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 			  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-			 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-			   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = $idpenerimaan"; 
+			 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+			   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND p.idpenerimaan = '$idpenerimaan'"; 
 } 
 else 
 {
 	$sql_tot = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 				  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-				   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan ORDER BY s.nama";
+				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+				   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
 	
 	$sql = "SELECT DISTINCT s.replid, s.nopendaftaran, s.nama, k.kelompok 
 			  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j, jbsakad.calonsiswa s, jbsakad.kelompokcalonsiswa k 
-			 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-			   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = $kelompok AND p.idpenerimaan = $idpenerimaan"; 
+			 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+			   AND p.idcalon = s.replid AND s.idkelompok = k.replid AND s.idkelompok = '$kelompok' AND p.idpenerimaan = '$idpenerimaan'"; 
 }
 
 $result = QueryDb($sql);
@@ -155,8 +155,8 @@ while ($row = mysql_fetch_array($result))
         <td align="center"><?=$row['kelompok'] ?></td>
 <?		$sql = "SELECT date_format(p.tanggal, '%d-%b-%y') as tanggal, jumlah 
 						  FROM jbsfina.penerimaaniurancalon p, jbsfina.jurnal j
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-						   AND idcalon = $replid AND idpenerimaan = $idpenerimaan";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+						   AND idcalon = '$replid' AND idpenerimaan = '$idpenerimaan'";
 		$result2 = QueryDb($sql);
 		$nbayar = mysql_num_rows($result2);
 		$nblank = $max_n_bayar - $nbayar;

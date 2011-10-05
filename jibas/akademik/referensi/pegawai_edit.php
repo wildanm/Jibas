@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ require_once('../cek.php');
 OpenDb();
 
 $replid = $_REQUEST["replid"];
-$sql_pegawai = "SELECT * FROM jbssdm.pegawai WHERE replid = $replid";
+$sql_pegawai = "SELECT * FROM jbssdm.pegawai WHERE replid = '$replid'";
 $result_pegawai = QueryDb($sql_pegawai);
 $row_pegawai = @mysql_fetch_array($result_pegawai);
 
@@ -66,17 +66,17 @@ $keterangan = $row_pegawai['keterangan'];
 if (isset($_REQUEST['bagian']))
 	$bagian = $_REQUEST['bagian'];
 if (isset($_REQUEST['nip']))
-	$nip = $_REQUEST['nip'];
+	$nip = CQ($_REQUEST['nip']);
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 if (isset($_REQUEST['gelar']))
-	$gelar = $_REQUEST['gelar'];
+	$gelar = CQ($_REQUEST['gelar']);
 if (isset($_REQUEST['panggilan']))
-	$panggilan = $_REQUEST['panggilan'];
+	$panggilan = CQ($_REQUEST['panggilan']);
 if (isset($_REQUEST['kelamin']))
 	$kelamin = $_REQUEST['kelamin'];
 if (isset($_REQUEST['tempatlahir']))
-	$tempatlahir = $_REQUEST['tempatlahir'];
+	$tempatlahir = CQ($_REQUEST['tempatlahir']);
 if (isset($_REQUEST['tgllahir']))
 	$tgllahir = $_REQUEST['tgllahir'];
 if (isset($_REQUEST['blnlahir']))
@@ -90,17 +90,17 @@ if (isset($_REQUEST['suku']))
 if (isset($_REQUEST['menikah']))
 	$menikah = $_REQUEST['menikah'];
 if (isset($_REQUEST['identitas']))
-	$identitas = $_REQUEST['identitas'];
+	$identitas = CQ($_REQUEST['identitas']);
 if (isset($_REQUEST['alamat']))
-	$alamat = $_REQUEST['alamat'];
+	$alamat = CQ($_REQUEST['alamat']);
 if (isset($_REQUEST['telpon']))
-	$telpon = $_REQUEST['telpon'];
+	$telpon = CQ($_REQUEST['telpon']);
 if (isset($_REQUEST['handphone']))
-	$handphone = $_REQUEST['handphone'];
+	$handphone = CQ($_REQUEST['handphone']);
 if (isset($_REQUEST['email']))
-	$email = $_REQUEST['email'];
+	$email = CQ($_REQUEST['email']);
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 
 $ERROR_MSG = "";
 if (isset($_REQUEST['simpan'])) 
@@ -133,7 +133,7 @@ if (isset($_REQUEST['simpan']))
 	
 	$lahir = $thnlahir."-".$blnlahir."-".$tgllahir;
 	
-	$query_cek = "SELECT * FROM jbssdm.pegawai WHERE nip = '$nip' AND replid <> $replid";
+	$query_cek = "SELECT * FROM jbssdm.pegawai WHERE nip = '$nip' AND replid <> '$replid'";
 	$result_cek = QueryDb($query_cek);
 	$num_cek = @mysql_num_rows($result_cek);
 	if($num_cek > 0) 
@@ -147,7 +147,7 @@ if (isset($_REQUEST['simpan']))
 					 SET nip='$nip', nama='$nama', gelar='$gelar', panggilan='$panggilan', tmplahir='$tempatlahir', 
 					 	 tgllahir='$lahir', agama='$agama', suku='$suku',nikah='$menikah', noid='$identitas',alamat='$alamat',
 						 telpon='$telpon',handphone='$handphone',email='$email', bagian='$bagian', keterangan='$keterangan', 
-						 kelamin='$kelamin' $gantifoto WHERE replid = $replid ";
+						 kelamin='$kelamin' $gantifoto WHERE replid = '$replid' ";
 		
     	$result = QueryDb($query) ;
 		if($result) 

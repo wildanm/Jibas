@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -45,7 +45,7 @@ if ($kelas <> -1)
 	$filter2 = "AND k.replid = $kelas";
 	
 OpenDb();
-$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid AND s.replid = $semester $filter1 $filter2";  
+$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid AND s.replid = '$semester' $filter1 $filter2";  
 
 $result = QueryDB($sql);	
 $row = mysql_fetch_array($result);
@@ -97,7 +97,7 @@ $row = mysql_fetch_array($result);
 </table>
 <br />
 <? 	OpenDb();
-	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, k.kelas, s.hportu, s.emailayah, s.alamatortu, s.telponortu, s.hpsiswa, s.emailsiswa, s.aktif, s.emailibu FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis, kelas k, tingkat t WHERE k.replid = s.idkelas AND k.idtingkat = t.replid $filter1 $filter2 AND p.idsemester = $semester AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis HAVING ijin>0 OR sakit>0 OR cuti>0 OR alpa>0 ORDER BY $urut $urutan";
+	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, k.kelas, s.hportu, s.emailayah, s.alamatortu, s.telponortu, s.hpsiswa, s.emailsiswa, s.aktif, s.emailibu FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis, kelas k, tingkat t WHERE k.replid = s.idkelas AND k.idtingkat = t.replid $filter1 $filter2 AND p.idsemester = '$semester' AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis HAVING ijin>0 OR sakit>0 OR cuti>0 OR alpa>0 ORDER BY $urut $urutan";
 	
 	$result = QueryDb($sql);
 	$jum = mysql_num_rows($result);

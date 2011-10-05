@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,14 +34,14 @@ $id = $_REQUEST['id'];
 $MYSQL_ERROR_MSG = "";
 if (isset($_REQUEST['simpan'])) {
 	OpenDb();
-	$sql = "SELECT * FROM pemohonlain WHERE nama='$_REQUEST[nama]' AND replid <> $id";
+	$sql = "SELECT * FROM pemohonlain WHERE nama='$_REQUEST[nama]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
 		CloseDb();
 		$MYSQL_ERROR_MSG = "Nama $_REQUEST[nama] sudah digunakan!";
 	} else {
-		$sql = "UPDATE pemohonlain SET nama='$_REQUEST[nama]', keterangan='$_REQUEST[keterangan]' WHERE replid = $id";
+		$sql = "UPDATE pemohonlain SET nama='".CQ($_REQUEST['nama'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid = '$id'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -55,7 +55,7 @@ if (isset($_REQUEST['simpan'])) {
 }
 
 OpenDb();
-$sql = "SELECT * FROM pemohonlain WHERE replid=$id";
+$sql = "SELECT * FROM pemohonlain WHERE replid='$id'";
 $result = QueryDb($sql);
 CloseDb();
 
@@ -63,9 +63,9 @@ $row = mysql_fetch_array($result);
 $nama = $row['nama'];
 $keterangan = $row['keterangan'];
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

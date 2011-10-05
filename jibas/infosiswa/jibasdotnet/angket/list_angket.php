@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,7 +31,7 @@ require_once('../../include/db_functions.php');
  $op = $_REQUEST['op'];
  if ($op == "xm8r389xemx23xb2378e23") {
 	OpenDb();
-	$sql = "DELETE FROM jbsvcr.pilihan WHERE idpertanyaan = $_REQUEST[replid]";	
+	$sql = "DELETE FROM jbsvcr.pilihan WHERE idpertanyaan = '$_REQUEST[replid]'";	
 	QueryDb($sql);		
 	CloseDb();	
  }	

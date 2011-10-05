@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -70,15 +70,15 @@ if (isset($_REQUEST['tglakhir']))
 
 $filter1 = "AND t.departemen = '$departemen'";
 if ($tingkat <> -1) 
-	$filter1 = "AND k.idtingkat = $tingkat";
+	$filter1 = "AND k.idtingkat = '$tingkat'";
 
 $filter2 = "";
 if ($kelas <> -1) 
-	$filter2 = "AND k.replid = $kelas";
+	$filter2 = "AND k.replid = '$kelas'";
 
 $filter3 = "";
 if ($pelajaran <> -1) 
-	$filter3 = "AND p.idpelajaran = $pelajaran";
+	$filter3 = "AND p.idpelajaran = '$pelajaran'";
  
 
 ?>
@@ -163,7 +163,7 @@ function change_urut(urut,urutan) {
 	<td>
     <? 		
 	OpenDb();
-	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, s.status, p.materi, p.objektif, p.refleksi, p.rencana, p.keterangan, p.replid, l.nama, k.kelas FROM presensipelajaran p, kelas k, pelajaran l, statusguru s, tingkat t WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND p.idsemester = $semester AND p.idkelas = k.replid AND k.idtingkat = t.replid $filter1 $filter2 $filter3 ORDER BY $urut $urutan";
+	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, s.status, p.materi, p.objektif, p.refleksi, p.rencana, p.keterangan, p.replid, l.nama, k.kelas FROM presensipelajaran p, kelas k, pelajaran l, statusguru s, tingkat t WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND p.idsemester = '$semester' AND p.idkelas = k.replid AND k.idtingkat = t.replid $filter1 $filter2 $filter3 ORDER BY $urut $urutan";
 	//echo $sql;
 	
 	$result = QueryDb($sql);			 

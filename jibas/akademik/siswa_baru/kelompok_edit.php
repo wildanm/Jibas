@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,14 +38,14 @@ if (isset($_REQUEST['id']))
 
 if (isset($_REQUEST['simpan'])) {
 	OpenDb();
-	$sql_cek = "SELECT * FROM jbsakad.kelompokcalonsiswa WHERE kelompok = '$_REQUEST[kelompok]' AND idproses=$id AND replid <> $replid";
+	$sql_cek = "SELECT * FROM jbsakad.kelompokcalonsiswa WHERE kelompok = '".CQ($_REQUEST['kelompok'])."' AND idproses='$id' AND replid <> '$replid'";
 	$result_cek = QueryDb($sql_cek);
 	
 	if (mysql_num_rows($result_cek) > 0) {
 		$ERROR_MSG = "Nama ".$_REQUEST['kelompok']." sudah digunakan!";
 		CloseDb();
 	} else {
-		$sql = "UPDATE jbsakad.kelompokcalonsiswa SET kelompok='$_REQUEST[kelompok]', idproses=$id, kapasitas='$_REQUEST[kapasitas]', keterangan='$_REQUEST[keterangan]' WHERE replid='$replid'";
+		$sql = "UPDATE jbsakad.kelompokcalonsiswa SET kelompok='".CQ($_REQUEST['kelompok'])."', idproses='$id', kapasitas='$_REQUEST[kapasitas]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		
 		if ($result) { ?>
@@ -59,7 +59,7 @@ if (isset($_REQUEST['simpan'])) {
 }
 
 OpenDb();
-$sql_tampil = "SELECT p.departemen, p.proses, k.kelompok, k.kapasitas, k.keterangan, k.idproses FROM kelompokcalonsiswa k, prosespenerimaansiswa p WHERE k.replid=$replid AND k.idproses = p.replid";
+$sql_tampil = "SELECT p.departemen, p.proses, k.kelompok, k.kapasitas, k.keterangan, k.idproses FROM kelompokcalonsiswa k, prosespenerimaansiswa p WHERE k.replid='$replid' AND k.idproses = p.replid";
 $result_tampil = QueryDb($sql_tampil);
 $row_tampil = mysql_fetch_array($result_tampil);
 $departemen = $row_tampil['departemen'];

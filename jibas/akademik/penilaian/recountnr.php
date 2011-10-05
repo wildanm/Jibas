@@ -60,7 +60,7 @@ class RecountNilaiRapor
 	private function GetIdInfo()
 	{
 		$sql = "SELECT replid FROM jbsakad.infonap 
-		         WHERE idpelajaran = $this->idpelajaran AND idsemester = $this->idsemester AND idkelas = $this->idkelas";
+		         WHERE idpelajaran = '$this->idpelajaran' AND idsemester = '$this->idsemester' AND idkelas = '$this->idkelas'";
 		$res = QueryDb($sql);
 		if (mysql_num_rows($res) == 0)
 		{
@@ -77,8 +77,8 @@ class RecountNilaiRapor
 	{
 		// Ambil satu id aturannhb untuk menjadi link ke dasarpenilaian
 		$sql = "SELECT a.replid FROM jbsakad.aturannhb a, kelas k 
-				 WHERE a.nipguru = '$this->nip' AND a.idtingkat = k.idtingkat AND k.replid = $this->idkelas 
-				   AND a.idpelajaran = $this->idpelajaran AND a.dasarpenilaian = '$this->aspek' 
+				 WHERE a.nipguru = '$this->nip' AND a.idtingkat = k.idtingkat AND k.replid = '$this->idkelas' 
+				   AND a.idpelajaran = '$this->idpelajaran' AND a.dasarpenilaian = '$this->aspek' 
 			  ORDER BY a.replid ASC LIMIT 1";
 		$res = QueryDb($sql);
 		if (mysql_num_rows($res) == 0)
@@ -100,8 +100,8 @@ class RecountNilaiRapor
 		// -- Ambil data bobot dan jenisujian
 		$sql = "SELECT j.jenisujian AS jenisujian, a.bobot AS bobot, a.replid, a.idjenisujian 
 				  FROM jbsakad.aturannhb a, jbsakad.jenisujian j, kelas k 
-				 WHERE a.idtingkat = k.idtingkat AND k.replid = $this->idkelas AND a.nipguru = '$this->nip' 
-				   AND a.idpelajaran = $this->idpelajaran AND a.dasarpenilaian = '$this->aspek' 
+				 WHERE a.idtingkat = k.idtingkat AND k.replid = '$this->idkelas' AND a.nipguru = '$this->nip' 
+				   AND a.idpelajaran = '$this->idpelajaran' AND a.dasarpenilaian = '$this->aspek' 
 				   AND a.idjenisujian = j.replid AND a.aktif = 1 ORDER BY a.replid";
 		$res = QueryDb($sql);
 		while ($row = mysql_fetch_array($res))
@@ -132,8 +132,8 @@ class RecountNilaiRapor
 			foreach($this->ujian as $value)
 			{
 				$sql = "SELECT n.nilaiau FROM jbsakad.nau n, jbsakad.aturannhb a 
-						 WHERE n.idkelas = $this->idkelas AND n.nis = '$nis' AND n.idsemester = $this->idsemester 
-						   AND n.idjenis = $value[2] AND n.idaturan = a.replid AND a.replid = $value[0]";
+						 WHERE n.idkelas = '$this->idkelas' AND n.nis = '$nis' AND n.idsemester = '$this->idsemester' 
+						   AND n.idjenis = '$value[2]' AND n.idaturan = a.replid AND a.replid = '$value[0]'";
 				$res2 = QueryDb($sql);
 				$row2 = mysql_fetch_row($res2);
 				$nau = $row2[0];
@@ -146,16 +146,16 @@ class RecountNilaiRapor
 			$nilakhirpk = round($jumlah / $bobotpk, 2);
 			
 			$sql = "SELECT grade FROM aturangrading a, kelas k 
-					 WHERE a.idpelajaran = $this->idpelajaran AND a.idtingkat = k.idtingkat 
-					   AND k.replid = $this->idkelas AND a.dasarpenilaian = '$this->aspek' 
-					   AND a.nipguru = '$this->nip' AND $nilakhirpk BETWEEN a.nmin AND a.nmax";
+					 WHERE a.idpelajaran = '$this->idpelajaran' AND a.idtingkat = k.idtingkat 
+					   AND k.replid = '$this->idkelas' AND a.dasarpenilaian = '$this->aspek' 
+					   AND a.nipguru = '$this->nip' AND '$nilakhirpk' BETWEEN a.nmin AND a.nmax";
 			// echo "$sql<br>";	
 			$res2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($res2);
 			$gradepk = $row2[0];
 			
 			$sql = "UPDATE jbsakad.nap SET nilaiangka = '$nilakhirpk', nilaihuruf = '$gradepk' 
-					 WHERE nis = '$nis' AND idinfo = $this->idinfo AND idaturan = $this->idpemkon";
+					 WHERE nis = '$nis' AND idinfo = '$this->idinfo' AND idaturan = '$this->idpemkon'";
 			//echo "$sql<br>";
 			QueryDbTrans($sql, $success);
 		}

@@ -176,3 +176,9 @@ a:hover{
 	width:500px;
 }
 #SubTitle{padding-bottom:10px;}
+.hilite{background-color:#fef0cb}
+.bold{font-weight:bold;font-size:11px}
+
+.pagination{text-align:center; border-top:1px dashed #000; margin-top:10px; padding-top:5px}
+.pagination div{float:left;padding:0px 5px 0px 5px; margin-right:2px;border:1px solid #cf7f00}
+.pagination .selected{background-color:#e8d5b7}

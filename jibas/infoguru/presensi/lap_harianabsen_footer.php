@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -64,11 +64,11 @@ if (isset($_REQUEST['urutan']))
 
 $filter1 = "AND t.departemen = '$departemen'";
 if ($tingkat <> -1) 
-	$filter1 = "AND k.idtingkat = $tingkat";
+	$filter1 = "AND k.idtingkat = '$tingkat'";
 
 $filter2 = "";
 if ($kelas <> -1) 
-	$filter2 = "AND k.replid = $kelas";
+	$filter2 = "AND k.replid = '$kelas'";
 
 
 ?>
@@ -153,7 +153,7 @@ function change_urut(urut,urutan) {
 	OpenDb();	
 	//$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin), SUM(ph.sakit), SUM(ph.alpa), SUM(ph.cuti),  k.kelas, s.hportu, s.emailortu, s.alamatortu, s.telponortu, s.hpsiswa, s.emailsiswa FROM presensiharian p, phsiswa ph, siswa s, kelas k WHERE ph.nis = s.nis AND ph.idpresensi = p.replid AND p.idsemester = $semester AND s.idkelas = k.replid  $filter1 $filter2 AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) AND (ph.ijin>0 OR ph.sakit>0 OR ph.cuti>0 OR ph.alpa>0) GROUP BY s.nis ORDER BY k.kelas,s.nama,p.tanggal1 ";
 	
-	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, k.kelas, s.hportu, s.emailayah, s.alamatortu, s.telponortu, s.hpsiswa, s.emailsiswa, s.aktif, s.emailibu FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis, kelas k, tingkat t WHERE k.replid = s.idkelas AND k.idtingkat = t.replid $filter1 $filter2 AND p.idsemester = $semester AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis HAVING ijin>0 OR sakit>0 OR cuti>0 OR alpa>0 ORDER BY $urut $urutan";
+	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, k.kelas, s.hportu, s.emailayah, s.alamatortu, s.telponortu, s.hpsiswa, s.emailsiswa, s.aktif, s.emailibu FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis, kelas k, tingkat t WHERE k.replid = s.idkelas AND k.idtingkat = t.replid $filter1 $filter2 AND p.idsemester = '$semester' AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis HAVING ijin>0 OR sakit>0 OR cuti>0 OR alpa>0 ORDER BY $urut $urutan";
 	//echo $sql;
 	
 	$result = QueryDb($sql);			 

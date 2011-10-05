@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -122,28 +122,45 @@ function ubah(replid){
 	CloseDb();
 	?>
     <td height="25" align="left">
-	<? 
-	for ($x=0;$x<=$i-1;$x++){
-		?>
-		<img src="../../images/ico/titik.png" border="0" height="5" width="5"/>&nbsp;<a href="detailagenda.php?replid=<?=$replid[$x]?>" target="kanan" onClick="tampil('<?=$judul[$x]?>')" title="Lihat Detail !"><?=$judul[$x]?></a><br>
-		<?
-	}
-	?>
+        <table border="0" cellspacing="0" cellpadding="1">
+		<? 
+        for ($x=0;$x<=$i-1;$x++){
+            ?>
+            <tr>
+                <td valign="top">-&nbsp;</td>
+                <td valign="top"><a href="detailagenda.php?replid=<?=$replid[$x]?>" target="kanan" onClick="tampil('<?=$judul[$x]?>')" title="Lihat Detail !"><?=$judul[$x]?></a></td>
+            </tr>
+            <?
+        }
+        ?>
+        </table>
     </td>
-    <td height="25" <? if ($ada>0){ ?> align="right" <? } else { ?> align="left" <? } ?> width="70">
+    <td height="25" <? if ($ada>0){ ?> align="left" <? } else { ?> align="left" <? } ?> width="70">
     
 	<? if (SI_USER_ID()!="LANDLORD" && SI_USER_ID()!="landlord"){ ?>
-	<img style="cursor:pointer;visibility:visible;" title="Tambah agenda tanggal <?=$y."-".$namabulan[$bulan-1]."-".$tahun?> !" src="../../images/ico/tambah.png" border="0" onClick="tambah('<?=$y."-".$bulan."-".$tahun?>')"/>&nbsp;
+	<table border="0" cellspacing="0" cellpadding="2">
 	<?
+	if ($ada>0){
 	for ($x=0;$x<=$i-1;$x++){
 		?>
-        <img style="cursor:pointer;visibility:visible;" title="Ubah !" src="../../images/ico/ubah.png" border="0" onClick="ubah('<?=$replid[$x]?>')"/>&nbsp;
-        <img style="cursor:pointer;visibility:visible;" title="Hapus !" src="../../images/ico/hapus.png" border="0" onClick="hapus('<?=$replid[$x]?>')"/>
-        <br />
-		<?
+        <tr>
+            <td>
+            	<? if ($x==0){ ?>
+                <img style="cursor:pointer;visibility:visible;" title="Tambah agenda tanggal <?=$y."-".$namabulan[$bulan-1]."-".$tahun?> !" src="../../images/ico/tambah.png" border="0" onClick="tambah('<?=$y."-".$bulan."-".$tahun?>')"/>
+                <? } else { ?>
+                &nbsp;
+				<? } ?>
+            </td>
+            <td><img style="cursor:pointer;visibility:visible;" title="Ubah !" src="../../images/ico/ubah.png" border="0" onClick="ubah('<?=$replid[$x]?>')"/></td>
+            <td><img style="cursor:pointer;visibility:visible;" title="Hapus !" src="../../images/ico/hapus.png" border="0" onClick="hapus('<?=$replid[$x]?>')"/></td>
+        </tr>
+	<?
 	}
-		?>
-
+	} else {
+		echo "<tr></td><img style='cursor:pointer;visibility:visible;' title='Tambah agenda tanggal $y - ".$namabulan[$bulan-1]." - $tahun !' src='../../images/ico/tambah.png' border='0' onClick=\"tambah('$y-$bulan-$tahun')\"/></td></tr>";
+	}
+	?>
+ 	</table>
 	<? } ?>
     </td>
   </tr>

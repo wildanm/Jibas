@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,13 +39,13 @@ $fax 	= $row[fax1];
 $website= $row[situs];
 $email 	= $row[email]; 
 if (isset($_REQUEST['Simpan'])){
-	$nama 	= $_REQUEST[nama];
-	$alamat	= $_REQUEST[alamat];
-	$telp1 	= $_REQUEST[telp1];
-	$telp2 	= $_REQUEST[telp2];
-	$fax 	= $_REQUEST[fax];
-	$website= $_REQUEST[website];
-	$email 	= $_REQUEST[email]; 
+	$nama 	= CQ($_REQUEST['nama']);
+	$alamat	= CQ($_REQUEST['alamat']);
+	$telp1 	= CQ($_REQUEST['telp1']);
+	$telp2 	= CQ($_REQUEST['telp2']);
+	$fax 	= CQ($_REQUEST['fax']);
+	$website= CQ($_REQUEST['website']);
+	$email 	= CQ($_REQUEST['email']); 
 	$sql 	= "SELECT * FROM ".$db_name_umum.".identitas WHERE status=1 AND nama='$nama' AND perpustakaan<>'$perpustakaan'";
 	$result = QueryDb($sql);
 	$num	= @mysql_num_rows($result);

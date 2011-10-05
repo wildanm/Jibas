@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ if (isset($_REQUEST['tingkat']))
 if (isset($_REQUEST['tahunajaran']))
 	$tahunajaran = $_REQUEST['tahunajaran'];
 if (isset($_REQUEST['kelas']))
-	$kelas = $_REQUEST['kelas'];	
+	$kelas = CQ($_REQUEST['kelas']);	
 if (isset($_REQUEST['kapasitas']))
 	$kapasitas = $_REQUEST['kapasitas'];
 if (isset($_REQUEST['nipwali']))
@@ -45,7 +45,7 @@ if (isset($_REQUEST['nipwali']))
 if (isset($_REQUEST['namawali']))
 	$namawali = $_REQUEST['namawali'];
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];	
+	$keterangan = CQ($_REQUEST['keterangan']);	
 
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {

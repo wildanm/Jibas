@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,14 +33,14 @@ $replid = $_REQUEST['replid'];
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb(); 
-	$sql = "SELECT * FROM jbsakad.semester WHERE semester = '$_REQUEST[semester]' AND departemen ='$_REQUEST[departemen]' AND replid <> $replid ";
+	$sql = "SELECT * FROM jbsakad.semester WHERE semester = '".CQ($_REQUEST['semester'])."' AND departemen ='$_REQUEST[departemen]' AND replid <> '$replid' ";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
 		CloseDb();
 		$ERROR_MSG = "Semester $_REQUEST[semester] sudah digunakan!";
 	} else {
-		$sql = "UPDATE semester SET semester='$_REQUEST[semester]',keterangan='$_REQUEST[keterangan]' WHERE replid=$replid";
+		$sql = "UPDATE semester SET semester='".CQ($_REQUEST['semester'])."',keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -57,7 +57,7 @@ if (isset($_REQUEST['Simpan'])) {
 
 OpenDb();
 
-$sql = "SELECT semester,departemen,keterangan,aktif FROM semester WHERE replid=$replid ORDER BY semester";
+$sql = "SELECT semester,departemen,keterangan,aktif FROM semester WHERE replid='$replid' ORDER BY semester";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $semester = $row[0];

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,7 +56,7 @@ if (isset($_REQUEST['action'])) {
 	$filter = "";
 	if ($_REQUEST['action'] == "update") {
 		$replid = $_REQUEST['replid'];
-		$filter = "AND replid <> $replid";
+		$filter = "AND replid <> '$replid'";
 	}
 	
 	OpenDb();
@@ -68,18 +68,18 @@ if (isset($_REQUEST['action'])) {
 		$ERROR_MSG = "Gagal menyimpan data Tahun Ajaran $_REQUEST[tahunajaran] sudah digunakan!";
 	} else {
 		if ($_REQUEST['action'] == "add") {
-			$sql = "INSERT INTO tahunajaran SET tahunajaran='$_REQUEST[tahunajaran]',departemen='$_REQUEST[departemen]',tglmulai='$tglmulai',tglakhir='$tglakhir',keterangan='$_REQUEST[keterangan]'";
+			$sql = "INSERT INTO tahunajaran SET tahunajaran='".CQ($_REQUEST['tahunajaran'])."',departemen='$_REQUEST[departemen]',tglmulai='$tglmulai',tglakhir='$tglakhir',keterangan='".CQ($_REQUEST['keterangan'])."'";
 			$result = QueryDb($sql);
 			$sql1 = "SELECT LAST_INSERT_ID(replid) FROM tahunajaran ORDER BY replid DESC LIMIT 1";		
 			$result1 = QueryDb($sql1);		
 			$row1 = mysql_fetch_row($result1);
 			$replid = $row1[0];	 
 			
-			$sql2 = "UPDATE tahunajaran SET aktif = 0 WHERE replid <> $replid AND departemen = '$_REQUEST[departemen]'";
+			$sql2 = "UPDATE tahunajaran SET aktif = 0 WHERE replid <> '$replid' AND departemen = '$_REQUEST[departemen]'";
 			QueryDb($sql2);	
 			
 		} else {
-			$sql = "UPDATE tahunajaran SET tahunajaran = '$_REQUEST[tahunajaran]', tglmulai = '$tglmulai', tglakhir = '$tglakhir', keterangan = '$_REQUEST[keterangan]' WHERE replid = $replid";
+			$sql = "UPDATE tahunajaran SET tahunajaran = '".CQ($_REQUEST['tahunajaran'])."', tglmulai = '$tglmulai', tglakhir = '$tglakhir', keterangan = '".CQ($_REQUEST['keterangan'])."' WHERE replid = '$replid'";
 			$result = QueryDb($sql);			
 		}
 		
@@ -104,15 +104,15 @@ if (isset($_REQUEST['departemen']))
 if ($op == "dw8dxn8w9ms8zs22") {
 //if ($op == "hapus") {
 	OpenDb();
-	$sql = "UPDATE tahunajaran SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE tahunajaran SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
-	$sql1 = "UPDATE tahunajaran SET aktif = 0 WHERE replid <> $_REQUEST[replid] AND departemen = '$_REQUEST[departemen]'";
+	$sql1 = "UPDATE tahunajaran SET aktif = 0 WHERE replid <> '$_REQUEST[replid]' AND departemen = '$_REQUEST[departemen]'";
 	QueryDb($sql1);
 	CloseDb();
 } else //if ($op == "xm8r389xemx23xb2378e23") {
 	if ($op == "hapus") {
 	OpenDb();
-	$sql = "DELETE FROM tahunajaran WHERE replid = $_REQUEST[replid]";
+	$sql = "DELETE FROM tahunajaran WHERE replid = '$_REQUEST[replid]'";
 	QueryDb($sql);
 	/*$sql = "SELECT replid FROM jbsakad.tahunajaran WHERE departemen='$departemen' ORDER BY replid DESC LIMIT 1";
 	$result = QueryDb($sql);

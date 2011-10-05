@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,7 +34,7 @@ $nis = $_REQUEST['nis'];
 
 
 OpenDb();
-$sql = "SELECT s.replid, s.semester, p.nama FROM semester s, pelajaran p WHERE s.departemen = '$departemen' AND p.replid = $pelajaran AND p.departemen = '$departemen' AND s.semester='Ganjil'"; 
+$sql = "SELECT s.replid, s.semester, p.nama FROM semester s, pelajaran p WHERE s.departemen = '$departemen' AND p.replid = '$pelajaran' AND p.departemen = '$departemen' AND s.semester='Ganjil'"; 
 $result = QueryDb($sql);
 
 $i = 0;
@@ -78,9 +78,9 @@ while ($row = @mysql_fetch_row($result)) {
 			<td width="400" class="header" align="center" height="30">Keterangan</td>
 		</tr>
 		<? 	OpenDb();		
-			$sql1 = "SELECT u.tanggal, n.nilaiujian, n.keterangan FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = $kelas AND u.idpelajaran = $pelajaran AND u.idsemester = ".$sem[0][0]." AND u.idjenis = $row[replid] AND u.replid = n.idujian AND n.nis = '$nis' ORDER BY u.tanggal";
+			$sql1 = "SELECT u.tanggal, n.nilaiujian, n.keterangan FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kelas' AND u.idpelajaran = '$pelajaran' AND u.idsemester = '".$sem[0][0]."' AND u.idjenis = '$row[replid]' AND u.replid = n.idujian AND n.nis = '$nis' ORDER BY u.tanggal";
 			$result1 = QueryDb($sql1);
-			$sql2 = "SELECT AVG(n.nilaiujian) as rata FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = $kelas AND u.idpelajaran = $pelajaran AND u.idsemester = ".$sem[0][0]." AND u.idjenis = $row[replid] AND u.replid = n.idujian AND n.nis = '$nis' ";
+			$sql2 = "SELECT AVG(n.nilaiujian) as rata FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kelas' AND u.idpelajaran = '$pelajaran' AND u.idsemester = '".$sem[0][0]."' AND u.idjenis = '$row[replid]' AND u.replid = n.idujian AND n.nis = '$nis' ";
 			$result2 = QueryDb($sql2);
 			$row2 = @mysql_fetch_array($result2);
 			$rata = $row2[rata];

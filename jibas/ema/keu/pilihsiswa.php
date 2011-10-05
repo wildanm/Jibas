@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -66,7 +66,7 @@ $departemen=$_REQUEST[departemen];
     <div id="klsInfo">
     <select name="kelas" class="cmbfrm" id="kelas" onchange="chg_kls()">
 	<?
-	$sql = "SELECT replid,kelas FROM kelas WHERE idtingkat=$tingkat AND idtahunajaran=$ta AND aktif=1 ORDER BY kelas";
+	$sql = "SELECT replid,kelas FROM kelas WHERE idtingkat='$tingkat' AND idtahunajaran='$ta' AND aktif=1 ORDER BY kelas";
 	$result = QueryDb($sql);
 	while ($row = @mysql_fetch_row($result)){
 		if ($kelas=="")

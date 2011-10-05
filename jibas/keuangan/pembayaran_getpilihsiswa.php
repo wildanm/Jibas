@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -68,7 +68,7 @@ OpenDb();
     <td width="100">Kelas:</td>
     <td>
     <select id="idkelas" name="idkelas" style="width:150px" onchange="change_kel()">
-<?      $sql = "SELECT DISTINCT idkelas, kelas as namakelas FROM jbsakad.siswa, jbsakad.kelas, jbsakad.tingkat, jbsakad.tahunajaran  WHERE jbsakad.siswa.idkelas = jbsakad.kelas.replid AND idangkatan=$idangkatan AND jbsakad.kelas.idtahunajaran = jbsakad.tahunajaran.replid AND jbsakad.kelas.idtingkat = jbsakad.tingkat.replid ORDER BY idkelas";
+<?      $sql = "SELECT DISTINCT idkelas, kelas as namakelas FROM jbsakad.siswa, jbsakad.kelas, jbsakad.tingkat, jbsakad.tahunajaran  WHERE jbsakad.siswa.idkelas = jbsakad.kelas.replid AND idangkatan='$idangkatan' AND jbsakad.kelas.idtahunajaran = jbsakad.tahunajaran.replid AND jbsakad.kelas.idtingkat = jbsakad.tingkat.replid ORDER BY idkelas";
         $result = QueryDb($sql);
         while($row = mysql_fetch_row($result)) {
             if ($idkelas == 0)
@@ -86,7 +86,7 @@ OpenDb();
     <td class="header">Nama</td>
 </tr>
 <? 
-$sql = "SELECT nis, nama FROM jbsakad.siswa WHERE idkelas = $idkelas ORDER BY nama";
+$sql = "SELECT nis, nama FROM jbsakad.siswa WHERE idkelas = '$idkelas' ORDER BY nama";
 $result = QueryDb($sql);
 $no = 0;
 while ($row = mysql_fetch_array($result)) {

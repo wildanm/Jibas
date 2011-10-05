@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -42,7 +42,7 @@ class CKembali
 			
 		$this->op=$_REQUEST[op];
 		if ($this->op=="del"){
-			$sql = "DELETE FROM format WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM format WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		$this->num=0;
@@ -84,15 +84,16 @@ class CKembali
 			$this->denda = $_REQUEST[denda];
 			$this->idpinjam = $_REQUEST[idpinjam];
 			$this->telat = $_REQUEST[telat];
+			$this->keterangan = CQ($_REQUEST[keterangan]);
 			
-			$sql = "UPDATE pinjam SET status=2, tglditerima='".$this->datenow."' WHERE replid=".$this->idpinjam;
+			$sql = "UPDATE pinjam SET status=2, tglditerima='".$this->datenow."',keterangan='$this->keterangan' WHERE replid='".$this->idpinjam."'";
 			QueryDb($sql);
 			
 			$sql = "UPDATE daftarpustaka SET status=1 WHERE kodepustaka='".$this->kodepustaka."'";
 			QueryDb($sql);
 			
 			if($this->denda!=0){
-				$sql = "INSERT INTO denda SET idpinjam=".$this->idpinjam.", denda=".$this->denda.", telat=".$this->telat;
+				$sql = "INSERT INTO denda SET idpinjam='".$this->idpinjam."', denda='".$this->denda."', telat='".$this->telat."'";
 				QueryDb($sql);
 			}
 			$this->ReloadPage();
@@ -174,6 +175,10 @@ class CKembali
                         	<input name="denda" id="denda" type="hidden" value="<?=$this->denda?>" />
                             <input name="idpinjam" id="idpinjam" type="hidden" value="<?=$this->idpinjam?>" />
                             <input name="telat" id="telat" type="hidden" value="<?=$this->telat?>" />                        </td>
+                      </tr>
+					  <tr>
+                        <td align="right">Keterangan</td>
+                        <td><textarea name="keterangan" id="keterangan" class="btnfrm" cols="100"></textarea></td>
                       </tr>
                     </table>
               </fieldset>

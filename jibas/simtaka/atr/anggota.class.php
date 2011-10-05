@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,11 +25,11 @@ class CAnggota{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM anggota WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM anggota WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		if ($op=="nyd6j287sy388s3h8s8"){
-			$sql = "UPDATE anggota SET aktif=$_REQUEST[newaktif] WHERE replid=$_REQUEST[replid]";
+			$sql = "UPDATE anggota SET aktif='$_REQUEST[newaktif]' WHERE replid='$_REQUEST[replid]'";
 			QueryDb($sql);
 		}
 	}
@@ -66,11 +66,11 @@ class CAnggota{
 			  while ($row=@mysql_fetch_array($result)){
 			  ?>
 			  <tr>
-				<td height="25" align="center"><?=$row[noregistrasi]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[nama]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[email]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[telpon]?></td>
-				<td height="25" align="center">&nbsp;<?=$row[keterangan]?></td>
+				<td height="25" align="center"><?=stripslashes($row[noregistrasi])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[nama])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[email])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[telpon])?></td>
+				<td height="25" align="center">&nbsp;<?=stripslashes($row[keterangan])?></td>
 				<td align="center">
                 	<? if ($row[aktif]==1) { ?>
 						<a href="javascript:setaktif(<?=$row[replid]?>,'0')"><img src="../img/ico/aktif.png" width="16" height="16" border="0" /></a>

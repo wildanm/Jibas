@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -111,7 +111,7 @@ $nrekening = getname2('nama',$db_name_fina.'.rekakun','kode',$koderek);
     </tr>
     <?
     OpenDb();
-    $sql = "SELECT date_format(j.tanggal, '%d-%b-%Y') AS tanggal, j.petugas, j.transaksi, j.keterangan, j.nokas, jd.debet, jd.kredit FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE j.replid = jd.idjurnal AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND jd.koderek = '$koderek' ORDER BY j.tanggal, j.petugas";
+    $sql = "SELECT date_format(j.tanggal, '%d-%b-%Y') AS tanggal, j.petugas, j.transaksi, j.keterangan, j.nokas, jd.debet, jd.kredit FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE j.replid = jd.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND jd.koderek = '$koderek' ORDER BY j.tanggal, j.petugas";
     $result = QueryDb($sql);
     $cnt = 0;
     $totaldebet = 0;

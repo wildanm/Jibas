@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,7 +29,7 @@ require_once('../lib/GetHeaderCetak.php');
 OpenDb();
 $departemen='yayasan';
 $rak = $_REQUEST[rak];
-$sql = "SELECT rak FROM rak WHERE replid=$rak";
+$sql = "SELECT rak FROM rak WHERE replid='$rak'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $namarak = $row[0];
@@ -72,8 +72,8 @@ Rak : <?=$namarak?></strong></div>
 	  $num = @mysql_num_rows($result);
 	  if ($num>0){
 		  while ($row=@mysql_fetch_array($result)){
-				$num_judul = @mysql_num_rows(QueryDb("SELECT * FROM pustaka p, katalog k WHERE k.replid=$row[replid] AND k.replid=p.katalog"));
-				$num_pustaka = @mysql_fetch_row(QueryDb("SELECT COUNT(d.replid) FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid AND k.replid=$row[replid] AND p.katalog=k.replid"));
+				$num_judul = @mysql_num_rows(QueryDb("SELECT * FROM pustaka p, katalog k WHERE k.replid='$row[replid]' AND k.replid=p.katalog"));
+				$num_pustaka = @mysql_fetch_row(QueryDb("SELECT COUNT(d.replid) FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid AND k.replid='$row[replid]' AND p.katalog=k.replid"));
 		  ?>
 		  <tr>
 			<td height="25" align="center"><?=$row[kode]?></td>

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -92,7 +92,7 @@ $departemen = $row[0];
 <tr>
 	<td><strong>Jenis Penerimaan</strong></td>
     <td><strong>:
-<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan"; 			
+<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'"; 			
 	$result = QueryDb($sql);    
 	$row = mysql_fetch_row($result);
 	echo  $row[0]; ?>
@@ -135,7 +135,7 @@ else
         $keterangan = "";
         $besar = "";
         $lunas = 0;
-        $sql = "SELECT replid AS id, besar, keterangan, lunas FROM besarjtt WHERE nis = '$nis' AND idpenerimaan = $idpenerimaan AND info2='$idtahunbuku'";
+        $sql = "SELECT replid AS id, besar, keterangan, lunas FROM besarjtt WHERE nis = '$nis' AND idpenerimaan = '$idpenerimaan' AND info2='$idtahunbuku'";
         $result = QueryDb($sql);
         $bayar = mysql_num_rows($result);
         
@@ -167,7 +167,7 @@ else
         <tr>
             <td width="25%"><strong>Pembayaran</strong></td>                
             <td><strong>: 
-			<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan"; 			
+			<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'"; 			
                 $result = QueryDb($sql);    
                 $row = mysql_fetch_row($result);
                 echo  $row[0]; ?>
@@ -252,7 +252,7 @@ else
 <tr>
     <td align="center" colspan="2"> 
 <? 
-    $sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+    $sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
     $nbayar = $row[0];
@@ -260,7 +260,7 @@ else
 	
 	$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.tanggal as tgl,p.keterangan, p.jumlah, p.petugas 
 			  FROM penerimaanjtt p, besarjtt b, jurnal j 
-			 WHERE p.idbesarjtt = b.replid AND b.info2='$idtahunbuku' AND j.replid = p.idjurnal AND b.replid = $idbesarjtt 
+			 WHERE p.idbesarjtt = b.replid AND b.info2='$idtahunbuku' AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt' 
 		  ORDER BY p.tanggal ASC";
     $result = QueryDb($sql);
    

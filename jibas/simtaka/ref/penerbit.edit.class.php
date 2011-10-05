@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,19 +25,19 @@ class CPenerbitEdit{
 	var $kode, $nama, $replid, $keterangan;
 	function OnStart(){
 		if (isset($_REQUEST[simpan])){
-			$sql = "SELECT kode FROM penerbit WHERE kode='$_REQUEST[kode]' AND replid <> $_REQUEST[replid]";
+			$sql = "SELECT kode FROM penerbit WHERE kode='".CQ($_REQUEST['kode'])."' AND replid <> '$_REQUEST[replid]'";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "UPDATE penerbit SET kode='$_REQUEST[kode]', nama='$_REQUEST[nama]', alamat='$_REQUEST[alamat]', telpon='$_REQUEST[telpon]', email='$_REQUEST[email]', fax='$_REQUEST[fax]', website='$_REQUEST[website]', kontak='$_REQUEST[kontak]', keterangan='$_REQUEST[keterangan]' WHERE replid=$_REQUEST[replid]";
+				$sql = "UPDATE penerbit SET kode='".CQ($_REQUEST['kode'])."', nama='".CQ($_REQUEST['nama'])."', alamat='".CQ($_REQUEST['alamat'])."', telpon='".CQ($_REQUEST['telpon'])."', email='".CQ($_REQUEST['email'])."', fax='".CQ($_REQUEST['fax'])."', website='".CQ($_REQUEST['website'])."', kontak='".CQ($_REQUEST['kontak'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$_REQUEST[replid]'";
 				$result = QueryDb($sql);
 				if ($result)
 					$this->success();
 			}
 		} else {
-			$sql = "SELECT * FROM penerbit WHERE replid=$_REQUEST[id]";
+			$sql = "SELECT * FROM penerbit WHERE replid='$_REQUEST[id]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->replid = $_REQUEST[id];

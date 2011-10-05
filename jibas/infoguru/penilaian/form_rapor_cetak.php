@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,8 +37,8 @@ OpenDb();
 $sql = "SELECT k.kelas AS namakelas, s.semester AS namasemester, a.tahunajaran, a.departemen, 
 			   l.nama, t.tingkat, t.replid AS idtingkat, p.nama AS guru, s.departemen as dep 
 		  FROM kelas k, semester s, tahunajaran a, pelajaran l, tingkat t, jbssdm.pegawai p 
-		 WHERE k.replid = $kelas AND s.replid = $semester AND  k.idtahunajaran = a.replid 
-		   AND t.replid = k.idtingkat AND l.replid = $pelajaran AND p.nip = '$nip'";
+		 WHERE k.replid = '$kelas' AND s.replid = '$semester' AND  k.idtahunajaran = a.replid 
+		   AND t.replid = k.idtingkat AND l.replid = '$pelajaran' AND p.nip = '$nip'";
 $result = QueryDb($sql);
 $rowinfo = mysql_fetch_array($result);
 ?>
@@ -89,8 +89,8 @@ $rowinfo = mysql_fetch_array($result);
 
 $sql = "SELECT DISTINCT a.dasarpenilaian, d.keterangan
 		  FROM aturannhb a, kelas k, dasarpenilaian d
-		 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = $kelas
-		   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = d.dasarpenilaian";
+		 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = '$kelas'
+		   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = d.dasarpenilaian";
   
 $resaspek = QueryDb($sql);
 while($rowaspek = mysql_fetch_row($resaspek))
@@ -101,8 +101,8 @@ while($rowaspek = mysql_fetch_row($resaspek))
 	// Hitung jumlah bobot dan banyaknya aturan
 	$sql = "SELECT SUM(bobot) as bobotPK, COUNT(a.replid) 
 			  FROM jbsakad.aturannhb a, kelas k 
-			 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = $kelas 
-			   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = '$aspek' AND a.aktif = 1";
+			 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = '$kelas' 
+			   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = '$aspek' AND a.aktif = 1";
 	$res = QueryDb($sql);
 	$row = @mysql_fetch_row($res);
 	$bobot_PK = $row[0];
@@ -111,8 +111,8 @@ while($rowaspek = mysql_fetch_row($resaspek))
 	// get jumlah pengujian
 	$sql = "SELECT j.jenisujian as jenisujian, a.bobot as bobot, a.replid, a.idjenisujian 
 			  FROM jbsakad.aturannhb a, jbsakad.jenisujian j, kelas k 
-			 WHERE a.idtingkat = k.idtingkat AND k.replid = $kelas AND a.nipguru = '$nip' 
-			   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = '$aspek' 
+			 WHERE a.idtingkat = k.idtingkat AND k.replid = '$kelas' AND a.nipguru = '$nip' 
+			   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = '$aspek' 
 			   AND a.idjenisujian = j.replid AND a.aktif = 1 
 		  ORDER BY a.replid"; 
 	$result_get_aturan_PK = QueryDb($sql);
@@ -158,10 +158,10 @@ while($rowaspek = mysql_fetch_row($resaspek))
 		{ 
 			$sql = "SELECT n.nilaiAU as nilaiujian 
 			          FROM jbsakad.nau n, jbsakad.aturannhb a 
-				     WHERE n.idpelajaran = $pelajaran AND n.idkelas = $kelas 
-					   AND n.nis = '$row_siswa[nis]' AND n.idsemester = $semester 
-				       AND n.idjenis = $value[2] AND n.idaturan = a.replid 
-					   AND a.replid = $value[0]";
+				     WHERE n.idpelajaran = '$pelajaran' AND n.idkelas = '$kelas' 
+					   AND n.nis = '$row_siswa[nis]' AND n.idsemester = '$semester' 
+				       AND n.idjenis = '$value[2]' AND n.idaturan = a.replid 
+					   AND a.replid = '$value[0]'";
 			$res = QueryDb($sql);
 			$row = @mysql_fetch_array($res);
 			echo "<td align='center'>" . $row['nilaiujian'] . "</td>";

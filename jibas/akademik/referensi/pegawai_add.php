@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,22 +35,22 @@ OpenDb();
 $bagian = $_REQUEST["bagian"];
 $nip = "";
 if (isset($_REQUEST['nip']))
-	$nip = $_REQUEST['nip'];
+	$nip = CQ($_REQUEST['nip']);
 $nama = "";
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 $gelar = "";
 if (isset($_REQUEST['gelar']))
-	$gelar = $_REQUEST['gelar'];
+	$gelar = CQ($_REQUEST['gelar']);
 $panggilan = "";
 if (isset($_REQUEST['panggilan']))
-	$panggilan = $_REQUEST['panggilan'];
+	$panggilan = CQ($_REQUEST['panggilan']);
 $kelamin = "l";
 if (isset($_REQUEST['kelamin']))
 	$kelamin = $_REQUEST['kelamin'];
 $tempatlahir = "";
 if (isset($_REQUEST['tempatlahir']))
-	$tempatlahir = $_REQUEST['tempatlahir'];
+	$tempatlahir = CQ($_REQUEST['tempatlahir']);
 if (isset($_REQUEST['tgllahir']))
 	$tgllahir = (int)$_REQUEST['tgllahir'];
 if (isset($_REQUEST['blnlahir']))
@@ -68,25 +68,25 @@ if (isset($_REQUEST['menikah']))
 	$menikah = $_REQUEST['menikah'];
 $identitas = "";
 if (isset($_REQUEST['identitas']))
-	$identitas = $_REQUEST['identitas'];
+	$identitas = CQ($_REQUEST['identitas']);
 $alamat = "";
 if (isset($_REQUEST['alamat']))
-	$alamat = $_REQUEST['alamat'];
+	$alamat = CQ($_REQUEST['alamat']);
 $telpon = "";
 if (isset($_REQUEST['telpon']))
-	$telpon = $_REQUEST['telpon'];
+	$telpon = CQ($_REQUEST['telpon']);
 $handphone = "";
 if (isset($_REQUEST['handphone']))
 	$handphone = $_REQUEST['handphone'];
 	$handphone=trim($_REQUEST['handphone']);
-    $handphone=str_replace(' ','',$handphone);
+    $handphone=str_replace(' ','',CQ($handphone));
 $email = "";
 if (isset($_REQUEST['email']))
-	$email = $_REQUEST['email'];
+	$email = CQ($_REQUEST['email']);
 
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 
 $n = JmlHari($blnlahir, $thnlahir);	
 

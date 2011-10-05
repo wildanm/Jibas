@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -111,7 +111,7 @@ for($i = 1; $i <= 6; $i++) {
 loadJam($departemen);
 loadJadwal();
 
-$sql = "SELECT DISTINCT i.deskripsi, k.kelas, t.tahunajaran FROM jadwal j, infojadwal i, kelas k, tahunajaran t WHERE j.idkelas = k.replid AND j.infojadwal = i.replid AND j.departemen = '$departemen' AND j.infojadwal = $info AND j.idkelas = $kelas AND k.idtahunajaran = t.replid";
+$sql = "SELECT DISTINCT i.deskripsi, k.kelas, t.tahunajaran FROM jadwal j, infojadwal i, kelas k, tahunajaran t WHERE j.idkelas = k.replid AND j.infojadwal = i.replid AND j.departemen = '$departemen' AND j.infojadwal = '$info' AND j.idkelas = '$kelas' AND k.idtahunajaran = t.replid";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 

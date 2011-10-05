@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -57,14 +57,14 @@ $op = $_REQUEST['op'];
 
 if ($op == "dw8dxn8w9ms8zs22") {
 	OpenDb();
-	$sql = "UPDATE prosespenerimaansiswa SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE prosespenerimaansiswa SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
-	$sql1 = "UPDATE prosespenerimaansiswa SET aktif = 0 WHERE replid <> $_REQUEST[replid] AND departemen = '$_REQUEST[departemen]'";
+	$sql1 = "UPDATE prosespenerimaansiswa SET aktif = 0 WHERE replid <> '$_REQUEST[replid]' AND departemen = '$_REQUEST[departemen]'";
 	QueryDb($sql1);
 	CloseDb();
 } else if ($op == "xm8r389xemx23xb2378e23") {
 	OpenDb();
-	$sql = "DELETE FROM prosespenerimaansiswa WHERE replid = $_REQUEST[replid]";
+	$sql = "DELETE FROM prosespenerimaansiswa WHERE replid = '$_REQUEST[replid]'";
 	QueryDb($sql);
 	CloseDb();	
 $page=0;
@@ -261,7 +261,7 @@ function change_baris() {
 			$cnt = (int)$page*(int)$varbaris;
 			
 		while ($row = @mysql_fetch_array($result)) {
-			$sql1 = "SELECT COUNT(c.replid) AS jumlah FROM calonsiswa c WHERE c.idproses = $row[replid] AND c.aktif = 1"; 
+			$sql1 = "SELECT COUNT(c.replid) AS jumlah FROM calonsiswa c WHERE c.idproses = '$row[replid]' AND c.aktif = 1"; 
 			$result1 = QueryDb($sql1);	
 			$row1 = mysql_fetch_array($result1);
 ?>			

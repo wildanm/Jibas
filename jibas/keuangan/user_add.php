@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ if (isset($_REQUEST['departemen']))
 	$departemen = $_REQUEST['departemen'];
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 
 //Ini tuk ngecek user sudah punya login apa belum
 $sql_cek = "SELECT * FROM jbsuser.login WHERE login = '$_REQUEST[nip]'";
@@ -95,7 +95,7 @@ if (isset($_REQUEST['simpan'])) {
 	}	
 	
   	//cek apakah sudah ada account yang sama di SIMAKA
-	$query_c = "SELECT * FROM jbsuser.hakakses WHERE login = '$_REQUEST[nip]' AND tingkat = $tingkat AND modul = 'KEUANGAN' $sql_dep";
+	$query_c = "SELECT * FROM jbsuser.hakakses WHERE login = '$_REQUEST[nip]' AND tingkat = '$tingkat' AND modul = 'KEUANGAN' $sql_dep";
 	$result_c = QueryDb($query_c);
     $num_c = @mysql_num_rows($result_c);
 	

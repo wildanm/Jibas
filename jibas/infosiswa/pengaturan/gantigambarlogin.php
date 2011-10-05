@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -49,13 +49,13 @@ if (isset($_REQUEST['op']))
 	$op = $_REQUEST['op'];
 
 if ($op == "dw8dxn8w9ms8zs22") {
-	$sql = "UPDATE jbsvcr.gambarlogin SET aktif = 1 WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE jbsvcr.gambarlogin SET aktif = 1 WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
-	$sql2 = "UPDATE jbsvcr.gambarlogin SET aktif = 0 WHERE replid <> $_REQUEST[replid] ";
+	$sql2 = "UPDATE jbsvcr.gambarlogin SET aktif = 0 WHERE replid <> '$_REQUEST[replid]' ";
 	QueryDb($sql2);
 } 
 if ($op == "fckgwrhqq2yxrkt8tg6w2b7q8") {
-	$sql = "SELECT * FROM jbsvcr.gambarlogin WHERE replid = $_REQUEST[replid] ";
+	$sql = "SELECT * FROM jbsvcr.gambarlogin WHERE replid = '$_REQUEST[replid]' ";
 	$res = QueryDb($sql);
 	$row = @mysql_fetch_array($res);
 	if ($row[aktif]==1){
@@ -64,7 +64,7 @@ if ($op == "fckgwrhqq2yxrkt8tg6w2b7q8") {
 		$res2 = QueryDb($sql2);
 		$row2 = @mysql_fetch_array($res2);
 		$akt2 = $row2[replid];
-		$sql3 = "UPDATE jbsvcr.gambarlogin SET aktif=1 WHERE replid = $akt2";
+		$sql3 = "UPDATE jbsvcr.gambarlogin SET aktif=1 WHERE replid = '$akt2'";
 		//echo $sql3;
 		$res3 = QueryDb($sql3);
 	}
@@ -72,7 +72,7 @@ if ($op == "fckgwrhqq2yxrkt8tg6w2b7q8") {
 	//echo $filename ;
 	if ($row['direktori']!="" && $row['namafile']!=""){
 	delete($filename);
-	$sql4 = "DELETE FROM jbsvcr.gambarlogin WHERE replid = $_REQUEST[replid]";
+	$sql4 = "DELETE FROM jbsvcr.gambarlogin WHERE replid = '$_REQUEST[replid]'";
 	$res4 = QueryDb($sql4);
 	} else {
 	exit;

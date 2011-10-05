@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -64,9 +64,9 @@ if (isset($_REQUEST['Simpan'])) {
 	//$idtahunbuku = $_REQUEST['idtahunbuku'];
 	$tanggal = MySqlDateFormat($_REQUEST['tcicilan']);
 	//$nokas = $_REQUEST['nokas'];
-	$transaksi = $_REQUEST['keperluan'];
-	$keterangan = $_REQUEST['keterangan'];
-	$alasan = $_REQUEST['alasan'];
+	$transaksi = CQ($_REQUEST['keperluan']);
+	$keterangan = CQ($_REQUEST['keterangan']);
+	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 		
 	OpenDb();
@@ -86,7 +86,7 @@ if (isset($_REQUEST['Simpan'])) {
 	$petugasjurnal = $row['petugas'];
 	$ketjurnal = $row['keterangan'];
 		
-	$sql = "INSERT INTO auditinfo SET departemen='$departemen', sumber='$sumberjurnal', idsumber=$idjurnal, tanggal=now(), petugas='$petugas', alasan = '$alasan'";
+	$sql = "INSERT INTO auditinfo SET departemen='$departemen', sumber='$sumberjurnal', idsumber='$idjurnal', tanggal=now(), petugas='$petugas', alasan = '$alasan'";
 	QueryDbTrans($sql, $success);
 	//echo  "$success $sql<br>";
 	
@@ -101,13 +101,13 @@ if (isset($_REQUEST['Simpan'])) {
 	if ($success) {
 		$sql = "INSERT INTO auditjurnal SET status=0, idaudit=" . $idaudit . ", replid=" . $idjurnal . ", " .
 			   " tanggal='$tgljurnal', transaksi='$transaksijurnal', petugas='$petugasjurnal', " .
-			   " nokas='$nokas', idtahunbuku=$idtahunbuku, keterangan='$ketjurnal', sumber='$sumberjurnal'";
+			   " nokas='$nokas', idtahunbuku='$idtahunbuku', keterangan='$ketjurnal', sumber='$sumberjurnal'";
 		QueryDbTrans($sql, $success);
 		//echo  "$success $sql<br>";
 	}
 	
 	if ($success) {
-		$sql = "SELECT * FROM jurnaldetail WHERE idjurnal=$idjurnal";
+		$sql = "SELECT * FROM jurnaldetail WHERE idjurnal='$idjurnal'";
 		$result = QueryDb($sql);
 		while($row = mysql_fetch_array($result)) {
 			$sql = "INSERT INTO auditjurnaldetail SET status=0, idaudit=" . $idaudit . ", idjurnal=". $idjurnal . ", " .
@@ -118,17 +118,17 @@ if (isset($_REQUEST['Simpan'])) {
 	}
 		   
 	
-	$sql = "UPDATE jurnal SET tanggal='$tanggal', transaksi='$transaksi', petugas='$petugas', idtahunbuku=$idtahunbuku, keterangan='$keterangan' WHERE replid=$idjurnal";
+	$sql = "UPDATE jurnal SET tanggal='$tanggal', transaksi='$transaksi', petugas='$petugas', idtahunbuku='$idtahunbuku', keterangan='$keterangan' WHERE replid='$idjurnal'";
 	if ($success) QueryDbTrans($sql, $success);
 	//echo  "$success $sql<br>";
 	
 	$sql = "INSERT INTO auditjurnal SET status=1, idaudit=$idaudit, replid=$idjurnal, " .
 		   " tanggal='$tanggal', transaksi='$transaksi', petugas='$petugas', " .
-		   " nokas='$nokas', idtahunbuku=$idtahunbuku, keterangan='$keterangan', sumber='$sumberjurnal'";
+		   " nokas='$nokas', idtahunbuku='$idtahunbuku', keterangan='$keterangan', sumber='$sumberjurnal'";
 	if ($success) QueryDbTrans($sql, $success);
 	//echo  "$success $sql<br>";
 	
-	$sql = "DELETE FROM jurnaldetail WHERE idjurnal=$idjurnal";
+	$sql = "DELETE FROM jurnaldetail WHERE idjurnal='$idjurnal'";
 	if ($success) QueryDbTrans($sql, $success);
 	//echo  "$success $sql<br>";
 	
@@ -142,11 +142,11 @@ if (isset($_REQUEST['Simpan'])) {
 		
 	
 		if (strlen(trim($koderek)) > 0) {
-			$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal, koderek='$koderek', debet=$debet, kredit=$kredit";
+			$sql = "INSERT INTO jurnaldetail SET idjurnal='$idjurnal', koderek='$koderek', debet='$debet', kredit='$kredit'";
 			if ($success) QueryDbTrans($sql, $success);
 			//echo  "$success $sql<br>";
 			
-			$sql = "INSERT INTO auditjurnaldetail SET status=1, idaudit=$idaudit, idjurnal=$idjurnal, koderek='$koderek', debet=$debet, kredit=$kredit";
+			$sql = "INSERT INTO auditjurnaldetail SET status=1, idaudit='$idaudit', idjurnal='$idjurnal', koderek='$koderek', debet='$debet', kredit='$kredit'";
 			if ($success) QueryDbTrans($sql, $success);
 			//echo  "$success $sql<br>";
 		}
@@ -172,7 +172,7 @@ if (isset($_REQUEST['Simpan'])) {
 
 OpenDb();
 
-$sql = "SELECT date_format(tanggal, '%d-%m-%Y') as tanggal, transaksi, petugas, nokas, idtahunbuku, keterangan FROM jurnal WHERE replid = $idjurnal";
+$sql = "SELECT date_format(tanggal, '%d-%m-%Y') as tanggal, transaksi, petugas, nokas, idtahunbuku, keterangan FROM jurnal WHERE replid = '$idjurnal'";
 
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
@@ -188,7 +188,7 @@ if (isset($_REQUEST['tcicilan']))
 if (isset($_REQUEST['keperluan']))
 	$transaksi = $_REQUEST['keperluan'];
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -454,7 +454,7 @@ function focusNext(elemName, evt) {
             <td class="header" align="center">Debet</td>
             <td class="header" align="center">Kredit</td>
         </tr>
-<?		$sql = "SELECT jd.koderek, ra.nama, jd.debet, jd.kredit FROM jurnaldetail jd, rekakun ra WHERE jd.koderek = ra.kode AND jd.idjurnal=$idjurnal ORDER BY jd.replid"; 
+<?		$sql = "SELECT jd.koderek, ra.nama, jd.debet, jd.kredit FROM jurnaldetail jd, rekakun ra WHERE jd.koderek = ra.kode AND jd.idjurnal='$idjurnal' ORDER BY jd.replid"; 
 		$result = QueryDb($sql);
 		$i = 1;
 		$jumdeb = 0;

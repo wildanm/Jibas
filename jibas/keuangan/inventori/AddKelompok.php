@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -26,7 +26,7 @@ require_once('../include/db_functions.php');
 OpenDb();
 $idgroup = $_REQUEST[idgroup];
 if (isset($_REQUEST['Simpan'])){
-	$sql = "SELECT * FROM jbsfina.kelompokbarang WHERE kelompok='$_REQUEST[kelompokname]' AND idgroup='$_REQUEST[idgroup]'";
+	$sql = "SELECT * FROM jbsfina.kelompokbarang WHERE kelompok='".addslashes(trim($_REQUEST[kelompokname]))."' AND idgroup='$_REQUEST[idgroup]'";
 	if (@mysql_num_rows(QueryDb($sql))>0){
 		?>
         <script language="javascript">
@@ -34,7 +34,7 @@ if (isset($_REQUEST['Simpan'])){
         </script>
         <?
 	} else {
-		QueryDb("INSERT INTO jbsfina.kelompokbarang SET kelompok='$_REQUEST[kelompokname]', keterangan='$_REQUEST[keterangan]',idgroup='$_REQUEST[idgroup]'");
+		QueryDb("INSERT INTO jbsfina.kelompokbarang SET kelompok='".addslashes(trim($_REQUEST[kelompokname]))."', keterangan='".addslashes(trim($_REQUEST[keterangan]))."',idgroup='$_REQUEST[idgroup]'");
 		?>
         <script language="javascript">
 			parent.opener.GetFresh();
@@ -70,11 +70,11 @@ function validate(){
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td>Nama Kelompok</td>
-    <td><input name="kelompokname" id="kelompokname" type="text" maxlength="45" style="width:100%" value="<?=$_REQUEST[kelompokname]?>" /></td>
+    <td><input name="kelompokname" id="kelompokname" type="text" maxlength="45" style="width:100%" value="<?=stripslashes($_REQUEST[kelompokname])?>" /></td>
   </tr>
   <tr>
     <td>Keterangan</td>
-    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=$_REQUEST[keterangan]?></textarea></td>
+    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=stripslashes($_REQUEST[keterangan])?></textarea></td>
   </tr>
   <tr>
     <td colspan="2" align="center"><input class="but" type="submit" name="Simpan" value="Simpan" />&nbsp;&nbsp;<input type="button" value="Batal" onClick="window.close()" class="but" /></td>

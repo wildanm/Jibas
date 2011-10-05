@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -51,7 +51,7 @@ if (isset($_REQUEST['op']))
 	$op = $_REQUEST['op'];
 
 if ($op == "dw8dxn8w9ms8zs22") {
-	$sql = "UPDATE jbssdm.pegawai SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE jbssdm.pegawai SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
 } else if ($op == "xm8r389xemx23xb2378e23") {
 	$sql = "DELETE FROM jbssdm.pegawai WHERE replid = '$_REQUEST[replid]'";
@@ -62,7 +62,7 @@ if ($op == "dw8dxn8w9ms8zs22") {
 
 if ($op == "fdgfde342ft45tgwer34rfwef") {
 	$pin = random(5);
-	$sql = "UPDATE jbssdm.pegawai SET $_REQUEST[field] = '$pin' WHERE nip = '$_REQUEST[nip]'";
+	$sql = "UPDATE jbssdm.pegawai SET `$_REQUEST[field]` = '$pin' WHERE nip = '$_REQUEST[nip]'";
 	QueryDb($sql);
 }
 

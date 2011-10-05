@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -99,7 +99,7 @@ $jenis = $row['replid'];
             <td><strong>: <?=$namajenis?></strong></td>  
 <? 	$sql_cek_ujian = "SELECT u.replid, u.tanggal, u.deskripsi, u.idrpp 
 						FROM jbsakad.ujian u 
-					   WHERE u.idaturan=$idaturan AND u.idkelas=$kelas AND u.idsemester=$semester ORDER by u.tanggal ASC";
+					   WHERE u.idaturan='$idaturan' AND u.idkelas='$kelas' AND u.idsemester='$semester' ORDER by u.tanggal ASC";
     $result_cek_ujian = QueryDb($sql_cek_ujian);		
 	$jumlahujian = @mysql_num_rows($result_cek_ujian); ?>            
   		</tr>
@@ -107,14 +107,14 @@ $jenis = $row['replid'];
         <br />
   		<table border="1" width="100%" id="table" class="tab">
        	<tr>
-            <td height="30" bgcolor="#666666" width="5"><font color="white"><strong>No.</strong></font></td>
-    		<td height="30" bgcolor="#666666"><font color="white"><strong>N I S</strong></font></td>
-    		<td height="30" bgcolor="#666666"><font color="white"><strong>Nama</strong></font></td>
+            <td height="30" bgcolor="#666666" width="5" align='center'><font color="white"><strong>No.</strong></font></td>
+    		<td height="30" bgcolor="#666666" align='center'><font color="white"><strong>N I S</strong></font></td>
+    		<td height="30" bgcolor="#666666" align='center'><font color="white"><strong>Nama</strong></font></td>
     <?
        
         $i=1;
         while ($row_cek_ujian=@mysql_fetch_array($result_cek_ujian)){
-			$sql_get_rpp_name = "SELECT rpp FROM rpp WHERE replid=$row_cek_ujian[idrpp]";
+			$sql_get_rpp_name = "SELECT rpp FROM rpp WHERE replid='$row_cek_ujian[idrpp]'";
 			if (!empty($row_cek_ujian[idrpp])) {
 				$res_get_rpp_name = QueryDb($sql_get_rpp_name);
 				$rpp = @mysql_fetch_array($res_get_rpp_name);
@@ -152,7 +152,7 @@ $jenis = $row['replid'];
     <td height="25" align="left"><?=$row_siswa['nama']?></td>
     <? 	for ($j=1;$j<=count($idujian);$j++) { ?>
             <td align="center">							
-			<?	$sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian=$idujian[$j] AND nis='$row_siswa[nis]'";
+			<?	$sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian='$idujian[$j]' AND nis='$row_siswa[nis]'";
                 $result_cek_nilai_ujian=QueryDb($sql_cek_nilai_ujian);
                	
                     $row_cek_nilai_ujian=@mysql_fetch_array($result_cek_nilai_ujian);
@@ -170,7 +170,7 @@ $jenis = $row['replid'];
     		<td align="center"><?=round($nilai/count($idujian),2)?></td>
     		<td align="center">
 	<?					
-			$sql_get_nau_per_nis="SELECT nilaiAU,replid,keterangan FROM jbsakad.nau WHERE nis='$row_siswa[nis]' AND idkelas='$kelas' AND idsemester='$semester' AND idaturan='$idaturan'";
+			$sql_get_nau_per_nis="SELECT nilaiAU,replid,keterangan,info1 FROM jbsakad.nau WHERE nis='$row_siswa[nis]' AND idkelas='$kelas' AND idsemester='$semester' AND idaturan='$idaturan'";
 		
 			//echo $sql_get_nau_per_nis;			
 			$result_get_nau_per_nis=QueryDb($sql_get_nau_per_nis);
@@ -178,8 +178,10 @@ $jenis = $row['replid'];
 				$row_get_nau_per_nis=@mysql_fetch_array($result_get_nau_per_nis);
 				
 				echo $row_get_nau_per_nis['nilaiAU'];
-				if ($row_get_nau_per_nis[keterangan]<>"")
+				if ($row_get_nau_per_nis['keterangan']<>"")
 					echo "<font color='#067900'><strong>)*</strong></font>";
+				if ($row_get_nau_per_nis['info1']<>"")
+					echo "&nbsp;<font color='blue'><strong>)*</strong></font>";
 			} ?>
             </td>
     	</tr>
@@ -212,7 +214,7 @@ $jenis = $row['replid'];
 </td>
     </tr>
     <tr>
-    	<td><strong><font color="blue">)*</font> ada keterangan &nbsp;&nbsp; 
+    	<td><strong><font color="blue">)*</font> ada perubahan nilai akhir individual &nbsp;&nbsp; 
 		<font color="#067900">)*</font> Nilai Akhir Siswa dihitung manual </strong>
         </td>
    	</tr>

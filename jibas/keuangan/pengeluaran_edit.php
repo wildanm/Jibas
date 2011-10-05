@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -45,8 +45,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$idtahunbuku = $_REQUEST['idtahunbuku'];
 	$idpengeluaran = $_REQUEST['idpengeluaran'];
 	$idjurnal = $_REQUEST['idjurnal'];
-	$keperluan = $_REQUEST['keperluan'];
-	$keterangan = $_REQUEST['keterangan'];
+	$keperluan = CQ($_REQUEST['keperluan']);
+	$keterangan = CQ($_REQUEST['keterangan']);
 	$jenispemohon = $_REQUEST['spemohon'];
 	$idpemohon = $_REQUEST['idpemohon'];
 	$namapemohon = $_REQUEST['namapemohon'];
@@ -54,7 +54,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$tanggal = $_REQUEST['tcicilan'];
 	$tanggal = MySqlDateFormat($tanggal);
 	$jumlahawal = $_REQUEST['jumlahawal'];
-	$alasan = $_REQUEST['alasan'];
+	$alasan = CQ($_REQUEST['alasan']);
 	$jumlah = $_REQUEST['jumlah'];
 	$jumlah = UnformatRupiah($jumlah);
 	$petugas = getUserName();
@@ -72,20 +72,20 @@ if (1 == (int)$_REQUEST['issubmit'])
 	else if ($jenispemohon == 2)
 		$sqlpemohon = "jenispemohon=2, namapemohon='$namapemohon', nis='$idpemohon', nip=null, pemohonlain=null";
 	else if ($jenispemohon == 3)
-		$sqlpemohon = "jenispemohon=3, namapemohon='$namapemohon', pemohonlain=$idpemohon, nip=null, nis=null";
+		$sqlpemohon = "jenispemohon=3, namapemohon='$namapemohon', pemohonlain='$idpemohon', nip=null, nis=null";
 	
 	$sql = "UPDATE pengeluaran 
-			   SET idpengeluaran=$idpengeluaran, tanggal='$tanggal', jumlah=$jumlah, 
+			   SET idpengeluaran='$idpengeluaran', tanggal='$tanggal', jumlah='$jumlah', 
 				   keperluan='$keperluan', keterangan='$keterangan', petugas='$petugas', penerima='$penerima', 
 				   $sqlpemohon, alasan='$alasan' 
-		     WHERE replid = $idtransaksi";
+		     WHERE replid = '$idtransaksi'";
 	QueryDbTrans($sql, $success);
 		
-	$sql = "UPDATE jurnal SET idtahunbuku = $idtahunbuku, transaksi='$keperluan' WHERE replid = $idjurnal";
+	$sql = "UPDATE jurnal SET idtahunbuku = '$idtahunbuku', transaksi='$keperluan' WHERE replid = '$idjurnal'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
 	
-	$sql = "DELETE FROM jurnaldetail WHERE idjurnal = $idjurnal";
+	$sql = "DELETE FROM jurnaldetail WHERE idjurnal = '$idjurnal'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
 	
@@ -117,7 +117,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 
 $sql = "SELECT idpengeluaran, keperluan, keterangan, jenispemohon, nip, nis, 
 			   pemohonlain, penerima, date_format(tanggal, '%d-%m%-%Y') AS tanggal, jumlah, idjurnal 
-          FROM pengeluaran WHERE replid = $idtransaksi";
+          FROM pengeluaran WHERE replid = '$idtransaksi'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 
@@ -148,7 +148,7 @@ else if ($row['jenispemohon'] == 2)
 else 
 {
 	$idpemohon = $row[pemohonlain];
-	$sql = "SELECT nama FROM pemohonlain WHERE replid = $row[pemohonlain]";
+	$sql = "SELECT nama FROM pemohonlain WHERE replid = '$row[pemohonlain]'";
 	$jenisinfo = "pemohon lain";
 }
 $result = QueryDb($sql);
@@ -171,24 +171,24 @@ if (isset($_REQUEST['keterangan']))
 	$keterangan = $_REQUEST['keterangan'];
 	
 //Ambil rek akun debet dan kredit dari jurnal detail
-$sql = "SELECT koderek FROM jurnaldetail WHERE idjurnal=$idjurnal AND kredit=0";
+$sql = "SELECT koderek FROM jurnaldetail WHERE idjurnal='$idjurnal' AND kredit=0";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $rekdebet = $row[0];
 
 //Ambil rek akun debet dan kredit dari jurnal detail
-$sql = "SELECT koderek FROM jurnaldetail WHERE idjurnal=$idjurnal AND debet=0";
+$sql = "SELECT koderek FROM jurnaldetail WHERE idjurnal='$idjurnal' AND debet=0";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $rekkredit = $row[0];
 
-$sql = "SELECT nama, departemen FROM datapengeluaran WHERE replid = $idpengeluaran";
+$sql = "SELECT nama, departemen FROM datapengeluaran WHERE replid = '$idpengeluaran'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapengeluaran = $row[0];
 $departemen = $row[1];
 
-$sql = "SELECT idtahunbuku FROM jurnal WHERE replid = $idjurnal";
+$sql = "SELECT idtahunbuku FROM jurnal WHERE replid = '$idjurnal'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $idtahunbuku = $row[0];
@@ -390,7 +390,7 @@ function panggil(elem)
         <td><strong>Rek. Kredit</strong></td>
         <td colspan="2">
         <select name="rekkredit" id="rekkredit" style="width:225px" onKeyPress="return focusNext('rekdebet', event)" onFocus="panggil('rekkredit')">
-    <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekkredit AND dp.replid = $idpengeluaran) ORDER BY kode";
+    <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekkredit AND dp.replid = '$idpengeluaran') ORDER BY kode";
         $result = QueryDb($sql);
         while ($row = mysql_fetch_row($result)) { ?>    
             <option value="<?=$row[0] ?>" <?=StringIsSelected($row[0], $rekkredit)?> > <?=$row[0] . " " . $row[1] ?></option>
@@ -402,7 +402,7 @@ function panggil(elem)
         <td><strong>Rek. Debet</strong> </td>
         <td colspan="2">
         <select name="rekdebet" id="rekdebet" style="width:225px" onKeyPress="return focusNext('penerima', event)" onFocus="panggil('rekdebet')">
-    <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekdebet AND dp.replid = $idpengeluaran) ORDER BY kode";
+    <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekdebet AND dp.replid = '$idpengeluaran') ORDER BY kode";
         $result = QueryDb($sql);
         while ($row = mysql_fetch_row($result)) { ?>    
             <option value="<?=$row[0] ?>" <?=StringIsSelected($row[0], $rekdebet)?> > <?=$row[0] . " " . $row[1] ?></option>
@@ -463,7 +463,7 @@ function panggil(elem)
     </tr>
     <tr>
         <td align="center" colspan="3">
-        <input type="button" name="Simpan" value="Simpan" id="Simpan" class="but" onclick="this.disabled = true; ValidateSubmit();" />&nbsp;
+        <input type="button" name="Simpan" value="Simpan" id="Simpan" class="but" onClick="this.disabled = true; ValidateSubmit();" />&nbsp;
         <input type="button" value="Tutup" class="but" onClick="window.close()" />
         </td>
     </tr>

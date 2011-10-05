@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -75,7 +75,7 @@ if ($op == "dw8dxn8w9ms8zs22") {
 		$replid = $_REQUEST['replid'];
 		
 	OpenDb();
-	$sql = "UPDATE kelas SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE kelas SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	$result=QueryDb($sql);
 	if ($result)
 		CloseDb();
@@ -85,7 +85,7 @@ if ($op == "dw8dxn8w9ms8zs22") {
 		if (isset($_REQUEST['replid']))
 		$replid = $_REQUEST['replid'];
 	OpenDb();
-	$sql = "DELETE FROM kelas WHERE replid = $_REQUEST[replid]";
+	$sql = "DELETE FROM kelas WHERE replid = '$_REQUEST[replid]'";
 	QueryDb($sql);
 	$result=QueryDb($sql);
 	if ($result) { 
@@ -244,13 +244,13 @@ function change_baris() {
 	<!--<td background="../images/ico/b_kelas.png" style="background-repeat:no-repeat; background-attachment:fixed; margin-left:10">-->
 <? 
 	OpenDb();
-	$sql_tot = "SELECT k.replid, k.kelas, k.idtahunajaran, k.kapasitas, k.nipwali, k.aktif, k.keterangan, t.replid, t.tahunajaran, t.departemen, p.nama FROM kelas k, tahunajaran t, jbssdm.pegawai p WHERE t.replid='$tahunajaran' AND k.idtahunajaran=t.replid AND k.nipwali=p.nip AND t.departemen='$departemen' AND k.idtingkat=$tingkat GROUP BY k.replid";
+	$sql_tot = "SELECT k.replid, k.kelas, k.idtahunajaran, k.kapasitas, k.nipwali, k.aktif, k.keterangan, t.replid, t.tahunajaran, t.departemen, p.nama FROM kelas k, tahunajaran t, jbssdm.pegawai p WHERE t.replid='$tahunajaran' AND k.idtahunajaran=t.replid AND k.nipwali=p.nip AND t.departemen='$departemen' AND k.idtingkat='$tingkat' GROUP BY k.replid";
 	$result_tot = QueryDb($sql_tot);
 	$total = ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql_kelas = "SELECT k.replid, k.kelas, k.idtahunajaran, k.kapasitas, k.nipwali, k.aktif, k.keterangan, t.replid, t.tahunajaran, t.departemen, p.nama FROM kelas k, tahunajaran t, jbssdm.pegawai p WHERE t.replid='$tahunajaran' AND k.idtahunajaran=t.replid AND k.nipwali=p.nip AND t.departemen='$departemen' AND k.idtingkat=$tingkat GROUP BY k.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+	$sql_kelas = "SELECT k.replid, k.kelas, k.idtahunajaran, k.kapasitas, k.nipwali, k.aktif, k.keterangan, t.replid, t.tahunajaran, t.departemen, p.nama FROM kelas k, tahunajaran t, jbssdm.pegawai p WHERE t.replid='$tahunajaran' AND k.idtahunajaran=t.replid AND k.nipwali=p.nip AND t.departemen='$departemen' AND k.idtingkat='$tingkat' GROUP BY k.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 	$result_kelas = QueryDb($sql_kelas);
 	
 	if (@mysql_num_rows($result_kelas) > 0){ 

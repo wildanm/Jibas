@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ OpenDb();
 $sql = "SELECT p.nis, s.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
 			   p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang 
 		  FROM penerimaaniuran p, jbsakad.siswa s, datapenerimaan pn 
-		 WHERE p.replid = $idpembayaran AND p.nis = s.nis AND p.idpenerimaan = pn.replid";
+		 WHERE p.replid = '$idpembayaran' AND p.nis = s.nis AND p.idpenerimaan = pn.replid";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $nis = $row['nis'];
@@ -62,8 +62,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$jcicilan = UnformatRupiah($_REQUEST['jcicilan']);	
 	$tcicilan = $_REQUEST['tcicilan'];
 	$tcicilan = MySqlDateFormat($tcicilan);
-	$kcicilan = $_REQUEST['kcicilan'];
-	$alasan = $_REQUEST['alasan'];
+	$kcicilan = CQ($_REQUEST['kcicilan']);
+	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 		
 	if ($jcicilan == $besar) 
@@ -97,14 +97,14 @@ if (1 == (int)$_REQUEST['issubmit'])
 		BeginTrans();
 		$success = 0;
 		
-		$sql = "UPDATE penerimaaniuran SET tanggal='$tcicilan', jumlah=$jcicilan, keterangan='$kcicilan', alasan='$alasan', petugas = '$petugas' WHERE replid=$idpembayaran";
+		$sql = "UPDATE penerimaaniuran SET tanggal='$tcicilan', jumlah='$jcicilan', keterangan='$kcicilan', alasan='$alasan', petugas = '$petugas' WHERE replid='$idpembayaran'";
 		
 		QueryDbTrans($sql, $success);
 		
-		$sql = "UPDATE jurnaldetail SET debet=$jcicilan WHERE idjurnal=$idjurnal AND koderek='$rekkas' AND kredit=0";
+		$sql = "UPDATE jurnaldetail SET debet='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
 		if ($success) QueryDbTrans($sql, $success);
 		
-		$sql = "UPDATE jurnaldetail SET kredit=$jcicilan WHERE idjurnal=$idjurnal AND koderek='$rekpendapatan' AND debet=0";
+		$sql = "UPDATE jurnaldetail SET kredit='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekpendapatan' AND debet=0";
 		if ($success) QueryDbTrans($sql, $success);
 		
 		if ($success) 

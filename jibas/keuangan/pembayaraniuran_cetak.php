@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -87,7 +87,7 @@ $departemen =  $row[0];
 <tr>
 	<td><strong>Jenis Penerimaan</strong></td>
     <td><strong>:
-<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan"; 			
+<?	$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'"; 			
 	$result = QueryDb($sql);    
 	$row = mysql_fetch_row($result);
 	echo  $row[0]; ?>
@@ -119,7 +119,7 @@ else
 	$replid = $row['replid'];
 }
 
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -177,8 +177,8 @@ $namapenerimaan = $row[0];
 <?  
 $sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.tanggal as tgl, p.keterangan, p.jumlah, p.petugas
           FROM penerimaaniuran p, jurnal j 
-			WHERE j.replid = p.idjurnal AND j.idtahunbuku = $idtahunbuku
-			  AND p.idpenerimaan = $idpenerimaan AND p.nis = '$nis' 
+			WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku'
+			  AND p.idpenerimaan = '$idpenerimaan' AND p.nis = '$nis' 
 	   ORDER BY p.tanggal, p.replid";
 
 $result = QueryDb($sql);    

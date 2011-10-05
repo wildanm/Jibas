@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,7 +39,7 @@ OpenDb();
 
 if (isset($_REQUEST['Simpan']))
 {
-	$sql = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = $proses";
+	$sql = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = '$proses'";
 	$res = QueryDb($sql);
 	$row = mysql_fetch_row($res);
 	$ndata = $row[0];
@@ -72,21 +72,21 @@ if (isset($_REQUEST['Simpan']))
 	}
 	
 	if ($ndata == 0)
-		$sql = "INSERT INTO settingpsb SET idproses = $proses, $set";
+		$sql = "INSERT INTO settingpsb SET idproses = '$proses', $set";
 	else
-		$sql = "UPDATE settingpsb SET $set WHERE idproses = $proses";
+		$sql = "UPDATE settingpsb SET $set WHERE idproses = '$proses'";
 	
 	QueryDb($sql);
 }
 
-$sql = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = $proses";
+$sql = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = '$proses'";
 $res = QueryDb($sql);
 $row = mysql_fetch_row($res);
 $ndata = $row[0];
 
 if ($ndata > 0)
 {
-	$sql = "SELECT * FROM settingpsb WHERE idproses = $proses";
+	$sql = "SELECT * FROM settingpsb WHERE idproses = '$proses'";
 	$res = QueryDb($sql);
 	$row = mysql_fetch_array($res);
 	

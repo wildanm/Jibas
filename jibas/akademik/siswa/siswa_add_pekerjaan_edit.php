@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -30,18 +30,18 @@ require_once('../cek.php');
 
 if (isset($_REQUEST['replid']))
 	$replid = $_REQUEST['replid'];
-$pekerjaan=$_REQUEST['pekerjaan'];
+$pekerjaan=CQ($_REQUEST['pekerjaan']);
 
 $ERROR_MSG = "";
 if (isset($_POST['simpan'])) {
 	OpenDb();
-	$sql_cek="SELECT * FROM jbsumum.jenispekerjaan where pekerjaan='$pekerjaan' AND replid <> $replid ";
+	$sql_cek="SELECT * FROM jbsumum.jenispekerjaan where pekerjaan='$pekerjaan' AND replid <> '$replid' ";
 	$hasil=QueryDb($sql_cek);
 	if (mysql_num_rows($hasil)>0){
 		CloseDb();
 		$ERROR_MSG = "Pekerjaan $pekerjaan sudah digunakan!";
 	} else {
-		$sql = "UPDATE jbsumum.jenispekerjaan SET pekerjaan='$pekerjaan' WHERE replid = $replid";
+		$sql = "UPDATE jbsumum.jenispekerjaan SET pekerjaan='$pekerjaan' WHERE replid = '$replid'";
 		$result = QueryDb($sql);
 		if ($result) { ?>
 		<script language="javascript">

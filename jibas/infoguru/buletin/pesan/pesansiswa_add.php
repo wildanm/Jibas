@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -140,42 +140,50 @@ function simpan(){
 <input type="hidden" name="tahun" id="tahun" value="<?=$tahun?>" />
 <input type="hidden" name="sender" id="sender" value="tambah" />
 <input type="hidden" name="tanggal" id="tanggal" value="<?=date(d)."-".date(m)."-".date(Y); ?>" />
+
+<fieldset><legend style="background-color:#FF6600; color:#FFFFFF; font-size:14px; padding:3px 0px 3px 0px">&nbsp;Tulis pesan untuk Siswa&nbsp;</legend>
 <table width="100%" border="0" cellspacing="0">
+  <!--
   <tr>
     <td scope="row" align="left"><span class="style1"><font size="2">Tulis pesan untuk Siswa</font></span><br />
       <br /></td>
   </tr>
+  -->
   <tr>
     <td scope="row" align="left">
     <table width="100%" border="0" cellspacing="2" cellpadding="2" >
-  <tr>
-    <th width="19%" scope="row">Judul</th>
-    <td width="81%"><input type="text" name="judul" id="judul" size="50" /></td>
-  </tr>
-  <tr>
-    <th colspan="2" valign="top" scope="row">Pesan<br />
-      <textarea name="pesan" id="pesan" rows="25" style="width:100%"></textarea></th>
-    </tr>
-</table>
-    <table width="100%" border="0" cellspacing="0">
       <tr>
-        <th scope="row">&nbsp;</th>
-        <td><div align="center">#1</div></td>
-        <td><input size="25" type="file" id="file1" name="file1" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
+        <th width="75" scope="row">Judul</th>
+        <td width="*"><input type="text" name="judul" id="judul" size="50" /></td>
+      </tr>
+      <tr>
+        <th colspan="2" valign="top" scope="row">Pesan<br />
+          <textarea name="pesan" id="pesan" rows="25" style="width:100%"></textarea></th>
       </tr>
       <tr>
         <th scope="row">Lampiran</th>
-        <td><div align="center">#2</div></td>
-        <td><input size="25" type="file" name="file2" id="file2" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-      </tr>
-      <tr>
-        <th scope="row">&nbsp;</th>
-        <td><div align="center">#3</div></td>
-        <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-      </tr>
-    </table></td>
+        <td>
+        	<table  border="0" cellspacing="0">
+              <tr>
+                <td><div align="center">#1</div></td>
+                <td><input size="25" type="file" id="file1" name="file1" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
+              </tr>
+              <tr>
+                <td><div align="center">#2</div></td>
+                <td><input size="25" type="file" name="file2" id="file2" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
+              </tr>
+              <tr>
+                <td><div align="center">#3</div></td>
+                <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
+              </tr>
+            </table>
+        </td>
+      </tr>  
+    </table>
+    </td>
   </tr>
 </table>
+</fieldset>
 </form>
 </body>
 </html>

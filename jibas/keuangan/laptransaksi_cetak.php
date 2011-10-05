@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -76,7 +76,7 @@ if (isset($_REQUEST['idtahunbuku']))
 	<td width="90"><strong>Tahun Buku </strong></td>
     <td><strong>: 
 	<?  OpenDb();
-		$sql = "SELECT tahunbuku FROM tahunbuku WHERE replid = $idtahunbuku";
+		$sql = "SELECT tahunbuku FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	   	$result = QueryDb($sql);
 	   	$row = mysql_fetch_row($result);
 	   	echo  $row[0];
@@ -100,7 +100,7 @@ if (isset($_REQUEST['idtahunbuku']))
 </tr>
 <?
 OpenDb();
-$sql = "SELECT nokas, date_format(tanggal, '%d-%b-%Y') AS tanggal, petugas, transaksi, keterangan, debet, kredit FROM transaksilog WHERE departemen='$departemen' AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND idtahunbuku = $idtahunbuku";
+$sql = "SELECT nokas, date_format(tanggal, '%d-%b-%Y') AS tanggal, petugas, transaksi, keterangan, debet, kredit FROM transaksilog WHERE departemen='$departemen' AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND idtahunbuku = '$idtahunbuku'";
 $result = QueryDb($sql);
 $cnt = 0;
 $totaldebet = 0;

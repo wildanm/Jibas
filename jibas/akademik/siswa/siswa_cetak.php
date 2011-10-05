@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -44,7 +44,7 @@ $page = $_REQUEST['page'];
 $total = $_REQUEST['total'];
 
 OpenDb();
-$sql = "SELECT a.tahunajaran, t.tingkat, k.kelas FROM kelas k, tahunajaran a, tingkat t WHERE k.replid = $kelas AND a.replid = $tahunajaran AND t.replid = $tingkat AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid";
+$sql = "SELECT a.tahunajaran, t.tingkat, k.kelas FROM kelas k, tahunajaran a, tingkat t WHERE k.replid = '$kelas' AND a.replid = '$tahunajaran' AND t.replid = '$tingkat' AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid";
 $result = QueryDb($sql);
 $row =@mysql_fetch_array($result);
 $namatahun = $row['tahunajaran'];
@@ -90,6 +90,7 @@ $namakelas = $row['kelas'];
 <tr>		
 	<td height="30" align="center" class="header" width="4%">No</td>
 	<td height="30" align="center" class="header" width="10%">NIS</td>
+    <td height="30" align="center" class="header" width="10%">NISN</td>
     <td height="30" align="center" class="header" width="25%">Nama</td>
     <td height="30" align="center" class="header" width="20%">Asal Sekolah</td>
     <td height="30" align="center" class="header" width="*">Tempat Tanggal Lahir</td>
@@ -98,7 +99,7 @@ $namakelas = $row['kelas'];
 </tr>
 <? 
 //$sql = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
-$sql = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY $urut $urutan";
+$sql = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = '$kelas' AND k.idtahunajaran = '$tahunajaran' AND k.idtingkat = '$tingkat' AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY $urut $urutan";
 $result = QueryDb($sql);
 CloseDb();
 if ($page==0)

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,7 +56,7 @@ $file=explode("|",$fileall);
 while ($x<=$numdel){
 if ($file[$x]!=""){
 		OpenDb();
-		$sql = "SELECT d.dirfullpath,f.filename FROM jbsvcr.dirshare d, jbsvcr.fileshare f WHERE f.replid=$file[$x] AND f.iddir=d.replid";
+		$sql = "SELECT d.dirfullpath,f.filename FROM jbsvcr.dirshare d, jbsvcr.fileshare f WHERE f.replid='$file[$x]' AND f.iddir=d.replid";
 		//echo $sql;
 		//exit;$UPLOAD_DIR = "C:\\\sharing\\";       $WEB_UPLOAD_DIR = "http://localhost/filesharing/";
 		$result = QueryDb($sql);
@@ -70,7 +70,7 @@ if ($file[$x]!=""){
 		
 		//exit;
 		delete($phisycaldir.$row[1]);
-		$sql3="DELETE FROM jbsvcr.fileshare WHERE replid=$file[$x]";
+		$sql3="DELETE FROM jbsvcr.fileshare WHERE replid='$file[$x]'";
 		$result3=QueryDb($sql3);
 }
 $x++;
@@ -234,7 +234,7 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $rootname = $row[0];
 
-$sql = "SELECT dirfullpath,idguru FROM jbsvcr.dirshare WHERE replid=$iddir";
+$sql = "SELECT dirfullpath,idguru FROM jbsvcr.dirshare WHERE replid='$iddir'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $idguru = $row[1];
@@ -265,12 +265,12 @@ $fullpath = str_replace($rootname, "", $dfullpath);
 	<input type="checkbox" name="cek" id="cek" onClick="cek_all()" title="Pilih semua" onMouseOver="showhint('Pilih semua', this, event, '120px')"/>
 	</td>
 	<? } ?>
-    <td width="60%" align="left" class="header">Name</td>
-    <td width="12%" align="right" class="header">Size</td>
+    <td width="60%" align="center" class="header">Name</td>
+    <td width="12%" align="center" class="header">Size</td>
     <td width="22%" align="center" class="header">Date</td>
 </tr>
 <?
-$sql = "SELECT replid,filename, filesize, date_format(filetime, '%d-%b-%Y %h:%i:%s') as filetime FROM jbsvcr.fileshare WHERE iddir=$iddir ORDER BY filename";
+$sql = "SELECT replid,filename, filesize, date_format(filetime, '%d-%b-%Y %h:%i:%s') as filetime FROM jbsvcr.fileshare WHERE iddir='$iddir' ORDER BY filename";
 $result = QueryDb($sql);
 $numfile = @mysql_num_rows($result);
 $cnt = 1;
@@ -304,7 +304,7 @@ while ($row = mysql_fetch_array($result)) {
 <?
 $cnt++; } } else {
 ?>
-<tr><td colspan="5" align="center">Tidak ada file dalam folder ini</td></tr>
+<tr><td colspan="5" align="center"><div class="divNotif">Tidak ada file dalam folder ini</div></td></tr>
 <?
 }
 CloseDb();

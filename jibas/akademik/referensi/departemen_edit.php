@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,10 +37,10 @@ if (isset($_REQUEST['Simpan']))
 {
 	OpenDb();
 	
-	$sql = "SELECT * FROM departemen WHERE departemen = '$_REQUEST[departemen]' AND replid <> $replid";
+	$sql = "SELECT * FROM departemen WHERE departemen = '".CQ($_REQUEST['departemen'])."' AND replid <> '$replid'";
 	$result = QueryDb($sql);
 	
-	$sql1 = "SELECT * FROM departemen WHERE urutan = '$_REQUEST[urutan]' AND replid <> $replid";
+	$sql1 = "SELECT * FROM departemen WHERE urutan = '$_REQUEST[urutan]' AND replid <> '$replid'";
 	$result1 = QueryDb($sql1);
 	
 	if (mysql_num_rows($result) > 0) 
@@ -57,12 +57,11 @@ if (isset($_REQUEST['Simpan']))
 	} 
 	else 
 	{
-		$departemen = $_REQUEST['departemen'];
-		$departemen = str_replace("'", "`", $departemen);
+		$departemen = CQ($_REQUEST['departemen']);
 		
 		$sql = "UPDATE departemen 
-				SET departemen='$departemen',nipkepsek='$_REQUEST[nip]',urutan=$_REQUEST[urutan],
-				    keterangan='$_REQUEST[keterangan]' WHERE replid=$replid";
+				SET departemen='$departemen',nipkepsek='$_REQUEST[nip]',urutan='$_REQUEST[urutan]',
+				    keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	

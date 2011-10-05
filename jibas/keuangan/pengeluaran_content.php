@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,8 +56,8 @@ OpenDb();
 if (1 == (int)$_REQUEST['issubmit']) 
 {
 	$idtahunbuku = $_REQUEST['idtahunbuku'];
-	$keperluan = $_REQUEST['keperluan'];
-	$keterangan = $_REQUEST['keterangan'];
+	$keperluan = CQ($_REQUEST['keperluan']);
+	$keterangan = CQ($_REQUEST['keterangan']);
 	$jenispemohon = $_REQUEST['spemohon'];
 	$idpemohon = $_REQUEST['idpemohon'];
 	$penerima = $_REQUEST['penerima'];
@@ -73,7 +73,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$rekdebet = $_REQUEST['rekdebet'];
 	
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		CloseDb();
@@ -98,7 +98,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	if ($success) $success = SimpanDetailJurnal($idjurnal, "K", $rekkredit, $jumlah);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	if ($success) QueryDbTrans($sql, $success);
 	
 	//simpan data cicilan di pengeluaran
@@ -107,9 +107,9 @@ if (1 == (int)$_REQUEST['issubmit'])
 	else if ($jenispemohon == 2)
 		$sqlpemohon = "jenispemohon=2, namapemohon='$namapemohon', nis='$idpemohon'";
 	else if ($jenispemohon == 3)
-		$sqlpemohon = "jenispemohon=3, namapemohon='$namapemohon', pemohonlain=$idpemohon";
+		$sqlpemohon = "jenispemohon=3, namapemohon='$namapemohon', pemohonlain='$idpemohon'";
 		
-	$sql = "INSERT INTO pengeluaran SET idpengeluaran=$idpengeluaran, idjurnal=$idjurnal, tanggal='$tanggal', jumlah=$jumlah, keperluan='$keperluan', keterangan='$keterangan', petugas='$petugas', tanggalkeluar=now(), penerima='$penerima', $sqlpemohon";
+	$sql = "INSERT INTO pengeluaran SET idpengeluaran='$idpengeluaran', idjurnal='$idjurnal', tanggal='$tanggal', jumlah='$jumlah', keperluan='$keperluan', keterangan='$keterangan', petugas='$petugas', tanggalkeluar=now(), penerima='$penerima', $sqlpemohon";
 	if ($success) QueryDbTrans($sql, $success);
 	
 	$idtransaksi = 0;
@@ -332,7 +332,7 @@ function panggil(elem){
             	</td>
             </tr>
             <?
-            $sql = "SELECT rekdebet, rekkredit FROM datapengeluaran WHERE replid = $idpengeluaran";
+            $sql = "SELECT rekdebet, rekkredit FROM datapengeluaran WHERE replid = '$idpengeluaran'";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);
             $rekdebet = $row[0];
@@ -342,7 +342,7 @@ function panggil(elem){
                 <td align="left"><strong>Rek. Kredit </strong></td>
                 <td colspan="2" align="left">
                 <select name="rekkredit" id="rekkredit" style="width:225px" onKeyPress="return focusNext('rekdebet', event)" onfocus="panggil('rekkredit')">
-            <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekkredit AND dp.replid = $idpengeluaran) ORDER BY kode";
+            <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekkredit AND dp.replid = '$idpengeluaran') ORDER BY kode";
                 $result = QueryDb($sql);
                 while ($row = mysql_fetch_row($result)) { ?>    
                     <option value="<?=$row[0] ?>" <?=StringIsSelected($row[0], $rekkredit)?> > <?=$row[0] . " " . $row[1] ?></option>
@@ -354,7 +354,7 @@ function panggil(elem){
                 <td align="left"><strong>Rek. Debet</strong></td>
                 <td colspan="2" align="left">
                 <select name="rekdebet" id="rekdebet" style="width:225px" onKeyPress="return focusNext('penerima', event)" onfocus="panggil('rekdebet')"> 
-            <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekdebet AND dp.replid = $idpengeluaran) ORDER BY kode";
+            <?	$sql = "SELECT kode, nama FROM rekakun WHERE kategori IN (SELECT kategori FROM rekakun ra, datapengeluaran dp WHERE ra.kode = dp.rekdebet AND dp.replid = '$idpengeluaran') ORDER BY kode";
                 $result = QueryDb($sql);
                 while ($row = mysql_fetch_row($result)) { ?>    
                     <option value="<?=$row[0] ?>" <?=StringIsSelected($row[0], $rekdebet)?> > <?=$row[0] . " " . $row[1] ?></option>

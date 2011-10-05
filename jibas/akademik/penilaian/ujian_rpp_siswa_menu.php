@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,7 +36,7 @@ if(isset($_REQUEST["pelajaran"]))
 	$pelajaran = $_REQUEST["pelajaran"];
 
 OpenDb();
-$sql="SELECT k.kelas, p.nama FROM kelas k, pelajaran p WHERE p.replid=$pelajaran AND k.replid=$kelas";
+$sql="SELECT k.kelas, p.nama FROM kelas k, pelajaran p WHERE p.replid='$pelajaran' AND k.replid='$kelas'";
 $result=QueryDb($sql);
 $row = mysql_fetch_array($result);
 $namakelas = $row['tingkat'];
@@ -61,7 +61,7 @@ function pilih(kelas,rpp){
 <?
 //$query_aturan = "SELECT DISTINCT u.idrpp, r.rpp FROM ujian u, rpp r, kelas k WHERE u.idrpp = r.replid AND r.idtingkat = k.idtingkat AND k.replid = $kelas AND r.idsemester = $semester AND r.idpelajaran = $pelajaran AND r.aktif = 1 ORDER BY koderpp";
 
-$query_aturan = "SELECT r.replid, r.rpp FROM rpp r, kelas k WHERE r.idtingkat = k.idtingkat AND k.replid = $kelas AND r.idsemester = $semester AND r.idpelajaran = $pelajaran AND r.aktif = 1 ORDER BY koderpp";
+$query_aturan = "SELECT r.replid, r.rpp FROM rpp r, kelas k WHERE r.idtingkat = k.idtingkat AND k.replid = '$kelas' AND r.idsemester = '$semester' AND r.idpelajaran = '$pelajaran' AND r.aktif = 1 ORDER BY koderpp";
 
 $result_aturan = QueryDb($query_aturan);
 if (!mysql_num_rows($result_aturan)==0){ ?>

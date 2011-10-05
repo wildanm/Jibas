@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,17 +25,20 @@ require_once('../include/config.php');
 require_once('../include/db_functions.php');
 OpenDb();
 $idgroup = $_REQUEST[idgroup];
-$sql = "SELECT * FROM jbsfina.groupbarang WHERE replid=$_REQUEST[idgroup]";
+$sql = "SELECT * FROM jbsfina.groupbarang WHERE replid='$_REQUEST[idgroup]'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
-$groupname = $row[namagroup];
+$groupname = stripslashes($row[namagroup]);
 if (isset($_REQUEST[groupname]))
-	$groupname = $_REQUEST[groupname];
-$keterangan = $row[keterangan];
+	$groupname = addslashes(trim($_REQUEST[groupname]));
+//$groupname = addslashes(trim($groupname));
+$keterangan = stripslashes($row[keterangan]);
 if (isset($_REQUEST[keterangan]))
-	$keterangan = $_REQUEST[keterangan];	
+	$keterangan = addslashes(trim($_REQUEST[keterangan]));	
+
+//$keterangan = addslashes(trim($keterangan));
 if (isset($_REQUEST['Simpan'])){
-	$sql = "SELECT * FROM jbsfina.groupbarang WHERE namagroup='$groupname' AND replid<>$_REQUEST[idgroup]";
+	$sql = "SELECT * FROM jbsfina.groupbarang WHERE namagroup='$groupname' AND replid<>'$_REQUEST[idgroup]'";
 	if (@mysql_num_rows(QueryDb($sql))>0){
 		?>
         <script language="javascript">
@@ -43,7 +46,7 @@ if (isset($_REQUEST['Simpan'])){
         </script>
         <?
 	} else {
-		QueryDb("UPDATE jbsfina.groupbarang SET namagroup='$groupname', keterangan='$keterangan' WHERE replid=$_REQUEST[idgroup]");
+		QueryDb("UPDATE jbsfina.groupbarang SET namagroup='$groupname', keterangan='$keterangan' WHERE replid='$_REQUEST[idgroup]'");
 		?>
         <script language="javascript">
 			parent.opener.GetFresh();
@@ -79,11 +82,11 @@ function validate(){
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td>Nama Group</td>
-    <td><input name="groupname" id="groupname" type="text" maxlength="45" style="width:100%" value="<?=$groupname?>" /></td>
+    <td><input name="groupname" id="groupname" type="text" maxlength="45" style="width:100%" value="<?=stripslashes($groupname)?>" /></td>
   </tr>
   <tr>
     <td>Keterangan</td>
-    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=$keterangan?></textarea></td>
+    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=stripslashes($keterangan)?></textarea></td>
   </tr>
   <tr>
     <td colspan="2" align="center"><input class="but" type="submit" name="Simpan" value="Simpan" />&nbsp;&nbsp;<input type="button" value="Batal" onClick="window.close()" class="but" /></td>

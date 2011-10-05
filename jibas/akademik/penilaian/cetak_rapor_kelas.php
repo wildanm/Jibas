@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,13 +34,13 @@ require_once('../library/dpupdate.php');
 
 $NTT = new NumberToText();
 
-/**/
+
 header('Content-Type: application/vnd.ms-excel'); //IE and Opera  
 header('Content-Type: application/w-msword'); // Other browsers  
 header('Content-Disposition: attachment; filename=Nilai_Pelajaran.doc');
 header('Expires: 0');  
 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-
+/**/
 OpenDb();
 
 if (isset($_REQUEST['departemen']))
@@ -84,6 +84,12 @@ $sql_get_kepsek="SELECT d.nipkepsek as nipkepsek,p.nama as namakepsek FROM jbssd
 //echo $sql_get_kepsek;
 $rslt_get_kepsek=QueryDb($sql_get_kepsek);
 $row_get_kepsek=@mysql_fetch_array($rslt_get_kepsek);
+
+
+$namakelas = $row[0];
+$namasemester = $row[1];
+$namatahunajaran = $row[2];
+$namatingkat = $row[3];
 ?>
 <html xmlns:o="urn:schemas-microsoft-com:office:office"
 xmlns:w="urn:schemas-microsoft-com:office:word"
@@ -240,35 +246,54 @@ while ($row_siswa1=@mysql_fetch_array($result_get_siswa1)){
 <table width="100%" border="0">
   <tr>
     <td>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
-  <tr>
-    <td height="16" colspan="4" bgcolor="#FFFFFF">
-    	<div align="center" class="style13 style3 style14"><strong>NILAI HASIL
-          BELAJAR</strong></div></td>
-    </tr>
-  <tr>
-    <td height="20">&nbsp;</td>
-    <td height="20">&nbsp;</td>
-  </tr>
-  <tr height="20">
-    <td width="20%"><span class="style13"><strong>Departemen</strong></span></td>
-    <td width="30%"><span class="style13"><strong>: <?=$row['departemen'] ?></strong></span></td>
-    <td width="10%"><span class="style13"><strong>Kelas</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['tingkat'].' - '. $row['namakelas'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Tahun Ajaran</strong></span></td>
-   	<td><span class="style13"><strong>: <?=$row['tahunajaran']?></strong></span></td>
-    <td><span class="style13"><strong>Siswa</strong></span></td>
-    <td><span class="style13"><strong>: <?=$nis.' - '.$nama;?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Semester</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['namasemester']?></strong></span></td>
-    
-  </tr> 
-</table>
-</td>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
+		<tr>
+		<td height="16" colspan="2" bgcolor="#FFFFFF">
+		<div align="center" class="style13 style3 style14"><strong>NILAI HASIL
+		BELAJAR</strong></div></td>
+		</tr>
+		<tr>
+		<td height="20">&nbsp;</td>
+		<td height="20">&nbsp;</td>
+		</tr>
+		<tr height="20">
+		<td width="200"><span class="style13">Departemen</span></td>
+		<td width="*"><span class="style13">: 
+		  <?=$departemen?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Tahun&nbsp;Ajaran</span></td>
+		<td><span class="style13">: 
+		  <?=$namatahunajaran?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Semester</span></td>
+		<td><span class="style13">: 
+		  <?=$namasemester?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td width="10%"><span class="style13">Kelas</span></td>
+		<td><span class="style13">: 
+		  <?=$namatingkat.' - '. $namakelas;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">NIS</span></td>
+		<td><span class="style13">: 
+		  <?=$nis;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Siswa</span></td>
+		<td><span class="style13">: 
+		  <?=$nama;?>
+		</span></td>
+		</tr>
+		</table>
+	</td>
   </tr>
   <tr>
     <td>
@@ -439,33 +464,53 @@ mso-break-type:section-break'>
 <table width="100%" border="0">
   <tr>
     <td>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
-  <tr>
-    <td height="20" colspan="5" bgcolor="#FFFFFF"><div align="center" class="style13 style2"><strong>KOMENTAR
-        HASIL BELAJAR</strong></div></td>
-  </tr>
-  <tr>
-    <td height="20" colspan="3">&nbsp;</td><td height="20">&nbsp;</td><td height="20">&nbsp;</td>
-    </tr>
-  <tr height="20">
-    <td width="15%"><span class="style13"><strong>Departemen</strong></span></td>
-    <td width="40%" colspan="2"><span class="style13"><strong>: <?=$row['departemen'] ?></strong></span></td>
-    <td width="10%"><span class="style13"><strong>Kelas</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['tingkat'].' - '. $row['namakelas'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Tahun Ajaran</strong></span></td>
-   	<td colspan="2"><span class="style13"><strong>: <?=$row['tahunajaran']?></strong></span></td>
-    <td><span class="style13"><strong>Pelajaran</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['nama'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Semester</strong></span></td>
-    <td colspan="2"><span class="style13"><strong>: <?=$row['namasemester']?></strong></span></td>
-    <td><span class="style13"><strong>Siswa</strong></span></td>
-    <td><span class="style13"><strong>: <?=$nis.' - '.$nama;?></strong></span></td>
-  </tr>
-</table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
+		<tr>
+		<td height="16" colspan="2" bgcolor="#FFFFFF">
+		<div align="center" class="style13 style3 style14"><strong>KOMENTAR HASIL
+		BELAJAR</strong></div></td>
+		</tr>
+		<tr>
+		<td height="20">&nbsp;</td>
+		<td height="20">&nbsp;</td>
+		</tr>
+		<tr height="20">
+		<td width="200"><span class="style13">Departemen</span></td>
+		<td width="*"><span class="style13">: 
+		  <?=$departemen?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Tahun&nbsp;Ajaran</span></td>
+		<td><span class="style13">: 
+		  <?=$namatahunajaran?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Semester</span></td>
+		<td><span class="style13">: 
+		  <?=$namasemester?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td width="10%"><span class="style13">Kelas</span></td>
+		<td><span class="style13">: 
+		  <?=$namatingkat.' - '. $namakelas;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">NIS</span></td>
+		<td><span class="style13">: 
+		  <?=$nis;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Siswa</span></td>
+		<td><span class="style13">: 
+		  <?=$nama;?>
+		</span></td>
+		</tr>
+		</table>
 	</td>
   </tr>
   <tr>
@@ -562,33 +607,56 @@ mso-break-type:section-break'>
 <table width="100%" border="0">
   <tr>
     <td>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
-  <tr>
-    <td height="20" colspan="4" bgcolor="#FFFFFF"><div align="center" class="style13 style3 style14"><strong>PRESENSI PELAJARAN</strong></div></td>
-  </tr>
-  <tr>
-    <td height="20">&nbsp;</td>
-    <td height="20">&nbsp;</td>
-  </tr>
-  <tr height="20">
-    <td width="15%"><span class="style13"><strong>Departemen</strong></span></td>
-    <td width="40%"><span class="style13"><strong>: <?=$row['departemen'] ?></strong></span></td>
-    <td width="10%"><span class="style13"><strong>Kelas</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['tingkat'].' - '. $row['namakelas'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Tahun Ajaran</strong></span></td>
-   	<td><span class="style13"><strong>: <?=$row['tahunajaran']?></strong></span></td>
-    <td><span class="style13"><strong>Pelajaran</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['nama'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Semester</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['namasemester']?></strong></span></td>
-    <td><span class="style13"><strong>Siswa</strong></span></td>
-    <td><span class="style13"><strong>: <?=$nis.' - '.$nama;?></strong></span></td>
-  </tr>
-</table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
+		<tr>
+		<td height="16" colspan="2" bgcolor="#FFFFFF">
+		<div align="center" class="style13 style3 style14"><strong>PRESENSI PELAJARAN</strong></div></td>
+		</tr>
+		<tr>
+		<td height="20">&nbsp;</td>
+		<td height="20">&nbsp;</td>
+		</tr>
+		<tr>
+		<td height="20">&nbsp;</td>
+		<td height="20">&nbsp;</td>
+		</tr>
+		<tr height="20">
+		<td width="200"><span class="style13">Departemen</span></td>
+		<td width="*"><span class="style13">: 
+		  <?=$departemen?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Tahun&nbsp;Ajaran</span></td>
+		<td><span class="style13">: 
+		  <?=$namatahunajaran?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Semester</span></td>
+		<td><span class="style13">: 
+		  <?=$namasemester?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td width="10%"><span class="style13">Kelas</span></td>
+		<td><span class="style13">: 
+		  <?=$namatingkat.' - '. $namakelas;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">NIS</span></td>
+		<td><span class="style13">: 
+		  <?=$nis;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Siswa</span></td>
+		<td><span class="style13">: 
+		  <?=$nama;?>
+		</span></td>
+		</tr>
+		</table>
 	</td>
   </tr>
   <tr>
@@ -819,33 +887,52 @@ if ($harian!="false"){
 <table width="100%" border="0">
   <tr>
     <td>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
-  <tr>
-    <td height="20" colspan="4" bgcolor="#FFFFFF"><div align="center" class="style13 style3 style14"><strong>PRESENSI HARIAN</strong></div></td>
-  </tr>
-  <tr>
-    <td height="20">&nbsp;</td>
-    <td height="20">&nbsp;</td>
-  </tr>
-  <tr height="20">
-    <td width="15%"><span class="style13"><strong>Departemen</strong></span></td>
-    <td width="40%"><span class="style13"><strong>: <?=$row['departemen'] ?></strong></span></td>
-    <td width="10%"><span class="style13"><strong>Kelas</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['tingkat'].' - '. $row['namakelas'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Tahun Ajaran</strong></span></td>
-   	<td><span class="style13"><strong>: <?=$row['tahunajaran']?></strong></span></td>
-    <td><span class="style13"><strong>Pelajaran</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['nama'];?></strong></span></td>
-  </tr>
-  <tr height="20">
-    <td><span class="style13"><strong>Semester</strong></span></td>
-    <td><span class="style13"><strong>: <?=$row['namasemester']?></strong></span></td>
-    <td><span class="style13"><strong>Siswa</strong></span></td>
-    <td><span class="style13"><strong>: <?=$nis.' - '.$nama;?></strong></span></td>
-  </tr>
-</table>
+		<table width="100%" border="0" cellpadding="0" cellspacing="0" bordercolor="#666666">
+		<tr>
+		<td height="16" colspan="2" bgcolor="#FFFFFF">
+		<div align="center" class="style13 style3 style14"><strong>PRESENSI HARIAN</strong></div></td>
+		</tr>
+		<tr>
+		<td height="20">&nbsp;</td>
+		<td height="20">&nbsp;</td>
+		</tr>
+		<tr height="20">
+		<td width="200"><span class="style13">Departemen</span></td>
+		<td width="*"><span class="style13">: 
+		  <?=$departemen?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Tahun&nbsp;Ajaran</span></td>
+		<td><span class="style13">: 
+		  <?=$namatahunajaran?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Semester</span></td>
+		<td><span class="style13">: 
+		  <?=$namasemester?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td width="10%"><span class="style13">Kelas</span></td>
+		<td><span class="style13">: 
+		  <?=$namatingkat.' - '. $namakelas;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">NIS</span></td>
+		<td><span class="style13">: 
+		  <?=$nis;?>
+		</span></td>
+		</tr>
+		<tr height="20">
+		<td><span class="style13">Siswa</span></td>
+		<td><span class="style13">: 
+		  <?=$nama;?>
+		</span></td>
+		</tr>
+		</table>
 	</td>
   </tr>
   <tr>

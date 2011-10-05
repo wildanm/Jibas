@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,10 +36,10 @@ $cek = 0;
 $ERROR_MSG = "";
 if (isset($_REQUEST['simpan'])){
 	OpenDb();
-	$sql1="SELECT proses from jbsakad.prosespenerimaansiswa where proses='$_REQUEST[proses]' AND departemen='$_REQUEST[departemen]' AND replid <>'$replid'";
+	$sql1="SELECT proses from jbsakad.prosespenerimaansiswa where proses='".CQ($_REQUEST['proses'])."' AND departemen='$_REQUEST[departemen]' AND replid <>'$replid'";
 	$hasil1=QueryDb($sql1);
 	
-	$sql2="SELECT proses from jbsakad.prosespenerimaansiswa where kodeawalan='$_REQUEST[kode]' AND departemen='$_REQUEST[departemen]' AND replid <>'$replid'";
+	$sql2="SELECT proses from jbsakad.prosespenerimaansiswa where kodeawalan='".CQ($_REQUEST['kode'])."' AND departemen='$_REQUEST[departemen]' AND replid <>'$replid'";
 	$hasil2 = QueryDb($sql2);
 	
 	if (mysql_fetch_array($hasil1) > 0){
@@ -50,7 +50,7 @@ if (isset($_REQUEST['simpan'])){
 		$ERROR_MSG = "Kode awalan $_REQUEST[kode] sudah digunakan!";
 		$cek = 1;
 	} else{	
-		$sql_update = "UPDATE jbsakad.prosespenerimaansiswa SET proses='$_REQUEST[proses]', kodeawalan='$_REQUEST[kode]', keterangan='$_REQUEST[keterangan]' WHERE replid=$replid";
+		$sql_update = "UPDATE jbsakad.prosespenerimaansiswa SET proses='".CQ($_REQUEST['proses'])."', kodeawalan='".CQ($_REQUEST['kode'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$replid'";
 		$result_update = QueryDb($sql_update);
 		
 		if ($result_update) { ?>

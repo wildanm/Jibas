@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if ($Simpan=="Simpan"){
 	$sql_siswa_update="UPDATE jbsakad.siswa SET aktif=0,statusmutasi='$_REQUEST[mutasi]' WHERE nis='$_REQUEST[nis]'";
 	QueryDbTrans($sql_siswa_update, $success);
 	if ($success){
-		$sql_mutasi_simpan="UPDATE jbsakad.mutasisiswa SET nis='$_REQUEST[nis]',jenismutasi='$_REQUEST[mutasi]',tglmutasi='$tglmutasi',keterangan='$_REQUEST[keterangan]' WHERE nis='$_REQUEST[nis]'";
+		$sql_mutasi_simpan="UPDATE jbsakad.mutasisiswa SET nis='$_REQUEST[nis]',jenismutasi='$_REQUEST[mutasi]',tglmutasi='$tglmutasi',keterangan='".CQ($_REQUEST['keterangan'])."' WHERE nis='$_REQUEST[nis]'";
 		QueryDbTrans($sql_mutasi_simpan, $success);
 	}
 

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -134,7 +134,7 @@ if ($iddasar!="12"){
 			$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.siswa s, jbsakad.angkatan a WHERE a.departemen='$departemen' AND a.replid=s.idangkatan AND s.aktif = $filter";
 		} 
 		if ($departemen<>"-1" && $idangkatan>0) {	
-			$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.siswa s, jbsakad.angkatan a WHERE s.idangkatan=$idangkatan AND a.replid=s.idangkatan AND a.departemen='$departemen' AND s.aktif = $filter ";
+			$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.siswa s, jbsakad.angkatan a WHERE s.idangkatan='$idangkatan' AND a.replid=s.idangkatan AND a.departemen='$departemen' AND s.aktif = $filter ";
 		}
 		CloseDb();
 		OpenDb();
@@ -168,7 +168,7 @@ if ($iddasar!="12"){
 	if ($departemen<>"-1" && $idangkatan<0)
 		$kondisi=" AND a.departemen='$departemen' AND a.replid=s.idangkatan ";
 	if ($departemen<>"-1" && $idangkatan>0)
-		$kondisi=" AND s.idangkatan=$idangkatan AND a.replid=s.idangkatan AND a.departemen='$departemen' ";
+		$kondisi=" AND s.idangkatan='$idangkatan' AND a.replid=s.idangkatan AND a.departemen='$departemen' ";
 	
 	$query1 = "SELECT COUNT(*) As Jum FROM jbsakad.siswa s, jbsakad.angkatan a WHERE a.replid=s.idangkatan  AND s.aktif = '1' AND s.penghasilanayah+s.penghasilanibu <> 0 AND s.penghasilanayah+s.penghasilanibu<1000000 $kondisi";
 	

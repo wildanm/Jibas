@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -111,7 +111,7 @@ $tglberita=$row['tgl']." ".$namabulan[$row['bln']-1]." ".$row['thn'];
                 <td align="center" valign="top" scope="row"><strong>:</strong></td>
                 <td scope="row" align="left"><?
         OpenDb();
-        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE idberita=$replid";
+        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE idberita='$replid'";
         $result2=QueryDb($sql2);
         while ($row2=@mysql_fetch_array($result2)){
             echo "<a title='Buka lampiran ini!' href='".$row2[direktori].$row2[namafile]."' target='_blank' ><img border='0' src='../../images/ico/titik.png' width='5' height='5'/> ".$row2['namafile']."</a><br>";

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -65,7 +65,7 @@ if ($_SESSION['errno'] != 0)
 		$errstr  = "<center><h2>Maaf, telah terjadi kesalahan</h2></center>\n";
 		
         if ($_SESSION['issend'])
-	        $errstr .= "<p align='center'>Laporkan kesalahan berikut ke <a style='color:blue; text-decoration:underline;' target='_blank' href='http://support.jibas.net'>http://support.jibas.net</a></p>\n";
+	        $errstr .= "<p align='center'>Jalankan terlebih dahulu <font style='text-weight:bold; color:green'><strong>JIBAS Live Update</strong></font> untuk memperbaiki masalah ini. Jika masalah masih muncul, laporkan kesalahan berikut ke <a style='color:blue; text-decoration:underline;' target='_blank' href='http://support.jibas.net'>http://support.jibas.net</a></p>\n";
 			
 		$errstr .= "<table border='1' cellpadding='0' cellspacing='0' style='border-width: 1px; border-collapse: collapse' width='100%'>\r\n";
 		$errstr .= "<tr>\r\n";

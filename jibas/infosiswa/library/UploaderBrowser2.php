@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -55,13 +55,13 @@ $op="";
 if (isset($_REQUEST[op]))
 	$op=$_REQUEST[op];
 if ($op=="09vn4230984cn2048723n98423"){
-	$sql_get="SELECT replid, direktori, namafile, namagambar FROM jbsvcr.gambartinypesan WHERE replid=$_REQUEST[replid]";
+	$sql_get="SELECT replid, direktori, namafile, namagambar FROM jbsvcr.gambartinypesan WHERE replid='$_REQUEST[replid]'";
 	$res_get=QueryDb($sql_get);
 	$row_get=@mysql_fetch_array($res_get);
 	$dir=str_replace("/","\\",$row_get[direktori]);
 	$file=$UPLOAD_DIR."gambarpesan\\".$dir.$row_get[namafile];
 	delete($file);
-	QueryDb("DELETE FROM jbsvcr.gambartinypesan WHERE replid=$_REQUEST[replid]");
+	QueryDb("DELETE FROM jbsvcr.gambartinypesan WHERE replid='$_REQUEST[replid]'");
 }
 $sql_bln="SELECT bulan FROM jbsvcr.gambartinypesan WHERE nis='".SI_USER_ID()."' GROUP BY bulan";
 $result_bln=QueryDb($sql_bln);
@@ -135,7 +135,7 @@ $result_thn=QueryDb($sql_thn);
        <? if ($bulan!="" && $tahun!=""){ ?>
        <table width="100%" border="0" cellspacing="2" class="tab">
           <?
-		  $sql="SELECT replid, direktori, namafile, namagambar FROM jbsvcr.gambartinypesan WHERE nis='".SI_USER_ID()."' AND bulan=$bulan AND tahun=$tahun";
+		  $sql="SELECT replid, direktori, namafile, namagambar FROM jbsvcr.gambartinypesan WHERE nis='".SI_USER_ID()."' AND bulan='$bulan' AND tahun='$tahun'";
 		  $result=QueryDb($sql);
 		  $i=1;
 		  while ($row=@mysql_fetch_array($result)){

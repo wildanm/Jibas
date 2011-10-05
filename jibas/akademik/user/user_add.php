@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -89,7 +89,7 @@ if (isset($_REQUEST['simpan'])) {
 				QueryDbTrans($sql_login, &$success);		
 			}		
 				
-			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', tingkat=1, modul='SIMAKA', keterangan='$_REQUEST[keterangan]'";
+			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', tingkat=1, modul='SIMAKA', keterangan='".CQ($_REQUEST['keterangan'])."'";
 		} elseif ($tingkat==2){
 			//Kalo staf
 			if ($num_cek == 0) {
@@ -97,7 +97,7 @@ if (isset($_REQUEST['simpan'])) {
 				QueryDbTrans($sql_login, &$success);		
 			}			
 			
-			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', departemen='$_REQUEST[departemen]', tingkat=2, modul='SIMAKA', keterangan='$_REQUEST[keterangan]'";
+			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', departemen='$_REQUEST[departemen]', tingkat=2, modul='SIMAKA', keterangan='".CQ($_REQUEST['keterangan'])."'";
 		}
 		if ($success)	
 			QueryDbTrans($sql_hakakses, &$success);

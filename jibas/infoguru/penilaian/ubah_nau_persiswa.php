@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if(isset($_REQUEST["ubah"]))
 	
 	$sql = "SELECT p.nama AS pelajaran, ju.jenisujian, u.deskripsi, DATE_FORMAT(u.tanggal, '%d-%m-%Y') AS tanggal, s.nis, s.nama
 				 FROM nilaiujian nu, ujian u, pelajaran p, jenisujian ju, siswa s
-				WHERE nu.replid = $replid AND nu.idujian = u.replid AND u.idpelajaran = p.replid
+				WHERE nu.replid = '$replid' AND nu.idujian = u.replid AND u.idpelajaran = p.replid
 				  AND u.idjenis = ju.replid AND nu.nis = s.nis;";
 	$res2 = QueryDb($sql);
 	if (mysql_num_rows($res2) > 0)
@@ -62,11 +62,11 @@ if(isset($_REQUEST["ubah"]))
 		$info = "Nilai Ujian ".$row2['jenisujian']." ".$row2['pelajaran']." tanggal ".$row2['tanggal']." siswa ".$row2['nis']." ".$row2['nama'];
 	}				  
 	
-	$sql_simpan = "INSERT INTO jbsakad.auditnilai SET jenisnilai='nau', idnilai=$replid, 
-						nasli=$nasli, nubah=$nilai, alasan='$alasan', pengguna='$pengguna', informasi='$info'";
+	$sql_simpan = "INSERT INTO jbsakad.auditnilai SET jenisnilai='nau', idnilai='$replid', 
+						nasli='$nasli', nubah='$nilai', alasan='$alasan', pengguna='$pengguna', informasi='$info'";
    QueryDb($sql_simpan);
 	
-	$sql_simpan = "UPDATE jbsakad.nau SET nilaiAU='$nilai', keterangan='Nilai Akhir diubah manual' WHERE replid=$replid";
+	$sql_simpan = "UPDATE jbsakad.nau SET nilaiAU='$nilai', keterangan='Nilai Akhir diubah manual' WHERE replid='$replid'";
 	$result_simpan = QueryDb($sql_simpan);
 	if($result_simpan) 
 	{?>

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -75,7 +75,7 @@ if(isset($_POST[simpan])) {
 	$result_del_nau=QueryDb($sql_del_nau);
 	$tanggaldb=unformat_tgl($_POST[tanggal]);
 	$query_ujian = "INSERT INTO jbsakad.ujian(idpelajaran, idkelas, idsemester, idjenis, deskripsi, tanggal) ".
-             "VALUES ('$_POST[idpelajaran]', '$_POST[idkelas]', '$_POST[idsemester]', '$_POST[idjenis]', '$_POST[deskripsi]','$tanggaldb')";
+             "VALUES ('$_POST[idpelajaran]', '$_POST[idkelas]', '$_POST[idsemester]', '$_POST[idjenis]', '".CQ($_POST[deskripsi])."','$tanggaldb')";
     $result_ujian = QueryDb($query_ujian) or die (mysql_error());
 	
 	$query_id = "SELECT last_insert_id() FROM jbsakad.ujian";

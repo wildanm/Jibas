@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 	while ($x<=$numdel){
 		if ($msg[$x]!=""){
 		OpenDb();
-			$sql="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid=".$msg[$x];
+			$sql="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid='$msg[$x]'";
 			//echo $sql;
 			$result=QueryDb($sql);
 		CloseDb();
@@ -69,11 +69,11 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 	while ($x<=$numdel){
 		if ($msg[$x]!=""){
 		OpenDb();
-		$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid=$msg[$x]";
+		$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
 		$result=QueryDb($sql);
 		$row=@mysql_fetch_array($result);
 		//echo $sql."<br>";
-		$sql2="SELECT replid,tanggalpesan,judul,pesan,nis FROM jbsvcr.pesan WHERE replid=$row[idpesan]";
+		$sql2="SELECT replid,tanggalpesan,judul,pesan,nis FROM jbsvcr.pesan WHERE replid='$row[idpesan]'";
 		$result2=QueryDb($sql2);
 		$row2=@mysql_fetch_array($result2);
 		//echo $sql2."<br>";
@@ -85,7 +85,7 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 		$row4=@mysql_fetch_array($result4);
 		$lastid=$row4[replid];
 		//echo $sql5."<br>";
-		$sql5="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan=$row2[replid]";
+		$sql5="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$row2[replid]'";
 		$result5=QueryDb($sql5);
 		//$row5=@mysql_fetch_array($result5);
 		//echo $sql5."<br>";
@@ -107,7 +107,7 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 		$sql6="INSERT INTO jbsvcr.lampirandraft SET idpesan=$lastid,direktori='".$dir_thn . $dir_bln."/',namafile='".SI_USER_ID()."-".$row5['namafile']."'";
 		$result6=QueryDb($sql6);
 		}
-		$sql7="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE idpesan=$row2[replid] AND idpenerima='".SI_USER_ID()."'";
+		$sql7="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE idpesan='$row2[replid]' AND idpenerima='".SI_USER_ID()."'";
 		$result7=QueryDb($sql7);
 		CloseDb();
 		}

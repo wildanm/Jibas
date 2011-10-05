@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -131,7 +131,7 @@ function manageLock(no) {
         <td>
         <select id="idkelas" name="idkelas" style="width:150px" onchange="change_kel()">
         	<? 
-			$sql = "SELECT DISTINCT idkelas, kelas FROM jbsakad.siswa, jbsakad.kelas WHERE jbsakad.siswa.idkelas = jbsakad.kelas.replid AND idangkatan=$idangkatan ORDER BY idkelas";
+			$sql = "SELECT DISTINCT idkelas, kelas FROM jbsakad.siswa, jbsakad.kelas WHERE jbsakad.siswa.idkelas = jbsakad.kelas.replid AND idangkatan='$idangkatan' ORDER BY idkelas";
 			$result = QueryDb($sql);
 			while($row = mysql_fetch_row($result)) {
 				if ($idkelas == 0)
@@ -156,7 +156,7 @@ function manageLock(no) {
         <td class="header" width="40%">Keterangan</td>
     </tr>
     <? 
-	$sql = "SELECT nis, nama FROM jbsakad.siswa WHERE idkelas = $idkelas ORDER BY nama";
+	$sql = "SELECT nis, nama FROM jbsakad.siswa WHERE idkelas = '$idkelas' ORDER BY nama";
 	$result = QueryDb($sql);
 	$no = 0;
 	while ($row = mysql_fetch_array($result)) {

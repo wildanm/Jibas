@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,11 +38,11 @@ if (isset($_REQUEST['tanggal']))
 	
 $mutasi ="";
 if (isset($_REQUEST['mutasi']))
-	$mutasi=$_REQUEST['mutasi'];
+	$mutasi=CQ($_REQUEST['mutasi']);
 	
 $keterangan ="";
 if (isset($_REQUEST['keterangan']))
-	$keterangan=$_REQUEST['keterangan'];
+	$keterangan=CQ($_REQUEST['keterangan']);
 	
 OpenDb();
 $sql = "SELECT s.nama,a.angkatan,t.tingkat,k.kelas,t.departemen,k.idtingkat,s.idkelas FROM siswa s, angkatan a, tingkat t, kelas k WHERE s.nis = '$nis' AND t.replid = k.idtingkat AND k.replid = s.idkelas AND s.idangkatan = a.replid"; 
@@ -64,7 +64,7 @@ if (isset($_REQUEST['Simpan'])) {
 	OpenDb();
 	BeginTrans();
 	$success=0;
-	$sql="UPDATE jbsakad.siswa SET aktif=0, statusmutasi=$mutasi, alumni=1 WHERE nis='$nis'";
+	$sql="UPDATE jbsakad.siswa SET aktif=0, statusmutasi='$mutasi', alumni=1 WHERE nis='$nis'";
 	QueryDbTrans($sql, $success);
 		
 	if ($success){
@@ -78,12 +78,12 @@ if (isset($_REQUEST['Simpan'])) {
 	}
 	
 	if ($success){
-		$sql="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$tglmutasi', tktakhir=$idtingkat, klsakhir=$idkelas, departemen = '$departemen'";
+		$sql="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$tglmutasi', tktakhir='$idtingkat', klsakhir='$idkelas', departemen = '$departemen'";
 		QueryDbTrans($sql,$success);
 	}
 	
 	if ($success){
-		$sql="INSERT INTO jbsakad.mutasisiswa SET nis='$nis', jenismutasi=$mutasi, tglmutasi='$tglmutasi', keterangan='$keterangan', departemen = '$departemen'";
+		$sql="INSERT INTO jbsakad.mutasisiswa SET nis='$nis', jenismutasi='$mutasi', tglmutasi='$tglmutasi', keterangan='$keterangan', departemen = '$departemen'";
 		QueryDbTrans($sql, $success);
 		//echo $sql; 
 		//RollBackTrans();

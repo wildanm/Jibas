@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -146,7 +146,7 @@ $namadp = $row[0];
 			if ($num2>0)
 				$rata = round($numnilai/$num2,2);
 			
-			$sql2 = "SELECT nilaiAU FROM nau WHERE idkelas = $kls AND idsemester = ".$sem." AND idjenis = $row[0] AND nis = '$nis' AND idpelajaran = '$pel' AND idaturan='$row[2]'";
+			$sql2 = "SELECT nilaiAU FROM nau WHERE idkelas = '$kls' AND idsemester = '".$sem."' AND idjenis = '$row[0]' AND nis = '$nis' AND idpelajaran = '$pel' AND idaturan='$row[2]'";
 			$res2 = QueryDb($sql2);
 			$row2 = @mysql_fetch_row($res2);
 			$nilaiakhir = $row2[0];	

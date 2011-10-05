@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -143,7 +143,7 @@ function focusNext(elemName, evt) {
             <td height="30" class="headerlong" align="center" width="10%">N I S</td>
             <td height="30" class="headerlong" align="center" width="*">Nama</td>
         <?
-        $sql_cek_ujian = "SELECT * FROM jbsakad.ujian WHERE idaturan=$idaturan AND idkelas=$kelas AND idsemester=$semester ORDER by tanggal ASC";
+        $sql_cek_ujian = "SELECT * FROM jbsakad.ujian WHERE idaturan='$idaturan' AND idkelas='$kelas' AND idsemester='$semester' ORDER by tanggal ASC";
         //echo $sql_cek_ujian;
         $result_cek_ujian=QueryDb($sql_cek_ujian);
         $jumlahujian=@mysql_num_rows($result_cek_ujian);
@@ -181,7 +181,7 @@ function focusNext(elemName, evt) {
             <td><?=$row_siswa['nama']?></td>
             <?	for ($j=1;$j<=count($idujian);$j++) { 
                     echo "<td align='center'>";		
-                    $sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian=$idujian[$j] AND nis='$row_siswa[nis]'";
+                    $sql_cek_nilai_ujian="SELECT * FROM jbsakad.nilaiujian WHERE idujian='$idujian[$j]' AND nis='$row_siswa[nis]'";
                     //echo $sql_cek_nilai_ujian;
                     $result_cek_nilai_ujian=QueryDb($sql_cek_nilai_ujian);
                     $row_cek_nilai_ujian=@mysql_fetch_array($result_cek_nilai_ujian);

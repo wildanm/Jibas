@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -161,7 +161,7 @@ function hide_info(){
 		     <span class="style7">Kenaikan&nbsp;&amp;<br />Kelulusan</span></a></div></td>
             
                <td style="padding-right:5px" valign="top"> <div align="center"> 
-         <a style="text-decoration:none" href="mutasi.php" target="content" onClick="MM_nbGroup('down','group1','mutasioff','images/ico/Icon Header/mutasi2.png',0)" onMouseOver="MM_nbGroup('over','mutasioff','images/ico/Icon Header/mutasi2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/mutasi.png" alt="MUTASI" name="mutasioff" width="60" height="35" border="0" id="mutasioff" onload="" /><br />
+				<a style="text-decoration:none" href="mutasi.php" target="content" onClick="MM_nbGroup('down','group1','mutasioff','images/ico/Icon Header/mutasi2.png',0)" onMouseOver="MM_nbGroup('over','mutasioff','images/ico/Icon Header/mutasi2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/mutasi.png" alt="MUTASI" name="mutasioff" width="60" height="35" border="0" id="mutasioff" onload="" /><br />
                 <span class="style7">Mutasi</span></a></div></td>
            
             
@@ -170,6 +170,15 @@ function hide_info(){
                 
                 <td style="padding-right:5px" valign="top"> <div align="center"> <a style="text-decoration:none" href="javascript:logout();"  onMouseOver="MM_nbGroup('over','logout','images/ico/Icon Header/logout2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/logout.png" alt="Logout" name="logout" width="60" height="35" border="0" onLoad="" /><br />
 	            <span class="style7">Keluar</span></a></div></td>
+				
+				<?php
+				if ($_SESSION['maintenance']){
+				?>
+				<td style="padding-right:5px"  valign="top"> <a style="text-decoration:none" href="chgquote.php" target="content" onClick="MM_nbGroup('down','group1','maintenanceoff','images/ico/Icon Header/referensi2.png',1)" onMouseOver="MM_nbGroup('over','maintenanceoff','images/ico/Icon Header/referensi2.png','',1)" onMouseOut="MM_nbGroup('out')"><div align="center"> <img src="images/ico/Icon Header/referensi.png" alt="MAINTENANCE" name="maintenanceoff" width="60" height="35" border="0" id="maintenanceoff" onload="" /><br />
+		        <span class="style7">Maintenance</span></div></a></td>
+				<?php
+				}
+				?>
 		  </tr>
 		  </table>		</td>
 		<td>

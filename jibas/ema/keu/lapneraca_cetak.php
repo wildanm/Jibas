@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -88,7 +88,7 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
 <br />
 <?
 	OpenDb();
-	$sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('HARTA', 'PIUTANG') GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
+	$sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('HARTA', 'PIUTANG') GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 	$result = QueryDb($sql);   
 	//if (mysql_num_rows($result) > 0) {
 ?>    
@@ -135,7 +135,7 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
                 <td colspan="6"><strong>AKTIVA TETAP</strong><br /></td>
             </tr>
             <?
-            $sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'INVENTARIS' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
+            $sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'INVENTARIS' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
             $result = QueryDb($sql);
             $totalaktivatetap = 0;
             while ($row = mysql_fetch_row($result)) {
@@ -180,7 +180,7 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
                 <td colspan="6"><strong>HUTANG</strong><br /></td>
             </tr>
             <?
-            $sql = "SELECT jd.koderek, ra.nama, sum(jd.kredit - jd.debet) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'UTANG' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
+            $sql = "SELECT jd.koderek, ra.nama, sum(jd.kredit - jd.debet) FROM $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'UTANG' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
             $result = QueryDb($sql);
             $totalhutang = 0;
             while ($row = mysql_fetch_row($result)) {
@@ -213,20 +213,20 @@ $nperiode = LongDateFormat($tanggal1)." s.d. ".LongDateFormat($tanggal2);
                 <td colspan="6"><strong>MODAL</strong><br /></td>
             </tr>
             <?
-            $sql = "SELECT tanggalmulai FROM $db_name_fina.tahunbuku WHERE replid = $idtahunbuku";
+            $sql = "SELECT tanggalmulai FROM $db_name_fina.tahunbuku WHERE replid = '$idtahunbuku'";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);
             $tanggal1 = $row[0];
             
             $sql = "SELECT SUM(jd.kredit - jd.debet) FROM $db_name_fina.rekakun ra,
-            $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
+            $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
             //echo "$sql<br>";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);
             $totalpendapatan = (float)$row[0];
             //echo "$totalpendapatan<br>";
             
-            $sql = "SELECT SUM(jd.debet - jd.kredit) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'BIAYA'";
+            $sql = "SELECT SUM(jd.debet - jd.kredit) FROM $db_name_fina.rekakun ra, $db_name_fina.jurnal j, $db_name_fina.jurnaldetail jd WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'BIAYA'";
             //echo "$sql<br>";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);

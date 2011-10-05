@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,9 +31,7 @@ class CAktivitasAdd{
 		if (isset($_REQUEST[simpan])){
 			$perpustakaan = trim(addslashes($_REQUEST[perpustakaan]));
 			$tanggal = trim(addslashes($_REQUEST[tglInput]));
-			$aktivitas = trim($_REQUEST[aktivitas]);
-			$aktivitas = str_replace('"','`',$aktivitas);
-			$aktivitas = str_replace("'","`",$aktivitas);
+			$aktivitas = CQ($_REQUEST[aktivitas]);
 			$sql = "INSERT INTO aktivitas SET perpustakaan='$perpustakaan',tanggal='".MysqlDateFormat($tanggal)." ".$timeInput."',aktivitas='$aktivitas'";
 			$result = QueryDb($sql);
 			if ($result)

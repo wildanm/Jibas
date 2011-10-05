@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -81,7 +81,7 @@ $op = $_REQUEST['op'];
 
 if ($op == "xm8r389xemx23xb2378e23") 
 {
-	$sql="SELECT * FROM calonsiswa WHERE replidsiswa = $_REQUEST[replid]";
+	$sql="SELECT * FROM calonsiswa WHERE replidsiswa = '$_REQUEST[replid]'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_array($result);
 	$idproses = $row['idproses'];
@@ -90,10 +90,10 @@ if ($op == "xm8r389xemx23xb2378e23")
 	BeginTrans();
 	$success = 0;
 	
-	$sql = "DELETE FROM siswa WHERE replid = $_REQUEST[replid]"; 	
+	$sql = "DELETE FROM siswa WHERE replid = '$_REQUEST[replid]'"; 	
 	QueryDbTrans($sql,$success);
 	
-	$sql_calon="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = $_REQUEST[replid]";
+	$sql_calon="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = '$_REQUEST[replid]'";
 	if ($success)
 		QueryDbTrans($sql_calon,$success);
 	
@@ -386,7 +386,7 @@ function refresh_isi() {
     	<td align="left"><strong>Kelas</strong></td>
     	<td align="center">  
         	<select name="kelas" id="kelas" onChange="change()" style="width:228px;" onKeyPress="return focusNext('tabel', event)" onFocus="panggil('kelas')">
-<?          $sql = "SELECT replid, kelas, kapasitas FROM kelas where idtingkat=$tingkat AND idtahunajaran=$tahunajaran AND aktif = 1 ORDER BY kelas";
+<?          $sql = "SELECT replid, kelas, kapasitas FROM kelas where idtingkat='$tingkat' AND idtahunajaran='$tahunajaran' AND aktif = 1 ORDER BY kelas";
             $result = QueryDb($sql);
 			$nama_kelas = "";
 			while ($row = @mysql_fetch_array($result)) 
@@ -394,7 +394,7 @@ function refresh_isi() {
 				if ($kelas == "") 
 					$kelas = $row['replid'];
 				
-				$sql1 = "SELECT COUNT(*) FROM siswa WHERE idkelas = $row[replid] AND idangkatan = $angkatan AND aktif = 1";
+				$sql1 = "SELECT COUNT(*) FROM siswa WHERE idkelas = '$row[replid]' AND idangkatan = '$angkatan' AND aktif = 1";
 				$result1 = QueryDb($sql1);
 				$row1 = @mysql_fetch_row($result1); ?>
 	    		<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelas)?> ><?=$row['kelas'].', kapasitas: '.$row['kapasitas'].', terisi: '.$row1[0]?></option>
@@ -409,7 +409,7 @@ function refresh_isi() {
 				$row = mysql_fetch_row($result);
 				$kapasitas = $row[0];
 				
-				$sql1 = "SELECT COUNT(*) FROM siswa WHERE idkelas = $kelas AND idangkatan = $angkatan AND aktif = 1";
+				$sql1 = "SELECT COUNT(*) FROM siswa WHERE idkelas = '$kelas' AND idangkatan = '$angkatan' AND aktif = 1";
 				$result1 = QueryDb($sql1);
 				$row1 = mysql_fetch_row($result1);
 				$isi = $row1[0];
@@ -433,8 +433,8 @@ function refresh_isi() {
 	{
 		$sql_tot = "SELECT s.replid,s.nis,s.nama,s.frompsb,s.nisn
 					FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t 
-					WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat 
-					  AND s.idangkatan = $angkatan AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1";
+					WHERE s.idkelas = '$kelas' AND k.idtahunajaran = '$tahunajaran' AND k.idtingkat = '$tingkat' 
+					  AND s.idangkatan = '$angkatan' AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1";
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 		$jumlah = mysql_num_rows($result_tot);
@@ -442,13 +442,13 @@ function refresh_isi() {
 	
 		$sql = "SELECT s.replid,s.nis,s.nama,s.frompsb,s.nisn 
 				FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t 
-				WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat 
-				AND s.idangkatan = $angkatan AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1 
+				WHERE s.idkelas = '$kelas' AND k.idtahunajaran = '$tahunajaran' AND k.idtingkat = '$tingkat' 
+				AND s.idangkatan = '$angkatan' AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.aktif=1 
 				ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		$result = QueryDb($sql);
 		$jum = @mysql_num_rows($result);
 		
-		$sql5 = "SELECT kelas FROM jbsakad.kelas WHERE replid = $kelas ";
+		$sql5 = "SELECT kelas FROM jbsakad.kelas WHERE replid = '$kelas' ";
 		$result5 = QueryDb($sql5);
 		$row5 = @mysql_fetch_array($result5);
 		$nama_kelas = $row5[kelas];

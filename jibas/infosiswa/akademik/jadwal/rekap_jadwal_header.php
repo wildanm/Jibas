@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -156,7 +156,7 @@ function focusNext(elemName, evt) {
         <td><strong>Info Jadwal</strong></td>
         <td colspan="3"><select name="info_jadwal" id="info_jadwal" onChange="change_info_jadwal()" style="width:200px">
           <? 	OpenDb();
-            $sql_info_jadwal="SELECT i.replid, i.deskripsi, i.aktif FROM jbsakad.infojadwal i, tahunajaran a WHERE i.idtahunajaran = a.replid AND a.departemen = '$departemen' AND i.idtahunajaran = $tahunajaran ORDER BY i.aktif DESC";						            
+            $sql_info_jadwal="SELECT i.replid, i.deskripsi, i.aktif FROM jbsakad.infojadwal i, tahunajaran a WHERE i.idtahunajaran = a.replid AND a.departemen = '$departemen' AND i.idtahunajaran = '$tahunajaran' ORDER BY i.aktif DESC";						            
 			$result_info_jadwal=QueryDb($sql_info_jadwal);
             while ($row_info_jadwal=@mysql_fetch_array($result_info_jadwal)){
                 if ($info_jadwal=="")

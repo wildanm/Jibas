@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,7 +36,7 @@ $page = $_REQUEST['page'];
 $total = $_REQUEST['total'];
 
 OpenDb();
-$sql = "SELECT proses FROM prosespenerimaansiswa WHERE replid = $proses";
+$sql = "SELECT proses FROM prosespenerimaansiswa WHERE replid = '$proses'";
 $result=QueryDb($sql);
 $row = @mysql_fetch_array($result);
 CloseDb();
@@ -81,7 +81,7 @@ CloseDb();
     </tr>
 <? 	
 	OpenDb();
-    $sql = "SELECT replid,kelompok,kapasitas,keterangan FROM kelompokcalonsiswa WHERE idproses=$proses ORDER BY $urut $urutan ";//LIMIT ".(int)$page*(int)$varbaris.",$varbaris";  
+    $sql = "SELECT replid,kelompok,kapasitas,keterangan FROM kelompokcalonsiswa WHERE idproses='$proses' ORDER BY $urut $urutan ";//LIMIT ".(int)$page*(int)$varbaris.",$varbaris";  
 	$result = QueryDB($sql);
 	//if ($page==0)
 		$cnt = 0;
@@ -94,7 +94,7 @@ CloseDb();
         <td align="center"><?=$row['kapasitas'] ?></td>
         <td align="center">
 		<?	OpenDb();
-			$sql1 = "SELECT COUNT(*) FROM calonsiswa WHERE idkelompok=$row[replid] AND aktif = 1";    
+			$sql1 = "SELECT COUNT(*) FROM calonsiswa WHERE idkelompok='$row[replid]' AND aktif = 1";    
 			$result1 = QueryDb($sql1);
 			$row1 = @mysql_fetch_row($result1);
 			echo $row1[0];

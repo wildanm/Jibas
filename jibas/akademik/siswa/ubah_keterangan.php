@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ $idkelas=$_REQUEST['idkelas'];
 
 if (isset($_REQUEST['Simpan'])){
 	OpenDb();
-	$sql_simpan="UPDATE jbsakad.riwayatkelassiswa SET keterangan='$_REQUEST[ket]' WHERE nis='$nis' AND idkelas='$idkelas'";
+	$sql_simpan="UPDATE jbsakad.riwayatkelassiswa SET keterangan='".CQ($_REQUEST['ket'])."' WHERE nis='$nis' AND idkelas='$idkelas'";
 	$result_simpan=QueryDb($sql_simpan);
 	CloseDb();
 	if ($result_simpan) { 	
@@ -50,7 +50,7 @@ if (isset($_REQUEST['Simpan'])){
 
 	
 OpenDb();
-$sql_ket="SELECT r.keterangan,k.kelas,s.nama FROM jbsakad.riwayatkelassiswa r, jbsakad.kelas k,  jbsakad.siswa s WHERE r.nis=s.nis AND r.idkelas=k.replid AND k.replid = $idkelas AND s.nis='$nis'";
+$sql_ket="SELECT r.keterangan,k.kelas,s.nama FROM jbsakad.riwayatkelassiswa r, jbsakad.kelas k,  jbsakad.siswa s WHERE r.nis=s.nis AND r.idkelas=k.replid AND k.replid = '$idkelas' AND s.nis='$nis'";
 $result_ket=QueryDb($sql_ket);
 $row_ket=@mysql_fetch_array($result_ket);
 $nama = $row_ket['nama'];
@@ -97,7 +97,11 @@ function focusNext(elemName, evt) {
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr height="58">
 	<td width="28" background="../<?=GetThemeDir() ?>bgpop_01.jpg">&nbsp;</td>
-    <td width="*" background="../<?=GetThemeDir() ?>bgpop_02a.jpg">&nbsp;</td>
+    <td width="*" background="../<?=GetThemeDir() ?>bgpop_02a.jpg">
+	<div align="center" style="color:#FFFFFF; font-size:16px; font-weight:bold">
+    .: Ubah Keterangan Riwayat Kelas :.
+    </div>
+	</td>
     <td width="28" background="../<?=GetThemeDir() ?>bgpop_03.jpg">&nbsp;</td>
 </tr>
 <tr height="150">
@@ -107,10 +111,10 @@ function focusNext(elemName, evt) {
 
 <form action="#" method="post" onSubmit="return validate()" > 
 <table border="0" width="95%" cellpadding="2" cellspacing="2" align="center">
-<!-- TABLE CONTENT -->
+<!-- TABLE CONTENT 
 <tr height="25">
 	<td class="header" colspan="2"><div align="center">Ubah Keterangan Riwayat Kelas</div></td>
-</tr>
+</tr>-->
 <tr>	
 	<td width="120"><strong>NIS</strong></td>
     <td><input type="text" name="nis" id="nis" readonly="readonly" value="<?=$nis?>" class="disabled" size="20" readonly="readonly"/><input type="hidden" name="idnis" id="idnis" value="<?=$nis?>" />

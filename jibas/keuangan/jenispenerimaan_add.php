@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -44,9 +44,9 @@ if (isset($_REQUEST['simpan'])) {
 		$besar = UnformatRupiah($besar);
 		$norekpiutang = $_REQUEST['norekpiutang'];
 		if (trim($norekpiutang) == "")
-			$sql = "INSERT INTO datapenerimaan SET nama='$_REQUEST[nama]', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='$_REQUEST[keterangan]', aktif=1";
+			$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
 		else
-			$sql = "INSERT INTO datapenerimaan SET nama='$_REQUEST[nama]', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$norekpiutang', keterangan='$_REQUEST[keterangan]', aktif=1";
+			$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$norekpiutang', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
 		$result = QueryDb($sql);
 		CloseDb();
 	

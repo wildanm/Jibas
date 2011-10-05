@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -48,19 +48,19 @@ if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];	
 
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];	
+	$keterangan = CQ($_REQUEST['keterangan']);	
 
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();	
-	$sql1 = "SELECT * FROM guru g, pelajaran p WHERE p.departemen = '$departemen' AND g.nip = '$nipguru' AND g.idpelajaran = '$pelajaran' AND g.statusguru = '$status' AND g.idpelajaran = p.replid AND g.replid <> $replid ";	
+	$sql1 = "SELECT * FROM guru g, pelajaran p WHERE p.departemen = '$departemen' AND g.nip = '$nipguru' AND g.idpelajaran = '$pelajaran' AND g.statusguru = '$status' AND g.idpelajaran = p.replid AND g.replid <> '$replid' ";	
 	$result1 = QueryDb($sql1);
 
 	if (mysql_num_rows($result1) > 0) {
 		CloseDb();		
 		$ERROR_MSG = "Nama guru $nama sudah digunakan!";
 	} else {	
-		$sql_update = "UPDATE guru SET nip='$nipguru', idpelajaran=$pelajaran, statusguru='$status', keterangan='$keterangan' WHERE replid=$replid";
+		$sql_update = "UPDATE guru SET nip='$nipguru', idpelajaran='$pelajaran', statusguru='$status', keterangan='$keterangan' WHERE replid='$replid'";
 		$result_update = QueryDb($sql_update);
 		
 		if ($result_update) { ?>
@@ -74,7 +74,7 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();
-$sql = "SELECT g.nip,g.statusguru,g.keterangan,l.departemen,p.nama,g.idpelajaran,l.nama AS pelajar FROM guru g, pelajaran l, jbssdm.pegawai p WHERE g.replid=$replid AND p.nip = g.nip AND l.replid = g.idpelajaran";
+$sql = "SELECT g.nip,g.statusguru,g.keterangan,l.departemen,p.nama,g.idpelajaran,l.nama AS pelajar FROM guru g, pelajaran l, jbssdm.pegawai p WHERE g.replid='$replid' AND p.nip = g.nip AND l.replid = g.idpelajaran";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $keterangan = $row['keterangan'];

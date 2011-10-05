@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ $replid = $_REQUEST['replid'];
 $tahunajaran = $_REQUEST['tahunajaran'];
 
 OpenDb();
-$sql = "SELECT t.departemen, t.tahunajaran, i.deskripsi, i.idtahunajaran FROM tahunajaran t, infojadwal i WHERE i.replid = $replid AND i.idtahunajaran = t.replid";
+$sql = "SELECT t.departemen, t.tahunajaran, i.deskripsi, i.idtahunajaran FROM tahunajaran t, infojadwal i WHERE i.replid = '$replid' AND i.idtahunajaran = t.replid";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $departemen = $row['departemen'];
@@ -47,14 +47,14 @@ $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {	
 	
 	OpenDb();
-	$sql_simpan_cek="SELECT * FROM jbsakad.infojadwal WHERE deskripsi='$deskripsi' AND idtahunajaran = $tahunajaran AND replid <> $replid"; 	
+	$sql_simpan_cek="SELECT * FROM jbsakad.infojadwal WHERE deskripsi='$deskripsi' AND idtahunajaran = '$tahunajaran' AND replid <> '$replid'"; 	
 	
 	$result_simpan_cek=QueryDb($sql_simpan_cek);	
 	if (mysql_num_rows($result_simpan_cek) > 0) {
 		CloseDb();
 		$ERROR_MSG = $deskripsi." sudah digunakan!";
 	} else {
-		$sql_simpan="UPDATE jbsakad.infojadwal SET deskripsi='$deskripsi' WHERE replid = $replid";
+		$sql_simpan="UPDATE jbsakad.infojadwal SET deskripsi='$deskripsi' WHERE replid = '$replid'";
 		$result_simpan=QueryDb($sql_simpan);
 		CloseDb();
 		if ($result_simpan){		

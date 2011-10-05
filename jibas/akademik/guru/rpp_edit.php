@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,22 +38,22 @@ if (isset($_REQUEST['tingkat']))
 if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
 if (isset($_REQUEST['kode']))
-	$kode = $_REQUEST['kode'];
+	$kode = CQ($_REQUEST['kode']);
 if (isset($_REQUEST['materi']))
-	$materi = $_REQUEST['materi'];	
+	$materi = CQ($_REQUEST['materi']);	
 if (isset($_REQUEST['deskripsi']))
-	$deskripsi = $_REQUEST['deskripsi'];	
+	$deskripsi = CQ($_REQUEST['deskripsi']);	
 
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();
-	$sql = "SELECT * FROM rpp WHERE koderpp = '$kode' AND replid <> $replid";
+	$sql = "SELECT * FROM rpp WHERE koderpp = '$kode' AND replid <> '$replid'";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
 		CloseDb();
 		$ERROR_MSG = "Kode pembelajaran $kode sudah digunakan!";	
 	} else {
-		$sql = "UPDATE rpp SET koderpp = '$kode', rpp = '$materi', deskripsi = '$deskripsi' WHERE replid = $replid";
+		$sql = "UPDATE rpp SET koderpp = '$kode', rpp = '$materi', deskripsi = '$deskripsi' WHERE replid = '$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -67,7 +67,7 @@ if (isset($_REQUEST['Simpan'])) {
 	}
 }
 OpenDb();
-$sql = "SELECT r.koderpp, r.rpp, r.deskripsi, r.idsemester, r.idtingkat, r.idpelajaran, s.semester, t.tingkat, p.nama, s.departemen FROM rpp r, semester s, tingkat t, pelajaran p WHERE r.replid = $replid AND s.replid = r.idsemester AND t.replid = r.idtingkat AND p.replid = r.idpelajaran";
+$sql = "SELECT r.koderpp, r.rpp, r.deskripsi, r.idsemester, r.idtingkat, r.idpelajaran, s.semester, t.tingkat, p.nama, s.departemen FROM rpp r, semester s, tingkat t, pelajaran p WHERE r.replid = '$replid' AND s.replid = r.idsemester AND t.replid = r.idtingkat AND p.replid = r.idpelajaran";
 
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);

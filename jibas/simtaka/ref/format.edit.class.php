@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,19 +25,19 @@ class CFormatEdit{
 	var $kode, $nama, $replid, $keterangan;
 	function OnStart(){
 		if (isset($_REQUEST[simpan])){
-			$sql = "SELECT kode FROM format WHERE kode='$_REQUEST[kode]' AND replid <> $_REQUEST[replid]";
+			$sql = "SELECT kode FROM format WHERE kode='".CQ($_REQUEST['kode'])."' AND replid <> '$_REQUEST[replid]'";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "UPDATE format SET kode='$_REQUEST[kode]', nama='$_REQUEST[nama]', keterangan='$_REQUEST[keterangan]' WHERE replid=$_REQUEST[replid]";
+				$sql = "UPDATE format SET kode='".CQ($_REQUEST['kode'])."', nama='".CQ($_REQUEST['nama'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$_REQUEST[replid]'";
 				$result = QueryDb($sql);
 				if ($result)
 					$this->success();
 			}
 		} else {
-			$sql = "SELECT * FROM format WHERE replid=$_REQUEST[id]";
+			$sql = "SELECT * FROM format WHERE replid='$_REQUEST[id]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->replid = $_REQUEST[id];

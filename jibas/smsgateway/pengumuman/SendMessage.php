@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -28,8 +28,9 @@ OpenDb();
 //echo "<pre>";
 //print_r($_REQUEST);
 //echo "</pre>";
-$Sender		= $_REQUEST['Sender'];// => Ellyf TS
-$Message	= $_REQUEST['Message'];// => Pesannnya
+$Sender		= CQ($_REQUEST['Sender']);// => Ellyf TS
+$Message	= stripslashes($_REQUEST['Message']);// => Pesannnya
+$Message	= str_replace("^","&",$Message);
 $NoPe		= $_REQUEST['NoPe'];// =>; 085624084062,085624084062
 $SendTime	= $_REQUEST['SendTime'];// => 2010-2-2 16:37:00
 $NoIn		= $_REQUEST['NoIn'];
@@ -84,7 +85,7 @@ for ($i=0; $i<count($No);$i++){
 			$nohp = $No[$i];
 			$nohp = str_replace(" 62","0",$nohp);
 
-			$TextMsg = $newformat;
+			$TextMsg = CQ($newformat);
 			//echo $PIN1[$i].",".$PIN2[$i]."#".$No[$i]."->".$TextMsg."<br>";
 			//$sql_insert = "INSERT INTO smsd.outbox SET InsertIntoDB=now(),SendingDateTime=now(),Text='$Message',DestinationNumber='$No[$i]',SenderID='$Sender'";
 			$sql_insert = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendTime', Text='$TextMsg', DestinationNumber='$nohp', SenderID='$Sender', CreatorID='$Sender',idsmsgeninfo=$idsmsgeninfo";

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,7 +36,7 @@ if (isset($_REQUEST['Simpan'])) {
 	$penghulu = $_REQUEST['penghulu'];
 	$pasangan = $_REQUEST['pasangan'];
 	$keterangan = $_REQUEST['keterangan'];
-	$sql = "UPDATE jadwal SET jam='$jam', tempat='$tempat', penghulu='$penghulu', pasangan='$pasangan', keterangan='$keterangan' WHERE replid=$replid";
+	$sql = "UPDATE jadwal SET jam='$jam', tempat='$tempat', penghulu='$penghulu', pasangan='$pasangan', keterangan='$keterangan' WHERE replid='$replid'";
 	
 	$result = QueryDb($sql);
 	CloseDb();
@@ -50,7 +50,7 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();
-$sql = "SELECT penghulu, pasangan, keterangan, tempat, jam FROM jadwal WHERE replid=$replid";
+$sql = "SELECT penghulu, pasangan, keterangan, tempat, jam FROM jadwal WHERE replid='$replid'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $nip = $row['penghulu'];

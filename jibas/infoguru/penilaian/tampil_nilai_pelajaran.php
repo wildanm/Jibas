@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -155,14 +155,14 @@ OpenDb();
 <input type="hidden" name="dasar_penilaian" value="<?=$dasar_penilaian ?>">
     <fieldset><legend><b>Jenis Penilaian
 	<?
-	$sql_jenisujian="SELECT * FROM jbsakad.jenisujian WHERE replid=$jenis_penilaian";
+	$sql_jenisujian="SELECT * FROM jbsakad.jenisujian WHERE replid='$jenis_penilaian'";
 	$result_jenisujian=QueryDb($sql_jenisujian);
 	$row_jenisujian=@mysql_fetch_array($result_jenisujian);
 	echo $row_jenisujian['jenisujian'];
 	?><br>
 	Dasar Penilaian : <?=$dasar_penilaian?><br>
 	Pelajaran : <?
-	$sql_pelajaran="SELECT nama FROM jbsakad.pelajaran WHERE replid=$pelajaran";
+	$sql_pelajaran="SELECT nama FROM jbsakad.pelajaran WHERE replid='$pelajaran'";
 	$result_pelajaran=QueryDb($sql_pelajaran);
 	$row_pelajaran=@mysql_fetch_array($result_pelajaran);
 	echo $row_pelajaran['nama'];

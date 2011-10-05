@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -104,21 +104,21 @@ function show_detail(lap)
 		 $idsumber = $row['idsumber'];
 		 
 		 if ($table == "besarjtt")
-		 	$sql = "SELECT info1 FROM besarjtt WHERE replid = $idsumber";
+		 	$sql = "SELECT info1 FROM besarjtt WHERE replid = '$idsumber'";
 		 elseif ($table == "besarjttcalon")
-		   $sql = "SELECT info1 FROM besarjttcalon WHERE replid = $idsumber";
+		   $sql = "SELECT info1 FROM besarjttcalon WHERE replid = '$idsumber'";
 		 elseif ($table == "penerimaanjtt")
-		   $sql = "SELECT idjurnal FROM penerimaanjtt WHERE replid = $idsumber";
+		   $sql = "SELECT idjurnal FROM penerimaanjtt WHERE replid = '$idsumber'";
        elseif ($table == "penerimaanjttcalon")
-		   $sql = "SELECT idjurnal FROM penerimaanjttcalon WHERE replid = $idsumber";			
+		   $sql = "SELECT idjurnal FROM penerimaanjttcalon WHERE replid = '$idsumber'";			
   		 elseif ($table == "penerimaaniuran")
-		   $sql = "SELECT idjurnal FROM penerimaaniuran WHERE replid = $idsumber";
+		   $sql = "SELECT idjurnal FROM penerimaaniuran WHERE replid = '$idsumber'";
 		 elseif ($table == "penerimaaniurancalon")
-		   $sql = "SELECT idjurnal FROM penerimaaniurancalon WHERE replid = $idsumber";			
+		   $sql = "SELECT idjurnal FROM penerimaaniurancalon WHERE replid = '$idsumber'";			
 		 elseif ($table == "penerimaanlain")
-		   $sql = "SELECT idjurnal FROM penerimaanlain WHERE replid = $idsumber";
+		   $sql = "SELECT idjurnal FROM penerimaanlain WHERE replid = '$idsumber'";
 		 elseif ($table == "pengeluaran")
-		   $sql = "SELECT idjurnal FROM pengeluaran WHERE replid = $idsumber";
+		   $sql = "SELECT idjurnal FROM pengeluaran WHERE replid = '$idsumber'";
        elseif ($table == "jurnalumum")
 		   $sql = "SELECT $idsumber";			
 			
@@ -128,19 +128,19 @@ function show_detail(lap)
 			 $row2 = mysql_fetch_row($res2);
 			 $idjurnal = $row2[0];
 			 
-			 $sql = "UPDATE auditinfo SET info1='$idjurnal' WHERE replid=$id";
+			 $sql = "UPDATE auditinfo SET info1='$idjurnal' WHERE replid='$id'";
 			 QueryDb($sql);
 		 }
 		 else
 		 {
-			 $sql = "UPDATE auditinfo SET info1='na' WHERE replid=$id";
+			 $sql = "UPDATE auditinfo SET info1='na' WHERE replid='$id'";
 			 QueryDb($sql);
 		 }
 	 }
 	 
     $sql = "SELECT a.sumber, count(a.replid) 
 	           FROM auditinfo a, jurnal j 
-				 WHERE a.info1 = j.replid AND j.idtahunbuku = $idtahunbuku AND a.departemen = '$departemen' 
+				 WHERE a.info1 = j.replid AND j.idtahunbuku = '$idtahunbuku' AND a.departemen = '$departemen' 
 				   AND a.tanggal >= '$tanggal1 00:00:00' AND a.tanggal <= '$tanggal2 23:59:59' 
 		  	 GROUP BY a.sumber 
 			 ORDER BY a.sumber";

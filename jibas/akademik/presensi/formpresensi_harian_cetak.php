@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ $semester = $_REQUEST['semester'];
 $kelas = $_REQUEST['kelas'];
 
 OpenDb();
-$sql = "SELECT k.kelas, s.semester, a.tahunajaran, t.tingkat FROM kelas k, semester s, tahunajaran a, tingkat t WHERE k.replid = $kelas AND s.replid = $semester AND a.replid = $tahunajaran AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";
+$sql = "SELECT k.kelas, s.semester, a.tahunajaran, t.tingkat FROM kelas k, semester s, tahunajaran a, tingkat t WHERE k.replid = '$kelas' AND s.replid = $semester AND a.replid = '$tahunajaran' AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";
 //echo $sql;
 $result = QueryDb($sql);
 CloseDb();
@@ -105,7 +105,7 @@ $namatingkat = $row['tingkat'];
         <?
         OpenDb();
         
-        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = $kelas AND alumni=0 AND aktif=1 ORDER BY nama";
+        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = '$kelas' AND alumni=0 AND aktif=1 ORDER BY nama";
         $result = QueryDb($sql);
         CloseDb();
         

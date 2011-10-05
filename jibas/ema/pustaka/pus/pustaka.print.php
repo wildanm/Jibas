@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,22 +38,22 @@ switch ($kategori){
 		break;
 	case 'rak':
 		$kat = "Rak";
-		$row = @mysql_fetch_row(QueryDb("SELECT rak FROM rak WHERE replid=$keywords"));
+		$row = @mysql_fetch_row(QueryDb("SELECT rak FROM rak WHERE replid='$keywords'"));
 		$key = $row[0];
 		break;	
 	case 'katalog':
 		$kat = "Katalog";
-		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM katalog WHERE replid=$keywords"));
+		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM katalog WHERE replid='$keywords'"));
 		$key = $row[0]." - ".$row[1];
 		break;
 	case 'penerbit':
 		$kat = "Penerbit";
-		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM penerbit WHERE replid=$keywords"));
+		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM penerbit WHERE replid='$keywords'"));
 		$key = $row[0]." - ".$row[1];
 		break;
 	case 'penulis':
 		$kat = "Penulis";
-		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM penulis WHERE replid=$keywords"));
+		$row = @mysql_fetch_row(QueryDb("SELECT kode,nama FROM penulis WHERE replid='$keywords'"));
 		$key = $row[0]." - ".$row[1];
 		break;	
 	case 'tahun':
@@ -104,7 +104,7 @@ switch ($kategori){
 		<? 
 		OpenDb();
 		if ($perpustakaan!='-1'){
-			$sql = "SELECT nama FROM perpustakaan WHERE replid=$perpustakaan";
+			$sql = "SELECT nama FROM perpustakaan WHERE replid='$perpustakaan'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_row($result);
 			echo $row[0];
@@ -154,16 +154,16 @@ switch ($kategori){
 	  $sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $sqlpus $filter  GROUP BY p.replid ORDER BY p.judul ";
 	
 	  if ($kategori=='rak')
-			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $sqlpus AND r.replid=$keywords AND p.katalog=k.replid AND k.rak=r.replid GROUP BY p.replid ORDER BY p.judul ";
+			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $sqlpus AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY p.replid ORDER BY p.judul ";
 	  
 	  if ($kategori=='katalog')
-			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $sqlpus AND k.replid=$keywords AND p.katalog=k.replid  GROUP BY p.replid ORDER BY p.judul ";	
+			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $sqlpus AND k.replid='$keywords' AND p.katalog=k.replid  GROUP BY p.replid ORDER BY p.judul ";	
 		
 	  if ($kategori=='penerbit')
-			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $sqlpus AND pb.replid=$keywords AND p.penerbit=pb.replid  GROUP BY p.replid ORDER BY p.judul ";
+			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $sqlpus AND pb.replid='$keywords' AND p.penerbit=pb.replid  GROUP BY p.replid ORDER BY p.judul ";
 	  
 	  if ($kategori=='penulis')
-			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $sqlpus AND pn.replid=$keywords AND p.penulis=pn.replid  GROUP BY p.replid ORDER BY p.judul ";	
+			$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $sqlpus AND pn.replid='$keywords' AND p.penulis=pn.replid  GROUP BY p.replid ORDER BY p.judul ";	
   } else {					
   		$sql = "SELECT p.replid, p.judul, p.keterangan FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $sqlpus  GROUP BY p.replid ORDER BY p.judul ";
   }
@@ -173,8 +173,8 @@ switch ($kategori){
   if ($num>0){
       $cnt=1;
       while ($row = @mysql_fetch_row($result)){
-		   $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] $sqlpus AND d.status=0"));
-		   $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] $sqlpus AND d.status=1"));
+		   $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $sqlpus AND d.status=0"));
+		   $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $sqlpus AND d.status=1"));
       ?>
       <tr>
         <td height="25" align="center"><?=$cnt?></td>

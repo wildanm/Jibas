@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -148,8 +148,8 @@ function focusNext(elemName, evt) {
 			<? 
 			$sql_daspen="SELECT DISTINCT a.dasarpenilaian, dp.keterangan
 						   FROM jbsakad.aturannhb a, dasarpenilaian dp 
-						  WHERE a.dasarpenilaian = dp.dasarpenilaian AND a.idtingkat = $tingkat 
-						    AND a.idpelajaran = $pelajaran AND a.aktif = 1 
+						  WHERE a.dasarpenilaian = dp.dasarpenilaian AND a.idtingkat = '$tingkat' 
+						    AND a.idpelajaran = '$pelajaran' AND a.aktif = 1 
 							AND a.nipguru = '$nip' 
 					   ORDER BY	keterangan";
 			$result_daspen = QueryDb($sql_daspen);
@@ -173,7 +173,7 @@ function focusNext(elemName, evt) {
 			$sql_jenispengujian = 
 				"SELECT a.replid, j.jenisujian 
 				   FROM jbsakad.aturannhb a, jbsakad.jenisujian j 
-				  WHERE a.idtingkat=$tingkat AND a.idpelajaran=$pelajaran AND a.aktif=1 
+				  WHERE a.idtingkat='$tingkat' AND a.idpelajaran='$pelajaran' AND a.aktif=1 
 				    AND a.dasarpenilaian='$aspek' AND nipguru='$nip' AND j.replid = a.idjenisujian
  		       ORDER BY jenisujian";
 			$result_jenispengujian=QueryDb($sql_jenispengujian);
@@ -191,7 +191,7 @@ function focusNext(elemName, evt) {
 	<? 	if ($num_jenispengujian!=0)
         { 
             $sql = "SELECT * FROM ujian 
-                    WHERE idkelas = $kelas AND idaturan = $aturan AND idsemester = $semester";
+                    WHERE idkelas = '$kelas' AND idaturan = '$aturan' AND idsemester = '$semester'";
             $result = QueryDb($sql);
                 
             if (mysql_num_rows($result) > 0) 

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -157,7 +157,7 @@ function focusNext(elemName, evt) {
         <? 	
 		if ($kalender <> "" ) {
 			OpenDb();
-			$sql = "SELECT * FROM jbsakad.tahunajaran t, jbsakad.kalenderakademik k WHERE t.replid=k.idtahunajaran AND k.replid = $kalender";
+			$sql = "SELECT * FROM jbsakad.tahunajaran t, jbsakad.kalenderakademik k WHERE t.replid=k.idtahunajaran AND k.replid = '$kalender'";
 			$result = QueryDb($sql);
 			$row = mysql_fetch_array($result);
 			$periode = format_tgl($row['tglmulai']).' s/d '.format_tgl($row['tglakhir']);

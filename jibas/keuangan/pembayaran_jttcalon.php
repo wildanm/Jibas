@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,8 +35,8 @@ $idkategori = $_REQUEST['idkategori'];
 $idpenerimaan = (int)$_REQUEST['idpenerimaan'];
 $replid = (int)$_REQUEST['replid'];
 $idtahunbuku = (int)$_REQUEST['idtahunbuku'];
-$keterangan = (string)$_REQUEST['keterangan'];
-$alasan = (string)$_REQUEST['alasan'];
+$keterangan = CQ((string)$_REQUEST['keterangan']);
+$alasan = CQ((string)$_REQUEST['alasan']);
 $lunas = 0;
 if (isset($_REQUEST['lunas']))
 	$lunas = $_REQUEST['lunas'];
@@ -52,7 +52,7 @@ if ($op == "348328947234923")
 	// -------------------------------------------
 		
 	// Ambil informasi kode rekening berdasarkan jenis penerimaan
-	$sql = "SELECT rekkas, rekpiutang, rekpendapatan, nama FROM datapenerimaan WHERE replid=$idpenerimaan";
+	$sql = "SELECT rekkas, rekpiutang, rekpendapatan, nama FROM datapenerimaan WHERE replid='$idpenerimaan'";
 	$row = FetchSingleRow($sql);
 	$rekkas = $row[0];
 	$rekpiutang = $row[1];
@@ -73,7 +73,7 @@ if ($op == "348328947234923")
 		// -------------------------------------------
 		
 		// cari tahu total pembayaran yang telah dilakukan
-		$sql = "SELECT sum(jumlah), count(replid) FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+		$sql = "SELECT sum(jumlah), count(replid) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 		$row = FetchSingleRow($sql);
 		$totalbayaran = (float)$row[0];
 		$nbayaran = (int)$row[1];
@@ -95,7 +95,7 @@ if ($op == "348328947234923")
 		{
 			// ambil idjurnal dan idtahunbuku pada saat input besar pembayaran
 			//   jika diinput menggunakan JIBAS keuangan versi <= 2.0 maka keduanya bernilai nol
-			$sql = "SELECT info1, info2, besar FROM besarjttcalon WHERE replid=$idbesarjtt";
+			$sql = "SELECT info1, info2, besar FROM besarjttcalon WHERE replid='$idbesarjtt'";
 			$row = FetchSingleRow($sql);
 			
 			$idjurnal_jtt = (int)$row[0];
@@ -108,7 +108,7 @@ if ($op == "348328947234923")
 		if ($continue && $selisih == 0)
 		{
 			// hanya berubah keterangannya saja
-			$sql = "UPDATE besarjttcalon SET cicilan='$cicilan', keterangan='$keterangan', pengguna='$pengguna', info3='$alasan' WHERE replid=$idbesarjtt";
+			$sql = "UPDATE besarjttcalon SET cicilan='$cicilan', keterangan='$keterangan', pengguna='$pengguna', info3='$alasan' WHERE replid='$idbesarjtt'";
 			QueryDb($sql);	
 			
 			$continue = false;
@@ -131,7 +131,7 @@ if ($op == "348328947234923")
 				$lunas = 1;  // lunas
 			
 			// update besarjtt
-			$sql = "UPDATE besarjttcalon SET besar=$besar, cicilan='$cicilan', keterangan='$keterangan', lunas=$lunas, pengguna='$pengguna', info3='$alasan' WHERE replid=$idbesarjtt";
+			$sql = "UPDATE besarjttcalon SET besar='$besar', cicilan='$cicilan', keterangan='$keterangan', lunas='$lunas', pengguna='$pengguna', info3='$alasan' WHERE replid='$idbesarjtt'";
 			QueryDbTrans($sql, $success);
 		}
 		
@@ -159,7 +159,7 @@ if ($op == "348328947234923")
 				$namasiswa = $row[0];
 				
 				// Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-				$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+				$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 				$row = FetchSingleRow($sql);
 				$awalan = $row[0];
 				$cacah = $row[1];
@@ -195,7 +195,7 @@ if ($op == "348328947234923")
 				//increment cacah di tahunbuku
 				if ($success) 
 				{
-					$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+					$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 					QueryDbTrans($sql, $success);
 				}
 			}
@@ -206,13 +206,13 @@ if ($op == "348328947234923")
 				
 				if ($success)
 				{
-					$sql = "UPDATE jurnaldetail SET debet=$besar WHERE idjurnal=$idjurnal_jtt AND koderek='$rekpiutang' AND debet=$besar_jtt";
+					$sql = "UPDATE jurnaldetail SET debet='$besar' WHERE idjurnal='$idjurnal_jtt' AND koderek='$rekpiutang' AND debet='$besar_jtt'";
 					QueryDbTrans($sql, $success);	
 				}
 					
 				if ($success)
 				{
-					$sql = "UPDATE jurnaldetail SET kredit=$besar WHERE idjurnal=$idjurnal_jtt AND koderek='$rekpendapatan' AND kredit=$besar_jtt";
+					$sql = "UPDATE jurnaldetail SET kredit='$besar' WHERE idjurnal='$idjurnal_jtt' AND koderek='$rekpendapatan' AND kredit='$besar_jtt'";
 					QueryDbTrans($sql, $success);	
 				}
 			}
@@ -239,7 +239,7 @@ if ($op == "348328947234923")
 		$nopendaftaran = $row[1];
 		
 		//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-		$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+		$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 		$row = FetchSingleRow($sql);
 		$awalan = $row[0];
 		$cacah = $row[1];
@@ -268,8 +268,8 @@ if ($op == "348328947234923")
 		// simpan ke tabel besarjtt
 		if ($success) 
 		{
-			$sql = "INSERT INTO besarjttcalon SET idcalon=$replid, idpenerimaan=$idpenerimaan, 
-			        besar=$besar, cicilan=$cicilan, keterangan='$_REQUEST[keterangan]', lunas=$lunas, pengguna='$pengguna', info1='$idjurnal', info2='$idtahunbuku'";
+			$sql = "INSERT INTO besarjttcalon SET idcalon=$replid, idpenerimaan='$idpenerimaan', 
+			        besar='$besar', cicilan='$cicilan', keterangan='".CQ($_REQUEST['keterangan'])."', lunas='$lunas', pengguna='$pengguna', info1='$idjurnal', info2='$idtahunbuku'";
 			QueryDbTrans($sql, $success);
 		}
 		
@@ -305,7 +305,7 @@ OpenDb();
 $sql = "SELECT c.nopendaftaran, c.nama, c.telponsiswa as telpon, c.hpsiswa as hp, k.kelompok, 
 					c.alamatsiswa as alamattinggal, p.proses 
 			 FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p 
-			WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = $replid";
+			WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = '$replid'";
 
 $result = QueryDb($sql);
 if (mysql_num_rows($result) == 0) 
@@ -326,7 +326,7 @@ else
 }
 
 // Nama jenis penerimaan 
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -343,7 +343,7 @@ $idbesarjtt = 0;
 // periksa apakah berasal dari input JIBAS versi < 2.1
 $sql = "SELECT b.replid AS id, b.besar, b.keterangan, b.lunas, b.info1 AS idjurnal, cicilan 
 			  FROM besarjttcalon b 
-			  WHERE b.idcalon = $replid AND b.idpenerimaan = $idpenerimaan AND b.info2 = '$idtahunbuku'";	
+			  WHERE b.idcalon = $replid AND b.idpenerimaan = '$idpenerimaan' AND b.info2 = '$idtahunbuku'";	
 $result = QueryDb($sql);
 
 $bayar = mysql_num_rows($result);
@@ -364,12 +364,12 @@ if (mysql_num_rows($result) > 0)
 		
 	$keterangan = $row['keterangan'];
 	if (isset($_REQUEST['keterangan']))
-		$keterangan = $_REQUEST['keterangan']; 
+		$keterangan = CQ($_REQUEST['keterangan']); 
 	
 	$idjurnal = $row['idjurnal'];
 	if ($idjurnal != 0)
 	{
-		$sql = "SELECT DATE_FORMAT(tanggal, '%d-%m-%Y') FROM jurnal WHERE replid=$idjurnal";
+		$sql = "SELECT DATE_FORMAT(tanggal, '%d-%m-%Y') FROM jurnal WHERE replid='$idjurnal'";
 		$tgl_jurnal = FetchSingle($sql);
 	}
 	
@@ -692,7 +692,7 @@ function panggil(elem)
         <td align="center" colspan="2"> 
 <?	if ($bayar > 0 && $lunas <> 2) 
 	{ 
-   	$sql = "SELECT count(*) FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+   	$sql = "SELECT count(*) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
       $result = QueryDb($sql);
       $row = mysql_fetch_row($result);
       $nbayar = $row[0];
@@ -702,8 +702,8 @@ function panggil(elem)
 		{
 			$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas 
 					  FROM penerimaanjttcalon p, besarjttcalon b, jurnal j 
-					  WHERE b.idpenerimaan = $idpenerimaan AND p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal 
-					   AND b.replid = $idbesarjtt ORDER BY p.tanggal ASC";
+					  WHERE b.idpenerimaan = '$idpenerimaan' AND p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal 
+					   AND b.replid = '$idbesarjtt' ORDER BY p.tanggal ASC";
 			$result = QueryDb($sql);
 			if (mysql_num_rows($result) > 1) 
 				$info = "Pembayaran Cicilan";

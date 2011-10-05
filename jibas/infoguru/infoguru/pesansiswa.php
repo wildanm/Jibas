@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -28,7 +28,7 @@ require_once('../include/config.php');
 OpenDb();
 $tgl=date('j');
 $bln=date('m');
-$sql_ultah="SELECT nama FROM jbsakad.siswa WHERE DATE(tgllahir)=$tgl AND MONTH(tgllahir)=$bln ORDER BY nama";
+$sql_ultah="SELECT nama FROM jbsakad.siswa WHERE DATE(tgllahir)='$tgl' AND MONTH(tgllahir)='$bln' ORDER BY nama";
 $result_ultah=QueryDb($sql_ultah);
 CloseDb();
 ?>

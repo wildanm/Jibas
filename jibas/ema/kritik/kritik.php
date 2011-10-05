@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -73,7 +73,7 @@ function ChgCmb(){
       <tr>
         <td style="padding-right:4px">Bulan</td>
         <td style="padding-right:4px">
-        <select id="Month" class="Cmb" onchange="ChgCmb()">
+        <select id="Month" class="cmbfrm" onchange="ChgCmb()">
             <?
             for ($i=1; $i<=12; $i++){
                 if ($Month=='')
@@ -85,7 +85,7 @@ function ChgCmb(){
             ?>
         </select>        </td>
         <td style="padding-right:2px">
-        <select id="Year" class="Cmb" onchange="ChgCmb()">
+        <select id="Year" class="cmbfrm" onchange="ChgCmb()">
             <?
             for ($i=$G_START_YEAR; $i<=date(Y); $i++){
                 if ($Year=='')
@@ -100,7 +100,7 @@ function ChgCmb(){
       <tr>
         <td style="padding-right:4px">Jenis</td>
         <td colspan="2" style="padding-right:4px"><span style="padding-right:2px">
-          <select name="Type" class="Cmb" id="Type" onchange="ChgCmb()">
+          <select name="Type" class="cmbfrm" id="Type" onchange="ChgCmb()">
             <?
         if ($Type=="")
             $Type="kritik";
@@ -129,10 +129,15 @@ function ChgCmb(){
   if ($num>0){
   $cnt=1;
   while ($row = @mysql_fetch_row($result)){
-    ?>
+	$nohp  = str_replace("+62","",$row[1]);	
+	$sqlph = "SELECT nama FROM $db_name_sms.phonebook WHERE nohp LIKE '%$nohp'";
+	$resph = QueryDb($sqlph);
+	$rowph = @mysql_fetch_row($resph);
+	$nama  = $rowph[0];
+  ?>
   <tr>
     <td align="center"><?=$cnt?></td>
-    <td align="center"><?=$row[1]?></td>
+    <td align="center"><?="($row[1]) $nama"?></td>
     <td align="center"><?=$row[3]?></td>
     <td align="left"><?=$row[4]?></td>
     <!--td align="center">

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -49,23 +49,23 @@ if (isset($_REQUEST['op']))
 if ($op=="bzux834hx8x7x934983xihxf084"){
 	OpenDb();
 	//cek di tujuan yang belum dihapus sama penerima (aktif=1)
-	$sql_cek_tujuan="SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT idpesan FROM jbsvcr.pesanterkirim WHERE replid=".$_REQUEST[replid].") AND aktif=1";
+	$sql_cek_tujuan="SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT idpesan FROM jbsvcr.pesanterkirim WHERE replid='".$_REQUEST[replid]."') AND aktif=1";
 	//echo "sql_cek_tujuan = ".$sql_cek_tujuan."<br>";
 	$res_cek_tujuan=QueryDb($sql_cek_tujuan);
 	$tujuanexist=@mysql_num_rows($res_cek_tujuan);
 	if ($tujuanexist==0){ //Kalo gak ada, lsg hapus aja semuanya...
 		//Ambil dulu idpesan
-		$sql_get_idpesan="SELECT idpesan FROM jbsvcr.pesanterkirim WHERE replid=".$_REQUEST[replid];
+		$sql_get_idpesan="SELECT idpesan FROM jbsvcr.pesanterkirim WHERE replid='$_REQUEST[replid]'";
 		//echo "sql_get_idpesan = ".$sql_get_idpesan."<br>";
 		$res_get_idpesan=QueryDb($sql_get_idpesan);
 		$row_get_idpesan=@mysql_fetch_array($res_get_idpesan);
 		$idpesan=$row_get_idpesan[idpesan];
 		//Hapus di tujuanpesan
-		$sql_del_tujuan="DELETE FROM jbsvcr.tujuanpesan WHERE idpesan=$idpesan";
+		$sql_del_tujuan="DELETE FROM jbsvcr.tujuanpesan WHERE idpesan='$idpesan'";
 		//echo "sql_del_tujuan = ".$sql_del_tujuan."<br>";
 		QueryDb($sql_del_tujuan);
 		//Ambil direktori+namafile buat dihapus filenya..
-		$sql_getfname="SELECT direktori, namafile FROM jbsvcr.lampiranpesan WHERE idpesan=$idpesan";
+		$sql_getfname="SELECT direktori, namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
 		$result_getfname=QueryDb($sql_getfname);
 		$file="file";
 		$cntdel=0;
@@ -82,17 +82,17 @@ if ($op=="bzux834hx8x7x934983xihxf084"){
 		delete($mydir[1]);
 		delete($mydir[2]);
 		//Kalo filenya uda dihapus, hapus alamatnya di tabel lampiran pesan
-		$sql_del_attch="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan=$idpesan";
+		$sql_del_attch="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
 		QueryDb($sql_del_attch);
 		//Hapus dari tabel pesanterkirim
-		$sql_del_terkirim="DELETE FROM jbsvcr.pesanterkirim WHERE replid=$_REQUEST[replid]";
+		$sql_del_terkirim="DELETE FROM jbsvcr.pesanterkirim WHERE replid='$_REQUEST[replid]'";
 		QueryDb($sql_del_terkirim);
 		//Finally, hapus dari tabel pesan
-		$sql_del_terkirim="DELETE FROM jbsvcr.pesan WHERE replid=$idpesan";
+		$sql_del_terkirim="DELETE FROM jbsvcr.pesan WHERE replid='$idpesan'";
 		QueryDb($sql_del_terkirim);
 
 	} else { //Kalo ada pesan yang belum dibaca
-		$sql_del_terkirim="DELETE FROM jbsvcr.pesanterkirim WHERE replid=$_REQUEST[replid]";
+		$sql_del_terkirim="DELETE FROM jbsvcr.pesanterkirim WHERE replid='$_REQUEST[replid]'";
 		QueryDb($sql_del_terkirim);
 	}
 	CloseDb();
@@ -277,7 +277,7 @@ function delpesan(){
     <td>
 	<?
 	   //OpenDb();
-	  $sql5="SELECT t.baru as baru, t.idpenerima as nis, p.nama as nama FROM jbsvcr.tujuanpesan t, jbsakad.siswa p WHERE idpesan=$row1[replid] AND t.idpenerima=p.nis ORDER BY p.nama";
+	  $sql5="SELECT t.baru as baru, t.idpenerima as nis, p.nama as nama FROM jbsvcr.tujuanpesan t, jbsakad.siswa p WHERE idpesan='$row1[replid]' AND t.idpenerima=p.nis ORDER BY p.nama";
 	  $result5=QueryDb($sql5);
 	  while ($row5=@mysql_fetch_array($result5)){
 	  $img="<img src='../../images/ico/ok.png' />";

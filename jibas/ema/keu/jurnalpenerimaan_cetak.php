@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -113,7 +113,7 @@ switch($idkategori) {
 </table>
 <br />
 <?
-$sql = "SELECT * FROM $db_name_fina.jurnal WHERE idtahunbuku = $idtahunbuku $sumber AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY tanggal";
+$sql = "SELECT * FROM $db_name_fina.jurnal WHERE idtahunbuku = '$idtahunbuku' $sumber AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY tanggal";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {
 
@@ -153,7 +153,7 @@ $sql = "SELECT * FROM $db_name_fina.jurnal WHERE idtahunbuku = $idtahunbuku $sum
         <td rowspan="2" valign="top" bgcolor="#E8FFE8">
             <table border="1" style="border-collapse:collapse;" width="100%" height="100%" cellpadding="2" bgcolor="#FFFFFF" bordercolor="#000000">    
         <?	$idjurnal = $row['replid'];
-            $sql = "SELECT jd.koderek,ra.nama,jd.debet,jd.kredit FROM $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE jd.idjurnal = $idjurnal AND jd.koderek = ra.kode ORDER BY jd.replid";    
+            $sql = "SELECT jd.koderek,ra.nama,jd.debet,jd.kredit FROM $db_name_fina.jurnaldetail jd, $db_name_fina.rekakun ra WHERE jd.idjurnal = '$idjurnal' AND jd.koderek = ra.kode ORDER BY jd.replid";    
             $result2 = QueryDb($sql); 
             while ($row2 = mysql_fetch_array($result2)) { ?>
             <tr height="25">

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -80,7 +80,7 @@ class CAktivitasEdit{
           </tr>
           <tr>
             <td width="6%">&nbsp;<strong>Aktivitas</strong></td>
-            <td width="94%"><textarea name="aktivitas" cols="80" rows="25" class="areatxt" id="aktivitas"><?=$this->aktivitas?></textarea></td>
+            <td width="94%"><textarea name="aktivitas" cols="80" rows="25" class="areatxt" id="aktivitas"><?=stripslashes($this->aktivitas)?></textarea></td>
           </tr>
           <tr>
             <td colspan="2" align="center"><input type="submit" class="cmbfrm2" name="simpan" value="Simpan" >&nbsp;<input type="button" class="cmbfrm2" name="batal" value="Batal" onClick="document.location.href='aktivitas.php'" ></td>
@@ -92,7 +92,7 @@ class CAktivitasEdit{
 	function GetPerpus(){
 		//$this->perpustakaan = $_REQUEST[perpustakaan];
 		if (SI_USER_LEVEL()==2){
-			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid=".SI_USER_DEPT()." ORDER BY nama";
+			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
 		} else {
 			$sql = "SELECT replid,nama FROM perpustakaan ORDER BY nama";
 		}

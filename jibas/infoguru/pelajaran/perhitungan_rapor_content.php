@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ $aspek = $_REQUEST['aspek'];
 OpenDb();
 $sql = "SELECT j.departemen, j.nama, p.nip, p.nama 
 		    FROM guru g, jbssdm.pegawai p, pelajaran j 
-		   WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND j.replid = $id_pelajaran AND g.nip = '$nip_guru'"; 
+		   WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND j.replid = '$id_pelajaran' AND g.nip = '$nip_guru'"; 
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -51,11 +51,11 @@ if ($op == "dw8dxn8w9ms8zs22") {
 	$newaktif=(int)$_REQUEST['newaktif'];
 	$replid=(int)$_REQUEST['replid'];
 	OpenDb();
-	$sql = "UPDATE aturannhb SET aktif = $newaktif WHERE replid = $replid ";
+	$sql = "UPDATE aturannhb SET aktif = '$newaktif' WHERE replid = '$replid' ";
 	QueryDb($sql);
 	CloseDb();
 } else if ($op == "xm8r389xemx23xb2378e23") {	
-	$sql = "DELETE FROM aturannhb WHERE idpelajaran = $id_pelajaran AND nipguru = '$nip_guru' AND idtingkat = $id_tingkat AND dasarpenilaian = '$aspek'"; 
+	$sql = "DELETE FROM aturannhb WHERE idpelajaran = '$id_pelajaran' AND nipguru = '$nip_guru' AND idtingkat = '$id_tingkat' AND dasarpenilaian = '$aspek'"; 
 	QueryDb($sql);	
 	CloseDb();
 	?>
@@ -209,7 +209,7 @@ function cetak() {
 		OpenDb();
 		$query_at = "SELECT a.dasarpenilaian, dp.keterangan
 		               FROM aturannhb a, tingkat t, dasarpenilaian dp 
-			 		  WHERE a.idtingkat='$row_tkt[replid]' AND a.idpelajaran = $id_pelajaran AND t.departemen='$departemen' 
+			 		  WHERE a.idtingkat='$row_tkt[replid]' AND a.idpelajaran = '$id_pelajaran' AND t.departemen='$departemen' 
 					    AND a.dasarpenilaian = dp.dasarpenilaian
   					    AND t.replid = a.idtingkat AND a.nipguru = '$nip_guru' GROUP BY a.dasarpenilaian";
 		
@@ -247,7 +247,7 @@ function cetak() {
 		<?
 		OpenDb();
 		$query_ju = "SELECT j.jenisujian, a.bobot, a.aktif, a.replid FROM aturannhb a, tingkat t, jenisujian j ".
-				 	"WHERE a.idtingkat = '$row_tkt[replid]' AND a.idpelajaran = $id_pelajaran AND j.replid = a.idjenisujian ".
+				 	"WHERE a.idtingkat = '$row_tkt[replid]' AND a.idpelajaran = '$id_pelajaran' AND j.replid = a.idjenisujian ".
 					"AND t.departemen = '$departemen' AND a.dasarpenilaian = '$row_at[0]' AND a.nipguru = '$nip_guru' ".
 					"AND t.replid = a.idtingkat";
 		

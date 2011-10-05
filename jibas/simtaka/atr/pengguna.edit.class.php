@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -47,6 +47,7 @@ class CPenggunaAdd{
 			$sql = "SELECT * FROM ".get_db_name('user').".hakakses WHERE login='$this->nip' AND modul='SIMTAKA' ";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
+			$this->keterangan=$row[keterangan];
 			$this->nip=$row[login];
 			$this->tingkat=$row[tingkat];
 			if (isset($_REQUEST[tingkat]))
@@ -57,6 +58,7 @@ class CPenggunaAdd{
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->nama=$row[nama];
+
 		}
 		
 	}
@@ -124,7 +126,7 @@ class CPenggunaAdd{
           </tr>
           <tr>
             <td>&nbsp;Keterangan</td>
-            <td><textarea name="keterangan" cols="45" rows="5" class="areatxt" id="keterangan"></textarea></td>
+            <td><textarea name="keterangan" cols="45" rows="5" class="areatxt" id="keterangan"><?=$this->keterangan?></textarea></td>
           </tr>
           <tr>
             <td colspan="2" align="center"><input type="submit" class="cmbfrm2" name="simpan" value="Simpan" >&nbsp;<input type="button" class="cmbfrm2" name="batal" value="Batal" onClick="window.close()" ></td>

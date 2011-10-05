@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ class PresensiListAjax{
 		$DestNumb = $_REQUEST['DestNumb'];
 		$this->DestNumb = str_replace(' 62','0',$DestNumb);
 		
-		$Txt = $_REQUEST['Txt'];
+		$Txt = CQ($_REQUEST['Txt']);
 		$this->Txt = $Txt;
 		
 	
@@ -70,10 +70,10 @@ class PresensiListAjax{
 		$SenderID = $row['SenderID'];
 		$CreatorID = $row['SenderID'];
 		
-		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 
-		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime=now(), Text='$this->Txt', DestinationNumber='$this->DestNumb', SenderID='$SenderID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 		
 		$this->GetDetailInfoGenList($IdInfoGen);
@@ -89,10 +89,10 @@ class PresensiListAjax{
 		$SenderID = $row['SenderID'];
 		$CreatorID = $row['SenderID'];
 		
-		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID',CreatorID='$CreatorID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 
-		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID', idsmsgeninfo=$IdInfoGen";
+		$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime='$SendingDateTime', Text='$Text', DestinationNumber='$DestinationNumber', SenderID='$SenderID', idsmsgeninfo='$IdInfoGen'";
 		QueryDb($sql);
 		
 		$this->GetDetailInfoGenList($IdInfoGen);
@@ -164,7 +164,7 @@ class PresensiListAjax{
             <td>&nbsp;</td>
           </tr>
           <?
-		  $sql = "SELECT * FROM outboxhistory WHERE idsmsgeninfo=$id";
+		  $sql = "SELECT * FROM outboxhistory WHERE idsmsgeninfo='$id'";
 		  $res = QueryDb($sql);
 		  $num = @mysql_num_rows($res);
 		  if ($num>0){

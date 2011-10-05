@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -286,3 +286,9 @@ html, body{overflow:hidden}
 getLuStatus(<?=$lid?>);
 </script>
 <? } ?>
+<script>
+	var sot = "<?='testopentag'?>";//18
+	var len = sot.length;
+	if (len==18 && len!=11)
+		alert('Kami mendeteksi bahwa konfigurasi php Anda belum diaktifkan `short_open_tag`.\nSilakan aktifkan `short_open_tag` di php.ini');
+</script>

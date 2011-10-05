@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ OpenDb();
 $sql = "SELECT b.nis, b.besar, b.lunas, p.idbesarjtt, s.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
         		   p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang 
 		    FROM penerimaanjtt p, besarjtt b, jbsakad.siswa s, datapenerimaan pn 
-		   WHERE p.replid = $idpembayaran AND p.idbesarjtt = b.replid AND b.nis = s.nis AND b.idpenerimaan = pn.replid";
+		   WHERE p.replid = '$idpembayaran' AND p.idbesarjtt = b.replid AND b.nis = s.nis AND b.idpenerimaan = pn.replid";
 $row = FetchSingleArray($sql);
 
 $nis = $row['nis'];
@@ -68,8 +68,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$jcicilan = UnformatRupiah($_REQUEST['jcicilan']);
 	$tcicilan = $_REQUEST['tcicilan'];
 	$tcicilan = MySqlDateFormat($tcicilan);
-	$kcicilan = $_REQUEST['kcicilan'];
-	$alasan = $_REQUEST['alasan'];
+	$kcicilan = CQ($_REQUEST['kcicilan']);
+	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 	
 	if ($jcicilan == $besar) 
@@ -105,7 +105,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 		// Mengubah besar pembayaran  
 		// ---------------------------
 		
-		$sql = "SELECT sum(jumlah) FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt AND replid <> $idpembayaran";
+		$sql = "SELECT sum(jumlah) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt' AND replid <> '$idpembayaran'";
 		$totalcicilan = FetchSingle($sql);
 		
 		$errmsg = "";
@@ -122,27 +122,27 @@ if (1 == (int)$_REQUEST['issubmit'])
 			$success = true;
 			BeginTrans();	
 			
-			$sql = "UPDATE penerimaanjtt SET jumlah=$jcicilan, keterangan='$kcicilan', tanggal='$tcicilan', 
-			        alasan='$alasan', petugas='$petugas' WHERE replid=$idpembayaran";
+			$sql = "UPDATE penerimaanjtt SET jumlah='$jcicilan', keterangan='$kcicilan', tanggal='$tcicilan', 
+			        alasan='$alasan', petugas='$petugas' WHERE replid='$idpembayaran'";
 			QueryDbTrans($sql, $success);
 			
 			$idjurnal = 0;
 			if ($success)
 			{
-				$sql = "SELECT idjurnal FROM penerimaanjtt WHERE replid = $idpembayaran";
+				$sql = "SELECT idjurnal FROM penerimaanjtt WHERE replid = '$idpembayaran'";
 				$idjurnal = FetchSingle($sql);
 			}
 			
 			// update jurnaldetail
 			if ($success)
 			{
-				$sql = "UPDATE jurnaldetail SET debet=$jcicilan WHERE idjurnal=$idjurnal AND koderek='$rekkas' AND kredit=0";
+				$sql = "UPDATE jurnaldetail SET debet='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
 			if ($success)
 			{
-				$sql = "UPDATE jurnaldetail SET kredit=$jcicilan WHERE idjurnal=$idjurnal AND koderek='$rekpiutang' AND debet=0";
+				$sql = "UPDATE jurnaldetail SET kredit='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekpiutang' AND debet=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
@@ -151,7 +151,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 				$sql = "SET @DISABLE_TRIGGERS = 1;";
 				QueryDb($sql);
 				
-				$sql = "UPDATE besarjtt SET lunas=$lunas WHERE replid=$idbesarjtt";
+				$sql = "UPDATE besarjtt SET lunas=$lunas WHERE replid='$idbesarjtt'";
 				QueryDbTrans($sql, $success);	
 				
 				$sql = "SET @DISABLE_TRIGGERS = NULL;";

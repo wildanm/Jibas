@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -40,16 +40,15 @@ $departemen=$_REQUEST['departemen'];
 $cek = 0;
 
 //end of variabel yang diambil kembali=========
-$nis=trim($_REQUEST['nis']);
-$nisn=trim($_REQUEST['nisn']);
+$nis=CQ($_REQUEST['nis']);
+$nisn=CQ($_REQUEST['nisn']);
 $idangkatan=$_REQUEST['idangkatan'];
 $tahunmasuk=$_REQUEST['tahunmasuk'];
-$nama=$_REQUEST['nama'];
-$nama=str_replace("'","`",$_POST['nama']);
+$nama=CQ($_REQUEST['nama']);
 //$nama=str_replace(""","`",$nama);
-$panggilan=$_REQUEST['panggilan'];
+$panggilan=CQ($_REQUEST['panggilan']);
 $kelamin=$_REQUEST['kelamin'];
-$tmplahir=$_REQUEST['tmplahir'];
+$tmplahir=CQ($_REQUEST['tmplahir']);
 $tgllahir=$_REQUEST['tgllahir'];
 $blnlahir=$_REQUEST['blnlahir'];
 $thnlahir=$_REQUEST['thnlahir'];;
@@ -62,25 +61,25 @@ $warga = (isset($_REQUEST['warga']))?$_REQUEST['warga']:"WNI";
 $urutananak = (isset($_REQUEST['urutananak']))?$_REQUEST['urutananak']:"1";
 $jumlahanak = (isset($_REQUEST['jumlahanak']))?$_REQUEST['jumlahanak']:"1";
 
-$bahasa=$_REQUEST['bahasa'];
-$alamatsiswa=$_REQUEST['alamatsiswa'];
-$kodepos=$_REQUEST['kodepos'];
-$telponsiswa=$_REQUEST['telponsiswa'];
-$hpsiswa=trim($_REQUEST['hpsiswa']);
+$bahasa=CQ($_REQUEST['bahasa']);
+$alamatsiswa=CQ($_REQUEST['alamatsiswa']);
+$kodepos=CQ($_REQUEST['kodepos']);
+$telponsiswa=CQ($_REQUEST['telponsiswa']);
+$hpsiswa=trim(CQ($_REQUEST['hpsiswa']));
 $hpsiswa=str_replace(' ','',$hpsiswa);
-$emailsiswa=$_REQUEST['emailsiswa'];
+$emailsiswa=CQ($_REQUEST['emailsiswa']);
 $dep_asal=$_REQUEST['dep_asal'];
 
 $sekolah=$_REQUEST['sekolah'];
-$ketsekolah=$_REQUEST['ketsekolah'];
+$ketsekolah=CQ($_REQUEST['ketsekolah']);
 $gol=$_REQUEST['gol'];
 
 $berat = (isset($_REQUEST['berat']))?$_REQUEST['berat']:"0";
 $tinggi = (isset($_REQUEST['tinggi']))?$_REQUEST['tinggi']:"0";
 	
-$kesehatan=$_REQUEST['kesehatan'];
-$namaayah=$_REQUEST['namaayah'];
-$namaibu=$_REQUEST['namaibu'];
+$kesehatan=CQ($_REQUEST['kesehatan']);
+$namaayah=CQ($_REQUEST['namaayah']);
+$namaibu=CQ($_REQUEST['namaibu']);
 $pendidikanayah=$_REQUEST['pendidikanayah'];
 $pendidikanibu=$_REQUEST['pendidikanibu'];
 $pekerjaanayah=$_REQUEST['pekerjaanayah'];
@@ -89,15 +88,15 @@ $pekerjaanibu=$_REQUEST['pekerjaanibu'];
 $penghasilanayah = (isset($_REQUEST['penghasilanayah']))?$_REQUEST['penghasilanayah']:"0";
 $penghasilanibu = (isset($_REQUEST['penghasilanibu']))?$_REQUEST['penghasilanibu']:"0";
 
-$namawali=$_REQUEST['namawali'];
-$alamatortu=$_REQUEST['alamatortu'];
-$telponortu=$_REQUEST['telponortu'];
+$namawali=CQ($_REQUEST['namawali']);
+$alamatortu=CQ($_REQUEST['alamatortu']);
+$telponortu=CQ($_REQUEST['telponortu']);
 $hportu=trim($_REQUEST['hportu']);
 $hportu=str_replace(' ','',$hportu);
-$emailayah=$_REQUEST['emailayah'];
-$emailibu=$_REQUEST['emailibu'];
-$alamatsurat=$_REQUEST['alamatsurat'];
-$keterangan=$_REQUEST['keterangan'];
+$emailayah=CQ($_REQUEST['emailayah']);
+$emailibu=CQ($_REQUEST['emailibu']);
+$alamatsurat=CQ($_REQUEST['alamatsurat']);
+$keterangan=CQ($_REQUEST['keterangan']);
 
 $almayah = (isset($_REQUEST['almayah']))?$_REQUEST['almayah']:"0";
 $almibu = (isset($_REQUEST['almibu']))?$_REQUEST['almibu']:"0";
@@ -179,7 +178,7 @@ if (isset($_REQUEST['Simpan'])){
 				
 		if ($success)
 		{
-			$sql_kls="INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nis',idkelas=$idkelas,mulai='$kumplit'";
+			$sql_kls="INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nis',idkelas='$idkelas',mulai='$kumplit'";
 			QueryDbTrans($sql_kls, $success);
 		}	
 	
@@ -245,7 +244,7 @@ function validate() {
 	var suku = document.main.suku.value;
 	var agama = document.main.agama.value;
 	var status = document.main.status.value;
-	var kondisi = document.main.status.value;
+	var kondisi = document.main.kondisi.value;
 	var file=document.getElementById("file_data").value;
 		
 	if(tahunmasuk.length == 0) {

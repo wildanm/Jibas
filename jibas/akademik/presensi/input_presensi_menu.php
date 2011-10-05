@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -49,7 +49,7 @@ if (isset($_REQUEST['aktif']))
 	$aktif = $_REQUEST['aktif'];
 
 OpenDb();
-$sql = "SELECT t.tahunajaran, t.tglmulai, t.tglakhir FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = $kelas"; 
+$sql = "SELECT t.tahunajaran, t.tglmulai, t.tglakhir FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = '$kelas'"; 
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 
@@ -187,13 +187,13 @@ if ((int)$bln == (int)$bulan2 && (int)$th == (int)$tahun2) {
 
 
 OpenDb();
-$sql = "SELECT t.tglmulai, t.tglakhir FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = $kelas AND '$batas' BETWEEN t.tglmulai AND t.tglakhir ";
+$sql = "SELECT t.tglmulai, t.tglakhir FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = '$kelas' AND '$batas' BETWEEN t.tglmulai AND t.tglakhir ";
 $result = QueryDb($sql);
 
 CloseDb();
 if (mysql_num_rows($result)) {
 	OpenDb();
-	$sql = "SELECT replid, DAY(tanggal1) AS tgl1, MONTH(tanggal1) AS bln1, YEAR(tanggal1) AS th1, DAY(tanggal2) AS tgl2, MONTH(tanggal2) AS bln2, YEAR(tanggal2) AS th2 FROM presensiharian WHERE idkelas = $kelas AND idsemester = $semester AND ((MONTH(tanggal1) = '$bln' AND YEAR(tanggal1) = '$th') OR (MONTH(tanggal2) = '$bln') AND YEAR(tanggal2) = '$th') ORDER BY tanggal1";    
+	$sql = "SELECT replid, DAY(tanggal1) AS tgl1, MONTH(tanggal1) AS bln1, YEAR(tanggal1) AS th1, DAY(tanggal2) AS tgl2, MONTH(tanggal2) AS bln2, YEAR(tanggal2) AS th2 FROM presensiharian WHERE idkelas = '$kelas' AND idsemester = '$semester' AND ((MONTH(tanggal1) = '$bln' AND YEAR(tanggal1) = '$th') OR (MONTH(tanggal2) = '$bln') AND YEAR(tanggal2) = '$th') ORDER BY tanggal1";    
 	
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {

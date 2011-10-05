@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ $th = $_REQUEST['th'];
 $kelas = $_REQUEST['kelas'];
 OpenDb();
 	
-$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat, p.hariaktif FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.replid = $replid AND p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid";   
+$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat, p.hariaktif FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.replid = '$replid' AND p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid";   
 $result = QueryDB($sql);
 
 $row = mysql_fetch_array($result);
@@ -101,7 +101,7 @@ $hariaktif = $row['hariaktif'];
 <?	
 	OpenDb();	
 	
-	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = $kelas AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, phsiswa p, kelas k WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = $replid ORDER BY nama";
+	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = '$kelas' AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, phsiswa p, kelas k WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = '$replid' ORDER BY nama";
 		
 	$result = QueryDb($sql);
 	$cnt = 0;
@@ -124,7 +124,7 @@ $hariaktif = $row['hariaktif'];
 			$pesan = "Siswa tidak aktif";
 		} 
 			
-		$sql1 = "SELECT * FROM phsiswa WHERE idpresensi = $replid AND nis='$row[0]'";
+		$sql1 = "SELECT * FROM phsiswa WHERE idpresensi = '$replid' AND nis='$row[0]'";
 		$result1 = QueryDb($sql1);
 		$row1 = mysql_fetch_array($result1);
 		

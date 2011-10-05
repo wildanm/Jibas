@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,7 +39,7 @@ if(isset($_REQUEST["ujian"]))
 	$ujian = $_REQUEST["ujian"];
 
 OpenDb();
-$sql="SELECT r.rpp, p.nama, r.idpelajaran, r.idsemester, t.tingkat FROM pelajaran p, rpp r, tingkat t WHERE p.replid=r.idpelajaran AND r.replid=$rpp AND r.idtingkat = t.replid";
+$sql="SELECT r.rpp, p.nama, r.idpelajaran, r.idsemester, t.tingkat FROM pelajaran p, rpp r, tingkat t WHERE p.replid=r.idpelajaran AND r.replid='$rpp' AND r.idtingkat = t.replid";
 $result=QueryDb($sql);
 $row = mysql_fetch_array($result);
 $materi = $row['rpp'];
@@ -103,7 +103,7 @@ function cetak(){
     			<select name="ujian" id="ujian" onchange="change()"  style="width:160px">
 			<?
 				//$sql_ujian = "SELECT DISTINCT j.replid, j.jenisujian FROM jbsakad.jenisujian j, jbsakad.ujian u, jbsakad.kelas k, jbsakad.tingkat t WHERE u.idjenis=j.replid AND u.idrpp = $rpp AND u.idkelas = k.replid AND k.idtingkat = t.replid AND t.replid = $tingkat ORDER BY jenisujian";
-				$sql_ujian = "SELECT * FROM jenisujian WHERE idpelajaran = $pelajaran ORDER BY jenisujian";
+				$sql_ujian = "SELECT * FROM jenisujian WHERE idpelajaran = '$pelajaran' ORDER BY jenisujian";
 				$result_ujian=QueryDb($sql_ujian);
 
 				while ($row_ujian=@mysql_fetch_array($result_ujian)){
@@ -117,7 +117,7 @@ function cetak(){
         	</td>
   		<?
         	//$sql1 = "SELECT k.kelas, round(SUM(nilaiujian)/(COUNT(DISTINCT u.replid)*COUNT(DISTINCT s.nis)),2) FROM nilaiujian n, siswa s, ujian u, jenisujian j, kelas k, tahunajaran a WHERE n.idujian = u.replid AND u.idsemester = $semester AND u.idkelas = k.replid AND u.idjenis = $ujian AND u.idrpp = $rpp AND u.idpelajaran = $pelajaran AND s.nis = n.nis AND u.idjenis = j.replid AND j.replid = $ujian AND s.idkelas = k.replid AND s.aktif = 1 AND k.idtingkat = $tingkat AND k.aktif = 1 AND k.idtahunajaran = a.replid AND a.aktif = 1 GROUP BY k.replid ORDER BY k.kelas, u.tanggal, s.nama";
-			$sql1 = "SELECT k.kelas, round(SUM(nilaiujian)/(COUNT(DISTINCT u.replid)*COUNT(DISTINCT s.nis)),2) FROM nilaiujian n, siswa s, ujian u, kelas k, tahunajaran a WHERE n.idujian = u.replid AND u.idsemester = $semester AND u.idkelas = k.replid AND u.idjenis = $ujian AND u.idrpp = $rpp AND u.idpelajaran = $pelajaran AND s.nis = n.nis AND s.idkelas = k.replid AND s.aktif = 1 AND k.idtingkat = $tingkat AND k.aktif = 1 AND k.idtahunajaran = a.replid AND a.aktif = 1 GROUP BY k.replid ORDER BY k.kelas, u.tanggal, s.nama";
+			$sql1 = "SELECT k.kelas, round(SUM(nilaiujian)/(COUNT(DISTINCT u.replid)*COUNT(DISTINCT s.nis)),2) FROM nilaiujian n, siswa s, ujian u, kelas k, tahunajaran a WHERE n.idujian = u.replid AND u.idsemester = '$semester' AND u.idkelas = k.replid AND u.idjenis = '$ujian' AND u.idrpp = '$rpp' AND u.idpelajaran = '$pelajaran' AND s.nis = n.nis AND s.idkelas = k.replid AND s.aktif = 1 AND k.idtingkat = '$tingkat' AND k.aktif = 1 AND k.idtahunajaran = a.replid AND a.aktif = 1 GROUP BY k.replid ORDER BY k.kelas, u.tanggal, s.nama";
         	$result1 = QueryDb($sql1);	
 			if (mysql_num_rows($result1) > 0) {
 		

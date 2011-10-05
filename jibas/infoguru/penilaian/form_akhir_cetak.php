@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,8 +37,8 @@ $nip = $_REQUEST['nip'];
 $sql = "SELECT k.kelas AS namakelas, s.semester AS namasemester, a.tahunajaran, 
 			   a.departemen, l.nama, t.tingkat, j.jenisujian, p.nama AS guru, n.dasarpenilaian,s.departemen as dep 
 		  FROM kelas k, semester s, tahunajaran a, pelajaran l, tingkat t, aturannhb n, jenisujian j, jbssdm.pegawai p 
-		 WHERE k.replid = $kelas AND s.replid = $semester AND  k.idtahunajaran = a.replid AND l.replid = n.idpelajaran 
-		   AND t.replid = k.idtingkat AND n.replid = $idaturan AND n.idjenisujian = j.replid AND p.nip = '$nip'";
+		 WHERE k.replid = '$kelas' AND s.replid = '$semester' AND  k.idtahunajaran = a.replid AND l.replid = n.idpelajaran 
+		   AND t.replid = k.idtingkat AND n.replid = '$idaturan' AND n.idjenisujian = j.replid AND p.nip = '$nip'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 ?>
@@ -90,7 +90,7 @@ $row = mysql_fetch_array($result);
         <td class="headerlong">N I S</td>
         <td class="headerlong">Nama</td>
 <?  $sql_nhb_PK = "SELECT * FROM jbsakad.ujian 
-				   WHERE idaturan=$idaturan AND idkelas=$kelas AND idsemester=$semester 
+				   WHERE idaturan='$idaturan' AND idkelas='$kelas' AND idsemester='$semester' 
 				   ORDER by tanggal ASC";
     $result_nhb_PK = QueryDb($sql_nhb_PK);
     $cntujian=1;
@@ -106,7 +106,7 @@ $row = mysql_fetch_array($result);
         <td class="headerlong">Rata-rata Siswa</td>
         <td class="headerlong">Nilai Akhir <?=$row['jenisujian']?></td>
     </tr>
-<?	$sql_get_nis = "SELECT nis,nama,aktif,idkelas FROM jbsakad.siswa WHERE idkelas = $kelas ORDER BY nama";
+<?	$sql_get_nis = "SELECT nis,nama,aktif,idkelas FROM jbsakad.siswa WHERE idkelas = '$kelas' ORDER BY nama";
     $result_get_nis=QueryDb($sql_get_nis);
     $cntsiswa=1;
     while ($row_get_nis=@mysql_fetch_row($result_get_nis))
@@ -121,7 +121,7 @@ $row = mysql_fetch_array($result);
         <td><?=$row_get_nis[1]?></td>
     <?
         for ($i=1;$i<=count($idujian);$i++) {				
-            $sql_get_nilai="SELECT n.nilaiujian FROM jbsakad.nilaiujian n WHERE n.nis='$row_get_nis[0]' AND idujian = $idujian[$i]";
+            $sql_get_nilai="SELECT n.nilaiujian FROM jbsakad.nilaiujian n WHERE n.nis='$row_get_nis[0]' AND idujian = '$idujian[$i]'";
             $result_get_nilai=QueryDb($sql_get_nilai);
             $row_get_nilai = mysql_fetch_array($result_get_nilai);
             echo "<td align='center'>".$row_get_nilai[nilaiujian]."</td>";

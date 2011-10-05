@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -55,7 +55,7 @@ $IDUjian	= $_REQUEST['IDUjian'];
 $NumData	= $_REQUEST['NumData'];
 $Date1		= $_REQUEST['Date1'];
 $Date2		= $_REQUEST['Date2'];
-$Sender		= $_REQUEST['Sender'];
+$Sender		= CQ($_REQUEST['Sender']);
 $KeSiswa	= $_REQUEST['KeSiswa'];
 if ($KeSiswa=="")
 	$KeSiswa = 0;
@@ -267,7 +267,7 @@ if ($op=='SavePenilaian'){
 			//$newformat = str_replace('#TAHUN2',$Thn2,$newformat);
 			$newformat = str_replace('. [PENGIRIM]',$filterpesan.'. [PENGIRIM]',$newformat);
 			$newformat = str_replace('[PENGIRIM]',$Sender,$newformat);
-			$TextMsg = $newformat;
+			$TextMsg = CQ($newformat);
 			//echo $TextMsg."<br>";
 		}
 
@@ -303,37 +303,6 @@ if ($op=='SavePenilaian'){
 		//echo "<hr>";
  	}
 }
-
-/*
-		$newformat = str_replace('[SISWA]','harian '.$row['nama'],$format);
-		$newformat = str_replace('[TANGGAL1]',$Tgl1,$newformat);
-		$newformat = str_replace('[BULAN1]',$SMonth[$Bln1-1],$newformat);
-		$newformat = str_replace('#TAHUN1',$Thn1,$newformat);
-		$newformat = str_replace('[TANGGAL2]',$Tgl2,$newformat);
-		$newformat = str_replace('[BULAN2]',$SMonth[$Bln2-1],$newformat);
-		$newformat = str_replace('#TAHUN2',$Thn2,$newformat);
-		$newformat = str_replace('#HADIR',$sumHadir,$newformat);
-		$newformat = str_replace('#ABSEN',$sumAbsen,$newformat);
-		$newformat = str_replace('[PENGIRIM]',$Sender,$newformat);
-		$TextMsg = $newformat;
-		
-		//Finding Phone Number
-		$query	= "SELECT nis,hpsiswa,namaayah,hportu FROM $db_name_akad.siswa WHERE nis=$row[nis]";
-		$result = QueryDb($query);
-		$data	= @mysql_fetch_row($result);
-		
-		$hpsiswa	= $data[1];
-		$hportu		= $data[3];
-
-		if ($KeOrtu==1 && $hportu!=''){
-			$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$hportu', SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-			QueryDb($sql);
-		}
-		if ($KeSiswa==1 && $hpsiswa!=''){
-			$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$hpsiswa', SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-			QueryDb($sql);
-		}
-*/
 
 ?>
 <script language='javascript'>

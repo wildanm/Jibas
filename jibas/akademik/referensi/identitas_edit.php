@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,21 +32,7 @@ $departemen=$_REQUEST[departemen];
 $title = "Sekolah";
 if ($departemen=='yayasan')
 	$title = "";
-if (isset($_REQUEST['Simpan'])) {
-	OpenDb();	
-	$sql = "UPDATE jbsumum.identitas SET nama='$_REQUEST[nama]', situs='$_REQUEST[situs]', email='$_REQUEST[email]', alamat1='$_REQUEST[alamat1]', alamat2='$_REQUEST[alamat2]', telp1='$_REQUEST[tlp1]', telp2='$_REQUEST[tlp2]', telp3='$_REQUEST[tlp3]', telp4='$_REQUEST[tlp4]', fax1='$_REQUEST[fax1]', fax2='$_REQUEST[fax2]' WHERE departemen = '$departemen'";
-	//echo $sql; exit;
-	$result = QueryDb($sql);
-	CloseDb();			
-	if ($result) { 	
-	?>
-		<script language="javascript">
-			opener.getfresh();
-			window.close();
-		</script> 
-<?	}
-	
-}
+
 
 OpenDb();
 $sql = "SELECT * FROM jbsumum.identitas WHERE departemen='$departemen'";
@@ -66,27 +52,42 @@ $email = $row['email'];
 $replid = $row['replid'];
 
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 if (isset($_REQUEST['alamat1']))
-	$alamat1 = $_REQUEST['alamat1'];
+	$alamat1 = CQ($_REQUEST['alamat1']);
 if (isset($_REQUEST['alamat2']))
-	$alamat2 = $_REQUEST['alamat2'];
+	$alamat2 = CQ($_REQUEST['alamat2']);
 if (isset($_REQUEST['tlp1']))
-	$tlp1 = $_REQUEST['tlp1'];	
+	$tlp1 = CQ($_REQUEST['tlp1']);	
 if (isset($_REQUEST['tlp2']))
-	$tlp2 = $_REQUEST['tlp2'];	
+	$tlp2 = CQ($_REQUEST['tlp2']);	
 if (isset($_REQUEST['tlp3']))
-	$tlp3 = $_REQUEST['tlp3'];
+	$tlp3 = CQ($_REQUEST['tlp3']);
 if (isset($_REQUEST['tlp4']))
-	$tlp4 = $_REQUEST['tlp4'];
+	$tlp4 = CQ($_REQUEST['tlp4']);
 if (isset($_REQUEST['fax1']))
-	$fax1 = $_REQUEST['fax1'];
+	$fax1 = CQ($_REQUEST['fax1']);
 if (isset($_REQUEST['fax2']))
-	$fax2 = $_REQUEST['fax2'];	
+	$fax2 = CQ($_REQUEST['fax2']);	
 if (isset($_REQUEST['situs']))
-	$situs = $_REQUEST['situs'];	
+	$situs = CQ($_REQUEST['situs']);	
 if (isset($_REQUEST['email']))
-	$email = $_REQUEST['email'];
+	$email = CQ($_REQUEST['email']);
+
+if (isset($_REQUEST['Simpan'])) {
+	OpenDb();	
+	$sql = "UPDATE jbsumum.identitas SET nama='$nama', situs='$situs', email='$email', alamat1='$alamat1', alamat2='$alamat2', telp1='$tlp1', telp2='$tlp2', telp3='$tlp3', telp4='$tlp4', fax1='$fax1', fax2='$fax2' WHERE departemen = '$departemen'";
+	$result = QueryDb($sql);
+	CloseDb();			
+	if ($result) { 	
+	?>
+		<script language="javascript">
+			opener.getfresh();
+			window.close();
+		</script> 
+<?	}
+	
+}
 
 CloseDb();
 ?>

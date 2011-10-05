@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -52,11 +52,11 @@ $kapasitas = $row_get_kelas['kapasitas'];
 $keterangan = $row_get_kelas['keterangan'];
 
 if (isset($_REQUEST['kelas']))
-	$kelas = $_REQUEST['kelas'];
+	$kelas = CQ($_REQUEST['kelas']);
 if (isset($_REQUEST['kapasitas']))
 	$kapasitas = $_REQUEST['kapasitas'];
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 
 $sql_get_pegawai = "SELECT * FROM jbssdm.pegawai WHERE nip = '$row_get_kelas[nipwali]'";
 $result_get_pegawai = QueryDb($sql_get_pegawai);
@@ -71,13 +71,13 @@ if (isset($_REQUEST['namawali']))
 
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
-	$sql_cek = "SELECT * FROM kelas WHERE kelas = '$_REQUEST[kelas]' AND idtahunajaran = $idtahunajaran AND idtingkat = $idtingkat AND replid <>  $replid";
+	$sql_cek = "SELECT * FROM kelas WHERE kelas = '$kelas' AND idtahunajaran = '$idtahunajaran' AND idtingkat = '$idtingkat' AND replid <>  '$replid'";
 	$result_cek = QueryDb($sql_cek);
 	if (@mysql_num_rows($result_cek) > 0) {
 		CloseDb();
 		$ERROR_MSG = "Kelas ".$kelas." sudah digunakan!";
 	} else {
-		$sql = "UPDATE kelas SET kelas='$_REQUEST[kelas]',kapasitas=$_REQUEST[kapasitas], nipwali='".trim($_REQUEST[nipwali])."', keterangan='$_REQUEST[keterangan]' WHERE replid= $replid";
+		$sql = "UPDATE kelas SET kelas='$kelas',kapasitas='$_REQUEST[kapasitas]', nipwali='".trim($_REQUEST[nipwali])."', keterangan='$keterangan' WHERE replid= '$replid'";
 		
 		$result = QueryDb($sql);
 		if ($result) { ?>

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,13 +38,13 @@ if (isset($_REQUEST['pelajaran']))
 	
 $kode = "";
 if (isset($_REQUEST['kode']))
-	$kode = $_REQUEST['kode'];
+	$kode = CQ($_REQUEST['kode']);
 $materi = "";
 if (isset($_REQUEST['materi']))
-	$materi = $_REQUEST['materi'];	
+	$materi = CQ($_REQUEST['materi']);	
 $deskripsi = "";
 if (isset($_REQUEST['deskripsi']))
-	$deskripsi = $_REQUEST['deskripsi'];	
+	$deskripsi = CQ($_REQUEST['deskripsi']);	
 
 $ERROR_MSG = "";
 
@@ -57,7 +57,7 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();
 		$ERROR_MSG = "Kode pembelajaran $kode sudah digunakan!";
 	} else {
-		$sql = "INSERT INTO rpp SET idtingkat = $tingkat, idsemester = $semester, idpelajaran = $pelajaran, koderpp = '$kode', rpp = '$materi', deskripsi = '$deskripsi'";
+		$sql = "INSERT INTO rpp SET idtingkat = '$tingkat', idsemester = '$semester', idpelajaran = '$pelajaran', koderpp = '$kode', rpp = '$materi', deskripsi = '$deskripsi'";
 		$result = QueryDb($sql);
 		if ($result) { 
 			$sql1 = "SELECT replid FROM rpp ORDER BY replid DESC LIMIT 1";
@@ -75,7 +75,7 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();
-$sql = "SELECT semester, tingkat, nama, s.departemen FROM semester s,  tingkat t, pelajaran p WHERE s.replid = $semester AND t.replid = $tingkat AND p.replid = $pelajaran AND s.departemen = p.departemen ";
+$sql = "SELECT semester, tingkat, nama, s.departemen FROM semester s,  tingkat t, pelajaran p WHERE s.replid = '$semester' AND t.replid = '$tingkat' AND p.replid = '$pelajaran' AND s.departemen = p.departemen ";
 
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);

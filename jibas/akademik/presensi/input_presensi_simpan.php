@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -61,7 +61,7 @@ if (mysql_num_rows($result_cek) > 0) {*/
 	if ($_REQUEST['action'] == 'Update') 
 		$filter = "AND replid <> $replid";
     
-	$sql_action = "SELECT tanggal1, tanggal2 FROM presensiharian WHERE (((tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN tanggal1 AND tanggal2) OR ('$tglakhir' BETWEEN tanggal1 AND tanggal2))) AND idkelas = $kelas AND idsemester = $semester $filter";	
+	$sql_action = "SELECT tanggal1, tanggal2 FROM presensiharian WHERE (((tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN tanggal1 AND tanggal2) OR ('$tglakhir' BETWEEN tanggal1 AND tanggal2))) AND idkelas = '$kelas' AND idsemester = '$semester' $filter";	
 		
 	$result_action = QueryDb($sql_action);
 	$sum = mysql_num_rows($result_action);
@@ -102,11 +102,11 @@ if ($_REQUEST['action'] == 'Update') {
 	QueryDbTrans($sql_action,$success);
 } 
 
-$sql = "INSERT INTO presensiharian SET idkelas=$kelas, idsemester=$semester, tanggal1='$tglawal', tanggal2 = '$tglakhir', hariaktif=$hariaktif";
+$sql = "INSERT INTO presensiharian SET idkelas='$kelas', idsemester='$semester', tanggal1='$tglawal', tanggal2 = '$tglakhir', hariaktif='$hariaktif'";
 QueryDbTrans($sql,$success);
 //echo 'sql1'.$sql.' '.$success;;
 if ($success) {
-	$sql1 = "SELECT LAST_INSERT_ID(replid) FROM presensiharian ORDER BY replid DESC LIMIT 1";	
+	$sql1 = "SELECT replid FROM presensiharian WHERE  idkelas='$kelas' AND idsemester='$semester' AND tanggal1='$tglawal' AND tanggal2 = '$tglakhir' AND hariaktif='$hariaktif' ORDER BY replid DESC LIMIT 1";	
 	//echo '<br>sql2'.$sql1.' '.$success;
 	$result1 = QueryDb($sql1);		
 	$row1 = mysql_fetch_row($result1);
@@ -125,7 +125,7 @@ if ($success) {
 }
 
 for ($i=1;$i<=$jum;$i++) {
-	$nis = $_REQUEST['nis'.$i];
+	$nis = $_REQUEST["nis".$i];
 	$hadir = $_REQUEST['hadir'.$i];
 	$ijin = $_REQUEST['ijin'.$i];
 	$sakit = $_REQUEST['sakit'.$i];
@@ -134,11 +134,12 @@ for ($i=1;$i<=$jum;$i++) {
 	$keterangan = $_REQUEST['ket'.$i];
 	
 	$total = $hadir+$ijin+$sakit+$cuti+$alpa;
-	if ($total > 0) 
-		$sql2 = "INSERT INTO phsiswa SET idpresensi=$id, nis='$nis', hadir=$hadir, ijin = $ijin, sakit = $sakit, cuti = $cuti, alpa = $alpa, keterangan='$keterangan' ";
+	if ($total > 0) {
+		$sql2 = "INSERT INTO phsiswa SET idpresensi='$id', nis='$nis', hadir='$hadir', ijin = '$ijin', sakit = '$sakit', cuti = '$cuti', alpa = '$alpa', keterangan='$keterangan' ";
 	//echo '<br>'.$i.' '.$sql2.' '.$success;
 	if ($success)
 		QueryDbTrans($sql2,$success);	
+	}
 }
 if ($success) { 
 	CommitTrans();

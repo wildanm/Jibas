@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -89,7 +89,7 @@ function cetak() {
 	                aj.replid AS id, aj.idaudit, aj.status, aj.nokas, date_format(aj.tanggal, '%d-%b-%Y') AS tanggal,  
 				       aj.petugas, aj.keterangan, aj.petugas, ai.alasan 
 				  FROM jbsfina.auditjurnal aj, jbsfina.auditinfo ai, jbsfina.jurnal j 
-				 WHERE aj.idaudit = ai.replid AND ai.idsumber = j.replid AND j.idtahunbuku = $idtahunbuku AND ai.departemen = '$departemen' 
+				 WHERE aj.idaudit = ai.replid AND ai.idsumber = j.replid AND j.idtahunbuku = '$idtahunbuku' AND ai.departemen = '$departemen' 
 				   AND ai.sumber='jurnalumum' AND ai.tanggal BETWEEN '$tanggal1 00:00:00' AND '$tanggal2 23:59:59' 
 			 ORDER BY aj.idaudit DESC, ai.tanggal DESC, aj.status ASC";
     $result = QueryDb($sql);
@@ -136,7 +136,7 @@ function cetak() {
         <td bgcolor="#E8FFE8">
             <table cellpadding="5" cellspacing="0" border="1" style="border-collapse:collapse" width="100%" bgcolor="#FFFFFF">
     <?		$nokas = $row['nokas'];
-            $sql = "SELECT ajd.koderek, ra.nama, ajd.debet, ajd.kredit FROM $db_name_fina.auditjurnaldetail ajd, $db_name_fina.jurnal j, $db_name_fina.rekakun ra WHERE ajd.idjurnal = j.replid AND ajd.koderek = ra.kode AND j.nokas = '$nokas' AND ajd.status = $status AND idaudit=$idaudit ORDER BY ajd.replid";
+            $sql = "SELECT ajd.koderek, ra.nama, ajd.debet, ajd.kredit FROM $db_name_fina.auditjurnaldetail ajd, $db_name_fina.jurnal j, $db_name_fina.rekakun ra WHERE ajd.idjurnal = j.replid AND ajd.koderek = ra.kode AND j.nokas = '$nokas' AND ajd.status = '$status' AND idaudit='$idaudit' ORDER BY ajd.replid";
             $result2 = QueryDb($sql);            
             while ($row2 = mysql_fetch_row($result2)) {  ?>   
             <tr>

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -27,13 +27,9 @@ class Pengumuman{
         <table border="0">
           <tr>
             <td>
-            <div id="TabbedPanelsA" class="TabbedPanels">
-              <ul class="TabbedPanelsTabGroup">
-                <li class="TabbedPanelsTab" tabindex="0"><strong>Pesan</strong></li>
-              </ul>
-              <div class="TabbedPanelsContentGroup">
-                <div class="TabbedPanelsContent">
-                <table width="245" border="0" cellspacing="0" cellpadding="0">
+            <fieldset style="border: 1px solid rgb(51, 102, 153); background-color: rgb(255, 255, 255);">
+            <legend style="background-color: rgb(51, 102, 153); color: rgb(255, 255, 255); font-size: 10px; font-weight: bold; padding: 5px;">&nbsp;Pesan&nbsp;</legend>
+            	<table width="245" border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td width="94%" class="td"><strong>Pengirim&nbsp;:&nbsp;</strong><br /><input type="text" name="Sender" id="Sender" class="InputTxt" style="width:97%" /><div id="ErrSender" class="ErrMsg"></div></td>
                   </tr>
@@ -42,7 +38,7 @@ class Pengumuman{
                     <strong>Pesan&nbsp;:&nbsp;</strong><br />
                     <textarea onkeyup="MaxChar(this.value,160,'CharLeft')" name="Message" rows="9" class="AreaTxt" id="Message"  style="width:99%"></textarea>
                     <div align="right">
-                    <input type="text" name="CharLeft" id="CharLeft" value="160" readonly="readonly" style="border:none; width:25px; text-align:right" size="3" /> character left
+                    <input type="text" name="CharLeft" id="CharLeft" value="160" readonly="readonly" style="border:none; width:30px; text-align:right" size="3" /> character left
                     </div>
                     <div id="ErrMessage" class="ErrMsg"></div>			</td>
                   </tr>
@@ -65,9 +61,20 @@ class Pengumuman{
                     </table></td>
                   </tr>
                 </table>
+            </fieldset>
+            
+            <!--
+            <div id="TabbedPanelsA" class="TabbedPanels">
+              <ul class="TabbedPanelsTabGroup">
+                <li class="TabbedPanelsTab" tabindex="0"><strong>Pesan</strong></li>
+              </ul>
+              <div class="TabbedPanelsContentGroup">
+                <div class="TabbedPanelsContent">
+                
                 </div>
               </div>
             </div>
+            -->
             </td>
           </tr>
           <tr>
@@ -94,12 +101,16 @@ class Pengumuman{
 	$hour = $row[0];
 	$min = $row[1];
 	?>
+    <fieldset style="border: 1px solid rgb(51, 102, 153); background-color: rgb(255, 255, 255);">
+            <legend style="background-color: rgb(51, 102, 153); color: rgb(255, 255, 255); font-size: 10px; font-weight: bold; padding: 5px;">&nbsp;Jadwal&nbsp;Pengiriman&nbsp;</legend>
+    <!--
     <div id="TabbedPanelsB" class="TabbedPanels">
       <ul class="TabbedPanelsTabGroup">
         <li class="TabbedPanelsTab" tabindex="0"><strong>Jadwal Pengiriman</strong></li>
       </ul>
       <div class="TabbedPanelsContentGroup">
         <div class="TabbedPanelsContent">
+        	-->
             <table border="0" cellspacing="0" cellpadding="0">
               <tr>
                 <td style="padding-right:2px">
@@ -168,21 +179,28 @@ class Pengumuman{
                 </td>
               </tr>
             </table>
+        <!--
         </div>
       </div>
     </div>
+    -->
+    </fieldset>
 	<?
 	}
 	
 	function SelectReceiver(){
 	?>
-    <div id="TabbedPanelsC" class="TabbedPanels" style="z-index:0">
+    <fieldset style="border: 1px solid rgb(51, 102, 153); background-color: rgb(255, 255, 255);">
+            <legend style="background-color: rgb(51, 102, 153); color: rgb(255, 255, 255); font-size: 10px; font-weight: bold; padding: 5px;">&nbsp;Pilih&nbsp;Penerima&nbsp;</legend>
+            
+    <!--<div id="TabbedPanelsC" class="TabbedPanels" style="z-index:0">
       <ul class="TabbedPanelsTabGroup">
         <li class="TabbedPanelsTab" tabindex="0"><strong>Pilih Penerima</strong></li>
       </ul>
       <div class="TabbedPanelsContentGroup" >
         <div class="TabbedPanelsContent">
             <div style="width:100%">
+            -->
                 <div id="TabbedPanels1" class="TabbedPanels">
                   <ul class="TabbedPanelsTabGroup">
                     <li class="TabbedPanelsTab" tabindex="0">Pegawai</li>
@@ -201,22 +219,28 @@ class Pengumuman{
                     </div>
                   </div>
                 </div>
+                <!--
             </div>
          </div>
       </div>
     </div>
-
+	-->
+    </fieldset>
     <?
 	}
 	
 	function ReceiverList(){
 	?>
+    <fieldset style="border: 1px solid rgb(51, 102, 153); background-color: rgb(255, 255, 255);">
+            <legend style="background-color: rgb(51, 102, 153); color: rgb(255, 255, 255); font-size: 10px; font-weight: bold; padding: 5px;">&nbsp;Daftar&nbsp;Penerima&nbsp;</legend>
+    <!--
     <div id="TabbedPanelsC" class="TabbedPanels">
       <ul class="TabbedPanelsTabGroup">
         <li class="TabbedPanelsTab" tabindex="0"><strong>Penerima</strong></li>
       </ul>
       <div class="TabbedPanelsContentGroup">
         <div class="TabbedPanelsContent">
+            -->
             <div id="DIVReceiptTable" style="overflow:auto; padding-left:2px">
             <table width="100%" border="1" class="tab" cellspacing="0" cellpadding="0" id="ReceiptTable">
               <tr class="Header">
@@ -232,9 +256,13 @@ class Pengumuman{
                 <td><div id="ErrNewReceiptList" class="ErrMsg"></div></td>
               </tr>
             </table>
+            <!--
             </div>
       </div>
     </div>
+    -->
+    
+    </fieldset>
     <?
 	}
 	

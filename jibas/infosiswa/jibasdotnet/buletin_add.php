@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -110,7 +110,7 @@ $jam=date(H).":".date(i).":00";
 $sql_client="SELECT * FROM jbsclient.localinfo ORDER BY region,location,clientid";
 $result_client=QueryDb($sql_client);
 $row_client=@mysql_fetch_array($result_client);
-$sql="INSERT INTO jbsvcr.buletin SET region='$row_client[region]',location='$row_client[location]',clientid='$row_client[clientid]', tempatbuletin='$_REQUEST[tempat]',tanggalinput='".$thn."-".$bln."-".$tgl." ".$jam."',tanggalbuletin='$tanggal',judul='$_REQUEST[judul]',idpengirim='$idguru',buletin='$_REQUEST[buletin]',approved=0,tampil=$tampil $gambar";
+$sql="INSERT INTO jbsvcr.buletin SET region='$row_client[region]',location='$row_client[location]',clientid='$row_client[clientid]', tempatbuletin='$_REQUEST[tempat]',tanggalinput='".$thn."-".$bln."-".$tgl." ".$jam."',tanggalbuletin='$tanggal',judul='$_REQUEST[judul]',idpengirim='$idguru',buletin='$_REQUEST[buletin]',approved=0,tampil='$tampil' $gambar";
 //echo $sql;
 //exit;
 $result=QueryDb($sql);
@@ -119,7 +119,7 @@ $result2=QueryDb($sql2);
 $row2=@mysql_fetch_array($result2);
 $bul=str_replace('../upload/imagetiny/','../library/gambar.php?replid=',$row2[buletin]);
 $bul2=str_replace('.jpg','&table=jbsvcr.gambarbuletin',$bul);
-$sql3="UPDATE jbsvcr.buletin SET buletin='$bul2' WHERE replid=$row2[replid]";
+$sql3="UPDATE jbsvcr.buletin SET buletin='$bul2' WHERE replid='$row2[replid]'";
 QueryDb($sql3);
 $sql5="SELECT filename FROM jbsvcr.gambarbuletin ORDER BY replid ";
 $result5=QueryDb($sql5);

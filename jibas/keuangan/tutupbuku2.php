@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -42,11 +42,11 @@ if (getLevel() == 2)
 
 $dept = $_REQUEST['dept'];
 $ttutup = $_REQUEST['ttutup'];
-$tahunbuku = $_REQUEST['tahunbuku'];
+$tahunbuku = CQ($_REQUEST['tahunbuku']);
 $tawal = $_REQUEST['tawal'];
-$awalan = $_REQUEST['awalan'];
+$awalan = CQ($_REQUEST['awalan']);
 $rekre = $_REQUEST['rekre'];
-$keterangan = $_REQUEST['keterangan'];
+$keterangan = CQ($_REQUEST['keterangan']);
 $petugas = getUserName();
 
 $errmsg = "";
@@ -89,7 +89,7 @@ if (isset($_REQUEST['lanjut']))
 	
 		$sql = "SELECT jd.koderek, SUM(jd.debet - jd.kredit) 
 				FROM jurnal j, jurnaldetail jd, rekakun ra 
-				WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+				WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 					AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('HARTA', 'PIUTANG', 'INVENTARIS') 
 				GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 		//echo  "$sql<br>";				
@@ -103,7 +103,7 @@ if (isset($_REQUEST['lanjut']))
 		
 		$sql = "SELECT jd.koderek, sum(jd.kredit - jd.debet) 
 				FROM jurnal j, jurnaldetail jd, rekakun ra 
-				WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+				WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 					AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'UTANG' 
 				GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 		//echo  "$sql<br>";				
@@ -117,14 +117,14 @@ if (isset($_REQUEST['lanjut']))
 		
 		$sql = "SELECT SUM(jd.kredit - jd.debet) 
 				FROM rekakun ra, jurnal j, jurnaldetail jd 
-				WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+				WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 					AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
 		//echo  "$sql<br>";					
 		$income = (float)FetchSingle($sql);
 				
 		$sql = "SELECT SUM(jd.debet - jd.kredit) 
 				FROM rekakun ra, jurnal j, jurnaldetail jd 
-				WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+				WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 					AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori='BIAYA'";
 		//echo  "$sql<br>";					
 		$outcome = (float)FetchSingle($sql);
@@ -211,7 +211,7 @@ if (isset($_REQUEST['lanjut']))
 		//increment cacah di tahunbuku
 		if ($success) 
 		{
-			$sql = "UPDATE tahunbuku SET cacah=cacah+1, info1='$idjurnal' WHERE replid=$idtahunbaru";
+			$sql = "UPDATE tahunbuku SET cacah=cacah+1, info1='$idjurnal' WHERE replid='$idtahunbaru'";
 			QueryDbTrans($sql, $success);
 		}
 			

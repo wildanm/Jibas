@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -42,8 +42,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$jbayar = UnformatRupiah($_REQUEST['besar']);	
 	$tbayar = $_REQUEST['tbayar'];
 	$tbayar = MySqlDateFormat($tbayar);
-	$kbayar = $_REQUEST['keterangan'];
-	$kbayar = urlencode($kbayar);
+	$kbayar = CQ($_REQUEST['keterangan']);
+	$kbayar = CQ($kbayar);
 	$petugas = getUserName();
 	
 	//Ambil nama penerimaan
@@ -51,7 +51,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$rekkas = "";
 	$rekpendapatan = "";
 	$rekpiutang = "";
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid=$idpenerimaan";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid='$idpenerimaan'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		//CloseDb();
@@ -66,7 +66,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	
 	//Ambil nama siswa
 	$namasiswa = "";
-	$sql = "SELECT nama, nopendaftaran FROM jbsakad.calonsiswa WHERE replid=$replid";
+	$sql = "SELECT nama, nopendaftaran FROM jbsakad.calonsiswa WHERE replid='$replid'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		//CloseDb();
@@ -78,7 +78,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	}
 	
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		//CloseDb();
@@ -104,10 +104,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 	if ($success) $success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	QueryDbTrans($sql, $success);
 	
-	$sql = "INSERT INTO penerimaaniurancalon SET idpenerimaan=$idpenerimaan, idcalon=$replid, idjurnal=$idjurnal, jumlah=$jbayar, tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
+	$sql = "INSERT INTO penerimaaniurancalon SET idpenerimaan='$idpenerimaan', idcalon='$replid', idjurnal='$idjurnal', jumlah='$jbayar', tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
 	QueryDbTrans($sql, $success);
 	
 	if ($success) {	
@@ -123,7 +123,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 
 //Muncul pertama kali
 
-$sql = "SELECT c.nopendaftaran, c.nama, c.telponsiswa as telpon, c.hpsiswa as hp, k.kelompok, c.alamatsiswa as alamattinggal, p.proses FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = $replid";
+$sql = "SELECT c.nopendaftaran, c.nama, c.telponsiswa as telpon, c.hpsiswa as hp, k.kelompok, c.alamatsiswa as alamattinggal, p.proses FROM jbsakad.calonsiswa c, jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE c.idkelompok = k.replid AND c.idproses = p.replid AND c.replid = '$replid'";
 //echo  $sql;
 $result = QueryDb($sql);
 if (mysql_num_rows($result) == 0) {
@@ -141,7 +141,7 @@ if (mysql_num_rows($result) == 0) {
 	$alamattinggal = $row['alamattinggal'];
 }
 	
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -152,7 +152,7 @@ if (isset($_REQUEST['tbayar']))
 	$tanggal = $_REQUEST['tbayar'];
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -389,8 +389,8 @@ function focusNext(elemName, evt) {
 <?  
 	$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas 
 	          FROM penerimaaniurancalon p, jurnal j 
-				WHERE j.replid = p.idjurnal AND j.idtahunbuku = $idtahunbuku 
-				  AND p.idpenerimaan = $idpenerimaan AND p.idcalon = $replid 
+				WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku' 
+				  AND p.idpenerimaan = '$idpenerimaan' AND p.idcalon = '$replid' 
 			ORDER BY p.tanggal, p.replid";
 	
 	$result = QueryDb($sql);    

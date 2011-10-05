@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ require_once('include/getheader.php');
 $idtransaksi = $_REQUEST['idtransaksi'];
 
 OpenDb();
-$sql = "SELECT jenispemohon, nip, nis, pemohonlain, penerima, date_format(tanggal, '%Y-%m-%d') as tanggal, date_format(tanggalkeluar, '%Y-%m-%d') as tanggalkeluar, jumlah, keperluan, petugas, keterangan, idjurnal FROM pengeluaran WHERE replid = $idtransaksi";
+$sql = "SELECT jenispemohon, nip, nis, pemohonlain, penerima, date_format(tanggal, '%Y-%m-%d') as tanggal, date_format(tanggalkeluar, '%Y-%m-%d') as tanggalkeluar, jumlah, keperluan, petugas, keterangan, idjurnal FROM pengeluaran WHERE replid = '$idtransaksi'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $jpemohon = $row['jenispemohon'];
@@ -69,14 +69,14 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $tglcetak = $row[0];
 
-$sql = "SELECT nokas FROM jurnal WHERE replid = $idjurnal";
+$sql = "SELECT nokas FROM jurnal WHERE replid = '$idjurnal'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $nokas = $row[0];
 
 CloseDb();
 OpenDb();
-$sql = "SELECT departemen FROM pengeluaran p, jurnal j, tahunbuku t WHERE p.replid=$idtransaksi AND p.idjurnal=j.replid AND j.idtahunbuku=t.replid";
+$sql = "SELECT departemen FROM pengeluaran p, jurnal j, tahunbuku t WHERE p.replid='$idtransaksi' AND p.idjurnal=j.replid AND j.idtahunbuku=t.replid";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 $departemen = $row[departemen];

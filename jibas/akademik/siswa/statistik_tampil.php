@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -89,7 +89,7 @@ if ($iddasar==""){
 	} if ($departemen<>"-1" && $idangkatan<0) {	
 		$query1 = "SELECT s.nis,s.nama,s.foto,k.kelas,s.replid,a.departemen,t.tingkat FROM siswa s, angkatan a, kelas k, tingkat t WHERE a.replid = s.idangkatan AND s.idkelas = k.replid AND a.departemen = '$departemen' AND k.idtingkat = t.replid AND $filter ORDER BY $urut $urutan";	
 	} if ($departemen<>"-1" && $idangkatan>0) {	
-		$query1 = "SELECT s.nis,s.nama,s.foto,k.kelas,s.replid,a.departemen,t.tingkat FROM siswa s, angkatan a, kelas k, tingkat t WHERE a.replid = s.idangkatan AND s.idkelas = k.replid AND a.departemen = '$departemen' AND s.idangkatan = $idangkatan AND k.idtingkat = t.replid AND $filter ORDER BY $urut $urutan";	
+		$query1 = "SELECT s.nis,s.nama,s.foto,k.kelas,s.replid,a.departemen,t.tingkat FROM siswa s, angkatan a, kelas k, tingkat t WHERE a.replid = s.idangkatan AND s.idkelas = k.replid AND a.departemen = '$departemen' AND s.idangkatan = '$idangkatan' AND k.idtingkat = t.replid AND $filter ORDER BY $urut $urutan";	
 	}
 	//echo 'sql '.$query1;	
 	$result1 = QueryDb($query1);

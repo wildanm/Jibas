@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -74,7 +74,7 @@ $title = "<tr><td width='20'>Periode</td><td>&nbsp;:&nbsp;$tglAwal s.d. $tglAkhi
 				<td width="50" height="25" align="center"><?=++$cnt?></td>
 				<td width="150" height="25" align="left">&nbsp;<?=substr($row[tanggal],8,2)."-".substr($row[tanggal],5,2)."-".substr($row[tanggal],0,4)." ".substr($row[tanggal],11,8)?></td>
 				<td height="25" align="left">
-			    <div align="justify"><?=chg_p_to_div($row[aktivitas])?></div>                </td>
+			    <div align="justify"><?=chg_p_to_div(stripslashes($row[aktivitas]))?></div>                </td>
 				<? if (IsAdmin()) { ?>
 				<? } ?>
 			  </tr>

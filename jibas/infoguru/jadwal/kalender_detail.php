@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ $disable = "";
 $replid = $_REQUEST['replid'];
 
 //$sql = "SELECT a.replid, a.kegiatan, DAY(a.tanggalawal) AS tanggal1, DAY(a.tanggalakhir) AS tanggal2, MONTH(a.tanggalawal) AS bulan1, YEAR(a.tanggalawal) AS tahun1, MONTH(a.tanggalakhir) AS bulan2, YEAR(a.tanggalakhir) AS tahun2, a.idkalender, a.tanggalawal, a.tanggalakhir, a.keterangan, t.tglmulai, t.tglakhir, MONTH(t.tglmulai) AS bulmulai, YEAR(t.tglmulai) AS thnmulai, MONTH(t.tglakhir) AS bulakhir, YEAR(t.tglakhir) AS thnakhir, k.departemen, k.kalender FROM aktivitaskalender a, kalenderakademik k, tahunajaran t WHERE a.idkalender = k.replid AND a.replid = $replid AND k.idtahunajaran = a.replid";
-$sql = "SELECT a.replid, a.kegiatan, a.idkalender, a.tanggalawal, a.tanggalakhir, a.keterangan, t.tglmulai, t.tglakhir, k.departemen, k.kalender FROM aktivitaskalender a, kalenderakademik k, tahunajaran t WHERE a.idkalender = k.replid AND a.replid = $replid AND k.idtahunajaran = t.replid";
+$sql = "SELECT a.replid, a.kegiatan, a.idkalender, a.tanggalawal, a.tanggalakhir, a.keterangan, t.tglmulai, t.tglakhir, k.departemen, k.kalender FROM aktivitaskalender a, kalenderakademik k, tahunajaran t WHERE a.idkalender = k.replid AND a.replid = '$replid' AND k.idtahunajaran = t.replid";
 
 //echo $sql;
 $result = QueryDb($sql);
@@ -355,7 +355,7 @@ function tampil(replid) {
 				
 				$tglnow = $thn.'-'.$bln.'-'.$tgl;
 				$sql1 = "SELECT * FROM aktivitaskalender WHERE '$tglnow' BETWEEN tanggalawal AND tanggalakhir ".
-						"AND replid = $replid ";
+						"AND replid = '$replid' ";
 				$result1 = QueryDb($sql1);
 				$jum1 = mysql_num_rows($result1);	
 				if ($jum1 > 0)

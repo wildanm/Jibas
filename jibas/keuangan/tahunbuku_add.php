@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -42,10 +42,10 @@ if (isset($_REQUEST['simpan'])) {
 	$tanggalmulai = MySqlDateFormat($_REQUEST['tcicilan']);
 	OpenDb();
 	
-	$sql = "SELECT * FROM tahunbuku WHERE tahunbuku = '$_REQUEST[tahunbuku]' AND departemen = '$_REQUEST[departemen]'";
+	$sql = "SELECT * FROM tahunbuku WHERE tahunbuku = '".CQ($_REQUEST[tahunbuku])."' AND departemen = '$_REQUEST[departemen]'";
 	$result = QueryDb($sql);
 	
-	$sql1 = "SELECT * FROM tahunbuku WHERE awalan = '$_REQUEST[awalan]' AND departemen = '$_REQUEST[departemen]'";
+	$sql1 = "SELECT * FROM tahunbuku WHERE awalan = '".CQ($_REQUEST[awalan])."' AND departemen = '$_REQUEST[departemen]'";
 	$result1 = QueryDb($sql1);
 	
 	if (mysql_num_rows($result) > 0) {
@@ -57,7 +57,7 @@ if (isset($_REQUEST['simpan'])) {
 		$MYSQL_ERROR_MSG = "Awalan $_REQUEST[awalan] sudah digunakan";
 		$cek = 1;	
 	} else {
-		$sql = "INSERT INTO tahunbuku SET tahunbuku='$_REQUEST[tahunbuku]', tanggalmulai='$tanggalmulai', awalan='$_REQUEST[awalan]',aktif=1,keterangan='$_REQUEST[keterangan]', departemen='$_REQUEST[departemen]'";
+		$sql = "INSERT INTO tahunbuku SET tahunbuku='".CQ($_REQUEST[tahunbuku])."', tanggalmulai='$tanggalmulai', awalan='".CQ($_REQUEST[awalan])."',aktif=1,keterangan='".CQ($_REQUEST[keterangan])."', departemen='$_REQUEST[departemen]'";
 		
 		$result = QueryDb($sql);
 		CloseDb();
@@ -146,7 +146,7 @@ function panggil(elem){
     </tr>
     <tr>
         <td><strong>Tahun Buku</strong></td>
-        <td colspan="2"><input type="text" name="tahunbuku" id="tahunbuku" value="<?=$_REQUEST['tahunbuku']?>" maxlength="100" size="25" onKeyPress="return focusNext('tcicilan', event)" onFocus="panggil('tahunbuku')"></td>
+        <td colspan="2"><input type="text" name="tahunbuku" id="tahunbuku" value="<?=CQ($_REQUEST['tahunbuku'])?>" maxlength="100" size="25" onKeyPress="return focusNext('tcicilan', event)" onFocus="panggil('tahunbuku')"></td>
     </tr>
     <tr>
 		<td align="left"><strong>Tanggal Mulai</strong></td>
@@ -158,7 +158,7 @@ function panggil(elem){
 	</tr>
     <tr>
         <td><strong>Awalan Kuitansi</strong></td>
-        <td colspan="2"><input type="text" name="awalan" id="awalan" value="<?=$_REQUEST['awalan']?>" maxlength="5" size="7" onKeyPress="return focusNext('keterangan', event)" onFocus="panggil('awalan')"></td>
+        <td colspan="2"><input type="text" name="awalan" id="awalan" value="<?=CQ($_REQUEST['awalan'])?>" maxlength="5" size="7" onKeyPress="return focusNext('keterangan', event)" onFocus="panggil('awalan')"></td>
     </tr>
     <tr>
         <td valign="top">Keterangan</td>

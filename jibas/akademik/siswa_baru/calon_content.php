@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -64,12 +64,12 @@ OpenDb();
 $op = $_REQUEST['op'];
 if ($op == "dw8dxn8w9ms8zs22") 
 {
-	$sql = "UPDATE calonsiswa SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE calonsiswa SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
 } 
 else if ($op == "xm8r389xemx23xb2378e23") 
 {
-	$sql = "DELETE FROM calonsiswa WHERE replid = $_REQUEST[replid]"; 	
+	$sql = "DELETE FROM calonsiswa WHERE replid = '$_REQUEST[replid]'"; 	
 	QueryDb($sql);
 	$page=0;
 	$hal=0;	?>
@@ -246,7 +246,7 @@ function change_baris() {
 	<td align="right" >
 <?	$sql_tot = "SELECT nopendaftaran,nama,asalsekolah,tmplahir,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),". 
 		   "c.aktif,c.replid FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
-		   "WHERE c.idproses = $proses AND c.idkelompok = $kelompok AND k.idproses = p.replid ".
+		   "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		   "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan ";
 	
 	$result_tot = QueryDb($sql_tot);
@@ -256,7 +256,7 @@ function change_baris() {
 	
 	$sql = "SELECT nopendaftaran,nama,c.sum1,c.sum2,c.ujian1,c.ujian2,c.ujian3,c.ujian4,c.ujian5,". 
 		   "c.aktif,c.replid, c.replidsiswa,c.nisn FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
-		   "WHERE c.idproses = $proses AND c.idkelompok = $kelompok AND k.idproses = p.replid ".
+		   "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		   "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan ".
 		   "LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 	
@@ -264,8 +264,8 @@ function change_baris() {
 	
 	if (@mysql_num_rows($result)>0)
 	{ 
-		$sql1 = "SELECT COUNT(c.replid) AS isi FROM calonsiswa c WHERE c.idkelompok = $kelompok AND c.idproses = $proses AND c.aktif = 1";	
-		$sql2 = "SELECT kapasitas, keterangan FROM kelompokcalonsiswa k WHERE k.idproses = $proses AND k.replid = $kelompok";
+		$sql1 = "SELECT COUNT(c.replid) AS isi FROM calonsiswa c WHERE c.idkelompok = '$kelompok' AND c.idproses = '$proses' AND c.aktif = 1";	
+		$sql2 = "SELECT kapasitas, keterangan FROM kelompokcalonsiswa k WHERE k.idproses = '$proses' AND k.replid = '$kelompok'";
 		$result1 = QueryDb($sql1);
 		$result2 = QueryDb($sql2);
 		$row1 = @mysql_fetch_array($result1);
@@ -354,7 +354,7 @@ function change_baris() {
 			$pjg = "80px";
 			if ($row["replidsiswa"] <> 0) 
 			{
-				$sql3 = "SELECT nis FROM jbsakad.siswa WHERE replid = $row[replidsiswa]";
+				$sql3 = "SELECT nis FROM jbsakad.siswa WHERE replid = '$row[replidsiswa]'";
 				$result3 = QueryDb($sql3);
 				$row3 = @mysql_fetch_array($result3);
 				$siswa = "<br>NIS Siswa: <b>".$row3['nis']."</b>";

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -78,7 +78,7 @@ function cetak() {
 	OpenDb();
 	$sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) 
 	          FROM jurnal j, jurnaldetail jd, rekakun ra 
-			   WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+			   WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 				  AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 				  AND ra.kategori IN ('HARTA', 'PIUTANG') GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 	$result = QueryDb($sql);   
@@ -150,7 +150,7 @@ function cetak() {
             $sql = "SELECT jd.koderek, ra.nama, sum(jd.debet - jd.kredit) 
 				          FROM jurnal j, jurnaldetail jd, rekakun ra 
 							WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode 
-							  AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
+							  AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 							  AND ra.kategori = 'INVENTARIS' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
             $result = QueryDb($sql);
             $totalaktivatetap = 0;
@@ -197,7 +197,7 @@ function cetak() {
             <?
             $sql = "SELECT jd.koderek, ra.nama, sum(jd.kredit - jd.debet) 
 				          FROM jurnal j, jurnaldetail jd, rekakun ra 
-							WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+							WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 							  AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'UTANG' GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
             $result = QueryDb($sql);
             $totalhutang = 0;
@@ -239,7 +239,7 @@ function cetak() {
             $sql = "SELECT SUM(jd.kredit - jd.debet) 
 				          FROM rekakun ra, jurnal j, jurnaldetail jd 
 							WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode 
-							  AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
+							  AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
             //echo  "$sql<br>";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);
@@ -248,7 +248,7 @@ function cetak() {
             
             $sql = "SELECT SUM(jd.debet - jd.kredit) 
 				          FROM rekakun ra, jurnal j, jurnaldetail jd WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode 
-							  AND j.idtahunbuku = $idtahunbuku AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'BIAYA'";
+							  AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'BIAYA'";
             //echo  "$sql<br>";
             $result = QueryDb($sql);
             $row = mysql_fetch_row($result);

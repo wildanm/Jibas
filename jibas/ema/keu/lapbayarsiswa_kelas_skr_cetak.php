@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -157,24 +157,24 @@ if (isset($_REQUEST['urutan']))
 	{
 		$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
 										 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s
-										WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku
-										  AND p.nis = s.nis AND s.idangkatan = $idangkatan
-										  AND p.idpenerimaan = $idpenerimaan GROUP BY p.nis) as X)";
+										WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
+										  AND p.nis = s.nis AND s.idangkatan = '$idangkatan'
+										  AND p.idpenerimaan = '$idpenerimaan' GROUP BY p.nis) as X)";
 	} 
 	else 
 	{
 		if ($idkelas == -1)
 			$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
 											 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-											WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-											  AND p.nis = s.nis AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan 
-											  AND s.idkelas = k.replid AND k.idtingkat = $idtingkat GROUP BY p.nis) as X)";
+											WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+											  AND p.nis = s.nis AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' 
+											  AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' GROUP BY p.nis) as X)";
 		else
 			$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
 											 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s 
-											WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-											  AND p.nis = s.nis AND s.idkelas = $idkelas AND s.idangkatan = $idangkatan 
-											  AND p.idpenerimaan = $idpenerimaan GROUP BY p.nis) as X)";
+											WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+											  AND p.nis = s.nis AND s.idkelas = '$idkelas' AND s.idangkatan = '$idangkatan' 
+											  AND p.idpenerimaan = '$idpenerimaan' GROUP BY p.nis) as X)";
 	}
 		
 	$result = QueryDb($sql);
@@ -182,7 +182,7 @@ if (isset($_REQUEST['urutan']))
 	$max_n_bayar = $row[0];
 	$table_width = 520 + $max_n_bayar * 100;
 	
-	$sql = "SELECT nama FROM $db_name_fina.datapenerimaan WHERE replid = $idpenerimaan";
+	$sql = "SELECT nama FROM $db_name_fina.datapenerimaan WHERE replid = '$idpenerimaan'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	$namapenerimaan = $row[0];
@@ -211,15 +211,15 @@ if (isset($_REQUEST['urutan']))
 	{
 		$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
 					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = $idangkatan 
-					   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid ORDER BY s.nama";
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan' 
+					   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY s.nama";
 		
 		$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
 				  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-				 WHERE p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = $idangkatan 
-				   AND p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-				   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid 
+				 WHERE p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan' 
+				   AND p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+				   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid 
 			  ORDER BY $urut $urutan"; 
 	} 
 	else 
@@ -228,29 +228,29 @@ if (isset($_REQUEST['urutan']))
 		{
 			$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
 						  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-						   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = $idtingkat 
-						   AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid ORDER BY s.nama";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+						   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' 
+						   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY s.nama";
 			
 			$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
 					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND s.idangkatan = $idangkatan 
-					   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid ORDER BY $urut $urutan"; 
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+					   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND s.idangkatan = '$idangkatan' 
+					   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY $urut $urutan"; 
 		} 
 		else 
 		{
 			$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas 
 						  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-						   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = $idkelas 
-						   AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan ORDER BY s.nama";
+						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+						   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = '$idkelas' 
+						   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
 			
 			$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas 
 					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = $idkelas 
-					   AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan ORDER BY $urut $urutan"; 
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = '$idkelas' 
+					   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' ORDER BY $urut $urutan"; 
 		}
 	}
 	
@@ -273,8 +273,8 @@ if (isset($_REQUEST['urutan']))
 			<td align="center"><? if ($idkelas == -1) echo $row['tingkat']." - "; ?><?=$row['kelas'] ?></td>
 	<?		$sql = "SELECT date_format(p.tanggal, '%d-%b-%y') as tanggal, jumlah 
 	                  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
-					   AND nis = '$nis' AND idpenerimaan = $idpenerimaan";
+					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
+					   AND nis = '$nis' AND idpenerimaan = '$idpenerimaan'";
 			$result2 = QueryDb($sql);
 			$nbayar = mysql_num_rows($result2);
 			$nblank = $max_n_bayar - $nbayar;

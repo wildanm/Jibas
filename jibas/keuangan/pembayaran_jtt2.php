@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if ($op == "348328947234923") {
 	$errmsg = "";
 	
 	if ($idbesarjtt > 0) {
-		$sql = "SELECT sum(jumlah) FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+		$sql = "SELECT sum(jumlah) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 		$result = QueryDb($sql);
 		$row = mysql_fetch_row($result);
 		$totalbayaran = $row[0];
@@ -65,7 +65,7 @@ if ($op == "348328947234923") {
 			if ($totalbayaran == $besar)
 				$lunas = 1;
 				
-			$sql = "UPDATE besarjtt SET besar=$besar,keterangan='$_REQUEST[keterangan]',lunas=$lunas,pengguna='$pengguna' WHERE replid = $idbesarjtt";
+			$sql = "UPDATE besarjtt SET besar=$besar,keterangan='$_REQUEST[keterangan]',lunas=$lunas,pengguna='$pengguna' WHERE replid = '$idbesarjtt'";
 			QueryDb($sql);
 		}
 	} else {
@@ -73,7 +73,7 @@ if ($op == "348328947234923") {
 		if ($besar == 0)
 			$lunas = 1;
 			
-		$sql = "INSERT INTO besarjtt SET nis='$nis',idpenerimaan=$idpenerimaan,besar=$besar,keterangan='$_REQUEST[keterangan]',lunas=$lunas,pengguna='$pengguna'";
+		$sql = "INSERT INTO besarjtt SET nis='$nis',idpenerimaan='$idpenerimaan',besar='$besar',keterangan='".CQ($_REQUEST['keterangan'])."',lunas='$lunas',pengguna='$pengguna'";
 		QueryDb($sql);		
 	}
 	
@@ -95,7 +95,7 @@ if ($op == "348328947234923") {
 	$rekkas = "";
 	$rekpendapatan = "";
 	$rekpiutang = "";
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = $idpenerimaan";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		CloseDb();
@@ -122,7 +122,7 @@ if ($op == "348328947234923") {
 	
 	//Cari tahu apakah ini pelunasan?
 	$besarjtt = 0;
-	$sql = "SELECT besar FROM besarjtt WHERE replid = $idbesarjtt";
+	$sql = "SELECT besar FROM besarjtt WHERE replid = '$idbesarjtt'";
 	$result = QueryDb($sql); 
 	if (mysql_num_rows($result) == 0) {
 		CloseDb();
@@ -133,7 +133,7 @@ if ($op == "348328947234923") {
 	}
 	
 	//Cari tahu jumlah pembayaran cicilan yang sudah terjadi
-	$sql = "SELECT jumlah FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+	$sql = "SELECT jumlah FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 	$result = QueryDb($sql);
 	$jml = 0;
 	$cicilan = 0;
@@ -159,7 +159,7 @@ if ($op == "348328947234923") {
 	}
 		
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) {
 		CloseDb();
@@ -199,11 +199,11 @@ if ($op == "348328947234923") {
 	}
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	if ($success) QueryDbTrans($sql, $success);
 	
 	//simpan data cicilan di penerimaanjtt
-	$sql = "INSERT INTO penerimaanjtt SET idbesarjtt=$idbesarjtt,idjurnal=$idjurnal,tanggal='$tcicilan',jumlah='$jcicilan',keterangan='$kcicilan',petugas='$petugas'";
+	$sql = "INSERT INTO penerimaanjtt SET idbesarjtt='$idbesarjtt',idjurnal='$idjurnal',tanggal='$tcicilan',jumlah='$jcicilan',keterangan='$kcicilan',petugas='$petugas'";
 	//RollbackTrans();
 	//echo  $sql;
 	//exit();
@@ -212,7 +212,7 @@ if ($op == "348328947234923") {
 	
 	//jika lunas ubah statusnya di besarjtt
 	if ($lunas) {
-		$sql = "UPDATE besarjtt SET lunas=1 WHERE replid=$idbesarjtt";
+		$sql = "UPDATE besarjtt SET lunas=1 WHERE replid='$idbesarjtt'";
 		if ($success) QueryDbTrans($sql, $success);
 	}
 	
@@ -243,7 +243,7 @@ if ($op == "348328947234923") {
 		$alamattinggal = $row['alamattinggal'];
 	}
 	
-	$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+	$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	$namapenerimaan = $row[0];
@@ -411,7 +411,7 @@ function cetak() {
         <legend><font size="2" color="#003300">
         <strong>Pembayaran Yang Harus Dilunasi</strong></font></legend>
     <?
-        $sql = "SELECT replid AS id, besar, keterangan, lunas FROM besarjtt WHERE nis = '$nis' AND idpenerimaan = $idpenerimaan";
+        $sql = "SELECT replid AS id, besar, keterangan, lunas FROM besarjtt WHERE nis = '$nis' AND idpenerimaan = '$idpenerimaan'";
         $result = QueryDb($sql);
         $besar = "";
         $keterangan = "";
@@ -467,7 +467,7 @@ function cetak() {
     	<td>
 	<?  
     if ($idbesarjtt > 0) { 
-        $sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+        $sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
         $result = QueryDb($sql);
         $row = mysql_fetch_row($result);
         $nbayar = $row[0];

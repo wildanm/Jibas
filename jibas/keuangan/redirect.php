@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -121,9 +121,9 @@ if(!$user_exists)
 else
 {
 	if ($username=="landlord")
-    	$query = "UPDATE jbsuser.landlord SET lastlogin='NOW()' WHERE password='".md5($password)."'";
+    	$query = "UPDATE jbsuser.landlord SET lastlogin=NOW() WHERE password='".md5($password)."'";
     else 
-		$query = "UPDATE jbsuser.hakakses SET lastlogin='NOW()' WHERE login='$username' AND modul = 'KEUANGAN'";
+		$query = "UPDATE jbsuser.hakakses SET lastlogin=NOW() WHERE login='$username' AND modul = 'KEUANGAN'";
 	$result = queryDb($query);
 	
 	

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -104,12 +104,12 @@ html, body{overflow:hidden}
                     <table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td align="center">
-                        <a onClick="CekSession()" href="pesanmasuk/inbox.php" target="bottom"><img src="images/IcoInbox.png" width="37" height="37" border="0"></a>
+                        <a onClick="CekSession()" href="inbox/inbox.php" target="bottom"><img src="images/IcoInbox.png" width="37" height="37" border="0"></a>
                         </td>
                       </tr>
                       <tr>
                         <td align="center">
-                        <a onClick="CekSession()" class="LinkMenu" href="pesanmasuk/inbox.php" target="bottom">Kotak&nbsp;Masuk</a>
+                        <a onClick="CekSession()" class="LinkMenu" href="inbox/inbox.php" target="bottom">Kotak&nbsp;Masuk</a>
                         </td>
                       </tr>
                     </table>
@@ -174,6 +174,22 @@ html, body{overflow:hidden}
                 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>
                         <td align="center">
+                        <a onClick="CekSession()" href="phonebook/phonebook.php"  target="bottom"><img src="images/phonebook.png" width="37" height="37" border="0"></a>                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                        <a onClick="CekSession()" class="LinkMenu" href="phonebook/phonebook.php"  target="bottom">Phone Book</a>
+                        </td>
+                      </tr>
+                    </table>
+                </td>
+				<?php
+				if ($_SESSION['tingkat']==2){
+				?>
+				<td align="center" style="padding-right:15px">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center">
                         <a onClick="CekSession()" href="javascript:ChgPass()" ><img src="images/IcoChgPass.png" width="37" height="37" border="0"></a>                        </td>
                       </tr>
                       <tr>
@@ -183,6 +199,28 @@ html, body{overflow:hidden}
                       </tr>
                     </table>
                 </td>
+				<?php
+				}
+				?>
+				<?php
+				if ($_SESSION['tingkat']<2){
+				?>
+				<td align="center" style="padding-right:15px">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+                      <tr>
+                        <td align="center">
+                        <a onClick="CekSession()" href="user/user.php"  target="bottom" ><img src="images/user.png" width="37" height="37" border="0"></a>                        </td>
+                      </tr>
+                      <tr>
+                        <td align="center">
+                        <a onClick="CekSession()" class="LinkMenu" href="user/user.php"  target="bottom" >Pengguna</a>
+                        </td>
+                      </tr>
+                    </table>
+                </td>
+				<?php
+				}
+				?>
                 <td align="center" style="padding-right:15px">
                 	<table width="100%" border="0" cellspacing="0" cellpadding="0">
                       <tr>

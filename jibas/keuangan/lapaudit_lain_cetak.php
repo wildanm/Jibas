@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -94,7 +94,7 @@ $sql = "SELECT DISTINCT ai.petugas as petugasubah, j.transaksi, date_format(ai.t
 					ap.idaudit, ap.statusdata, j.nokas, date_format(ap.tanggal, '%d-%b-%Y') AS tanggal, ap.petugas, ap.keterangan, ap.jumlah, 
 					ap.petugas, ai.alasan 
 			 FROM auditpenerimaanlain ap, auditinfo ai, jurnal j 
-			WHERE j.replid = ap.idjurnal AND j.idtahunbuku = $idtahunbuku AND ap.idaudit = ai.replid AND ai.departemen = '$departemen' 
+			WHERE j.replid = ap.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND ap.idaudit = ai.replid AND ai.departemen = '$departemen' 
 			  AND ai.sumber='penerimaanlain' AND ai.tanggal BETWEEN '$tanggal1 00:00:00' AND '$tanggal2 23:59:59'
 	   ORDER BY ap.idaudit DESC, ai.tanggal DESC, ap.statusdata ASC";
 //echo  $sql;

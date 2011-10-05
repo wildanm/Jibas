@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,9 +25,9 @@ class CPustaka{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="Gtytc6yt665476d6"){
-			$sql = "DELETE FROM daftarpustaka WHERE pustaka=$_REQUEST[replid]";
+			$sql = "DELETE FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]'";
 			QueryDb($sql);
-			$sql = "DELETE FROM pustaka WHERE replid=$_REQUEST[replid]";
+			$sql = "DELETE FROM pustaka WHERE replid='$_REQUEST[replid]'";
 			QueryDb($sql);
 		}
 		if (isset($_REQUEST[simpan]))
@@ -55,7 +55,7 @@ class CPustaka{
 	function GetPerpus(){
 		$this->perpustakaan = $_REQUEST[perpustakaan];
 		if (SI_USER_LEVEL()==2){
-			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid=".SI_USER_DEPT()." ORDER BY nama";
+			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
 		} else {
 			$sql = "SELECT replid,nama FROM perpustakaan ORDER BY nama";
 		}
@@ -186,20 +186,20 @@ class CPustaka{
 		  $sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter2 $filter GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 
 		  if ($kategori=='rak'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid=$keywords AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid=$keywords AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }
 		  if ($kategori=='katalog'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid=$keywords AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid=$keywords AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }	
           if ($kategori=='penerbit'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid=$keywords AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid=$keywords AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 	      }
 		  if ($kategori=='penulis'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid=$keywords AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid=$keywords AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }
 		  //echo $sql1;
 		  $result = QueryDb($sql1);
@@ -211,15 +211,15 @@ class CPustaka{
 		  if ($num>0){
 			  $cnt=1;
 			  while ($row = @mysql_fetch_row($result)){
-			  $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] $filter2 AND d.status=0"));
-			  $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] $filter2 AND d.status=1"));
+			  $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=0"));
+			  $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=1"));
 			  //echo "SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=0"."<br>";
 			  //$rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=0"));
 			  //$rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=1"));
 			  ?>
 			  <tr>
 				<td height="25" align="center"><?=$cnt?></td>
-				<td height="25"><div class="tab_content"><?=$row[1]?></div></td>
+				<td height="25"><div class="tab_content"><?=stripslashes($row[1])?></div></td>
 				<td height="25" align="center"><?=$rtersedia?></td>
 				<td height="25" align="center"><?=$rdipinjam?></td>
 				<td align="center" bgcolor="#FFFFFF">

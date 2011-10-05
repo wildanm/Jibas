@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -69,7 +69,7 @@ if (isset($_REQUEST['urutan']))
 	$urutan = $_REQUEST['urutan'];
 	
 OpenDb();	
-$sql = "SELECT nama FROM datapenerimaan WHERE replid=$idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid='$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];	
@@ -155,14 +155,14 @@ function change_baris() {
    
 	$sql_tot = "SELECT p.replid AS id, j.nokas, p.sumber, date_format(p.tanggal, '%d-%b-%Y') AS tanggal, p.keterangan, p.jumlah, p.petugas 
 	              FROM penerimaanlain p, jurnal j, datapenerimaan dp 
-					 WHERE j.replid = p.idjurnal AND j.idtahunbuku = $idtahunbuku 
-					   AND p.idpenerimaan = dp.replid AND p.idpenerimaan = $idpenerimaan 
+					 WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku' 
+					   AND p.idpenerimaan = dp.replid AND p.idpenerimaan = '$idpenerimaan' 
 						AND dp.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY p.tanggal, p.replid";
 	
 	$sql = "SELECT p.replid AS id, j.nokas, p.sumber, date_format(p.tanggal, '%d-%b-%Y') AS tanggal, p.keterangan, p.jumlah, p.petugas 
 	          FROM penerimaanlain p, jurnal j, datapenerimaan dp 
-				WHERE j.replid = p.idjurnal AND j.idtahunbuku = $idtahunbuku
-				  AND p.idpenerimaan = dp.replid AND p.idpenerimaan = $idpenerimaan 
+				WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku'
+				  AND p.idpenerimaan = dp.replid AND p.idpenerimaan = '$idpenerimaan' 
 				  AND dp.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 		   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 	

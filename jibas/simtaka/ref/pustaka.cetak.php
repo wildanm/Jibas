@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -59,8 +59,8 @@ $sql = "SELECT * FROM perpustakaan ORDER BY nama";
 $result = QueryDB($sql);
 $cnt = 0;
 while ($row = mysql_fetch_array($result)) {
-	$num_judul = @mysql_num_rows(QueryDb("SELECT * FROM pustaka p, daftarpustaka d WHERE d.perpustakaan=$row[replid] AND p.replid=d.pustaka GROUP BY d.pustaka"));
-	$num_pustaka = @mysql_fetch_row(QueryDb("SELECT COUNT(d.replid) FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid AND d.perpustakaan=$row[replid]"));
+	$num_judul = @mysql_num_rows(QueryDb("SELECT * FROM pustaka p, daftarpustaka d WHERE d.perpustakaan='$row[replid]' AND p.replid=d.pustaka GROUP BY d.pustaka"));
+	$num_pustaka = @mysql_fetch_row(QueryDb("SELECT COUNT(d.replid) FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid AND d.perpustakaan='$row[replid]'"));
 ?>
   <tr>
 	<td height="25">&nbsp;<?=$row[nama]?></td>

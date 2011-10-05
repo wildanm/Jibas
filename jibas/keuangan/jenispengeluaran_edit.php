@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,7 +34,7 @@ $departemen = $_REQUEST['departemen'];
 
 if (isset($_REQUEST['simpan'])) {
 	OpenDb();
-	$sql = "SELECT replid FROM datapengeluaran WHERE nama = '$_REQUEST[nama]' AND replid <> $id";
+	$sql = "SELECT replid FROM datapengeluaran WHERE nama = '$_REQUEST[nama]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
@@ -44,7 +44,7 @@ if (isset($_REQUEST['simpan'])) {
 		if ($besar == "") $besar = 0;
 		$besar = UnformatRupiah($besar);
 		
-		$sql = "UPDATE datapengeluaran SET nama='$_REQUEST[nama]', besar='$besar', rekkredit='$_REQUEST[norekkredit]', rekdebet='$_REQUEST[norekdebet]', keterangan='$_REQUEST[keterangan]' WHERE replid = $id";
+		$sql = "UPDATE datapengeluaran SET nama='".CQ($_REQUEST['nama'])."', besar='$besar', rekkredit='$_REQUEST[norekkredit]', rekdebet='$_REQUEST[norekdebet]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid = $id";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -58,7 +58,7 @@ if (isset($_REQUEST['simpan'])) {
 } 
 OpenDb();
 
-$sql = "SELECT * FROM datapengeluaran WHERE replid=$id";
+$sql = "SELECT * FROM datapengeluaran WHERE replid='$id'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $nama = $row['nama'];
@@ -68,11 +68,11 @@ $rekdebet = $row['rekdebet'];
 $keterangan = $row['keterangan'];
 
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 if (isset($_REQUEST['besar']))
 	$besar = $_REQUEST['besar'];
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 
 $sql = "SELECT nama FROM rekakun WHERE kode='$rekkredit'";
 $result = QueryDb($sql);

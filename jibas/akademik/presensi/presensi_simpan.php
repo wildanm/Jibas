@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -28,11 +28,11 @@ require_once('../include/db_functions.php');
 require_once('../include/rupiah.php');
 
 $nip=$_REQUEST['nipguru'];
-$keterangan=$_REQUEST['keterangan'];
-$materi=$_REQUEST['materi'];
-$objektif=$_REQUEST['objektif'];
-$refleksi=$_REQUEST['refleksi'];
-$materi_lanjut=$_REQUEST['materi_lanjut'];
+$keterangan=CQ($_REQUEST['keterangan']);
+$materi=CQ($_REQUEST['materi']);
+$objektif=CQ($_REQUEST['objektif']);
+$refleksi=CQ($_REQUEST['refleksi']);
+$materi_lanjut=CQ($_REQUEST['materi_lanjut']);
 $telat=$_REQUEST['telat']; 
 if ($telat == "") 
 	$telat = 0;
@@ -67,16 +67,16 @@ $tanggal = $_REQUEST['tanggal'];
 <?
 OpenDb();
 if ($_REQUEST['action'] == 'Update') {
-	$sql = "DELETE FROM ppsiswa WHERE idpp = $replid";
+	$sql = "DELETE FROM ppsiswa WHERE idpp = '$replid'";
 	QueryDb($sql);
-	$sql = "DELETE FROM presensipelajaran WHERE replid = $replid";
+	$sql = "DELETE FROM presensipelajaran WHERE replid = '$replid'";
 	QueryDb($sql);
 	
 }
 
 BeginTrans();
 $success=0;
-$sql = "INSERT INTO presensipelajaran SET idkelas=$kelas, idsemester=$semester, idpelajaran=$pelajaran, tanggal='$tanggal', jam='$waktu', gurupelajaran='$nip', jenisguru=$jenis, keterangan='$keterangan', materi='$materi', objektif='$objektif', refleksi='$refleksi', rencana='$materi_lanjut', keterlambatan=$telat, jumlahjam=$jumlah";
+$sql = "INSERT INTO presensipelajaran SET idkelas='$kelas', idsemester='$semester', idpelajaran='$pelajaran', tanggal='$tanggal', jam='$waktu', gurupelajaran='$nip', jenisguru='$jenis', keterangan='$keterangan', materi='$materi', objektif='$objektif', refleksi='$refleksi', rencana='$materi_lanjut', keterlambatan='$telat', jumlahjam='$jumlah'";
 QueryDbTrans($sql,$success);
 //$result = QueryDb($sql);
 //echo 'sql1'.$sql.' '.$success;		
@@ -94,7 +94,7 @@ for ($i=1;$i<=$jum;$i++) {
 	$catatan = $_REQUEST['catatan'.$i];
 		
 	if ($status <> 5) {
-		$sql2 = "INSERT INTO ppsiswa SET idpp=$id, nis='$nis', statushadir=$status, catatan='$catatan' ";
+		$sql2 = "INSERT INTO ppsiswa SET idpp='$id', nis='$nis', statushadir='$status', catatan='$catatan' ";
 	//echo '<br>'.$i.' '.$sql2.' '.$success;
 		QueryDbTrans($sql2,$success);
 	}	

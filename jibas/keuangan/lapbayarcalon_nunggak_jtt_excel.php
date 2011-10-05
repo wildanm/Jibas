@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -77,7 +77,7 @@ if ($kelompok == -1)
 {
 	$sql = "SELECT idbesarjttcalon, datediff('$tgl', max(tanggal)) as x 
 	          FROM penerimaanjttcalon p , besarjttcalon b, jbsakad.calonsiswa c, jbsakad.prosespenerimaansiswa r 
-			   WHERE p.idbesarjttcalon = b.replid AND b.lunas = 0 AND b.idpenerimaan = $idpenerimaan AND b.info2='$idtahunbuku'
+			   WHERE p.idbesarjttcalon = b.replid AND b.lunas = 0 AND b.idpenerimaan = '$idpenerimaan' AND b.info2='$idtahunbuku'
 				  AND c.replid = b.idcalon AND c.idproses = r.replid AND r.aktif = 1 
 		   GROUP BY idbesarjttcalon 
 		     HAVING x >= $telat";
@@ -88,7 +88,7 @@ else
 	$sql = "SELECT idbesarjttcalon, datediff('$tgl', max(tanggal)) as x 
 	          FROM penerimaanjttcalon p , besarjttcalon b, jbsakad.calonsiswa c 
 				WHERE p.idbesarjttcalon = b.replid AND b.lunas = 0 AND b.info2='$idtahunbuku' AND c.replid = b.idcalon 
-				  AND c.idkelompok = $kelompok AND b.idpenerimaan = $idpenerimaan 
+				  AND c.idkelompok = '$kelompok' AND b.idpenerimaan = '$idpenerimaan' 
 		   GROUP BY idbesarjttcalon 
 			  HAVING x >= $telat";
 			  /*UNION SELECT b.replid, '-' FROM besarjttcalon b, jbsakad.calonsiswa c, jbsakad.prosespenerimaansiswa r WHERE b.replid NOT IN (SELECT idbesarjttcalon FROM penerimaanjttcalon p) AND b.lunas = 0 AND c.replid = b.idcalon AND b.idpenerimaan = $idpenerimaan AND c.idkelompok = $kelompok";	*/
@@ -117,7 +117,7 @@ $max_n_cicilan = $row[0];
 $table_width = 810 + $max_n_cicilan * 90;
 
 //Dapatkan namapenerimaan
-$sql = "SELECT nama, departemen FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama, departemen FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -125,7 +125,7 @@ $departemen = $row[1];
 
 $namakelompok = "Semua Kelompok";
 if ($kelompok <> -1) {
-	$sql = "SELECT proses, kelompok FROM jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE k.replid = $kelompok AND k.idproses = p.replid";
+	$sql = "SELECT proses, kelompok FROM jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE k.replid = '$kelompok' AND k.idproses = p.replid";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	$namaproses = $row[0];
@@ -235,7 +235,7 @@ while ($row = mysql_fetch_array($result)) {
       <?=$row['kelompok'] ?>
     </font></td>
 <?
-	$sql = "SELECT count(*) FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+	$sql = "SELECT count(*) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 	$result2 = QueryDb($sql);
 	$row2 = mysql_fetch_row($result2);
 	$nbayar = $row2[0];
@@ -243,7 +243,7 @@ while ($row = mysql_fetch_array($result)) {
 	$totalbayar = 0;
 	
 	if ($nbayar > 0) {
-		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt ORDER BY tanggal";
+		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' ORDER BY tanggal";
 		$result2 = QueryDb($sql);
 		$x=0;
 		while ($row2 = mysql_fetch_row($result2)) {
@@ -273,7 +273,7 @@ while ($row = mysql_fetch_array($result)) {
     <? }?>
     <td align="center">
       <font size="2" face="Arial">
-      <?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+      <?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 	$result2 = QueryDb($sql);
 	$row2 = mysql_fetch_row($result2);
 	echo  $row2[0]; ?>    

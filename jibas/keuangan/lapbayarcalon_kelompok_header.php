@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -116,7 +116,10 @@ function show_pembayaran() {
 		document.getElementById('idpenerimaan').focus();
 		return false;	
 	}
-		
+	if (idtahunbuku.length == 0) {	
+		alert ('Belum ada Tahun buku yang Aktif di departemen ybs.\nSilakan isi/aktifkan Tahun Buku di menu Referensi!');
+		return false;
+	}	
 	if (idkategori == 'CSWJB')
 		parent.content.location.href = "lapbayarcalon_kelompok_jtt.php?departemen="+departemen+"&idtahunbuku="+idtahunbuku+"&idpenerimaan="+idpenerimaan+"&kelompok="+kelompok+"&lunas="+lunas;
 	else 
@@ -158,8 +161,12 @@ function focusNext(elemName, evt) {
             <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?>><?=$value ?></option>
         <? } ?>  
     	</select>        
-   <?	  $sql = "SELECT replid FROM tahunbuku WHERE departemen='$departemen' AND aktif=1";
-	     $idtahunbuku = FetchSingle($sql); ?>
+   <?	$sql = "SELECT replid FROM tahunbuku WHERE departemen='$departemen' AND aktif=1";
+		$res = QueryDb($sql);
+		$row = @mysql_fetch_row($res);
+		$idtahunbuku = $row[0];
+		//$idtahunbuku = FetchSingle($sql);
+		?>
 		<input type="hidden" name="idtahunbuku" id="idtahunbuku" value="<?=$idtahunbuku?>" />
         </td>
     </tr>

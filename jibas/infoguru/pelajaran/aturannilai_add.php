@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -43,7 +43,7 @@ OpenDb();
 $sql = "SELECT j.departemen, j.nama, p.nip, p.nama, t.tingkat 
 			 FROM guru g, jbssdm.pegawai p, pelajaran j, tingkat t 
 			WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND t.departemen = j.departemen 
-			  AND t.replid = $idtingkat AND j.replid = $id AND g.nip = '$nip'"; 
+			  AND t.replid = '$idtingkat' AND j.replid = '$id' AND g.nip = '$nip'"; 
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -56,8 +56,8 @@ if (isset($_REQUEST['Simpan']))
 {
 	$sql = "SELECT * FROM guru g, pelajaran j, dasarpenilaian d, tingkat t, aturangrading a 
 				WHERE a.nipguru=g.nip AND a.idpelajaran = j.replid AND a.dasarpenilaian = d.dasarpenilaian 
-				  AND a.idtingkat = t.replid AND a.idpelajaran = $id AND a.nipguru = '$nip' 
-				  AND a.idtingkat = $idtingkat AND a.dasarpenilaian = '$aspek'"; 
+				  AND a.idtingkat = t.replid AND a.idpelajaran = '$id' AND a.nipguru = '$nip' 
+				  AND a.idtingkat = '$idtingkat' AND a.dasarpenilaian = '$aspek'"; 
 	$result = QueryDb($sql);
 
 	if (mysql_num_rows($result) > 0) 
@@ -76,8 +76,8 @@ if (isset($_REQUEST['Simpan']))
 			if (strlen($nmin)>0 && strlen($nmax)>0 && strlen($grade)>0) 
 			{
 				$sql = "INSERT INTO aturangrading 
-							  SET nipguru='$nip',idtingkat=$idtingkat,idpelajaran=$id,
-							  		dasarpenilaian='$aspek',nmin=$nmin,nmax=$nmax,grade='$grade'";
+							  SET nipguru='$nip',idtingkat='$idtingkat',idpelajaran='$id',
+							  		dasarpenilaian='$aspek',nmin='$nmin',nmax='$nmax',grade='$grade'";
 				$result = QueryDb($sql);
 			}
 		}
@@ -164,6 +164,8 @@ function validate() {
 			}
 		}
 		if (nmax.length>0 && nmin.length>0){
+			nmax = parseInt(nmax);
+			nmin = parseInt(nmin);
 			if (nmax<nmin){
 				alert ("Nilai minimum harus lebih kecil dari nilai maksimum"); 
 				document.getElementById('nmax'+i).focus();				
@@ -249,7 +251,7 @@ function focusNext(elemName, evt) {
 						 FROM dasarpenilaian 
 						WHERE dasarpenilaian NOT IN (SELECT dasarpenilaian 
 															  FROM aturangrading g, tingkat t 
-															  WHERE t.replid = g.idtingkat AND g.idpelajaran = $id AND g.idtingkat = $idtingkat 
+															  WHERE t.replid = g.idtingkat AND g.idpelajaran = '$id' AND g.idtingkat = '$idtingkat' 
 															  AND g.nipguru = '$nip' GROUP BY g.dasarpenilaian) 
 						ORDER BY keterangan";    
 			$result = QueryDb($sql);	

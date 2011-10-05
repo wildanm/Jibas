@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,7 +29,7 @@ $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
 OpenDb();
-$sql_berita="SELECT YEAR(tanggal) as thn,MONTH(tanggal) as bln,DAY(tanggal) as tgl,replid as replid,judul as judul,abstrak as abstrak ,isi as berita,idpengirim FROM jbsvcr.beritasiswa WHERE replid=$replid";
+$sql_berita="SELECT YEAR(tanggal) as thn,MONTH(tanggal) as bln,DAY(tanggal) as tgl,replid as replid,judul as judul,abstrak as abstrak ,isi as berita,idpengirim FROM jbsvcr.beritasiswa WHERE replid='$replid'";
 $result_berita=QueryDb($sql_berita);
 $row_berita=@mysql_fetch_array($result_berita);
 $sql_getnama="SELECT nama FROM jbsakad.siswa WHERE nis='$row_berita[idpengirim]'";
@@ -121,7 +121,7 @@ $tglberita=$row_berita['tgl']." ".$namabulan[$row_berita['bln']-1]." ".$row_beri
                 <td align="center" valign="top" scope="row"><strong>:</strong></td>
                 <td scope="row" align="left"><?
         OpenDb();
-        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitasiswa WHERE idberita=$row_berita[replid]";
+        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitasiswa WHERE idberita='$row_berita[replid]'";
         $result2=QueryDb($sql2);
         while ($row2=@mysql_fetch_array($result2)){
             echo "<a title='Buka lampiran ini!' href='".$row2[direktori].$row2[namafile]."' target='_blank' ><img border='0' src='../../images/ico/titik.png' width='5' height='5'/> ".$row2['namafile']."</a><br>";

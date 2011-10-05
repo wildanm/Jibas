@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -63,21 +63,21 @@ OpenDb();
 $op = $_REQUEST['op'];
 if ($op == "dw8dxn8w9ms8zs22") 
 {
-	$sql = "UPDATE siswa SET aktif = $_REQUEST[newaktif] WHERE replid = $_REQUEST[replid] ";
+	$sql = "UPDATE siswa SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
 } 
 else if ($op == "xm8r389xemx23xb2378e23") 
 {
-	$sql = "DELETE FROM siswa WHERE replid = $_REQUEST[replid]"; 	
+	$sql = "DELETE FROM siswa WHERE replid = '$_REQUEST[replid]'"; 	
 	$success = QueryDb($sql);
 	
 	if ($success) 
 	{
-		$sql="SELECT * FROM calonsiswa WHERE replidsiswa = $_REQUEST[replid]";
+		$sql="SELECT * FROM calonsiswa WHERE replidsiswa = '$_REQUEST[replid]'";
 		$result = QueryDb($sql);
 		if (mysql_num_rows($result) > 0) 
 		{
-			$sql="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = $_REQUEST[replid]";
+			$sql="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = '$_REQUEST[replid]'";
 			$success = QueryDb($sql);
 		}
 	}
@@ -274,22 +274,22 @@ function change_baris() {
 <tr>
 	<td align="right">
     <?
-	$sql_tot = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY replid ";
+	$sql_tot = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = '$kelas' AND k.idtahunajaran = '$tahunajaran' AND k.idtingkat = '$tingkat' AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY replid ";
 	$result_tot = QueryDb($sql_tot);
 	$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.statusmutasi,s.alumni,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = $kelas AND k.idtahunajaran = $tahunajaran AND k.idtingkat = $tingkat AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+	$sql = "SELECT nis,nama,asalsekolah,tmplahir,tgllahir,s.aktif,DAY(tgllahir),MONTH(tgllahir),YEAR(tgllahir),s.replid,s.statusmutasi,s.alumni,s.nisn FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t WHERE s.idkelas = '$kelas' AND k.idtahunajaran = '$tahunajaran' AND k.idtingkat = '$tingkat' AND s.idkelas = k.replid AND t.replid = k.idtahunajaran AND s.alumni=0 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 	$result = QueryDb($sql);
 	
 	if (@mysql_num_rows($result)>0){ 
-		$sql_kapasitas = "SELECT kapasitas FROM kelas WHERE replid = $kelas";
+		$sql_kapasitas = "SELECT kapasitas FROM kelas WHERE replid = '$kelas'";
 		$result_kapasitas = QueryDb($sql_kapasitas);
 		$row_kapasitas = mysql_fetch_row($result_kapasitas);
 		$kapasitas = $row_kapasitas[0];
 		
-		$sql_siswa = "SELECT COUNT(*) FROM siswa WHERE idkelas = $kelas AND aktif = 1";
+		$sql_siswa = "SELECT COUNT(*) FROM siswa WHERE idkelas = '$kelas' AND aktif = 1";
 		$result_siswa = QueryDb($sql_siswa);
 		$row_siswa = mysql_fetch_row($result_siswa);
 		$isi = $row_siswa[0];

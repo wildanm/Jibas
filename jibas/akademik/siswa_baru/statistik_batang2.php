@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -118,7 +118,7 @@ for ($i=1;$i<=$jum;$i++) {
 		$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.calonsiswa s, jbsakad.prosespenerimaansiswa a WHERE a.departemen='$departemen' AND a.replid=s.idproses AND s.aktif = $filter";
 	} 
 	if ($departemen<>"-1" && $idproses>0) {	
-		$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.calonsiswa s, jbsakad.prosespenerimaansiswa a WHERE s.idproses=$idproses AND a.replid=s.idproses AND a.departemen='$departemen' AND s.aktif = $filter ";
+		$query1 = "SELECT COUNT(*) As Jum$field FROM jbsakad.calonsiswa s, jbsakad.prosespenerimaansiswa a WHERE s.idproses='$idproses' AND a.replid=s.idproses AND a.departemen='$departemen' AND s.aktif = $filter ";
 	}
 	
 	$data[$i] = 0;	
@@ -155,13 +155,13 @@ if ($departemen=="-1") {
 	if ($idproses < 0){
 		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa";
 	} else {
-		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa WHERE replid = $idproses";
+		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa WHERE replid = '$idproses'";
 	}
 } else {		
 	if ($idproses < 0){
 		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa WHERE departemen='$departemen'";
 	} else {
-		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa WHERE replid = $idproses AND departemen='$departemen' ";
+		$query2 = "SELECT proses FROM jbsakad.prosespenerimaansiswa WHERE replid = '$idproses' AND departemen='$departemen' ";
 	}
 }
 

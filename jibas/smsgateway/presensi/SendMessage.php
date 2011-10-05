@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ $Pres		= $_REQUEST['Pres'];
 $Date1		= $_REQUEST['Date1'];
 $Date2		= $_REQUEST['Date2'];
 //echo $Date1."_".$Date2;
-$Sender		= $_REQUEST['Sender'];
+$Sender		= CQ($_REQUEST['Sender']);
 $KeSiswa	= $_REQUEST['KeSiswa'];
 if ($KeSiswa=="")
 	$KeSiswa = 0;
@@ -143,7 +143,7 @@ if ($op=='SavePresensi'){
 			$newformat = str_replace('[HADIR]',$sumHadir,$newformat);
 			$newformat = str_replace('[ABSEN]',$sumAbsen,$newformat);
 			$newformat = str_replace('[PENGIRIM]',$Sender,$newformat);
-			$TextMsg = $newformat;
+			$TextMsg = CQ($newformat);
 			
 			//Finding Phone Number
 			$query	= "SELECT nis,hpsiswa,namaayah,hportu FROM $db_name_akad.siswa WHERE nis='$row[nis]'";
@@ -260,7 +260,7 @@ if ($op=='SavePresensi'){
 			$data	= @mysql_fetch_row($result);
 			
 			$newformat = str_replace('[SISWA]','pelajaran '.$data[4],$newformat);
-			$TextMsg = $newformat;
+			$TextMsg = CQ($newformat);
 			
 			$hpsiswa	= $data[1];
 			/*

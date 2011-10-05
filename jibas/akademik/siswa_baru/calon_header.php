@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -199,14 +199,14 @@ function panggil(elem){
     	<td align="left" valign="top" ><strong>Kelompok</strong></td>
         <td>
         	<select name="kelompok" id="kelompok" onchange="change_kelompok(0)" style="width:280px" onKeyPress="return focusNext('tabel', event)" onfocus="panggil('kelompok')">
-<?			$sql = "SELECT replid,kelompok,kapasitas FROM kelompokcalonsiswa WHERE idproses = $proses ORDER BY kelompok";
+<?			$sql = "SELECT replid,kelompok,kapasitas FROM kelompokcalonsiswa WHERE idproses = '$proses' ORDER BY kelompok";
 			$result = QueryDb($sql);	
 			while ($row = @mysql_fetch_array($result)) 
 			{
 				if ($kelompok == "") 
 					$kelompok = $row['replid'];
 				
-				$sql1 = "SELECT COUNT(replid) FROM calonsiswa WHERE idkelompok = $row[replid] AND aktif = 1";
+				$sql1 = "SELECT COUNT(replid) FROM calonsiswa WHERE idkelompok = '$row[replid]' AND aktif = 1";
 				$result1 = QueryDb($sql1);				
 				$row1 = mysql_fetch_row($result1);	?>
 	    		<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelompok)?> ><?=$row['kelompok'].', kapasitas: '.$row['kapasitas'] .', terisi: '.$row1[0]?></option>

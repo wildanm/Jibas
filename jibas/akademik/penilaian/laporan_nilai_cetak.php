@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -52,6 +52,12 @@ if (isset($_REQUEST['prespel']))
 	$prespel = $_REQUEST['prespel'];
 if (isset($_REQUEST['harian']))
 	$harian = $_REQUEST['harian'];	
+
+$sql_ta = "SELECT * FROM jbsakad.tahunajaran WHERE replid='$tahunajaran'";
+$result_ta = QueryDb($sql_ta);
+$row_ta = @mysql_fetch_array($result_ta);
+$tglawal = $row_ta['tglmulai'];
+$tglakhir = $row_ta['tglakhir'];
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
@@ -64,6 +70,11 @@ if (isset($_REQUEST['harian']))
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <style type="text/css">
 <!--
+.style1{
+	font-size: 12px;
+	font-weight: bold;
+	color: #FFFFFF
+}
 .style6 {
 	font-size: 12px;
 	font-weight: bold;
@@ -311,40 +322,27 @@ if (isset($_REQUEST['harian']))
 			"AND '$tglakhir') ".
 			"OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) ".
 			"ORDER BY p.tanggal1"; ;
-	  echo $sql;
 	  ?>
 	<!-- Content Presensi disini -->
-	<table width="100%" border="1" class="tab" id="table">
+	<table width="100%" border="1" class="tab" id="table"  bordercolor="#000000">
   <tr>
-    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style1 style14"><strong>Hadir</strong></div></td>
+    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style1">Hadir</div></td>
     <td height="25" colspan="2" class="headerlong"><div align="center">Sakit</div></td>
-    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style1 style14"><strong>Ijin</strong></div></td>
+    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style1">Ijin</div></td>
     <td height="25" colspan="2" class="headerlong"><div align="center">Alpa</div></td>
-    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style14 style1"><strong>Cuti</strong></div></td>
+    <td height="25" colspan="2" background="../style/formbg2agreen.gif"><div align="center" class="style1">Cuti</div></td>
     </tr>
   <tr>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1 style14">
-      <div align="center"><strong>Jumlah</strong></div>
-    </div></td>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style14 style1">
-      <div align="center"><strong>%</strong></div>
-    </div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">Jumlah</div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">%</div></td>
     <td width="6" class="headerlong"><div align="center">Jumlah</div></td>
     <td width="6" class="headerlong"><div align="center">%</div></td>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1 style14">
-      <div align="center"><strong>Jumlah</strong></div>
-    </div></td>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1 style14">
-      <div align="center"><strong>%</strong></div>
-    </div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">Jumlah</div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">%</div></td>
     <td width="6" class="headerlong"><div align="center">Jumlah</div></td>
     <td width="6" class="headerlong"><div align="center">%</div></td>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style14 style1">
-      <div align="center"><strong>Jumlah</strong></div>
-    </div></td>
-    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style14 style1">
-      <div align="center"><strong>%</strong></div>
-    </div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">Jumlah</div></td>
+    <td width="6" background="../style/formbg2agreen.gif"><div align="center" class="style1">%</div></td>
   </tr>
   <!-- Ambil pelajaran per departemen-->
 	<?
@@ -376,27 +374,32 @@ if (isset($_REQUEST['harian']))
 	    <?=$hadir?>
 	      </div></td>
     <td height="25" bgcolor="#FFFFFF"><div align="center">
-      <?=round($p_hadir,2)?>%</div></td>
+      <?=round($p_hadir,2)?>
+      &nbsp;%</div></td>
     <td height="25" bgcolor="#FFFFCC"><div align="center">
       <?=$sakit?>
     </div></td>
     <td height="25" bgcolor="#FFFFCC"><div align="center">
-      <?=round($p_sakit,2)?>%</div></td>
+      <?=round($p_sakit,2)?>
+      &nbsp;%</div></td>
     <td height="25" bgcolor="#FFFFFF"><div align="center">
       <?=$ijin?>
     </div></td>
     <td height="25" bgcolor="#FFFFFF"><div align="center">
-      <?=round($p_ijin,2)?>%</div></td>
+      <?=round($p_ijin,2)?>
+      &nbsp;%</div></td>
     <td height="25" bgcolor="#FFFFCC"><div align="center">
       <?=$alpa?>
     </div></td>
     <td height="25" bgcolor="#FFFFCC"><div align="center">
-      <?=round($p_alpa,2)?>%</div></td>
+      <?=round($p_alpa,2)?>
+      &nbsp;%</div></td>
       <td height="25" bgcolor="#FFFFFF"><div align="center">
       <?=$cuti?>
     </div></td>
     <td height="25" bgcolor="#FFFFFF"><div align="center">
-      <?=round($p_cuti,2)?>%</div></td>
+      <?=round($p_cuti,2)?>
+      &nbsp;%</div></td>
 	 </tr>
 </table>
 <script language='JavaScript'>

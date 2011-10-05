@@ -60,11 +60,11 @@ function AcceptPustaka(kodepustaka){//(replid,kodepustaka,judul)
 	document.location.href="../pjm/pinjam.php?op=addnew&state="+status+"&noanggota="+noanggota+"&nama="+nama+"&kodepustaka="+kodepustaka;
 }
 function AddToChart(){
+	var jenisanggota = document.getElementById('statuspeminjam').value;
 	var borrowed = document.getElementById('borrowed').value;
 	var maxqueue = document.getElementById('max_queue').value;
 	var kodepustaka = document.getElementById('kodepustaka').value;
-	if (borrowed>=maxqueue)
-	{
+	if (borrowed>=maxqueue){
 			alert ('Tidak dapat menyimpan data\nkarena Anggota sedang meminjam '+borrowed+' pustaka dan belum mengembalikannya');
 	} else {
 		if (kodepustaka=="")
@@ -78,7 +78,7 @@ function AddToChart(){
 			var tglpinjam = document.getElementById('tglpjm').value;
 			var tglkembali = document.getElementById('tglkem').value;
 			var keterangan = document.getElementById('keterangan').value;
-			document.location.href="../pjm/pinjam.php?op=addtochart&state="+status+"&noanggota="+noanggota+"&nama="+nama+"&kodepustaka="+kodepustaka+"&tglpinjam="+tglpinjam+"&tglkembali="+tglkembali+"&keterangan="+keterangan;
+			document.location.href="../pjm/pinjam.php?op=addtochart&state="+status+"&jenisanggota="+jenisanggota+"&noanggota="+noanggota+"&nama="+nama+"&kodepustaka="+kodepustaka+"&tglpinjam="+tglpinjam+"&tglkembali="+tglkembali+"&keterangan="+keterangan;
 		}
 	}
 }

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -116,7 +116,7 @@ $lastdate = $row[0];
                     SELECT j.replid FROM jurnal j, penerimaanjtt p, besarjtt b, datapenerimaan dp 
                     WHERE j.replid = p.idjurnal AND p.idbesarjtt = b.replid AND b.idpenerimaan = dp.replid 
                     AND dp.rekpendapatan = '$koderek' 
-                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku)";
+                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku')";
             
         $result2 = QueryDb($sql);
         $row2 = mysql_fetch_row($result2);
@@ -144,7 +144,7 @@ $lastdate = $row[0];
                 jd.idjurnal IN (
                     SELECT j.replid FROM jurnal j, penerimaaniuran p, datapenerimaan dp 
                     WHERE j.replid = p.idjurnal AND p.idpenerimaan = dp.replid AND dp.rekpendapatan = '$koderek' 
-                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku)";
+                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku')";
 
 		
         $result2 = QueryDb($sql);
@@ -174,7 +174,7 @@ $lastdate = $row[0];
                     SELECT j.replid FROM jurnal j, penerimaanjttcalon p, besarjttcalon b, datapenerimaan dp 
                     WHERE j.replid = p.idjurnal AND p.idbesarjttcalon = b.replid AND b.idpenerimaan = dp.replid 
                     AND dp.rekpendapatan = '$koderek' 
-                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku)";
+                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku')";
             
         $result2 = QueryDb($sql);
         $row2 = mysql_fetch_row($result2);
@@ -202,7 +202,7 @@ $lastdate = $row[0];
                 jd.idjurnal IN (
                     SELECT j.replid FROM jurnal j, penerimaaniurancalon p, datapenerimaan dp 
                     WHERE j.replid = p.idjurnal AND p.idpenerimaan = dp.replid AND dp.rekpendapatan = '$koderek' 
-                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku)";
+                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku')";
 
 		
         $result2 = QueryDb($sql);
@@ -231,7 +231,7 @@ $lastdate = $row[0];
                 jd.idjurnal IN (
                     SELECT j.replid FROM jurnal j, penerimaanlain p, datapenerimaan dp 
                     WHERE j.replid = p.idjurnal AND p.idpenerimaan = dp.replid AND dp.rekpendapatan = '$koderek' 
-                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku)";
+                    AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku')";
                     
         $result2 = QueryDb($sql);
         $row2 = mysql_fetch_row($result2);
@@ -255,7 +255,7 @@ $lastdate = $row[0];
             jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
                 WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
-                AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'BIAYA')";
+                AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'BIAYA')";
     //echo  $sql;		
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
@@ -275,7 +275,7 @@ $lastdate = $row[0];
             AND jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
                 WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
-                AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'UTANG' AND jd.debet > 0)";
+                AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'UTANG' AND jd.debet > 0)";
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
     $totalutangturun = (float)$row[0];
@@ -294,7 +294,7 @@ $lastdate = $row[0];
             AND jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
                 WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
-                AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'UTANG' AND jd.kredit > 0)";
+                AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'UTANG' AND jd.kredit > 0)";
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
     $totalutangnaik = (float)$row[0];
@@ -330,7 +330,7 @@ $lastdate = $row[0];
              (SELECT jd.idjurnal, ra.nama FROM jurnaldetail jd, jurnal j, rekakun ra 
               WHERE j.sumber = 'jurnalumum' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode
               AND j.tanggal BETWEEN '$firstdate' AND '$tanggal2' 
-              AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'MODAL' AND jd.kredit > 0) AS x
+              AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'MODAL' AND jd.kredit > 0) AS x
             WHERE x.idjurnal = jd.idjurnal AND jd.koderek = ra.kode AND jd.debet > 0 AND ra.kategori = 'HARTA' 
             GROUP BY x.nama";
     $result = QueryDb($sql);
@@ -375,7 +375,7 @@ $lastdate = $row[0];
             AND jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
                 WHERE j.sumber = 'jurnalumum' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal 
-                BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = $idtahunbuku
+                BETWEEN '$firstdate' AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku'
                 AND ra.kategori = 'PIUTANG' AND jd.debet > 0)
             GROUP BY ra.nama";
     //echo  $sql;
@@ -401,7 +401,7 @@ $lastdate = $row[0];
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
                 WHERE j.sumber = 'jurnalumum' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal 
                 BETWEEN '$firstdate' AND '$tanggal2' 
-                AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'PIUTANG' AND jd.kredit > 0)
+                AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'PIUTANG' AND jd.kredit > 0)
             GROUP BY ra.nama";
     //echo  $sql;
     $result = QueryDb($sql);
@@ -441,7 +441,7 @@ $lastdate = $row[0];
              (SELECT jd.idjurnal, ra.nama FROM jurnaldetail jd, jurnal j, rekakun ra 
               WHERE j.sumber = 'jurnalumum' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal 
               BETWEEN '$firstdate' AND '$tanggal2' 
-              AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'INVENTARIS') AS x
+              AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'INVENTARIS') AS x
             WHERE x.idjurnal = jd.idjurnal AND jd.koderek = ra.kode AND ra.kategori = 'HARTA' GROUP BY x.nama";
     //echo  $sql;		
     $result = QueryDb($sql);
@@ -480,7 +480,7 @@ $lastdate = $row[0];
     <tr height="30">
         <td colspan="3"><font size="2"><strong><em>Saldo Kas <?=LongDateFormat($firstdate) ?></em></strong></font></td>
         <td width="120" align="right"><font size="2"><strong>
-    <?	$sql = "SELECT SUM(jd.debet - jd.kredit) FROM jurnaldetail jd, jurnal j, rekakun ra WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$tanggal1' AND '$lastdate' AND j.idtahunbuku = $idtahunbuku AND ra.kategori = 'HARTA'";
+    <?	$sql = "SELECT SUM(jd.debet - jd.kredit) FROM jurnaldetail jd, jurnal j, rekakun ra WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$tanggal1' AND '$lastdate' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'HARTA'";
         $result = QueryDb($sql);
         $row = mysql_fetch_row($result);
         $saldoawal = (float)$row[0]; 

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,19 +29,19 @@ require_once('../inc/rupiah.php');
 $replid=$_REQUEST[replid];
 $sender=$_REQUEST[sender];
 OpenDb();
-$sql = "SELECT * FROM pustaka WHERE replid=$replid";
+$sql = "SELECT * FROM pustaka WHERE replid='$replid'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
-$judul = $row[judul];
+$judul = stripslashes($row[judul]);
 $harga = $row[harga];
 $katalog = $row[katalog];
 $penerbit = $row[penerbit];
 $penulis = $row[penulis];
 $tahun = $row[tahun];
 $format = $row[format];
-$keyword = $row[keyword];
-$keteranganfisik = $row[keteranganfisik];
-$abstraksi = $row[abstraksi];
+$keyword = stripslashes($row[keyword]);
+$keteranganfisik = stripslashes($row[keteranganfisik]);
+$abstraksi = stripslashes($row[abstraksi]);
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -100,7 +100,7 @@ $abstraksi = $row[abstraksi];
     <td align="right" valign="top"><strong class="style1">Katalog</strong></td>
     <td>
 	<? 
-		$sql = "SELECT kode,nama FROM katalog WHERE replid=$katalog";
+		$sql = "SELECT kode,nama FROM katalog WHERE replid='$katalog'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
 		echo $row[0]." - ".$row[1];
@@ -110,7 +110,7 @@ $abstraksi = $row[abstraksi];
     <td align="right" valign="top"><strong class="style1">Penerbit</strong></td>
     <td>
 	<? 
-		$sql = "SELECT kode,nama FROM penerbit WHERE replid=$penerbit";
+		$sql = "SELECT kode,nama FROM penerbit WHERE replid='$penerbit'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
 		echo $row[0]." - ".$row[1];
@@ -120,7 +120,7 @@ $abstraksi = $row[abstraksi];
     <td align="right" valign="top"><strong class="style1">Penulis</strong></td>
     <td>
 	<? 
-		$sql = "SELECT kode,nama FROM penulis WHERE replid=$penulis";
+		$sql = "SELECT kode,nama FROM penulis WHERE replid='$penulis'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
 		echo $row[0]." - ".$row[1];
@@ -134,7 +134,7 @@ $abstraksi = $row[abstraksi];
     <td align="right" valign="top"><strong class="style1">Format</strong></td>
     <td>
 	<? 
-		$sql = "SELECT kode,nama FROM format WHERE replid=$format";
+		$sql = "SELECT kode,nama FROM format WHERE replid='$format'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
 		echo $row[0]." - ".$row[1];
@@ -156,7 +156,7 @@ $abstraksi = $row[abstraksi];
     <td align="right" valign="top"><strong class="style1">Alokasi&nbsp;Jumlah</strong></td>
 <td>
         <?
-		$sql = "SELECT p.nama,COUNT(d.replid) FROM daftarpustaka d, perpustakaan p WHERE d.pustaka=$replid AND d.perpustakaan=p.replid GROUP BY d.perpustakaan ORDER BY p.nama";
+		$sql = "SELECT p.nama,COUNT(d.replid) FROM daftarpustaka d, perpustakaan p WHERE d.pustaka='$replid' AND d.perpustakaan=p.replid GROUP BY d.perpustakaan ORDER BY p.nama";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
 		if ($num>0){

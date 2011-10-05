@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -65,7 +65,7 @@ if (isset($_REQUEST['simpan'])) {
 		$sql_dep = "";	
 	}	
 		
-	$sql = "SELECT * FROM jbsuser.hakakses WHERE login = '$_REQUEST[nip]' AND tingkat = $tingkat AND modul = 'KEUANGAN' $sql_dep AND replid <> $replid";
+	$sql = "SELECT * FROM jbsuser.hakakses WHERE login = '$_REQUEST[nip]' AND tingkat = '$tingkat' AND modul = 'KEUANGAN' $sql_dep AND replid <> '$replid'";
 	
 	$result=QueryDb($sql);
 	
@@ -74,9 +74,9 @@ if (isset($_REQUEST['simpan'])) {
 		$MYSQL_ERROR_MSG = "Pengguna ".$_REQUEST['nip']." sudah mempunyai account untuk tingkat dan departemen ini!";
 	} else {
 		if ($tingkat == 1) {
-			$sql_hakakses="UPDATE jbsuser.hakakses SET tingkat=1, keterangan ='$_REQUEST[keterangan]' WHERE replid = $replid";
+			$sql_hakakses="UPDATE jbsuser.hakakses SET tingkat=1, keterangan ='".CQ($_REQUEST['keterangan'])."' WHERE replid = '$replid'";
 		} else {
-			$sql_hakakses="UPDATE jbsuser.hakakses SET departemen='$departemen', tingkat=2, keterangan ='$_REQUEST[keterangan]' WHERE replid = $replid";
+			$sql_hakakses="UPDATE jbsuser.hakakses SET departemen='$departemen', tingkat=2, keterangan ='".CQ($_REQUEST['keterangan'])."' WHERE replid = '$replid'";
 		}
 		
 		$result = QueryDb($sql_hakakses);
@@ -314,7 +314,7 @@ function panggil(elem){
     </tr>
     <tr>
         <td valign="top">Keterangan</td>
-        <td><textarea name="keterangan" id="keterangan" rows="3" cols="40" onfocus="panggil('keterangan')" onKeyPress="return focusNext('simpan', event)"><?=$keterangan?></textarea></td>
+        <td><textarea name="keterangan" id="keterangan" rows="3" cols="40" onFocus="panggil('keterangan')" onKeyPress="return focusNext('simpan', event)"><?=$keterangan?></textarea></td>
     </tr>
     <tr>
         <td colspan="2" align="center">

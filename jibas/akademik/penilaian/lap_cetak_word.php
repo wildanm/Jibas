@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -960,7 +960,6 @@ mso-break-type:section-break'>
 			"AND '$tglakhir') ".
 			"OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) ".
 			"ORDER BY p.tanggal1"; ;
-	  echo $sql;
 	  ?>
 	<!-- Content Presensi disini -->
 	<table width="100%" border="1" class="tab" id="table" cellpadding="0" cellspacing="0" bordercolor="#b8b8b8">

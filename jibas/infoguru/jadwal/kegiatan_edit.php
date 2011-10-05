@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,7 +34,7 @@ if (isset($_REQUEST['kalender']))
 	$kalender = $_REQUEST['kalender'];
 
 OpenDb();
-$sql = "SELECT k.kalender, t.tglmulai, t.tglakhir, k.departemen, a.kegiatan, a.idkalender, a.tanggalawal, a.tanggalakhir, a.keterangan FROM kalenderakademik k, aktivitaskalender a, tahunajaran t WHERE a.replid = $replid AND a.idkalender = k.replid AND k.idtahunajaran = t.replid";
+$sql = "SELECT k.kalender, t.tglmulai, t.tglakhir, k.departemen, a.kegiatan, a.idkalender, a.tanggalawal, a.tanggalakhir, a.keterangan FROM kalenderakademik k, aktivitaskalender a, tahunajaran t WHERE a.replid = '$replid' AND a.idkalender = k.replid AND k.idtahunajaran = t.replid";
 
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
@@ -60,7 +60,7 @@ if (isset($_REQUEST['tglakhir']))
 		
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();
-	$sql = "SELECT * FROM aktivitaskalender WHERE kegiatan = '$kegiatan' AND idkalender = '$kalender' AND replid <> $replid";
+	$sql = "SELECT * FROM aktivitaskalender WHERE kegiatan = '$kegiatan' AND idkalender = '$kalender' AND replid <> '$replid'";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {
@@ -75,7 +75,7 @@ if (isset($_REQUEST['Simpan'])) {
 		$tanggalawal=TglDb($tglmulai);
 		$tanggalakhir=TglDb($tglakhir);
 				
-		$sql_simpan="UPDATE jbsakad.aktivitaskalender SET idkalender='$kalender', tanggalawal='$tanggalawal', tanggalakhir='$tanggalakhir', kegiatan='$kegiatan', keterangan='$keterangan' WHERE replid = $replid";
+		$sql_simpan="UPDATE jbsakad.aktivitaskalender SET idkalender='$kalender', tanggalawal='$tanggalawal', tanggalakhir='$tanggalakhir', kegiatan='$kegiatan', keterangan='$keterangan' WHERE replid = '$replid'";
 		//echo 'simpan '.$sql_simpan;
 		$result_simpan=QueryDb($sql_simpan);
 		

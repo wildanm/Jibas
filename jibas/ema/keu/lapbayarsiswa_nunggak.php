@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -318,7 +318,7 @@ function cetak(what) {
             
               <select name="idkelas" class="cmbfrm" id="idkelas" style="width:103px" onchange="change_kelas()" <?=$dis?>>
                 <option value="-1">(Semua)</option>
-                <?  $sql = "SELECT DISTINCT k.replid, k.kelas FROM tahunajaran t, kelas k WHERE t.replid = k.idtahunajaran AND k.aktif = 1 AND k.idtingkat = $idtingkat AND t.aktif = 1 ORDER BY k.kelas";
+                <?  $sql = "SELECT DISTINCT k.replid, k.kelas FROM tahunajaran t, kelas k WHERE t.replid = k.idtahunajaran AND k.aktif = 1 AND k.idtingkat = '$idtingkat' AND t.aktif = 1 ORDER BY k.kelas";
             $result = QueryDb($sql);
             while($row = mysql_fetch_row($result)) {
         ?>       
@@ -385,8 +385,8 @@ if (isset($_REQUEST[showpembayaran]))
 		{
 			$sql = "SELECT idbesarjtt, datediff('$tgl', max(tanggal)) as x 
 					  FROM jbsfina.penerimaanjtt p, jbsfina.besarjtt b, jbsakad.siswa s 
-						WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2='$idtahunbuku' AND b.idpenerimaan = $idpenerimaan 
-						  AND s.nis = b.nis AND s.idangkatan = $idangkatan 
+						WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2='$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan' 
+						  AND s.nis = b.nis AND s.idangkatan = '$idangkatan' 
 					GROUP BY idbesarjtt HAVING x >= $telat";
 		} 
 		else 
@@ -395,8 +395,8 @@ if (isset($_REQUEST[showpembayaran]))
 			{
 				$sql = "SELECT idbesarjtt, datediff('$tgl', max(tanggal)) as x 
 						  FROM jbsfina.penerimaanjtt p , jbsfina.besarjtt b, jbsakad.siswa s, jbsakad.kelas k 
-							WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2 = '$idtahunbuku' AND b.idpenerimaan = $idpenerimaan
-							  AND s.nis = b.nis AND s.idangkatan = $idangkatan AND s.idkelas = k.replid AND k.idtingkat = $idtingkat 
+							WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2 = '$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan'
+							  AND s.nis = b.nis AND s.idangkatan = '$idangkatan' AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' 
 					   GROUP BY idbesarjtt 
 						  HAVING x >= $telat";
 			} 
@@ -404,8 +404,8 @@ if (isset($_REQUEST[showpembayaran]))
 			{
 				$sql = "SELECT idbesarjtt, datediff('$tgl', max(tanggal)) as x 
 						  FROM jbsfina.penerimaanjtt p , jbsfina.besarjtt b, jbsakad.siswa s 
-							WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2='$idtahunbuku' AND b.idpenerimaan = $idpenerimaan
-							  AND s.nis = b.nis AND s.idkelas = $idkelas AND s.idangkatan = $idangkatan  
+							WHERE p.idbesarjtt = b.replid AND b.lunas = 0 AND b.info2='$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan'
+							  AND s.nis = b.nis AND s.idkelas = '$idkelas' AND s.idangkatan = '$idangkatan'  
 					   GROUP BY idbesarjtt 
 						  HAVING x >= $telat";
 			}
@@ -494,7 +494,7 @@ if (isset($_REQUEST[showpembayaran]))
 			$besarjttA = 0;
 			$idbesarjttA = $rowA['id'];
 			$besarjttA = $rowA['besar'];
-			$sqlB = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjtt WHERE idbesarjtt = $idbesarjttA ORDER BY tanggal";
+			$sqlB = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjtt WHERE idbesarjtt = '$idbesarjttA' ORDER BY tanggal";
 			$resultB = QueryDb($sqlB);
 			$totalbayarB = 0;
 			while ($rowB = @mysql_fetch_row($resultB)) {
@@ -528,7 +528,7 @@ if (isset($_REQUEST[showpembayaran]))
 			$nblank = $max_n_cicilan - $nbayar;
 			$totalbayar = 0;
 			if ($nbayar > 0) {
-				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjtt WHERE idbesarjtt = $idbesarjtt ORDER BY tanggal";
+				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM jbsfina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt' ORDER BY tanggal";
 				$result2 = QueryDb($sql);
 				
 				while ($row2 = mysql_fetch_row($result2)) {
@@ -551,7 +551,7 @@ if (isset($_REQUEST[showpembayaran]))
 				</td>
 			<? }?>
 				<td align="center">
-		<?	$sql = "SELECT datediff('$tgl', max(tanggal)) FROM jbsfina.penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+		<?	$sql = "SELECT datediff('$tgl', max(tanggal)) FROM jbsfina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 			//echo $sql;
 			$result2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($result2);
@@ -643,12 +643,12 @@ if (isset($_REQUEST[showpembayaran]))
 <?	} else {
 	//DISINI BUAT SKR=====================================================================================================
 		if ($idtingkat == -1) {
-			$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s WHERE p.idpenerimaan = $idpenerimaan AND s.nis = p.nis AND s.idangkatan = $idangkatan GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
+			$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s WHERE p.idpenerimaan = '$idpenerimaan' AND s.nis = p.nis AND s.idangkatan = '$idangkatan' GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
 		} else {
 			if ($idkelas == -1)
-				$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s, kelas k WHERE p.idpenerimaan = $idpenerimaan AND s.nis = p.nis AND s.idangkatan = $idangkatan AND s.idkelas = k.replid AND k.idtingkat = $idtingkat GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
+				$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s, kelas k WHERE p.idpenerimaan = '$idpenerimaan' AND s.nis = p.nis AND s.idangkatan = '$idangkatan' AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
 			else
-				$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s WHERE p.idpenerimaan = $idpenerimaan AND s.nis = p.nis AND s.idangkatan = $idangkatan AND s.idkelas = $idkelas GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
+				$sql = "SELECT p.nis, datediff('$tgl', max(tanggal)) AS x FROM $db_name_fina.penerimaaniuran p, siswa s WHERE p.idpenerimaan = '$idpenerimaan' AND s.nis = p.nis AND s.idangkatan = '$idangkatan' AND s.idkelas = '$idkelas' GROUP BY p.nis HAVING x >= $telat ORDER BY tanggal DESC";
 		}
 		
 		$result = QueryDb($sql);
@@ -734,7 +734,7 @@ if (isset($_REQUEST[showpembayaran]))
 			$totalbayar = 0;
 			
 			if ($nbayar > 0) {
-				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM $db_name_fina.penerimaaniuran WHERE nis = '$nis' AND idpenerimaan = $idpenerimaan ORDER BY tanggal";
+				$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM $db_name_fina.penerimaaniuran WHERE nis = '$nis' AND idpenerimaan = '$idpenerimaan' ORDER BY tanggal";
 				$result2 = QueryDb($sql);
 				while ($row2 = mysql_fetch_row($result2)) {
 					$totalbayar = $totalbayar + $row2[1]; ?>
@@ -756,7 +756,7 @@ if (isset($_REQUEST[showpembayaran]))
 				</td>
 			<? }?>
 				<td align="center">
-		<?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM $db_name_fina.penerimaaniuran WHERE nis = '$nis' AND idpenerimaan = $idpenerimaan";
+		<?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM $db_name_fina.penerimaaniuran WHERE nis = '$nis' AND idpenerimaan = '$idpenerimaan'";
 			echo $sql;
 			$result2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($result2);

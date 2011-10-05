@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -39,9 +39,9 @@ $kelas = $_REQUEST['kelas'];
 $departemen = $_REQUEST['departemen'];
 $proses =$_REQUEST['proses'];
 $kelompok = $_REQUEST['kelompok'];
-$nis = $_REQUEST['nis'];
-$nisn = $_REQUEST['nisn'];
-$keterangan = $_REQUEST['keterangan'];
+$nis = CQ($_REQUEST['nis']);
+$nisn = CQ($_REQUEST['nisn']);
+$keterangan = CQ($_REQUEST['keterangan']);
 $cari = $_REQUEST['cari'];
 $no = $_REQUEST['no'];
 $nama = $_REQUEST['nama'];
@@ -57,7 +57,7 @@ if (isset($_REQUEST['Simpan']))
 	} 
 	else 
 	{
-		$sql = "SELECT * FROM calonsiswa WHERE replid = $replid";
+		$sql = "SELECT * FROM calonsiswa WHERE replid = '$replid'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_array($result);
 		
@@ -125,12 +125,12 @@ if (isset($_REQUEST['Simpan']))
 			$row1 = mysql_fetch_row($result1);
 			$id = $row1[0];
 			
-			$sql2 = "UPDATE calonsiswa SET replidsiswa = $id WHERE replid = $replid";				
+			$sql2 = "UPDATE calonsiswa SET replidsiswa = '$id' WHERE replid = '$replid'";				
 			QueryDbTrans($sql2,$success);
 			
 			if ($row['foto'] <> "") 
 			{
-				$sql3 = "UPDATE siswa SET foto = (SELECT foto FROM calonsiswa where replid = $replid) WHERE replid = $id";
+				$sql3 = "UPDATE siswa SET foto = (SELECT foto FROM calonsiswa where replid = '$replid') WHERE replid = '$id'";
 				QueryDbTrans($sql3, $success);  
 			}
 		}
@@ -139,7 +139,7 @@ if (isset($_REQUEST['Simpan']))
 		if ($success)		
 			QueryDbTrans($sql_dept,$success);
 		
-		$sql_kls = "INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nis',idkelas=$kelas,mulai='$kumplit'";
+		$sql_kls = "INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nis',idkelas='$kelas',mulai='$kumplit'";
 		if ($success)
 			QueryDbTrans($sql_kls,$success);
 		
@@ -213,8 +213,8 @@ function focusNext(elemName, evt) {
 
 <?	$sql = "SELECT k.kelas, t.tahunajaran, a.angkatan, t.departemen 
 			FROM kelas k, tahunajaran t, angkatan a 
-			WHERE k.replid = $kelas AND t.replid = $tahunajaran AND k.idtahunajaran = t.replid 
-			AND a.replid = $angkatan AND a.departemen = '$departemen'";
+			WHERE k.replid = '$kelas' AND t.replid = '$tahunajaran' AND k.idtahunajaran = t.replid 
+			AND a.replid = '$angkatan' AND a.departemen = '$departemen'";
 	$result = QueryDb($sql);
 	$row = @mysql_fetch_row($result);
 	$kls = $row[0];

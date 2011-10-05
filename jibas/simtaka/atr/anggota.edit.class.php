@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -28,7 +28,7 @@ class CAnggotaEdit{
 			$this->save();		
 		} else {
 			$this->replid = $_REQUEST[replid];
-			$sql = "SELECT * FROM anggota WHERE replid=$_REQUEST[replid]";
+			$sql = "SELECT * FROM anggota WHERE replid='$_REQUEST[replid]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->noreg = $row[noregistrasi];
@@ -71,15 +71,15 @@ class CAnggotaEdit{
   		  </tr>
           <tr>
             <td width="77">&nbsp;<strong>Nama</strong></td>
-            <td colspan="2"><input name="nama" type="text" class="inputtxt" id="nama" size="35" value="<?=$this->nama?>"></td>
+            <td colspan="2"><input name="nama" type="text" class="inputtxt" id="nama" size="35" value="<?=stripslashes($this->nama)?>"></td>
           </tr>
           <tr>
             <td width="77">&nbsp;<strong>Alamat</strong></td>
-            <td colspan="2"><textarea name="alamat" cols="45" rows="3" class="areatxt" id="alamat"><?=$this->alamat?></textarea></td>
+            <td colspan="2"><textarea name="alamat" cols="45" rows="3" class="areatxt" id="alamat"><?=stripslashes($this->alamat)?></textarea></td>
           </tr>
           <tr>
             <td width="77">&nbsp;Kodepos</td>
-            <td width="64%"><input name="kodepos" type="text" class="inputtxt" id="kodepos"  value="<?=$this->kodepos?>"/></td>
+            <td width="64%"><input name="kodepos" type="text" class="inputtxt" id="kodepos"  value="<?=stripslashes($this->kodepos)?>"/></td>
             <td width="29%" rowspan="4">
             	<table width="120" border="0" cellspacing="0" cellpadding="0">
                     <tr>
@@ -92,11 +92,11 @@ class CAnggotaEdit{
           </tr>
           <tr>
             <td width="77">&nbsp;Telepon</td>
-            <td><input name="telpon" type="text" class="inputtxt" id="telpon" value="<?=$this->telpon?>" /></td>
+            <td><input name="telpon" type="text" class="inputtxt" id="telpon" value="<?=stripslashes($this->telpon)?>" /></td>
           </tr>
           <tr>
             <td width="77">&nbsp;HP</td>
-            <td><input name="hp" type="text" class="inputtxt" id="hp" value="<?=$this->hp?>" /></td>
+            <td><input name="hp" type="text" class="inputtxt" id="hp" value="<?=stripslashes($this->hp)?>" /></td>
           </tr>
           <tr>
             <td width="77">&nbsp;Foto</td>
@@ -105,20 +105,20 @@ class CAnggotaEdit{
           </tr>
           <tr>
             <td width="77">&nbsp;Email</td>
-            <td colspan="2"><input name="email" type="text" class="inputtxt" id="email" size="40" value="<?=$this->email?>" /></td>
+            <td colspan="2"><input name="email" type="text" class="inputtxt" id="email" size="40" value="<?=stripslashes($this->email)?>" /></td>
           </tr>
           <tr>
             <td width="77">&nbsp;Pekerjaan</td>
-            <td colspan="2"><input name="kerja" type="text" class="inputtxt" id="kerja" size="40" value="<?=$this->pekerjaan?>" /></td>
+            <td colspan="2"><input name="kerja" type="text" class="inputtxt" id="kerja" size="40" value="<?=stripslashes($this->pekerjaan)?>" /></td>
           </tr>
           <tr>
             <td width="77">&nbsp;Institusi</td>
-            <td colspan="2"><input name="institusi" type="text" class="inputtxt" id="institusi" size="50" value="<?=$this->institusi?>" /></td>
+            <td colspan="2"><input name="institusi" type="text" class="inputtxt" id="institusi" size="50" value="<?=stripslashes($this->institusi)?>" /></td>
           </tr>
           
           <tr>
             <td width="77">&nbsp;Keterangan</td>
-            <td colspan="2"><textarea name="keterangan" cols="45" rows="5" class="areatxt" id="keterangan"><?=$this->keterangan?></textarea></td>
+            <td colspan="2"><textarea name="keterangan" cols="45" rows="5" class="areatxt" id="keterangan"><?=stripslashes($this->keterangan)?></textarea></td>
           </tr>
           <tr>
             <td colspan="3" align="center"><input type="submit" class="cmbfrm2" name="simpan" value="Simpan" >&nbsp;<input type="button" class="cmbfrm2" name="batal" value="Batal" onClick="window.close()" ></td>
@@ -150,7 +150,7 @@ class CAnggotaEdit{
 			$fill_foto = ", foto='$foto_binary'"; 
 		}
 		$date = @mysql_fetch_row(QueryDb("SELECT now()"));
-		$sql = "UPDATE anggota SET nama='$nama', alamat='$alamat', kodepos='$kodepos', email='$email', telpon='$telpon', hp='$hp', pekerjaan='$kerja', institusi='$institusi', keterangan='$keterangan', tgldaftar='$date[0]' $fill_foto WHERE replid=$replid";
+		$sql = "UPDATE anggota SET nama='$nama', alamat='$alamat', kodepos='$kodepos', email='$email', telpon='$telpon', hp='$hp', pekerjaan='$kerja', institusi='$institusi', keterangan='$keterangan', tgldaftar='$date[0]' $fill_foto WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		if ($result)
 			$this->success();

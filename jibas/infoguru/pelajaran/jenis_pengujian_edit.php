@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,14 +33,14 @@ $replid = $_REQUEST['replid'];
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();
-	$sql = "SELECT * FROM jenisujian WHERE jenisujian = '$_REQUEST[jenisujianbaru]' AND replid<>$replid AND idpelajaran = $_REQUEST[idpelajaran] AND info1='$_REQUEST[singkatan]'";
+	$sql = "SELECT * FROM jenisujian WHERE jenisujian = '$_REQUEST[jenisujianbaru]' AND replid<>'$replid' AND idpelajaran = '$_REQUEST[idpelajaran]' AND info1='$_REQUEST[singkatan]'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {
 		$jenisujian=$_REQUEST['jenisujianbaru'];
 		CloseDb();
 		$ERROR_MSG = "Jenis Ujian $jenisujian sudah digunakan!";
 	} else {
-		$sql = "UPDATE jenisujian SET replid=$_REQUEST[replid],jenisujian='$_REQUEST[jenisujianbaru]',keterangan='$_REQUEST[keterangan]',info1='$_REQUEST[singkatan]' WHERE jenisujian='$_REQUEST[jenisujian]' AND replid=$_REQUEST[replid]";
+		$sql = "UPDATE jenisujian SET replid='$_REQUEST[replid]',jenisujian='$_REQUEST[jenisujianbaru]',keterangan='$_REQUEST[keterangan]',info1='$_REQUEST[singkatan]' WHERE jenisujian='$_REQUEST[jenisujian]' AND replid='$_REQUEST[replid]'";
 		$result = QueryDb($sql);
 		CloseDb();
 	

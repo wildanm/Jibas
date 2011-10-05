@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -63,10 +63,10 @@ $op = $_REQUEST['op'];
 
 if ($op == "xm8r389xemx23xb2378e23") {
 	OpenDb();
-	$sql = "DELETE FROM ppsiswa WHERE idpp = $_REQUEST[replid]";
+	$sql = "DELETE FROM ppsiswa WHERE idpp = '$_REQUEST[replid]'";
 	$result = QueryDb($sql);
 	if($result){
-		$sql = "DELETE FROM presensipelajaran WHERE replid = $_REQUEST[replid]";
+		$sql = "DELETE FROM presensipelajaran WHERE replid = '$_REQUEST[replid]'";
 		QueryDb($sql);
 	}
 	CloseDb();	
@@ -142,7 +142,7 @@ function change_urut(urut,urutan) {
 	<td>
     <? 		
 	OpenDb();
-	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, k.kelas, l.nama, s.status, p.keterlambatan, p.jumlahjam, p.materi, p.keterangan, p.replid FROM presensipelajaran p, kelas k, pelajaran l, statusguru s WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND k.idtahunajaran = $tahunajaran ORDER BY $urut $urutan";
+	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, k.kelas, l.nama, s.status, p.keterlambatan, p.jumlahjam, p.materi, p.keterangan, p.replid FROM presensipelajaran p, kelas k, pelajaran l, statusguru s WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND k.idtahunajaran = '$tahunajaran' ORDER BY $urut $urutan";
 	
 	$result = QueryDb($sql);			 
 	$jum_hadir = mysql_num_rows($result);
@@ -217,7 +217,7 @@ function change_urut(urut,urutan) {
 	while ($row = @mysql_fetch_array($result)) {
 		$replid = $row['replid'];
 		
-		$sql1 = "SELECT COUNT(*), SUM(p.jumlahjam) FROM presensipelajaran p, pelajaran l, kelas k WHERE p.gurupelajaran = '$nip' AND tanggal BETWEEN '$tglawal' AND '$tglakhir' AND jenisguru = $replid AND p.idpelajaran = l.replid AND p.idkelas = k.replid AND k.idtahunajaran = $tahunajaran ";
+		$sql1 = "SELECT COUNT(*), SUM(p.jumlahjam) FROM presensipelajaran p, pelajaran l, kelas k WHERE p.gurupelajaran = '$nip' AND tanggal BETWEEN '$tglawal' AND '$tglakhir' AND jenisguru = '$replid' AND p.idpelajaran = l.replid AND p.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' ";
 		$result1 = QueryDb($sql1);	
 		$row1 = @mysql_fetch_row($result1);
 ?>

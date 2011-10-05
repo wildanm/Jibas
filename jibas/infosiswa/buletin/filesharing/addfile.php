@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ $row = mysql_fetch_row($result);
 $rootname = $row[0];
 CloseDb();
 OpenDb();
-$sql="SELECT * FROM jbsvcr.dirshare WHERE replid=$iddir";
+$sql="SELECT * FROM jbsvcr.dirshare WHERE replid='$iddir'";
 $result=QueryDb($sql);
 $row=@mysql_fetch_array($result);
 $dirfullpath=$row[dirfullpath];
@@ -68,7 +68,7 @@ if (isset($_REQUEST['Simpan'])) {
 	$destinationdir = str_replace("/", "\\", $dest);
 	move_uploaded_file($uploadedfile, $destinationdir.$foto['name']);
 	OpenDb();
-	$sql = "INSERT INTO jbsvcr.fileshare SET iddir=$iddir,filename='".$foto['name']."', filetime='".$thn."-".$bln."-".$tgl." ".$jam."',filesize=".$uploadedsizefile;
+	$sql = "INSERT INTO jbsvcr.fileshare SET iddir='$iddir',filename='".$foto['name']."', filetime='".$thn."-".$bln."-".$tgl." ".$jam."',filesize=".$uploadedsizefile;
 	$result = QueryDb($sql);
 	if ($result) { ?>
 		<script language="javascript">				

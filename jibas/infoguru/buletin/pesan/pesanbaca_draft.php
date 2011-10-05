@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,18 +29,18 @@ $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
 OpenDb();
-$sql2="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, p.nama as nama FROM jbsvcr.draft pg, jbssdm.pegawai p WHERE pg.idpemilik='".SI_USER_ID()."' AND idpengirim=p.nip AND pg.replid=$replid";
+$sql2="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, p.nama as nama FROM jbsvcr.draft pg, jbssdm.pegawai p WHERE pg.idpemilik='".SI_USER_ID()."' AND idpengirim=p.nip AND pg.replid='$replid'";
 //echo $sql2;
 $result2=QueryDb($sql2);
 if (@mysql_num_rows($result2)>0){
 $row2=@mysql_fetch_array($result2);
 } else {
-$sql4="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, p.nama as nama, pg.replid as replid FROM jbsvcr.draft pg, jbsakad.siswa p WHERE pg.idpemilik='".SI_USER_ID()."' AND idpengirim=p.nis AND pg.replid=$replid";
+$sql4="SELECT DATE_FORMAT(pg.tanggalpesan, '%Y-%m-%j') as tanggal, pg.judul as judul, pg.pesan as pesan, p.nama as nama, pg.replid as replid FROM jbsvcr.draft pg, jbsakad.siswa p WHERE pg.idpemilik='".SI_USER_ID()."' AND idpengirim=p.nis AND pg.replid='$replid'";
 //echo $sql4;
 $result4=QueryDb($sql4);
 $row2=@mysql_fetch_array($result4);
 }
-$sql3="SELECT * FROM jbsvcr.lampirandraft WHERE idpesan=$replid";
+$sql3="SELECT * FROM jbsvcr.lampirandraft WHERE idpesan='$replid'";
 $result3=QueryDb($sql3);
 CloseDb();	
 ?>

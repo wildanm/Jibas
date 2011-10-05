@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -47,7 +47,7 @@ if (isset($_REQUEST['simpan'])){
 	$catatan = $_REQUEST['catatan'];
 	$idkategori = $_REQUEST['kategori'];
 	OpenDb();
-	$sql="UPDATE jbsvcr.catatansiswa SET idkategori=$idkategori,tanggal='$tanggal',judul='$judul',catatan='$catatan' WHERE replid=$replid";
+	$sql="UPDATE jbsvcr.catatansiswa SET idkategori='$idkategori',tanggal='$tanggal',judul='$judul',catatan='$catatan' WHERE replid='$replid'";
 	$result = QueryDb($sql);
 	if ($result){
 	?>
@@ -60,7 +60,7 @@ if (isset($_REQUEST['simpan'])){
 	CloseDb();
 }
 OpenDb();
-$res=QueryDb("SELECT * FROM jbsvcr.catatansiswa WHERE replid=$replid");
+$res=QueryDb("SELECT * FROM jbsvcr.catatansiswa WHERE replid='$replid'");
 $rw=@mysql_fetch_array($res);
 $tanggal = RegularDateFormat($rw[tanggal]);
 $judul = $rw[judul];

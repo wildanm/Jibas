@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -87,9 +87,9 @@ if (!mysql_num_rows($result_aturan) == 0)
     <table width="100%" cellspacing="2" >
 <?	$query_ap = "SELECT DISTINCT a.dasarpenilaian, dp.keterangan 
 				   FROM jbsakad.aturannhb a, dasarpenilaian dp
-				  WHERE idpelajaran = $row_aturan[idpelajaran] 
+				  WHERE idpelajaran = '$row_aturan[idpelajaran]' 
 				    AND a.dasarpenilaian = dp.dasarpenilaian 
-				    AND idtingkat = $tingkat AND nipguru = '$nip' ORDER BY keterangan";
+				    AND idtingkat = '$tingkat' AND nipguru = '$nip' ORDER BY keterangan";
 	$result_ap = QueryDb($query_ap);
 	while($row_ap = @mysql_fetch_array($result_ap))
 	{
@@ -102,8 +102,8 @@ if (!mysql_num_rows($result_aturan) == 0)
 	        </tr>
     <? 	$query_jp = "SELECT a.idjenisujian, j.jenisujian, j.replid, a.replid 
 					   FROM jbsakad.aturannhb a, jbsakad.jenisujian j 
-					  WHERE a.idpelajaran=$row_aturan[idpelajaran] AND a.dasarpenilaian='$row_ap[dasarpenilaian]' 
-					    AND a.idjenisujian=j.replid AND a.idtingkat=$tingkat AND a.nipguru='$nip' ORDER BY j.jenisujian";
+					  WHERE a.idpelajaran='$row_aturan[idpelajaran]' AND a.dasarpenilaian='$row_ap[dasarpenilaian]' 
+					    AND a.idjenisujian=j.replid AND a.idtingkat='$tingkat' AND a.nipguru='$nip' ORDER BY j.jenisujian";
 		$result_jp = QueryDb($query_jp);
 		while($row_jp = @mysql_fetch_row($result_jp))
 		{	?>

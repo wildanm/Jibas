@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -45,7 +45,7 @@ $sql_get_nhb =
 	"SELECT DISTINCT k.kelas, t.tingkat, t.replid AS idtingkat, t.departemen, 
 			p.nama, p.replid AS idpelajaran, ta.tahunajaran, s.semester, j.jenisujian, j.replid AS idjenis 
 	   FROM jbsakad.aturannhb a, kelas k, tahunajaran ta, tingkat t, pelajaran p, semester s, jenisujian j 
-	  WHERE a.replid=$idaturan AND k.idtingkat = t.replid AND k.replid = $kelas AND s.replid = $semester 
+	  WHERE a.replid='$idaturan' AND k.idtingkat = t.replid AND k.replid = '$kelas' AND s.replid = '$semester' 
 	    AND p.replid = a.idpelajaran AND j.replid = a.idjenisujian AND ta.replid = k.idtahunajaran";
 $result_get_nhb = QueryDb($sql_get_nhb);
 $row = @mysql_fetch_array($result_get_nhb);
@@ -275,7 +275,7 @@ function simpan(evt) {
       	<td><div id="rpp_info">
         	<select name="idrpp" id="idrpp" style="width:170px;" onkeypress="return focusNext('deskripsi', event)">
       		<option value="" <?=IntIsSelected("", $idrpp) ?> >Tanpa RPP</option>
-		<? $sql_rpp="SELECT * FROM rpp WHERE idtingkat=$tingkat AND idsemester=$semester AND idpelajaran=$pelajaran AND aktif=1 ORDER BY rpp";
+		<? $sql_rpp="SELECT * FROM rpp WHERE idtingkat='$tingkat' AND idsemester='$semester' AND idpelajaran='$pelajaran' AND aktif=1 ORDER BY rpp";
       		$result_rpp=QueryDb($sql_rpp);
       		while ($row_rpp=@mysql_fetch_array($result_rpp)){
 				if ($idrpp == "")

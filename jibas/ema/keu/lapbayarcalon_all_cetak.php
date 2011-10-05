@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,7 +32,7 @@ $replid = $_REQUEST['replid'];
 $tanggal1 = $_REQUEST['tanggal1'];
 $tanggal2 = $_REQUEST['tanggal2'];
 OpenDb();
-$sql = "SELECT p.departemen FROM prosespenerimaansiswa p, kelompokcalonsiswa k, calonsiswa c WHERE c.replid=$replid AND c.idkelompok=k.replid AND k.idproses=p.replid";
+$sql = "SELECT p.departemen FROM prosespenerimaansiswa p, kelompokcalonsiswa k, calonsiswa c WHERE c.replid='$replid' AND c.idkelompok=k.replid AND k.idproses=p.replid";
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -58,7 +58,7 @@ CloseDb();
 
 <?
 OpenDb();
-$sql = "SELECT s.nama, s.nopendaftaran, k.kelompok, p.proses FROM calonsiswa s, kelompokcalonsiswa k, prosespenerimaansiswa p WHERE s.replid = $replid AND s.idkelompok = k.replid AND s.idproses = p.replid";
+$sql = "SELECT s.nama, s.nopendaftaran, k.kelompok, p.proses FROM calonsiswa s, kelompokcalonsiswa k, prosespenerimaansiswa p WHERE s.replid = '$replid' AND s.idkelompok = k.replid AND s.idproses = p.replid";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namacalon = $row[0];
@@ -93,7 +93,7 @@ $no = $row[1];
 
 <table border="1" style="border-collapse:collapse" width="100%" bordercolor="#000000"> 
 <?
-$sql = "SELECT DISTINCT b.replid AS id, b.besar, b.lunas, b.keterangan, d.nama FROM $db_name_fina.besarjttcalon b, $db_name_fina.penerimaanjttcalon p, $db_name_fina.datapenerimaan d WHERE p.idbesarjttcalon = b.replid AND b.idpenerimaan = d.replid AND b.idcalon=$replid AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
+$sql = "SELECT DISTINCT b.replid AS id, b.besar, b.lunas, b.keterangan, d.nama FROM $db_name_fina.besarjttcalon b, $db_name_fina.penerimaanjttcalon p, $db_name_fina.datapenerimaan d WHERE p.idbesarjttcalon = b.replid AND b.idpenerimaan = d.replid AND b.idcalon='$replid' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
 $result = QueryDb($sql);
 while ($row = mysql_fetch_array($result)) {
 	$idbesarjtt = $row['id'];
@@ -102,7 +102,7 @@ while ($row = mysql_fetch_array($result)) {
 	$lunas = $row['lunas'];
 	$keterangan = $row['keterangan'];
 	
-	$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaanjttcalon WHERE idbesarjttcalon = $idbesarjtt";
+	$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
 	$result2 = QueryDb($sql);
 	$pembayaran = 0;
 	if (mysql_num_rows($result2)) {
@@ -111,7 +111,7 @@ while ($row = mysql_fetch_array($result)) {
 	};
 	$sisa = $besar - $pembayaran;
 	
-	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaanjttcalon WHERE idbesarjttcalon=$idbesarjtt ORDER BY tanggal DESC LIMIT 1";
+	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaanjttcalon WHERE idbesarjttcalon='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
 	$tglakhir = "";
@@ -145,13 +145,13 @@ while ($row = mysql_fetch_array($result)) {
 <? 
 } //while iuran wajib
 
-$sql = "SELECT DISTINCT p.idpenerimaan, d.nama FROM $db_name_fina.penerimaaniurancalon p, $db_name_fina.datapenerimaan d WHERE p.idpenerimaan = d.replid AND p.idcalon=$replid AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
+$sql = "SELECT DISTINCT p.idpenerimaan, d.nama FROM $db_name_fina.penerimaaniurancalon p, $db_name_fina.datapenerimaan d WHERE p.idpenerimaan = d.replid AND p.idcalon='$replid' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
 $result = QueryDb($sql);
 while ($row = mysql_fetch_array($result)) {
 	$idpenerimaan = $row['idpenerimaan'];
 	$namapenerimaan = $row['nama'];
 	
-	$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaaniurancalon WHERE idpenerimaan=$idpenerimaan AND idcalon=$replid";
+	$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaaniurancalon WHERE idpenerimaan='$idpenerimaan' AND idcalon='$replid'";
 	$result2 = QueryDb($sql);
 	$pembayaran = 0;
 	if (mysql_num_rows($result2)) {
@@ -159,7 +159,7 @@ while ($row = mysql_fetch_array($result)) {
 		$pembayaran = $row2[0];
 	};
 
-	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaaniurancalon WHERE idpenerimaan=$idpenerimaan AND idcalon=$replid ORDER BY tanggal DESC LIMIT 1";
+	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaaniurancalon WHERE idpenerimaan='$idpenerimaan' AND idcalon='$replid' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
 	$tglakhir = "";

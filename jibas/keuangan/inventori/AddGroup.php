@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ require_once('../include/config.php');
 require_once('../include/db_functions.php');
 OpenDb();
 if (isset($_REQUEST['Simpan'])){
-	$sql = "SELECT * FROM jbsfina.groupbarang WHERE namagroup='$_REQUEST[groupname]'";
+	$sql = "SELECT * FROM jbsfina.groupbarang WHERE namagroup='".addslashes(trim($_REQUEST[groupname]))."'";
 	if (@mysql_num_rows(QueryDb($sql))>0){
 		?>
         <script language="javascript">
@@ -33,7 +33,7 @@ if (isset($_REQUEST['Simpan'])){
         </script>
         <?
 	} else {
-		QueryDb("INSERT INTO jbsfina.groupbarang SET namagroup='$_REQUEST[groupname]', keterangan='$_REQUEST[keterangan]'");
+		QueryDb("INSERT INTO jbsfina.groupbarang SET namagroup='".addslashes(trim($_REQUEST[groupname]))."', keterangan='".addslashes(trim($_REQUEST[keterangan]))."'");
 		?>
         <script language="javascript">
 			parent.opener.GetFresh();
@@ -68,11 +68,11 @@ function validate(){
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
   <tr>
     <td>Nama Group</td>
-    <td><input name="groupname" id="groupname" type="text" maxlength="45" style="width:100%" value="<?=$_REQUEST[groupname]?>" /></td>
+    <td><input name="groupname" id="groupname" type="text" maxlength="45" style="width:100%" value="<?=stripslashes(trim($_REQUEST[groupname]))?>" /></td>
   </tr>
   <tr>
     <td>Keterangan</td>
-    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=$_REQUEST[keterangan]?></textarea></td>
+    <td><textarea name="keterangan" id="keterangan" style="width:100%" rows="5"><?=stripslashes(trim($_REQUEST[keterangan]))?></textarea></td>
   </tr>
   <tr>
     <td colspan="2" align="center"><input class="but" type="submit" name="Simpan" value="Simpan" />&nbsp;&nbsp;<input type="button" value="Batal" onClick="window.close()" class="but" /></td>

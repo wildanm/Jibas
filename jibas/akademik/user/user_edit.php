@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,7 +56,7 @@ if(isset($_REQUEST["departemen"]))
 if(isset($_REQUEST["status_user"]))
 	$status_user = $_REQUEST["status_user"];
 if(isset($_REQUEST["keterangan"]))
-	$keterangan = $_REQUEST["keterangan"];
+	$keterangan = CQ($_REQUEST["keterangan"]);
 	
 if (isset($_REQUEST['simpan'])) {
 	OpenDb();
@@ -78,10 +78,10 @@ if (isset($_REQUEST['simpan'])) {
 	} else {
 		if ($tingkat==1){
 			//Kalo manajer
-			$sql_hakakses="UPDATE jbsuser.hakakses SET tingkat=1, keterangan ='$_REQUEST[keterangan]' WHERE replid = $replid";
+			$sql_hakakses="UPDATE jbsuser.hakakses SET tingkat=1, keterangan ='$keterangan' WHERE replid = $replid";
 		} elseif ($tingkat==2){
 			//Kalo staf
-			$sql_hakakses="UPDATE jbsuser.hakakses SET departemen='$departemen', tingkat=2, keterangan ='$_REQUEST[keterangan]' WHERE replid = $replid";
+			$sql_hakakses="UPDATE jbsuser.hakakses SET departemen='$departemen', tingkat=2, keterangan ='$keterangan' WHERE replid = $replid";
 		}
 		
 		$result = QueryDb($sql_hakakses);

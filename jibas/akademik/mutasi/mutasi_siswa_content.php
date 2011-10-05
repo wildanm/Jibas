@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -59,7 +59,7 @@ if (isset($_REQUEST['urutan']))
 
 if ($op == "xm8r389xemx23xb2378e23") {
 	OpenDb();
-	$sql="SELECT m.nis, s.idkelas, m.tglmutasi, k.idtahunajaran, k.idtingkat FROM mutasisiswa m, siswa s, kelas k WHERE m.replid=$_REQUEST[replid] AND s.nis = m.nis AND s.idkelas = k.replid";
+	$sql="SELECT m.nis, s.idkelas, m.tglmutasi, k.idtahunajaran, k.idtingkat FROM mutasisiswa m, siswa s, kelas k WHERE m.replid='$_REQUEST[replid]' AND s.nis = m.nis AND s.idkelas = k.replid";
 	
 	$result=QueryDb($sql);
 	$row = mysql_fetch_array($result);
@@ -72,7 +72,7 @@ if ($op == "xm8r389xemx23xb2378e23") {
 	BeginTrans();
 	$success=0;
 	
-	$sql1="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE nis='$nis' AND idkelas = $idkelas ORDER BY mulai DESC LIMIT 1";
+	$sql1="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE nis='$nis' AND idkelas = '$idkelas' ORDER BY mulai DESC LIMIT 1";
 	$result1=QueryDbTrans($sql1, $success);
 	
 	if ($success){
@@ -86,12 +86,12 @@ if ($op == "xm8r389xemx23xb2378e23") {
 	}
 	
 	if ($success){
-		$sql1="DELETE FROM jbsakad.alumni WHERE nis='$nis' AND departemen = '$departemen' AND klsakhir=$idkelas AND tgllulus = '$tglmutasi'";
+		$sql1="DELETE FROM jbsakad.alumni WHERE nis='$nis' AND departemen = '$departemen' AND klsakhir='$idkelas' AND tgllulus = '$tglmutasi'";
 		$result1=QueryDbTrans($sql1, $success);
 	}
 	
 	if ($success){
-		$sql1="DELETE FROM jbsakad.mutasisiswa WHERE replid=$_REQUEST[replid]";
+		$sql1="DELETE FROM jbsakad.mutasisiswa WHERE replid='$_REQUEST[replid]'";
 		$result1=QueryDbTrans($sql1, $success);
 	}
 	
@@ -208,14 +208,14 @@ function refresh_isi() {
   	<td>
 <?
 	OpenDb();    
-	$sql_tot = "SELECT s.replid, s.nis, s.nama, k.kelas, m.tglmutasi, j.jenismutasi, m.keterangan, m.replid, t.tingkat FROM mutasisiswa m, kelas k, tingkat t, siswa s, jenismutasi j WHERE m.departemen='$departemen' AND k.idtingkat=t.replid AND k.replid=s.idkelas AND k.idtahunajaran = $tahunajaran AND j.replid = m.jenismutasi AND s.nis = m.nis ";
+	$sql_tot = "SELECT s.replid, s.nis, s.nama, k.kelas, m.tglmutasi, j.jenismutasi, m.keterangan, m.replid, t.tingkat FROM mutasisiswa m, kelas k, tingkat t, siswa s, jenismutasi j WHERE m.departemen='$departemen' AND k.idtingkat=t.replid AND k.replid=s.idkelas AND k.idtahunajaran = '$tahunajaran' AND j.replid = m.jenismutasi AND s.nis = m.nis ";
 	
 	$result_tot = QueryDb($sql_tot);
 	$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql_siswa = "SELECT s.replid AS replidsiswa, s.nis, s.nama, k.kelas, m.tglmutasi, j.jenismutasi, m.keterangan, m.replid, t.tingkat FROM mutasisiswa m, kelas k, tingkat t, siswa s, jenismutasi j WHERE m.departemen='$departemen' AND k.idtingkat=t.replid AND k.replid=s.idkelas AND k.idtahunajaran = $tahunajaran AND j.replid = m.jenismutasi AND s.nis = m.nis ORDER BY $urut $urutan, kelas ASC LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+	$sql_siswa = "SELECT s.replid AS replidsiswa, s.nis, s.nama, k.kelas, m.tglmutasi, j.jenismutasi, m.keterangan, m.replid, t.tingkat FROM mutasisiswa m, kelas k, tingkat t, siswa s, jenismutasi j WHERE m.departemen='$departemen' AND k.idtingkat=t.replid AND k.replid=s.idkelas AND k.idtahunajaran = '$tahunajaran' AND j.replid = m.jenismutasi AND s.nis = m.nis ORDER BY $urut $urutan, kelas ASC LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		
 	$result_siswa = QueryDb($sql_siswa);
 	$jum = @mysql_num_rows($result_siswa);

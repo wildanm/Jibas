@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -61,14 +61,14 @@ if (isset($_REQUEST['status']))
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {			
 	OpenDb();
-	$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = $jam";	
+	$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam'";	
 	
 	$result1 = QueryDb($sql1);
 	$row1 = mysql_fetch_array($result1);
 	$rep1 = $row1['replid'];
 	$jm1 = $row1['jam1'];
 	
-	$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = $jam2";
+	$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam2'";
 	
 	$result2 = QueryDb($sql2);
 	$row2 = mysql_fetch_array($result2);
@@ -77,10 +77,10 @@ if (isset($_REQUEST['Simpan'])) {
 	
 	$jum = $jam2 - $jam + 1;
    
-	$sql3 = "SELECT * FROM jadwal WHERE nipguru = '$nip' AND hari = $hari AND jam1 < '$jm2'";
+	$sql3 = "SELECT * FROM jadwal WHERE nipguru = '$nip' AND hari = '$hari' AND jam1 < '$jm2'";
 	$result3 = QueryDb($sql3);
 		
-	$sql4 = "SELECT * FROM jadwal WHERE idkelas = '$kelas' AND hari = $hari AND jam2 > '$jm1'";
+	$sql4 = "SELECT * FROM jadwal WHERE idkelas = '$kelas' AND hari = '$hari' AND jam2 > '$jm1'";
 	$result4 = QueryDb($sql4);
 	
 	if (mysql_num_rows($result3) > 0) {
@@ -90,7 +90,7 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();		
 		$ERROR_MSG = "Ada jadwal di kelas ini yang bentrok!";
 	} else {
-		$sql = "INSERT INTO jadwal SET idkelas=$kelas, nipguru='$nip', idpelajaran = $pelajaran, departemen = '$departemen', infojadwal = $info, hari = $hari, jamke = $jam, njam = $jum, sifat = 1, status = $status, keterangan='$keterangan', jam1 = '$jm1', jam2 = '$jm2', idjam1 = $rep1, idjam2 = $rep2";
+		$sql = "INSERT INTO jadwal SET idkelas='$kelas', nipguru='$nip', idpelajaran = '$pelajaran', departemen = '$departemen', infojadwal = '$info', hari = '$hari', jamke = '$jam', njam = '$jum', sifat = 1, status = '$status', keterangan='$keterangan', jam1 = '$jm1', jam2 = '$jm2', idjam1 = '$rep1', idjam2 = '$rep2'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -104,7 +104,7 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();	
-$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, p.nama AS nama FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, jbssdm.pegawai p WHERE i.replid = $info AND t.replid = i.idtahunajaran AND p.nip = '$nip' ";
+$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, p.nama AS nama FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, jbssdm.pegawai p WHERE i.replid = '$info' AND t.replid = i.idtahunajaran AND p.nip = '$nip' ";
 
 $result1 = QueryDb($sql1);
 $row1 = mysql_fetch_array($result1); 

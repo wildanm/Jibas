@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ $pelajaran = $_REQUEST['pelajaran'];
 $nip = $_REQUEST['nip'];
 
 OpenDb();
-$sql = "SELECT k.kelas, s.semester, a.tahunajaran, t.tingkat, l.nama, p.nama AS guru FROM kelas k, semester s, tahunajaran a, tingkat t, pelajaran l, jbssdm.pegawai p WHERE k.replid = $kelas AND s.replid = $semester AND a.replid = $tahunajaran AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid AND l.replid = $pelajaran AND p.nip = '$nip'";
+$sql = "SELECT k.kelas, s.semester, a.tahunajaran, t.tingkat, l.nama, p.nama AS guru FROM kelas k, semester s, tahunajaran a, tingkat t, pelajaran l, jbssdm.pegawai p WHERE k.replid = '$kelas' AND s.replid = '$semester' AND a.replid = '$tahunajaran' AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid AND l.replid = '$pelajaran' AND p.nip = '$nip'";
 $result = QueryDb($sql);
 CloseDb();
 $row = mysql_fetch_array($result);
@@ -125,7 +125,7 @@ $namaguru = $row['guru'];
         <?
         OpenDb();
         
-        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = $kelas ORDER BY nama";
+        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = '$kelas' ORDER BY nama";
         $result = QueryDb($sql);
         CloseDb();
         

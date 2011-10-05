@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -105,7 +105,7 @@ for ($z=1;$z<=3;$z++){
 	CloseDb();
 					//Buat hapus field
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid=".$rep;
+	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid='$rep'";
 	$result=QueryDb($sql);
 	CloseDb();
 	}
@@ -121,7 +121,7 @@ $file3 = trim($_FILES["file3"]["tmp_name"]);
 if ($file1!=""){
 	if ($repd1!=""){
 	OpenDb();
-	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd1;
+	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid='$repd1'";
 	$result=QueryDb($sql);
 	$row=@mysql_fetch_array($result);
 		//Hapus filenyah..............
@@ -129,7 +129,7 @@ if ($file1!=""){
 	CloseDb();
 	//Buat hapus field
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd1;
+	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid='$repd1'";
 	$result=QueryDb($sql);
 	CloseDb();
 	}
@@ -147,7 +147,7 @@ if ($file1!=""){
 if ($file2!=""){
 	if ($repd2!=""){
 	OpenDb();
-	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd2;
+	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid='$repd2'";
 	$result=QueryDb($sql);
 	$row=@mysql_fetch_array($result);
 		//Hapus filenyah..............
@@ -155,7 +155,7 @@ if ($file2!=""){
 	CloseDb();
 	//Buat hapus field
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd2;
+	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid='$repd2'";
 	$result=QueryDb($sql);
 	CloseDb();
 	}
@@ -173,7 +173,7 @@ if ($file2!=""){
 if ($file3!=""){
 	if ($repd3!=""){
 	OpenDb();
-	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd3;
+	$sql="SELECT direktori,namafile FROM jbsvcr.lampiranpesanguru WHERE replid='$repd3'";
 	$result=QueryDb($sql);
 	$row=@mysql_fetch_array($result);
 		//Hapus filenyah..............
@@ -181,7 +181,7 @@ if ($file3!=""){
 	CloseDb();
 	//Buat hapus field
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid=".$repd3;
+	$sql="DELETE FROM jbsvcr.lampiranpesanguru WHERE replid='$repd3'";
 	$result=QueryDb($sql);
 	CloseDb();
 	}

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,30 +29,44 @@ require_once('../include/rupiah.php');
 require_once('../include/imageresizer.php');
 require_once('../include/db_functions.php');
 
-OpenDb();
 $proses = $_REQUEST['proses'];
 
-$sql = "SELECT MAX(replid) FROM jbsakad.calonsiswa WHERE idproses = $proses";
+OpenDb();
+
+$sql = "SELECT kodeawalan FROM jbsakad.prosespenerimaansiswa WHERE replid = '$proses'";	
+$res = QueryDb($sql);	
+$row = mysql_fetch_row($res);	
+$kode_no = $row[0];
+$kodelen = strlen($kode_no);
+//echo "kode_no = $kode_no<br>"; LPAD(nopendaftaran,15, '*')
+$sql = "SELECT MAX(LPAD(nopendaftaran,".($kodelen+9).",'*')) FROM jbsakad.calonsiswa WHERE idproses = '$proses'";
 $res = QueryDb($sql);	
 $row = mysql_fetch_row($res);
 $nom = $row[0];
-
-$sql = "SELECT kodeawalan FROM jbsakad.prosespenerimaansiswa WHERE replid = $proses";	
-$res = QueryDb($sql);	
-$row = mysql_fetch_array($res);	
-	
-$kode_no = $row['kodeawalan'];		
+//echo "Nom1 = $nom<br>";
+$nom = str_replace("*", "", $nom);
+$nom = str_replace($kode_no, "", $nom);
+$tmp = strlen($nom-2);
+$nom = substr($nom, 2, $tmp);
+//echo "Nom2 = $nom<br>";
+$nom = (float)$nom;
+//echo "Nom3 = $nom<br>";
 $thn_no = substr(date("Y"), 2, 2);
-$nomor = sprintf("%04d",$nom + 1);
+$nom  = $nom+1; 
+//echo "Nom4 = $nom<br>";
+$nomor = sprintf("%04d", $nom);
+//echo "Nom5 = $nomor<br>";
 $no = sprintf("%s%02d%04d", $kode_no, $thn_no, $nomor);
+//$no = $kode_no.$thn_no.$nomor;
+//echo "Nom6 = $no<br>";
+//exit;
 
-$nisn = trim($_REQUEST['nisn']);
+$nisn = CQ($_REQUEST['nisn']);
 $tahunmasuk = $_REQUEST['tahunmasuk'];
-$nama = $_REQUEST['nama'];
-$nama = str_replace("'", "`", $nama);
-$panggilan=$_REQUEST['panggilan'];
+$nama = CQ($_REQUEST['nama']);
+$panggilan=CQ($_REQUEST['panggilan']);
 $kelamin=$_REQUEST['kelamin'];
-$tmplahir=$_REQUEST['tmplahir'];
+$tmplahir=CQ($_REQUEST['tmplahir']);
 $tgllahir=$_REQUEST['tgllahir'];
 $blnlahir=$_REQUEST['blnlahir'];
 $thnlahir=$_REQUEST['thnlahir'];;
@@ -68,22 +82,22 @@ if ($_REQUEST['urutananak']=="")
 $jumlahanak=$_REQUEST['jumlahanak'];
 if ($_REQUEST['jumlahanak']=="")
 	$jumlahanak = 0;
-$bahasa=$_REQUEST['bahasa'];
-$alamatsiswa=$_REQUEST['alamatsiswa'];
-$kodepos=$_REQUEST['kodepos'];
+$bahasa=CQ($_REQUEST['bahasa']);
+$alamatsiswa=CQ($_REQUEST['alamatsiswa']);
+$kodepos=CQ($_REQUEST['kodepos']);
 $kodepos_sql = "kodepossiswa = '$kodepos'";
 if ($kodepos == "")
 	$kodepos_sql = "kodepossiswa = NULL";
-$telponsiswa=$_REQUEST['telponsiswa'];
-$hpsiswa=trim($_REQUEST['hpsiswa']);
+$telponsiswa=CQ($_REQUEST['telponsiswa']);
+$hpsiswa=CQ(trim($_REQUEST['hpsiswa']));
 $hpsiswa=str_replace(' ','',$hpsiswa);
-$emailsiswa=$_REQUEST['emailsiswa'];
+$emailsiswa=CQ($_REQUEST['emailsiswa']);
 $dep_asal=$_REQUEST['dep_asal'];
 $sekolah=$_REQUEST['sekolah'];
 $sekolah_sql = "asalsekolah = '$sekolah'";
 if ($sekolah == "")
 	$sekolah_sql = "asalsekolah = NULL";
-$ketsekolah=$_REQUEST['ketsekolah'];
+$ketsekolah=CQ($_REQUEST['ketsekolah']);
 $gol=$_REQUEST['gol'];
 //$berat=$_REQUEST['berat'];
 $berat = $_REQUEST['berat'];
@@ -92,12 +106,12 @@ if ($_REQUEST['berat']=="")
 $tinggi = $_REQUEST['tinggi'];
 if ($_REQUEST['tinggi']=="")
 	$tinggi = 0;
-$kesehatan=$_REQUEST['kesehatan'];
-$namaayah=$_REQUEST['namaayah'];
+$kesehatan=CQ($_REQUEST['kesehatan']);
+$namaayah=CQ($_REQUEST['namaayah']);
 $almayah = $_REQUEST['almayah'];
 if ($_REQUEST['almayah']<> "1")
 	$almayah=0;
-$namaibu=$_REQUEST['namaibu'];
+$namaibu=CQ($_REQUEST['namaibu']);
 $almibu = $_REQUEST['almibu'];
 if ($_REQUEST['almibu']<> "1")
 	$almibu=0;
@@ -123,15 +137,15 @@ if ($_REQUEST['penghasilanayah']=="")
 $penghasilanibu = $_REQUEST['penghasilanibu'];
 if ($_REQUEST['penghasilanibu']=="")
 	$penghasilanibu = 0;
-$namawali=$_REQUEST['namawali'];
-$alamatortu=$_REQUEST['alamatortu'];
-$telponortu=$_REQUEST['telponortu'];
-$hportu=trim($_REQUEST['hportu']);
+$namawali=CQ($_REQUEST['namawali']);
+$alamatortu=CQ($_REQUEST['alamatortu']);
+$telponortu=CQ($_REQUEST['telponortu']);
+$hportu=CQ(trim($_REQUEST['hportu']));
 $hportu=str_replace(' ','',$hportu);
-$emailayah=$_REQUEST['emailayah'];
-$emailibu=$_REQUEST['emailibu'];
-$alamatsurat=$_REQUEST['alamatsurat'];
-$keterangan=$_REQUEST['keterangan'];
+$emailayah=CQ($_REQUEST['emailayah']);
+$emailibu=CQ($_REQUEST['emailibu']);
+$alamatsurat=CQ($_REQUEST['alamatsurat']);
+$keterangan=CQ($_REQUEST['keterangan']);
 $departemen=$_REQUEST['departemen'];
 $kelompok = $_REQUEST['kelompok'];
 
@@ -160,7 +174,7 @@ else
 {
 	if ($_REQUEST['action'] == 'ubah') 
 	{	
-	   $x = @mysql_fetch_row(QueryDb("SELECT foto FROM jbsakad.calonsiswa WHERE replid=$_REQUEST[replid]"));
+	   $x = @mysql_fetch_row(QueryDb("SELECT foto FROM jbsakad.calonsiswa WHERE replid='$_REQUEST[replid]'"));
 	   $data = $x[0];
 	   
 	   $filename = "$tmp_path/ed-cs-tmp.jpg";

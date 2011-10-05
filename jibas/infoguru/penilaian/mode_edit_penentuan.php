@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -318,7 +318,7 @@ if(isset($_POST[simpan])) {
 
     //Nih tuk ambil replid komennap terus disimpen di dalam array===========================
     $query_ko = "SELECT komennap.replid FROM jbsakad.komennap, jbsakad.siswa " .
-				" WHERE komennap.nis = siswa.nis AND idkelas = $_POST[kelas] AND aktif = 1 " .
+				" WHERE komennap.nis = siswa.nis AND idkelas = '$_POST[kelas]' AND aktif = 1 " .
 				" AND idinfo = '$_POST[info]' ORDER BY siswa.nama";
     $result_ko = QueryDb($query_ko) or die (mysql_error());
     $num_ko = @mysql_num_rows($result_ko);
@@ -347,7 +347,7 @@ if(isset($_POST[simpan])) {
 		$ns = "nis$k";
 		
 		$query_kom = "UPDATE jbsakad.komennap SET ".
-                     "predikat = '$_POST[$pre]' WHERE nis = '$_POST[$ns]' AND idinfo = $_POST[info]";
+                     "predikat = '$_POST[$pre]' WHERE nis = '$_POST[$ns]' AND idinfo = '$_POST[info]'";
         $result_kom = QueryDb($query_kom) or die (mysql_error());
         
 		//echo "$query_kom<br>";

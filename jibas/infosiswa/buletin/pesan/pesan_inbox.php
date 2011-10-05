@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -55,13 +55,13 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 		if ($msg[$x]!=""){
 		OpenDb();
 		//Cek ada gak di pesan terkirim punya pengirim
-		$sql1 = "SELECT replid FROM jbsvcr.pesanterkirim WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid=".$msg[$x].")";
+		$sql1 = "SELECT replid FROM jbsvcr.pesanterkirim WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."')";
 		//echo $sql1;
 		$res1 = QueryDb($sql1);
 		$exist = @mysql_num_rows($res1);
 		if ($exist==0){//Kalo gak ada, hapus semua...........
 			//Ambil direktori+namafiel buat dihapus
-			$sql2="SELECT l.direktori as direktori, l.namafile as namafile FROM jbsvcr.lampiranpesan l, jbsvcr.tujuanpesan t, jbsvcr.pesan p WHERE p.replid=t.idpesan AND p.replid=l.idpesan AND t.replid=".$msg[$x]." AND t.idpesan=l.idpesan";
+			$sql2="SELECT l.direktori as direktori, l.namafile as namafile FROM jbsvcr.lampiranpesan l, jbsvcr.tujuanpesan t, jbsvcr.pesan p WHERE p.replid=t.idpesan AND p.replid=l.idpesan AND t.replid='".$msg[$x]."' AND t.idpesan=l.idpesan";
 			$res2 = QueryDb($sql2);
 			$file="file";
 			$cntdel=0;
@@ -78,26 +78,26 @@ if ($op=="34983xihxf084bzux834hx8x7x93"){
 			delete($mydir[1]);
 			delete($mydir[2]);
 
-			$sql7="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan=(SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid=".$msg[$x].")";
+			$sql7="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan=(SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='".$msg[$x]."')";
 			QueryDb($sql7);
 
-			$sql3 = "SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid=".$msg[$x];
+			$sql3 = "SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='$msg[$x]'";
 			$res3 = QueryDb($sql3);
 			$row3 = @mysql_fetch_array($res3);
 			$idpesan = $row3[replid];
 
-			$sql4 = "DELETE FROM jbsvcr.tujuanpesan WHERE replid=".$msg[$x];
+			$sql4 = "DELETE FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
 			QueryDb($sql4);
 
-			$sql5 = "SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid=".$msg[$x].") AND replid<>".$msg[$x];
+			$sql5 = "SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."') AND replid<>'$msg[$x]'";
 			//echo $sql5;
 			$res5 = QueryDb($sql5);
 			if (@mysql_num_rows($res5)==0){
-			$sql6 = "DELETE FROM jbsvcr.pesan WHERE replid=".$idpesan;
+			$sql6 = "DELETE FROM jbsvcr.pesan WHERE replid='$idpesan'";
 			QueryDb($sql6);
 			}
 		} else {
-			$sql4 = "UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid=".$msg[$x];
+			$sql4 = "UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid='$msg[$x]'";
 			QueryDb($sql4);
 		}
 		CloseDb();
@@ -115,11 +115,11 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 	while ($x<=$numdel){
 		if ($msg[$x]!=""){
 		OpenDb();
-		$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid=$msg[$x]";
+		$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
 		$result=QueryDb($sql);
 		$row=@mysql_fetch_array($result);
 		//echo $sql."_1<br>";
-		$sql2="SELECT replid,tanggalpesan,judul,pesan,idguru,nis FROM jbsvcr.pesan WHERE replid=$row[idpesan]";
+		$sql2="SELECT replid,tanggalpesan,judul,pesan,idguru,nis FROM jbsvcr.pesan WHERE replid='$row[idpesan]'";
 		$result2=QueryDb($sql2);
 		$row2=@mysql_fetch_row($result2);
 		$sender="";
@@ -136,7 +136,7 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 		$row4=@mysql_fetch_array($result4);
 		$lastid=$row4[replid];
 		//echo $sql4."_4<br>";
-		$sql5="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan=$row2[0]";
+		$sql5="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$row2[0]'";
 		$result5=QueryDb($sql5);
 		//$row5=@mysql_fetch_array($result5);
 		//echo $sql5."_5<br>";
@@ -154,10 +154,10 @@ if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
 		$dir_sumber=$UPLOAD_DIR."pesan\\".$dir_awal;
 		copy($dir_sumber, $newdir.SI_USER_ID()."-".$row5['namafile']);
 		//echo $row5['direktori'].$row5['namafile'];
-		$sql6="INSERT INTO jbsvcr.lampirandraft SET idpesan=$lastid,direktori='$dir_db',namafile='".SI_USER_ID()."-".$row5['namafile']."'";
+		$sql6="INSERT INTO jbsvcr.lampirandraft SET idpesan='$lastid',direktori='$dir_db',namafile='".SI_USER_ID()."-".$row5['namafile']."'";
 		$result6=QueryDb($sql6);
 		}
-		$sql7="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE idpesan=$row2[0] AND idpenerima='".SI_USER_ID()."'";
+		$sql7="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE idpesan='$row2[0]' AND idpenerima='".SI_USER_ID()."'";
 		$result7=QueryDb($sql7);
 		CloseDb();
 		}

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -90,7 +90,7 @@ $row = mysql_fetch_array($result);
 </table>
 <br />
 <? 	OpenDb();
-	$sql = "SELECT DISTINCT(s.nis), s.nama FROM presensipelajaran p, ppsiswa pp, siswa s WHERE pp.nis = s.nis AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.idsemester = $semester AND p.idpelajaran = $pelajaran AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' ORDER BY s.nama, p.tanggal ";	
+	$sql = "SELECT DISTINCT(s.nis), s.nama FROM presensipelajaran p, ppsiswa pp, siswa s WHERE pp.nis = s.nis AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.idpelajaran = '$pelajaran' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' ORDER BY s.nama, p.tanggal ";	
 	
 	$result = QueryDb($sql);
 	$jum = mysql_num_rows($result);

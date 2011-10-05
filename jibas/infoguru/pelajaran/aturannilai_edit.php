@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -55,7 +55,7 @@ $tingkat = $row[4];
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();	
-	$sql = "DELETE FROM aturangrading WHERE idpelajaran = $id AND nipguru = '$nip' AND idtingkat = '$idtingkat' AND dasarpenilaian = '$aspek'"; 
+	$sql = "DELETE FROM aturangrading WHERE idpelajaran = '$id' AND nipguru = '$nip' AND idtingkat = '$idtingkat' AND dasarpenilaian = '$aspek'"; 
 	
 	$result = QueryDb($sql);
 	CloseDb();
@@ -151,6 +151,9 @@ function validate() {
 			}
 		}
 		if (nmax.length>0 && nmin.length>0){
+			nmax = parseInt(nmax);
+			nmin = parseInt(nmin);
+			
 			if (nmax<nmin){
 				alert ("Nilai minimum harus lebih kecil dari nilai maksimum"); 
 				document.getElementById('nmax'+i).focus();				
@@ -237,7 +240,7 @@ function validate() {
 		</tr>
 		<?
 		OpenDb();
-		$sql = "SELECT nmin, nmax, grade FROM aturangrading WHERE idpelajaran = $id AND nipguru = '$nip' AND idtingkat = $idtingkat AND dasarpenilaian = '$aspek'"; 
+		$sql = "SELECT nmin, nmax, grade FROM aturangrading WHERE idpelajaran = '$id' AND nipguru = '$nip' AND idtingkat = '$idtingkat' AND dasarpenilaian = '$aspek'"; 
 		$result = QueryDb($sql);
 		CloseDb();
 		

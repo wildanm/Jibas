@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -53,7 +53,7 @@ if(isset($_REQUEST["aspek"]))
 if(isset($_REQUEST["aspekket"]))
 	$aspekket = $_REQUEST["aspekket"];	
 
-$sql = "SELECT nama FROM pelajaran WHERE replid = $pelajaran";
+$sql = "SELECT nama FROM pelajaran WHERE replid = '$pelajaran'";
 $res = QueryDb($sql);
 $row = mysql_fetch_row($res);
 $namapel = $row[0];
@@ -73,7 +73,7 @@ if (isset($_REQUEST["Simpan"]))
 	
 	if ($idinfo == 0)
 	{
-		$sql = "INSERT INTO jbsakad.infonap SET idpelajaran='$pelajaran', idsemester='$semester', idkelas='$kelas', nilaimin=$nilaimin";
+		$sql = "INSERT INTO jbsakad.infonap SET idpelajaran='$pelajaran', idsemester='$semester', idkelas='$kelas', nilaimin='$nilaimin'";
 		QueryDbTrans($sql, $success);
 		
 		$sql = "SELECT LAST_INSERT_ID()";
@@ -83,7 +83,7 @@ if (isset($_REQUEST["Simpan"]))
 	}
 	else
 	{
-		$sql = "UPDATE jbsakad.infonap SET nilaimin = $nilaimin WHERE replid = $idinfo";
+		$sql = "UPDATE jbsakad.infonap SET nilaimin = '$nilaimin' WHERE replid = '$idinfo'";
 		QueryDbTrans($sql, $success);
 	}
 	
@@ -92,8 +92,8 @@ if (isset($_REQUEST["Simpan"]))
 		// Hanya mengambil satu id aturannhb agar menjadi link ke dasarpenilaian
 		$sql = "SELECT a.replid
 				  FROM jbsakad.aturannhb a, jbsakad.kelas k 
-				 WHERE a.nipguru='$nip' AND a.idtingkat=k.idtingkat AND k.replid=$kelas 
-				   AND a.idpelajaran=$pelajaran AND a.dasarpenilaian='$aspek' ORDER BY a.replid ASC LIMIT 1";
+				 WHERE a.nipguru='$nip' AND a.idtingkat=k.idtingkat AND k.replid='$kelas' 
+				   AND a.idpelajaran='$pelajaran' AND a.dasarpenilaian='$aspek' ORDER BY a.replid ASC LIMIT 1";
 		$res = QueryDb($sql);
 		$row = @mysql_fetch_array($res);
 		$idaturan = $row['replid'];
@@ -197,9 +197,9 @@ if (mysql_num_rows($res) > 0)
 	
 	$sql = "SELECT COUNT(n.replid)
 			  FROM jbsakad.aturannhb a, kelas k, nap n
-			 WHERE n.idaturan = a.replid AND a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = $kelas
-			   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = '$aspek' AND a.aktif = 1
-			   AND n.idinfo = $idinfo ";		   
+			 WHERE n.idaturan = a.replid AND a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = '$kelas'
+			   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = '$aspek' AND a.aktif = 1
+			   AND n.idinfo = '$idinfo' ";		   
 	$res = QueryDb($sql);
 	$row = mysql_fetch_row($res);
 	$nap_ada = $row[0];
@@ -208,8 +208,8 @@ if (mysql_num_rows($res) > 0)
 // Hitung jumlah bobot dan banyaknya aturan
 $sql = "SELECT SUM(bobot) as bobotPK, COUNT(a.replid) 
 		  FROM jbsakad.aturannhb a, kelas k 
-		 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = $kelas 
-		   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = '$aspek' AND a.aktif = 1";
+		 WHERE a.nipguru = '$nip' AND a.idtingkat = k.idtingkat AND k.replid = '$kelas' 
+		   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = '$aspek' AND a.aktif = 1";
 $res = QueryDb($sql);
 $row = @mysql_fetch_row($res);
 $bobot_PK = $row[0];
@@ -218,8 +218,8 @@ $jum_nhb = $row[1];
 // get jumlah pengujian
 $sql = "SELECT j.jenisujian as jenisujian, a.bobot as bobot, a.replid, a.idjenisujian 
 		  FROM jbsakad.aturannhb a, jbsakad.jenisujian j, kelas k 
-		 WHERE a.idtingkat = k.idtingkat AND k.replid = $kelas AND a.nipguru = '$nip' 
-		   AND a.idpelajaran = $pelajaran AND a.dasarpenilaian = '$aspek' 
+		 WHERE a.idtingkat = k.idtingkat AND k.replid = '$kelas' AND a.nipguru = '$nip' 
+		   AND a.idpelajaran = '$pelajaran' AND a.dasarpenilaian = '$aspek' 
 		   AND a.idjenisujian = j.replid AND a.aktif = 1 
 	  ORDER BY a.replid"; 
 $result_get_aturan_PK = QueryDb($sql);
@@ -228,7 +228,7 @@ $jum_PK = @mysql_num_rows($result_get_aturan_PK);
 //Ambil nilai grading
 $sql = "SELECT grade 
 		  FROM aturangrading a, kelas k 
-		 WHERE a.idpelajaran = $pelajaran AND a.idtingkat = k.idtingkat AND k.replid = $kelas 
+		 WHERE a.idpelajaran = '$pelajaran' AND a.idtingkat = k.idtingkat AND k.replid = '$kelas' 
 		   AND a.dasarpenilaian = '$aspek' AND a.nipguru = '$nip'
 	  ORDER BY nmin DESC";
 $res = QueryDb($sql);
@@ -460,14 +460,14 @@ function panggil(elem, total)
 	   	<td align="center"><strong>
 	<? 	$ext_idinfo = "";
 		if ($idinfo != "")
-			$ext_idinfo = " AND i.replid = $idinfo";
+			$ext_idinfo = " AND i.replid = '$idinfo'";
 			
 		$sql = "SELECT n.nilaihuruf, n.nilaiangka, i.nilaimin
 				  FROM jbsakad.nap n, jbsakad.aturannhb a, jbsakad.infonap i 
 				 WHERE n.idinfo = i.replid 
 				   AND n.nis = '$row_siswa[nis]' 
 				   AND i.idpelajaran = '$pelajaran' 
-				   AND i.idsemester = $semester 
+				   AND i.idsemester = '$semester' 
 				   AND n.idaturan = a.replid   
 				   AND a.dasarpenilaian = '$aspek' 
 				       $ext_idinfo";
@@ -483,10 +483,10 @@ function panggil(elem, total)
 			{		
 				$sql = "SELECT n.nilaiAU 
 						  FROM jbsakad.nau n, jbsakad.aturannhb a 
-						 WHERE n.idkelas = $kelas AND n.nis = '$row_siswa[nis]' 
-						   AND n.idsemester = $semester AND n.idpelajaran = $pelajaran
-						   AND n.idjenis = $value[2] AND n.idaturan = a.replid 
-						   AND a.replid = $value[0]";
+						 WHERE n.idkelas = '$kelas' AND n.nis = '$row_siswa[nis]' 
+						   AND n.idsemester = '$semester' AND n.idpelajaran = '$pelajaran'
+						   AND n.idjenis = '$value[2]' AND n.idaturan = a.replid 
+						   AND a.replid = '$value[0]'";
 				$res = QueryDb($sql);
 				$row = @mysql_fetch_array($res);
 				$nau = $row["nilaiAU"];
@@ -527,7 +527,7 @@ function panggil(elem, total)
 				$sql = "SELECT grade 
 				          FROM aturangrading a, kelas k 
 					 	 WHERE a.idpelajaran = $pelajaran AND a.idtingkat = k.idtingkat AND k.replid = $kelas 
-						   AND a.dasarpenilaian = '$aspek' AND a.nipguru = '$nip' AND $nilakhirpk BETWEEN a.nmin AND a.nmax";
+						   AND a.dasarpenilaian = '$aspek' AND a.nipguru = '$nip' AND '$nilakhirpk' BETWEEN a.nmin AND a.nmax";
 				$res = QueryDb($sql);
 				$row = @mysql_fetch_array($res);
 				$grade_PK = $row['grade'];

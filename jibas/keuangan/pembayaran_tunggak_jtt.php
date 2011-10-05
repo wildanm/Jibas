@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -74,7 +74,7 @@ else
 }
 
 // ambil nama penerimaan
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -88,7 +88,7 @@ $idbesarjtt = 0;
 // FIXED: 27 Agustus 2010
 $sql = "SELECT b.replid AS id, b.besar, b.keterangan, b.lunas, b.info1 AS idjurnal
 	       FROM besarjtt b
-		   WHERE b.nis = '$nis' AND b.idpenerimaan = $idpenerimaan AND b.info2 = '$idtahunbuku'";
+		   WHERE b.nis = '$nis' AND b.idpenerimaan = '$idpenerimaan' AND b.info2 = '$idtahunbuku'";
 $result = QueryDb($sql);
 $bayar = mysql_num_rows($result);
 $tgl_jurnal = date('d-m-Y');
@@ -106,7 +106,7 @@ if (mysql_num_rows($result) > 0)
 		$keterangan = $_REQUEST['keterangan'];
 	
 	$idjurnal = $row['idjurnal'];
-	$sql = "SELECT DATE_FORMAT(tanggal, '%d-%m-%Y') FROM jurnal WHERE replid=$idjurnal";
+	$sql = "SELECT DATE_FORMAT(tanggal, '%d-%m-%Y') FROM jurnal WHERE replid='$idjurnal'";
 	$tgl_jurnal = FetchSingle($sql);
 	
 	$input_awal = "";
@@ -369,7 +369,7 @@ function panggil(elem)
         <td align="center" colspan="2"> 
 <? if ($bayar > 0 && $lunas <> 2) 
 	{ 
-   	$sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+   	$sql = "SELECT count(*) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
       $result = QueryDb($sql);
       $row = mysql_fetch_row($result);
       $nbayar = $row[0];
@@ -379,7 +379,7 @@ function panggil(elem)
 		{
 			$sql = "SELECT p.replid AS id, j.nokas, j.idtahunbuku, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas 
 					  FROM penerimaanjtt p, besarjtt b, jurnal j 
-					  WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.replid = $idbesarjtt ORDER BY p.tanggal ASC";
+					  WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt' ORDER BY p.tanggal ASC";
 			$result = QueryDb($sql);
 			if (mysql_num_rows($result) > 1) 
 				$info = "Pembayaran Cicilan";  ?> 

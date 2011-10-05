@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -30,7 +30,7 @@ class CPenulisAdd{
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "INSERT INTO penulis SET kode='$_REQUEST[kode]', nama='$_REQUEST[nama]', kontak='$_REQUEST[kontak]', biografi='$_REQUEST[biografi]', keterangan='$_REQUEST[keterangan]', gelardepan='$_REQUEST[gelardepan]', gelarbelakang='$_REQUEST[gelarbelakang]'";
+				$sql = "INSERT INTO penulis SET kode='".CQ($_REQUEST['kode'])."', nama='".CQ($_REQUEST['nama'])."', kontak='".CQ($_REQUEST['kontak'])."', biografi='".CQ($_REQUEST['biografi'])."', keterangan='".CQ($_REQUEST['keterangan'])."', gelardepan='".CQ($_REQUEST['gelardepan'])."', gelarbelakang='".CQ($_REQUEST['gelarbelakang'])."'";
 				$result = QueryDb($sql);
 				if ($result){
 					$sql = "SELECT replid FROM penulis ORDER BY replid DESC LIMIT 1";

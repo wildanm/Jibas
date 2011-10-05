@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -126,7 +126,7 @@ while ($row = mysql_fetch_array($result)) {
 	    <td bgcolor="#E8FFE8">
             <table cellpadding="5" cellspacing="0" border="1" style="border-collapse:collapse" width="100%" bgcolor="#FFFFFF">
     <?		$nokas = $row['nokas'];
-            $sql = "SELECT ajd.koderek, ra.nama, ajd.debet, ajd.kredit FROM auditjurnaldetail ajd, jurnal j, rekakun ra WHERE ajd.idjurnal = j.replid AND ajd.koderek = ra.kode AND j.nokas = '$nokas' AND ajd.status = $status AND idaudit=$idaudit ORDER BY ajd.replid";
+            $sql = "SELECT ajd.koderek, ra.nama, ajd.debet, ajd.kredit FROM auditjurnaldetail ajd, jurnal j, rekakun ra WHERE ajd.idjurnal = j.replid AND ajd.koderek = ra.kode AND j.nokas = '$nokas' AND ajd.status = '$status' AND idaudit='$idaudit' ORDER BY ajd.replid";
 			$result2 = QueryDb($sql);            
 			while ($row2 = mysql_fetch_row($result2)) {  ?>
             <tr>

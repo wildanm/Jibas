@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -86,6 +86,26 @@ function SimpanGambar(){
 	else
 		alert ('Silakan Browse gambar terlebih dahulu!');
 }
+function formSubmit(){
+	var file = document.getElementById("filegambar").value;
+	if (file.length>0){
+		var ext = "";
+		var i = 0;
+		var string4split='.';
+
+		z = file.split(string4split);
+		ext = z[z.length-1];
+		
+		if (ext!='JPG' && ext!='jpg' && ext!='Jpg' && ext!='JPg' && ext!='JPEG' && ext!='jpeg'){
+			alert ('Format Gambar harus ber-extensi jpg atau JPG !');
+			//document.getElementById("foto").value='';
+			//document.form1.foto.focus();
+    		//document.form1.foto.select();
+			return false;
+		} 
+	}
+	document.getElementById('FrmLogo').submit();
+}
 </script>
 <link href="../sty/style.css" rel="stylesheet" type="text/css" />
 </head>
@@ -115,7 +135,7 @@ function SimpanGambar(){
     </td>
     </tr>
   <tr>
-    <td>File Gambar : <input type="file" name="filegambar" onchange="document.getElementById('FrmLogo').submit()" /></td>
+    <td>File Gambar : <input type="file" id="filegambar" name="filegambar" onchange="formSubmit()" /></td>
     </tr>
   <tr>
     <td align="center">

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ class CAktivitas{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM aktivitas WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM aktivitas WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		$sqlDate = "SELECT DATE_FORMAT(now(),'%d-%m-%Y')";
@@ -86,7 +86,7 @@ class CAktivitas{
 				<td width="50" height="25" align="center"><?=++$cnt?></td>
 				<td width="150" height="25" align="left">&nbsp;<?=substr($row[tanggal],8,2)."-".substr($row[tanggal],5,2)."-".substr($row[tanggal],0,4)." ".substr($row[tanggal],11,8)?></td>
 				<td height="25" align="left">
-			    <div align="justify"><?=chg_p_to_div($row[aktivitas])?></div>
+			    <div align="justify"><?=chg_p_to_div(stripslashes($row[aktivitas]))?></div>
                 </td>
 				<? if (IsAdmin()) { ?>
 				<td width="50" height="25" align="center" bgcolor="#FFFFFF"><a href="javascript:ubah('<?=$row[replid]?>')"><img src="../img/ico/ubah.png" width="16" height="16" border="0"></a>&nbsp;<a href="javascript:hapus('<?=$row[replid]?>')"><img src="../img/ico/hapus.png" border="0"></a></td>

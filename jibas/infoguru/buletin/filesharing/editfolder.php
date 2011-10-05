@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,14 +36,14 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $rootname = $row[0];
 
-$sql = "SELECT dirfullpath,idroot,dirname FROM jbsvcr.dirshare WHERE replid=$iddir";
+$sql = "SELECT dirfullpath,idroot,dirname FROM jbsvcr.dirshare WHERE replid='$iddir'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $dfullpath = $row[0];
 $idroot = $row[1];
 $dirname = $row[2];
 
-$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid=$idroot";
+$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid='$idroot'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $root = $row[0];
@@ -177,11 +177,11 @@ function travsearch($iddir,$dirname,$namafolder){
 	global $idroot;
 	$idroot = $_REQUEST[iddir];
 	OpenDb();
-	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot=$iddir";
+	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot='$iddir'";
 	$result=QueryDb($sql);
 	while ($row = @mysql_fetch_array($result)){
 		$df = str_replace($dirname,$namafolder,$row[dirfullpath]);
-		$sql1="UPDATE jbsvcr.dirshare SET dirfullpath='$df' WHERE replid=$row[replid]";
+		$sql1="UPDATE jbsvcr.dirshare SET dirfullpath='$df' WHERE replid='$row[replid]'";
 		QueryDb($sql1);
 		travsearch($row[replid],$dirname,$namafolder);
 	}
@@ -189,7 +189,7 @@ function travsearch($iddir,$dirname,$namafolder){
 }
 if (isset($_REQUEST['Simpan'])) {
 	OpenDb();
-	$sql = "SELECT dirfullpath,idroot,dirname FROM jbsvcr.dirshare WHERE replid=$iddir";
+	$sql = "SELECT dirfullpath,idroot,dirname FROM jbsvcr.dirshare WHERE replid='$iddir'";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	$dfullpath = $row[0];
@@ -216,7 +216,7 @@ if (isset($_REQUEST['Simpan'])) {
 	//echo $dst;
 	//copy($UPLOAD_DIR."fileshare\\".$namaroot.$dirname."\\",$UPLOAD_DIR."fileshare\\".$namaroot.$namafolder."\\");
 	$df = str_replace($dirname,$namafolder,$dfullpath);
-	$sql = "UPDATE jbsvcr.dirshare SET dirfullpath='$df', dirname='$namafolder' WHERE replid=$iddir";
+	$sql = "UPDATE jbsvcr.dirshare SET dirfullpath='$df', dirname='$namafolder' WHERE replid='$iddir'";
 	QueryDb($sql);
 	//deldir($UPLOAD_DIR."fileshare".GetOSSlash().$namaroot.$dirname);
 	
@@ -224,7 +224,7 @@ if (isset($_REQUEST['Simpan'])) {
 		global $idroot;
 		$idroot = $iddir;
 	OpenDb();
-	$sql0="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE replid=$iddir";
+	$sql0="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE replid='$iddir'";
 	$result0=QueryDb($sql0);
 	$row0 = @mysql_fetch_array($result0);
 	$dir = str_replace($WEB_UPLOAD_DIR,$UPLOAD_DIR,$row0[dirfullpath]);
@@ -235,11 +235,11 @@ if (isset($_REQUEST['Simpan'])) {
 	//echo "2".$dirnya;
 	//exit;
 	deldir($dirnya);
-	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot=$iddir";
+	$sql="SELECT replid,dirfullpath FROM jbsvcr.dirshare WHERE idroot='$iddir'";
 	$result=QueryDb($sql);
 	while ($row = @mysql_fetch_array($result)){
 		$df = str_replace($dirname,$namafolder,$row[dirfullpath]);
-		$sql1="UPDATE jbsvcr.dirshare SET dirfullpath='$df' WHERE replid=$row[replid]";
+		$sql1="UPDATE jbsvcr.dirshare SET dirfullpath='$df' WHERE replid='$row[replid]'";
 		QueryDb($sql1);
 		travsearch($row[replid],$dirname,$namafolder);
 	}

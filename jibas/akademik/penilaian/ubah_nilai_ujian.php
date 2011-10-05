@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ if(isset($_REQUEST["totnis"]))
 	$totnis = $_REQUEST["totnis"];
 
 OpenDb();
-$query = "SELECT n.idujian, n.nilaiujian, n.keterangan, u.idaturan, u.idkelas, u.idsemester, s.nama, s.nis FROM jbsakad.ujian u, jbsakad.siswa s, jbsakad.nilaiujian n WHERE n.replid = $id AND n.idujian = u.replid AND s.nis = n.nis";
+$query = "SELECT n.idujian, n.nilaiujian, n.keterangan, u.idaturan, u.idkelas, u.idsemester, s.nama, s.nis FROM jbsakad.ujian u, jbsakad.siswa s, jbsakad.nilaiujian n WHERE n.replid = '$id' AND n.idujian = u.replid AND s.nis = n.nis";
 $result = QueryDb($query);
 
 $row = @mysql_fetch_array($result);
@@ -51,22 +51,22 @@ $keterangan = $row["keterangan"];
 if(isset($_REQUEST["nilai"]))
 	$nilai = $_REQUEST["nilai"];
 if(isset($_REQUEST["keterangan"]))
-	$keterangan = $_REQUEST["keterangan"];
+	$keterangan = CQ($_REQUEST["keterangan"]);
 if(isset($_REQUEST["nasli"]))
 	$nasli = $_REQUEST["nasli"];	
 if(isset($_REQUEST["alasan"]))
-	$alasan = $_REQUEST["alasan"];		
+	$alasan = CQ($_REQUEST["alasan"]);		
 
 if(isset($_REQUEST["ubah"])) 
 {
 	BeginTrans();
 	$success = 0;	
-	$query_del_nau = "UPDATE jbsakad.nau SET nilaiAU = 0 WHERE idkelas=$idkelas AND idsemester=$idsemester AND idaturan=$idaturan AND nis = '$nis'";
+	$query_del_nau = "UPDATE jbsakad.nau SET nilaiAU = 0 WHERE idkelas='$idkelas' AND idsemester='$idsemester' AND idaturan='$idaturan' AND nis = '$nis'";
  	QueryDbTrans($query_del_nau, $success);
 
 	if ($success)
 	{
-		$query = "SELECT replid FROM jbsakad.nilaiujian WHERE nis='$nis' AND idujian=$idujian";
+		$query = "SELECT replid FROM jbsakad.nilaiujian WHERE nis='$nis' AND idujian='$idujian'";
 		$res = QueryDb($query);
 		$row = mysql_fetch_row($res);
 		$idnilai = $row[0];
@@ -75,7 +75,7 @@ if(isset($_REQUEST["ubah"]))
 		$info = "";
 		$query = "SELECT p.nama AS pelajaran, ju.jenisujian, u.deskripsi, DATE_FORMAT(u.tanggal, '%d-%m-%Y') AS tanggal, s.nis, s.nama
 				 	   FROM nilaiujian nu, ujian u, pelajaran p, jenisujian ju, siswa s
-					  WHERE nu.replid = $idnilai AND nu.idujian = u.replid AND u.idpelajaran = p.replid
+					  WHERE nu.replid = '$idnilai' AND nu.idujian = u.replid AND u.idpelajaran = p.replid
 						 AND u.idjenis = ju.replid AND nu.nis = s.nis;";
 		$res = QueryDb($query);
 		if (mysql_num_rows($res) > 0)
@@ -84,13 +84,13 @@ if(isset($_REQUEST["ubah"]))
 			$info = "Nilai Ujian ".$row['jenisujian']." ".$row['pelajaran']." tanggal ".$row['tanggal']." siswa ".$row['nis']." ".$row['nama'];
 		}						 
 		
-		$query = "INSERT INTO jbsakad.auditnilai SET jenisnilai='nilaiujian', idnilai=$idnilai, nasli=$nasli, nubah=$nilai, alasan='$alasan', pengguna='$pengguna', informasi='$info'";
+		$query = "INSERT INTO jbsakad.auditnilai SET jenisnilai='nilaiujian', idnilai='$idnilai', nasli='$nasli', nubah='$nilai', alasan='$alasan', pengguna='$pengguna', informasi='$info'";
 		QueryDbTrans($query,$success);
 	}
 
 	if ($success)
 	{
-		$query = "UPDATE jbsakad.nilaiujian SET keterangan='$keterangan', nilaiujian='$nilai' WHERE nis='$nis' AND idujian=$idujian";
+		$query = "UPDATE jbsakad.nilaiujian SET keterangan='$keterangan', nilaiujian='$nilai' WHERE nis='$nis' AND idujian='$idujian'";
 		QueryDbTrans($query,$success);
 	}
 	

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -72,7 +72,7 @@ $result_get_siswa=QueryDb($sql_get_siswa);
 $sql_get_siswa1="SELECT nis,nama FROM jbsakad.siswa WHERE idkelas='$kelas' AND aktif = 1 ORDER BY nama";
 $result_get_siswa1=QueryDb($sql_get_siswa1);
 
-$sql = "SELECT k.kelas AS namakelas, s.semester AS namasemester, a.tahunajaran, t.tingkat, l.nama, a.departemen FROM jbsakad.kelas k, jbsakad.semester s, jbsakad.tahunajaran a, jbsakad.tingkat t, jbsakad.pelajaran l WHERE k.replid = $kelas AND s.replid = $semester AND a.replid = $tahunajaran AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";// AND l.replid = $pelajaran";
+$sql = "SELECT k.kelas AS namakelas, s.semester AS namasemester, a.tahunajaran, t.tingkat, l.nama, a.departemen FROM jbsakad.kelas k, jbsakad.semester s, jbsakad.tahunajaran a, jbsakad.tingkat t, jbsakad.pelajaran l WHERE k.replid = '$kelas' AND s.replid = '$semester' AND a.replid = $tahunajaran AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";// AND l.replid = $pelajaran";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 	
@@ -305,8 +305,8 @@ while ($row_siswa1=@mysql_fetch_array($result_get_siswa1)){
 				WHERE uji.replid = niluji.idujian 
 				  AND niluji.nis = sis.nis 
 				  AND uji.idpelajaran = pel.replid 
-				  AND uji.idsemester = $semester
-				  AND uji.idkelas = $kelas
+				  AND uji.idsemester = '$semester'
+				  AND uji.idkelas = '$kelas'
 				  AND sis.nis = '$nis' 
 			GROUP BY pel.nama";
 	$respel = QueryDb($sql);
@@ -317,9 +317,9 @@ while ($row_siswa1=@mysql_fetch_array($result_get_siswa1)){
 		
 		$sql = "SELECT nilaimin 
 					 FROM infonap
-					WHERE idpelajaran = $idpel
-					  AND idsemester = $semester
-				     AND idkelas = $kelas";
+					WHERE idpelajaran = '$idpel'
+					  AND idsemester = '$semester'
+				     AND idkelas = '$kelas'";
 		$res = QueryDb($sql);
 		$row = mysql_fetch_row($res);
 		$nilaimin = $row[0];

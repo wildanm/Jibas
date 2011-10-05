@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -79,7 +79,7 @@ if(isset($_POST[simpan])){
 		
 		//query buat cek data udah ada belon untuk data jenis penilaian. Klo belum insert, klo udah di update
 		$query_cek = "SELECT nau.replid FROM jbsakad.nau WHERE nau.idjenis = '$jenis_penilaian' AND idsemester = '$semester' AND idkelas = '$kelas' AND nis = '$_POST[$n]' AND idpelajaran = '$pelajaran'";
-		echo $query_cek;
+		//echo $query_cek;
 		//exit();
 		$result_cek = QueryDb($query_cek);
 		$num_cek = @mysql_num_rows($result_cek);

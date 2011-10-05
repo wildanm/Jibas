@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -51,7 +51,7 @@ $id = $_REQUEST['id'];
     <br />
 <?
 OpenDb();
-		$sql = "SELECT j.replid,j.jenisujian,j.idpelajaran,j.keterangan,p.replid,p.nama,p.departemen FROM jenisujian j, pelajaran p WHERE j.idpelajaran = $id AND p.replid=j.idpelajaran ";   
+		$sql = "SELECT j.replid,j.jenisujian,j.idpelajaran,j.keterangan,p.replid,p.nama,p.departemen FROM jenisujian j, pelajaran p WHERE j.idpelajaran = '$id' AND p.replid=j.idpelajaran ";   
 		$result = QueryDb($sql);
 		$cnt = 0;
 		if ($row = @mysql_fetch_row($result)) {
@@ -74,7 +74,7 @@ CloseDb();
     
      <?
 		OpenDb();
-		$sql = "SELECT j.replid,j.jenisujian,j.idpelajaran,j.keterangan,p.replid,p.nama,p.departemen FROM jenisujian j, pelajaran p WHERE j.idpelajaran = $id AND j.idpelajaran = p.replid ORDER BY p.nama";   
+		$sql = "SELECT j.replid,j.jenisujian,j.idpelajaran,j.keterangan,p.replid,p.nama,p.departemen FROM jenisujian j, pelajaran p WHERE j.idpelajaran = '$id' AND j.idpelajaran = p.replid ORDER BY p.nama";   
 		$result = QueryDb($sql);
 		$cnt = 0;
 		while ($row = @mysql_fetch_row($result)) {

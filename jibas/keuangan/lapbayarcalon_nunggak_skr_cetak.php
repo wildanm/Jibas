@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -66,9 +66,9 @@ $tgl = MySqlDateFormat($tanggal);
 <?
 OpenDb();
 if ($kelompok == -1)
-	$sql = "SELECT p.idcalon, datediff('$tgl', max(tanggal)) AS x FROM penerimaaniurancalon p, jbsakad.calonsiswa c, jbsakad.prosespenerimaansiswa r WHERE p.idpenerimaan = $idpenerimaan AND c.replid = p.idcalon AND c.idproses = r.replid AND r.aktif = 1 GROUP BY p.idcalon HAVING x >= $telat ORDER BY tanggal DESC";
+	$sql = "SELECT p.idcalon, datediff('$tgl', max(tanggal)) AS x FROM penerimaaniurancalon p, jbsakad.calonsiswa c, jbsakad.prosespenerimaansiswa r WHERE p.idpenerimaan = '$idpenerimaan' AND c.replid = p.idcalon AND c.idproses = r.replid AND r.aktif = 1 GROUP BY p.idcalon HAVING x >= '$telat' ORDER BY tanggal DESC";
 else
-	$sql = "SELECT p.idcalon, datediff('$tgl', max(tanggal)) AS x FROM penerimaaniurancalon p, jbsakad.calonsiswa c WHERE p.idpenerimaan = $idpenerimaan AND c.replid = p.idcalon AND c.idkelompok = $kelompok GROUP BY p.idcalon HAVING x >= $telat ORDER BY tanggal DESC";
+	$sql = "SELECT p.idcalon, datediff('$tgl', max(tanggal)) AS x FROM penerimaaniurancalon p, jbsakad.calonsiswa c WHERE p.idpenerimaan = '$idpenerimaan' AND c.replid = p.idcalon AND c.idkelompok = '$kelompok' GROUP BY p.idcalon HAVING x >= '$telat' ORDER BY tanggal DESC";
  
 //echo  "$sql<br>";
 $result = QueryDb($sql);
@@ -93,7 +93,7 @@ $max_n_cicilan = $row[0];
 $table_width = 810 + $max_n_cicilan * 90;
 
 //Dapatkan namapenerimaan
-$sql = "SELECT nama, departemen FROM datapenerimaan WHERE replid=$idpenerimaan";
+$sql = "SELECT nama, departemen FROM datapenerimaan WHERE replid='$idpenerimaan'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapenerimaan = $row[0];
@@ -101,7 +101,7 @@ $departemen = $row[1];
 
 $namakelompok = "Semua Kelompok";
 if ($kelompok <> -1) {
-	$sql = "SELECT proses, kelompok FROM jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE k.replid = $kelompok AND k.idproses = p.replid";
+	$sql = "SELECT proses, kelompok FROM jbsakad.kelompokcalonsiswa k, jbsakad.prosespenerimaansiswa p WHERE k.replid = '$kelompok' AND k.idproses = p.replid";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_row($result);
 	$namaproses = $row[0];
@@ -172,7 +172,7 @@ while ($row = mysql_fetch_array($result)) {
     <td align="center"><?=$row['nopendaftaran'] ?></td>
     <td><?=$row['nama'] ?></td>
     <td align="center"><?=$row['kelompok'] ?></td>
-<?	$sql = "SELECT count(*) FROM penerimaaniurancalon WHERE idcalon = $replid AND idpenerimaan = $idpenerimaan";
+<?	$sql = "SELECT count(*) FROM penerimaaniurancalon WHERE idcalon = '$replid' AND idpenerimaan = '$idpenerimaan'";
 	//echo  "$sql<br>";
 	$result2 = QueryDb($sql);
 	$row2 = mysql_fetch_row($result2);
@@ -181,7 +181,7 @@ while ($row = mysql_fetch_array($result)) {
 	$totalbayar = 0;
 	
 	if ($nbayar > 0) {
-		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaaniurancalon WHERE idcalon = $replid AND idpenerimaan = $idpenerimaan ORDER BY tanggal";
+		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaaniurancalon WHERE idcalon = '$replid' AND idpenerimaan = '$idpenerimaan' ORDER BY tanggal";
 		$result2 = QueryDb($sql);
 		while ($row2 = mysql_fetch_row($result2)) {
 			$totalbayar = $totalbayar + $row2[1]; ?>
@@ -203,7 +203,7 @@ while ($row = mysql_fetch_array($result)) {
         </td>
     <? }?>
     <td align="center">
-<?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM penerimaaniurancalon WHERE idcalon = $replid AND idpenerimaan = $idpenerimaan";
+<?	$sql = "SELECT max(datediff('$tgl', tanggal)) FROM penerimaaniurancalon WHERE idcalon = '$replid' AND idpenerimaan = '$idpenerimaan'";
 	$result2 = QueryDb($sql);
 	$row2 = mysql_fetch_row($result2);
 	echo  $row2[0]; ?>

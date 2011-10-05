@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -98,7 +98,7 @@ if ($idtingkat == -1)
 	$sqlsiswa = "SELECT DISTINCT s.nis, s.nama, s.pinsiswa, t.tingkat, k.kelas, s.alamatsiswa, s.kodepossiswa, s.namaayah, s.namaibu, s.telponortu, s.hportu
 			 	   FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t, jbsfina.besarjtt b
 				  WHERE s.idkelas = k.replid AND k.idtingkat = t.replid AND s.nis = b.nis AND b.besar <> 0 AND b.lunas = 0 AND b.info2 = '$idtahunbuku' AND 
-				        t.departemen = '$departemen' AND s.idangkatan = $idangkatan
+				        t.departemen = '$departemen' AND s.idangkatan = '$idangkatan'
    		       ORDER BY t.urutan, k.kelas, s.nama";
 } 
 else 
@@ -109,7 +109,7 @@ else
 		$sqlsiswa = "SELECT DISTINCT s.nis, s.nama, s.pinsiswa, t.tingkat, k.kelas, s.alamatsiswa, s.kodepossiswa, s.namaayah, s.namaibu, s.telponortu, s.hportu
 				 	   FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t, jbsfina.besarjtt b
 				 	  WHERE s.idkelas = k.replid AND k.idtingkat = t.replid AND s.nis = b.nis AND b.besar <> 0 AND b.lunas = 0 AND b.info2 = '$idtahunbuku' AND 
-					        t.replid = $idtingkat AND t.departemen = '$departemen' AND s.idangkatan = $idangkatan
+					        t.replid = '$idtingkat' AND t.departemen = '$departemen' AND s.idangkatan = '$idangkatan'
 			  	   ORDER BY t.urutan, k.kelas, s.nama";
 	} 
 	else 
@@ -118,7 +118,7 @@ else
 		$sqlsiswa = "SELECT DISTINCT s.nis, s.nama, s.pinsiswa, t.tingkat, k.kelas, s.alamatsiswa, s.kodepossiswa, s.namaayah, s.namaibu, s.telponortu, s.hportu
 				 	   FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t, jbsfina.besarjtt b
 				 	  WHERE s.idkelas = k.replid AND k.idtingkat = t.replid AND s.nis = b.nis AND b.besar <> 0 AND b.lunas = 0 AND b.info2 = '$idtahunbuku' AND 
-					        k.replid = $idkelas AND t.replid = $idtingkat AND t.departemen = '$departemen' AND s.idangkatan = $idangkatan
+					        k.replid = '$idkelas' AND t.replid = '$idtingkat' AND t.departemen = '$departemen' AND s.idangkatan = '$idangkatan'
 	  			   ORDER BY t.urutan, k.kelas, s.nama";
 	}
 }
@@ -203,7 +203,7 @@ $width = 1180 + $n_arrpen * 600;
 			$idpenerimaan = $arrpen[$i][0];
 			$sql = "SELECT b.nis, b.besar, SUM(p.jumlah) AS jumlah, b.cicilan
 			          FROM besarjtt b, penerimaanjtt p
-					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = $idpenerimaan AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
+					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = '$idpenerimaan' AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
 				  GROUP BY b.nis";
 			$res2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($res2);
@@ -214,7 +214,7 @@ $width = 1180 + $n_arrpen * 600;
 			
 			$sql = "SELECT DATE_FORMAT(p.tanggal, '%d-%b-%Y') AS tanggal, p.jumlah, p.keterangan
 				      FROM besarjtt b, penerimaanjtt p 
-					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = $idpenerimaan AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
+					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = '$idpenerimaan' AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
 				  ORDER BY tanggal DESC
 				     LIMIT 1";
 			$res2 = QueryDb($sql);

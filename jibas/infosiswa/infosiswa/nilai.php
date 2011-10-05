@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -138,7 +138,7 @@ if (isset($_REQUEST['pelajaran']))
 				<td class="gry"><strong class="news_content1">Pelajaran </strong></td>
 				<td>
 				<select name="pelajaran" class="cmbfrm" id="pelajaran" style="width:200px" onChange="ChgPelNil(this.value)">
-				<? $sql = "SELECT DISTINCT p.replid, p.nama FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = $kelas AND u.replid = n.idujian AND n.nis = '$nis' ".
+				<? $sql = "SELECT DISTINCT p.replid, p.nama FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kelas' AND u.replid = n.idujian AND n.nis = '$nis' ".
 				"ORDER BY p.nama";
 					//echo '<br> sql '.$sql;
 					$result = QueryDb($sql); 				
@@ -196,7 +196,7 @@ if (isset($_REQUEST['pelajaran']))
 							<a href="JavaScript:cetaknil('X_<?=$semester?>')"><img src="../images/ico/print.png" border="0" />&nbsp;Cetak</a>              </td>
 						</tr>
 						<?	OpenDb();
-							$sql = "SELECT j.replid, j.jenisujian FROM jenisujian j, ujian u WHERE j.idpelajaran = $pelajaran AND u.idjenis = j.replid ".
+							$sql = "SELECT j.replid, j.jenisujian FROM jenisujian j, ujian u WHERE j.idpelajaran = '$pelajaran' AND u.idjenis = j.replid ".
 							"GROUP BY j.jenisujian";
 							
 							$result = QueryDb($sql);
@@ -209,7 +209,7 @@ if (isset($_REQUEST['pelajaran']))
 							<fieldset><legend><span class="news_title2"><?=$row['jenisujian']?></span></legend>
 							<br />
 							<? 	OpenDb();		
-								$sql1 = "SELECT u.tanggal, n.nilaiujian, n.keterangan FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = $kelas AND u.idpelajaran = $pelajaran AND u.idsemester = ".$semester." AND u.idjenis = $row[replid] AND u.replid = n.idujian AND n.nis = '$nis' ".
+								$sql1 = "SELECT u.tanggal, n.nilaiujian, n.keterangan FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kelas' AND u.idpelajaran = '$pelajaran' AND u.idsemester = '".$semester."' AND u.idjenis = '$row[replid]' AND u.replid = n.idujian AND n.nis = '$nis' ".
 								"ORDER BY u.tanggal";
 								$result1 = QueryDb($sql1);
 								
@@ -223,7 +223,7 @@ if (isset($_REQUEST['pelajaran']))
 										<td width="*">Keterangan</td>
 									</tr>
 									<?	
-										$sql2 = "SELECT AVG(n.nilaiujian) as rata FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = $kelas AND u.idpelajaran = $pelajaran AND u.idsemester = ".$semester." AND u.idjenis = $row[replid] AND u.replid = n.idujian AND n.nis = '$nis' ";
+										$sql2 = "SELECT AVG(n.nilaiujian) as rata FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kelas' AND u.idpelajaran = '$pelajaran' AND u.idsemester = '".$semester."' AND u.idjenis = '$row[replid]' AND u.replid = n.idujian AND n.nis = '$nis' ";
 										$result2 = QueryDb($sql2);	
 										$row2 = @mysql_fetch_array($result2);
 										$rata = $row2[rata];

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ class CDaftarDenda{
 	function OnStart(){
 		$op=$_REQUEST[op];
 		if ($op=="del"){
-			$sql = "DELETE FROM format WHERE replid=$_REQUEST[id]";
+			$sql = "DELETE FROM format WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
 		$this->kriteria='all';
@@ -95,7 +95,7 @@ class CDaftarDenda{
           <tr>
             <td width="110">Tampilkan&nbsp;berdasarkan</td>
             <td width="400">
-            <select name="kriteria" id="kriteria" onchange="chgKrit()">
+            <select name="kriteria" id="kriteria" onchange="chgKrit()" class='cmbfrm'>
            	  <option value="all" <?=StringIsSelected('all',$this->kriteria)?> >Semua Pengembalian</option>
               <option value="tglpinjam" <?=StringIsSelected('tglpinjam',$this->kriteria)?>>Tanggal Peminjaman</option>
               <option value="tglkembali" <?=StringIsSelected('tglkembali',$this->kriteria)?>>Jadwal Pengembalian</option>
@@ -176,7 +176,7 @@ class CDaftarDenda{
 		  if ($num>0){
 			  $totaldenda=0;	
 			  while ($row=@mysql_fetch_array($result)){
-			  $sql = "SELECT pi.idanggota, pi.kodepustaka FROM $db_name_perpus.pustaka p, $db_name_perpus.daftarpustaka d, $db_name_perpus.pinjam pi WHERE d.pustaka=p.replid AND d.kodepustaka=pi.kodepustaka AND pi.replid=$row[idpinjam]";
+			  $sql = "SELECT pi.idanggota, pi.kodepustaka FROM $db_name_perpus.pustaka p, $db_name_perpus.daftarpustaka d, $db_name_perpus.pinjam pi WHERE d.pustaka=p.replid AND d.kodepustaka=pi.kodepustaka AND pi.replid='$row[idpinjam]'";
 			  //echo $sql;
 			  $res = QueryDb($sql);
 			  $r = @mysql_fetch_row($res);

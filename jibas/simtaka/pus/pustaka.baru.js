@@ -15,6 +15,8 @@ function validate(count){
 	var format = document.getElementById('format').value;
 	var keyword = document.getElementById('keyword').value;
 	var ketfisik = document.getElementById('keteranganfisik').value;
+
+	var cover = document.getElementById('cover').value;
 	//alert ('MAsuk jum perpus='+count);
 
 	if (judul.length==0)
@@ -80,6 +82,25 @@ function validate(count){
 		document.getElementById('keyword').focus();
 		return false;
 	}
+
+	if (cover.length>0){
+		var ext = "";
+		var i = 0;
+		var string4split='.';
+
+		z = cover.split(string4split);
+		ext = z[z.length-1];
+		
+		if (ext!='JPG' && ext!='jpg' && ext!='Jpg' && ext!='JPg' && ext!='JPEG' && ext!='jpeg'){
+			alert ('Format Gambar harus ber-extensi jpg atau JPG !');
+			//document.getElementById('cover').value='';
+	
+			return false;
+		} 
+	}
+		
+		
+	
 	var acc=0;
 	var i=0;
 	while (i<count)

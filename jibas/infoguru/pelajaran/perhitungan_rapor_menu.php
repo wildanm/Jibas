@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,7 +31,7 @@ require_once('../library/departemen.php');
 if (isset($_REQUEST['nip'])){ //0
 	$nip=$_REQUEST['nip'];
 	OpenDb();
-		$sql = "SELECT p.nama from jbssdm.pegawai p WHERE p.nip=$nip ";    
+		$sql = "SELECT p.nama from jbssdm.pegawai p WHERE p.nip='$nip' ";    
 		$result = QueryDb($sql);
 		$cnt = 0;
 		if ($row = @mysql_fetch_array($result)) {
@@ -77,7 +77,7 @@ function acceptPegawai(nip, nama, flag) {
 
 <?
 OpenDb();
-$sql="SELECT DISTINCT pel.departemen FROM pelajaran pel, guru g WHERE g.nip=$nip AND pel.replid=g.idpelajaran";
+$sql="SELECT DISTINCT pel.departemen FROM pelajaran pel, guru g WHERE g.nip='$nip' AND pel.replid=g.idpelajaran";
 $result = QueryDb($sql);
 		$cnt = 0;
 		while ($row = @mysql_fetch_array($result)) {
@@ -90,7 +90,7 @@ $result = QueryDb($sql);
         <table class="tab" id="table" border="1" cellpadding="2" style="border-collapse:collapse" cellspacing="2" width="80%" align="left" bordercolor="#000000">
         <tr><td class="header" align="center"><?=$departemen?></td></tr>
         <? 
-		$sql2="SELECT pel.nama,pel.departemen,pel.replid FROM pelajaran pel, guru g WHERE g.nip=$nip AND pel.replid=g.idpelajaran AND pel.departemen='$departemen' GROUP BY pel.nama";
+		$sql2="SELECT pel.nama,pel.departemen,pel.replid FROM pelajaran pel, guru g WHERE g.nip='$nip' AND pel.replid=g.idpelajaran AND pel.departemen='$departemen' GROUP BY pel.nama";
 		$result2 = QueryDb($sql2);
 		$cnt2 = 0;
 		while ($row2 = @mysql_fetch_array($result2)) {

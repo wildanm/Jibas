@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,8 +33,12 @@ class CPenggunaAdd{
 		if (isset($_REQUEST[nama]))
 			$this->nama=$_REQUEST[nama];
 		$this->perpustakaan=$_REQUEST[perpustakaan];
+		$this->keterangan=CQ($_REQUEST[keterangan]);
+		
+		
 		//echo "Tingkat=".$this->tingkat;		
 		if (isset($_REQUEST[simpan])){
+			
 			$nip = $_REQUEST[nip];
 			$sql = "SELECT * FROM ".get_db_name('user').".login WHERE login='$nip' ";
 			$result = QueryDb($sql);
@@ -45,9 +49,9 @@ class CPenggunaAdd{
 				$num = @mysql_num_rows($result);
 				if ($num==0){
 					if ($this->tingkat=='1')
-						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat'";
+						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', keterangan='$this->keterangan'";
 					else
-						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan'"; 
+						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', keterangan='$this->keterangan'"; 
 					$result = QueryDb($sql);
 					//echo $sql;
 					if ($result)
@@ -63,7 +67,7 @@ class CPenggunaAdd{
 				$result = QueryDb($sql);
 				$num = @mysql_num_rows($result);
 				if ($num==0){
-					$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan'";
+					$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', keterangan='$this->keterangan'";
 					$result = QueryDb($sql);
 					if ($result)
 						$this->success();

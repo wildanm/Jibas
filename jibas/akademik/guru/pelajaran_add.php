@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,11 +34,11 @@ if (isset($_REQUEST['departemen']))
 	
 $kode = "";
 if (isset($_REQUEST['kode']))
-	$kode = $_REQUEST['kode'];
+	$kode = CQ($_REQUEST['kode']);
 
 $nama = "";
 if (isset($_REQUEST['nama']))
-	$nama = $_REQUEST['nama'];
+	$nama = CQ($_REQUEST['nama']);
 
 $sifat = "";
 if (isset($_REQUEST['sifat']))
@@ -46,7 +46,7 @@ if (isset($_REQUEST['sifat']))
 
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];	
+	$keterangan = CQ($_REQUEST['keterangan']);	
 
 $ERROR_MSG = "";
 
@@ -59,7 +59,7 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();
 		$ERROR_MSG = "Singkatan $kode sudah digunakan!";		
 	} else {
-		$sql = "INSERT INTO pelajaran SET kode='$kode',departemen='$departemen',nama='$nama',sifat=$sifat,keterangan='$keterangan'";
+		$sql = "INSERT INTO pelajaran SET kode='$kode',departemen='$departemen',nama='$nama',sifat='$sifat',keterangan='$keterangan'";
 		$result = QueryDb($sql);
 		CloseDb();
 	

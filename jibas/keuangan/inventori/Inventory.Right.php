@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -29,7 +29,7 @@ OpenDb();
 $idkelompok = $_REQUEST[idkelompok];
 if ($idkelompok=="")
 	exit;
-$sql = "SELECT kelompok FROM jbsfina.kelompokbarang WHERE replid=$idkelompok";
+$sql = "SELECT kelompok FROM jbsfina.kelompokbarang WHERE replid='$idkelompok'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $namakelompok = $row[0];
@@ -99,11 +99,11 @@ function ViewDetail(idbarang,evt){
 
 <body>
 <fieldset style="border:#336699 1px solid; background-color:#FFFFFF" >
-<legend style="background-color:#336699; color:#FFFFFF; font-size:10px; font-weight:bold; padding:5px">&nbsp;Kelompok&nbsp;<?=$namakelompok?>&nbsp;</legend>
+<legend style="background-color:#336699; color:#FFFFFF; font-size:10px; font-weight:bold; padding:5px">&nbsp;Kelompok&nbsp;<?=stripslashes($namakelompok)?>&nbsp;</legend>
 <div align="right">
   <a href="javascript:TambahBarang('<?=$idkelompok?>')"><img src="../images/ico/tambah.png" border="0" />Tambah Barang</a></div>
 <?
-$sql = "SELECT * FROM jbsfina.barang WHERE idkelompok=$idkelompok";
+$sql = "SELECT * FROM jbsfina.barang WHERE idkelompok='$idkelompok'";
 $result = QueryDb($sql);
 $num = @mysql_num_rows($result);
 $total = ceil(mysql_num_rows($result)/(int)$varkolom);
@@ -122,7 +122,7 @@ if ($cnt==1 || $cnt%(int)$varkolom==1){
 <img src="gambar.php?table=jbsfina.barang&replid=<?=$row[replid]?>"  style="padding:2px" />
 <div align="left">
 <span style="font-family:Arial; font-size:14px; font-weight:bold; color:#990000"><?=$row[kode]?></span><br />
-<span style="font-family:Arial; font-size:12px; font-weight:bold; color:#006600"><?=$row[nama]?></span><br />
+<span style="font-family:Arial; font-size:12px; font-weight:bold; color:#006600; cursor:pointer"><?=$row[nama]?></span><br />
 <strong><?=$row[jumlah]?>&nbsp;<?=$row[satuan]?></strong><br />
 <span style="font-family:Arial; font-size:12px; font-weight:bold; ">Tgl&nbsp;Perolehan:&nbsp;<?=substr($row[tglperolehan],8,2)."-".substr($row[tglperolehan],5,2)."-".substr($row[tglperolehan],0,4)?></span><br />
 <img src="../images/ico/ubah.png" border="0" onclick="ubah('<?=$row[replid]?>', event)" title="Ubah" style="cursor:pointer; z-index:100" />&nbsp;<img src="../images/ico/hapus.png" border="0" onclick="hapus('<?=$row[replid]?>', event)" title="Hapus" style="cursor:pointer; z-index:100" />
@@ -148,7 +148,7 @@ $cnt++;
 ?>
 </table>
 <? } else { ?>
-<div align="center"><span style="font-family:verdana; font-size:12px; font-style:italic; color:#666666">Tidak ada Data Barang Untuk Kelompok <?=$namakelompok?></span></div>
+<div align="center"><span style="font-family:verdana; font-size:12px; font-style:italic; color:#666666">Tidak ada Data Barang Untuk Kelompok <?=stripslashes($namakelompok)?></span></div>
 <? } ?>
 </fieldset>
 </body>

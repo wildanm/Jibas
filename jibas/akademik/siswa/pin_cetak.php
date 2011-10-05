@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -32,7 +32,7 @@ $urut = $_REQUEST['urut'];
 $urutan = $_REQUEST['urutan'];
 
 OpenDb();
-$sql = "SELECT a.tahunajaran, t.tingkat, k.kelas, a.departemen FROM kelas k, tahunajaran a, tingkat t WHERE k.replid = $kelas AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";
+$sql = "SELECT a.tahunajaran, t.tingkat, k.kelas, a.departemen FROM kelas k, tahunajaran a, tingkat t WHERE k.replid = '$kelas' AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid";
 $result = QueryDb($sql);
 $row =@mysql_fetch_array($result);
 $namatahun = $row['tahunajaran'];
@@ -84,7 +84,7 @@ $departemen = $row['departemen'];
 		<td width="12%" class="header" align="center">PIN Ibu</td>
     </tr>
 <? 	OpenDb();
-	$sql = "SELECT * FROM jbsakad.siswa s WHERE s.idkelas = $kelas AND s.aktif = 1 ORDER BY $urut $urutan ";   
+	$sql = "SELECT * FROM jbsakad.siswa s WHERE s.idkelas = '$kelas' AND s.aktif = 1 ORDER BY $urut $urutan ";   
 	$result = QueryDB($sql);
 	$cnt = 0;
 	while ($row = mysql_fetch_array($result)) { ?>

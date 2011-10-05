@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -66,20 +66,20 @@ if (isset($_GET["op"]))
 
 OpenDb();
 if ($op == "del") {
-	$sql = "SELECT replid FROM jbsakad.infonap WHERE idpelajaran = $pelajaran AND idsemester = $semester AND idkelas = $kelas ";
+	$sql = "SELECT replid FROM jbsakad.infonap WHERE idpelajaran ='$pelajaran' AND idsemester = '$semester' AND idkelas = '$kelas' ";
 	$result = QueryDb($sql) or die(mysql_error());
 	$num = mysql_num_rows($result);
 	
 	if ($num > 0) {
 		$row = mysql_fetch_array($result);
 		
-		$sql = "DELETE FROM jbsakad.nap WHERE idinfo = $row[replid]";
+		$sql = "DELETE FROM jbsakad.nap WHERE idinfo = '$row[replid]'";
 		$result = QueryDb($sql) or die(mysql_error());
 		
-		$sql = "DELETE FROM jbsakad.komennap WHERE idinfo = $row[replid]";
+		$sql = "DELETE FROM jbsakad.komennap WHERE idinfo = '$row[replid]'";
 		$result = QueryDb($sql) or die(mysql_error());
 		
-		$sql = "DELETE FROM jbsakad.infonap WHERE replid = $row[replid]";
+		$sql = "DELETE FROM jbsakad.infonap WHERE replid = '$row[replid]'";
 		$result = QueryDb($sql) or die(mysql_error());
 	}
 }

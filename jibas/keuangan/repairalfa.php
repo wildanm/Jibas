@@ -14,7 +14,7 @@ $n_pasiva = 0;
 
 $sql = "SELECT jd.koderek, SUM(jd.debet - jd.kredit) 
 			 FROM jurnal j, jurnaldetail jd, rekakun ra 
-		   WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+		   WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 			  AND ra.kategori IN ('HARTA', 'PIUTANG', 'INVENTARIS') 
 		GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 $result = QueryDb($sql); 
@@ -27,7 +27,7 @@ while($row = mysql_fetch_row($result))
 
 $sql = "SELECT jd.koderek, sum(jd.kredit - jd.debet) 
 			 FROM jurnal j, jurnaldetail jd, rekakun ra 
-			WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+			WHERE j.replid = jd.idjurnal AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 			  AND ra.kategori = 'UTANG' 
 		GROUP BY jd.koderek, ra.nama ORDER BY jd.koderek";
 $result = QueryDb($sql); 
@@ -40,13 +40,13 @@ while($row = mysql_fetch_row($result))
 
 $sql = "SELECT SUM(jd.kredit - jd.debet) 
 		    FROM rekakun ra, jurnal j, jurnaldetail jd 
-		   WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+		   WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 			  AND ra.kategori IN ('PENDAPATAN', 'MODAL')";
 $income = (float)FetchSingle($sql);
 		
 $sql = "SELECT SUM(jd.debet - jd.kredit) 
 			 FROM rekakun ra, jurnal j, jurnaldetail jd 
-			WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+			WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 			  AND ra.kategori='BIAYA'";
 $outcome = (float)FetchSingle($sql);
 

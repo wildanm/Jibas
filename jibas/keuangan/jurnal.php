@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -48,9 +48,9 @@ function SimpanDetailJurnal($idjurnal, $align, $koderek, $jumlah)
 	$success = 0;
 	
 	if ($align == "D")
-		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',debet=$jumlah";
+		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',debet='$jumlah'";
 	else
-		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',kredit=$jumlah";
+		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',kredit='$jumlah'";
 	//echo  "$sql<br>";		
 	QueryDbTrans($sql, $success);
 	

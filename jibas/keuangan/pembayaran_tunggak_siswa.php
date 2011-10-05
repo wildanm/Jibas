@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -84,15 +84,15 @@ if ($idkategori == "JTT")
 {
 	$sql = "SELECT COUNT(DISTINCT s.nis) 
 			    FROM besarjtt b, penerimaanjtt p, jurnal j, jbsakad.siswa s
-			   WHERE b.idpenerimaan = $idpenerimaan AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
-			     AND j.idtahunbuku = $idtahunbuku AND b.lunas = 0 AND b.nis = s.nis";
+			   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
+			     AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.nis = s.nis";
 }
 else
 {
 	$sql = "SELECT COUNT(DISTINCT cs.replid)  
 			    FROM besarjttcalon b, penerimaanjttcalon p, jurnal j, jbsakad.calonsiswa cs
-			   WHERE b.idpenerimaan = $idpenerimaan AND b.replid = p.idbesarjttcalon AND p.idjurnal = j.replid 
-			     AND j.idtahunbuku = $idtahunbuku AND b.lunas = 0 AND b.idcalon = cs.replid";	
+			   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjttcalon AND p.idjurnal = j.replid 
+			     AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid";	
 }
 
 $ndata = FetchSingle($sql);
@@ -121,15 +121,15 @@ else
 	 {
 			$sql = "SELECT DISTINCT b.nis, s.nama 
 			 			FROM besarjtt b, penerimaanjtt p, jurnal j, jbsakad.siswa s
-					   WHERE b.idpenerimaan = $idpenerimaan AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
-						 AND j.idtahunbuku = $idtahunbuku AND b.lunas = 0 AND b.nis = s.nis ORDER BY nama LIMIT $minno, $nitem";
+					   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
+						 AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.nis = s.nis ORDER BY nama LIMIT $minno, $nitem";
 	 }
 	 else
 	 {
 			$sql = "SELECT DISTINCT cs.nopendaftaran, cs.nama 
 						FROM besarjttcalon b, penerimaanjttcalon p, jurnal j, jbsakad.calonsiswa cs
 						WHERE b.replid = p.idbesarjttcalon AND p.idjurnal = j.replid 
-						 AND j.idtahunbuku = $idtahunbuku AND b.lunas = 0 AND b.idcalon = cs.replid ORDER BY nama LIMIT $minno, $nitem";	
+						 AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid ORDER BY nama LIMIT $minno, $nitem";	
 	 }
 	 $res = QueryDb($sql);
 	 

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -139,10 +139,10 @@ function change_urut(urut,urutan) {
     <? 		
 	OpenDb();
 	if ($pelajaran == -1) {		
-		$sql = "SELECT DISTINCT s.nis, s.nama, s.telponsiswa, s.hpsiswa, s.namaayah, s.telponortu, s.hportu, s.aktif FROM siswa s, presensipelajaran p, ppsiswa pp, kelas k WHERE pp.idpp = p.replid AND pp.nis = s.nis AND s.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' ORDER BY $urut $urutan";
+		$sql = "SELECT DISTINCT s.nis, s.nama, s.telponsiswa, s.hpsiswa, s.namaayah, s.telponortu, s.hportu, s.aktif FROM siswa s, presensipelajaran p, ppsiswa pp, kelas k WHERE pp.idpp = p.replid AND pp.nis = s.nis AND s.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' ORDER BY $urut $urutan";
 		
 	} else {
-		$sql = "SELECT DISTINCT s.nis, s.nama, s.telponsiswa, s.hpsiswa, s.namaayah, s.telponortu, s.hportu, s.aktif FROM siswa s, presensipelajaran p, ppsiswa pp, kelas k WHERE pp.idpp = p.replid AND pp.nis = s.nis AND s.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = $pelajaran ORDER BY $urut $urutan"; 
+		$sql = "SELECT DISTINCT s.nis, s.nama, s.telponsiswa, s.hpsiswa, s.namaayah, s.telponortu, s.hportu, s.aktif FROM siswa s, presensipelajaran p, ppsiswa pp, kelas k WHERE pp.idpp = p.replid AND pp.nis = s.nis AND s.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = '$pelajaran' ORDER BY $urut $urutan"; 
 	}	
 	//echo $sql;
 	$result = QueryDb($sql);			 
@@ -194,9 +194,9 @@ function change_urut(urut,urutan) {
         <td><?=$row[1]?></td>
         <td align="center">
     <?  if ($pelajaran == -1) {		
-            $sql1 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir = 0 AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' " ;	
+            $sql1 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir = 0 AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' " ;	
         } else {
-            $sql1 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir = 0 AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = $pelajaran" ;	
+            $sql1 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir = 0 AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = '$pelajaran'" ;	
         }
     
             //echo $sql1;			
@@ -206,9 +206,9 @@ function change_urut(urut,urutan) {
             echo $row1[0]; 	?></td>
         <td align="center">
     <? 	if ($pelajaran == -1) {		
-            $sql2 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir <> 0 AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir'  " ;
+            $sql2 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir <> 0 AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir'  " ;
         } else {
-            $sql2 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir <> 0 AND pp.idpp = p.replid AND p.idkelas = $kelas AND p.idsemester = $semester AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = $pelajaran" ;					
+            $sql2 = "SELECT COUNT(*) FROM ppsiswa pp, presensipelajaran p WHERE pp.nis = '$row[0]' AND pp.statushadir <> 0 AND pp.idpp = p.replid AND p.idkelas = '$kelas' AND p.idsemester = '$semester' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.idpelajaran = '$pelajaran'" ;					
         }
             $result2 = QueryDb($sql2);
             $row2 = @mysql_fetch_array($result2);

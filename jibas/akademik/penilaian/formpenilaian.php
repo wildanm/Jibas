@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -302,7 +302,7 @@ function d(){
       <td><strong>Guru</strong></td>
       <td colspan="3">
       		<select name="nip" id="nip" onChange="change()" style="width:465px">
-<?			$sql = "SELECT DISTINCT p.nip,p.nama FROM jbssdm.pegawai p, guru g, pelajaran l WHERE p.nip = g.nip AND g.idpelajaran = $pelajaran AND g.aktif = 1  ORDER BY p.nama  ";
+<?			$sql = "SELECT DISTINCT p.nip,p.nama FROM jbssdm.pegawai p, guru g, pelajaran l WHERE p.nip = g.nip AND g.idpelajaran = '$pelajaran' AND g.aktif = 1  ORDER BY p.nama  ";
 			$result = QueryDb($sql);
 			while ($row = @mysql_fetch_array($result)) 
 			{
@@ -338,7 +338,7 @@ function d(){
 $ERROR_MSG = "";
 if (isset($_REQUEST['jenis'])) 
 {
-	$sql = "SELECT nis, nama FROM siswa WHERE idkelas = $kelas ORDER BY nama";
+	$sql = "SELECT nis, nama FROM siswa WHERE idkelas = '$kelas' ORDER BY nama";
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) 
@@ -353,7 +353,7 @@ if (isset($_REQUEST['jenis']))
 <?					
 					break;
 			case 2 :
-				$sql1="SELECT * FROM jbsakad.aturannhb WHERE idtingkat=$tingkat AND idpelajaran=$pelajaran AND aktif=1 AND nipguru='$nip'";
+				$sql1="SELECT * FROM jbsakad.aturannhb WHERE idtingkat='$tingkat' AND idpelajaran='$pelajaran' AND aktif=1 AND nipguru='$nip'";
 				$result1=QueryDb($sql1);
 				if (mysql_num_rows($result1) > 0) {
 			?>

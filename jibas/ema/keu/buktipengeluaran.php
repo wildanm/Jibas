@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,7 +56,7 @@ if ($jpemohon == 1)
 else if ($jpemohon == 2)
 	$sql = "SELECT nama FROM siswa WHERE nis = '$idpemohon'";
 else
-	$sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = $idpemohon";
+	$sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = '$idpemohon'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namapemohon = $row[0];
@@ -68,14 +68,14 @@ $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $tglcetak = $row[0];
 
-$sql = "SELECT nokas FROM $db_name_fina.jurnal WHERE replid = $idjurnal";
+$sql = "SELECT nokas FROM $db_name_fina.jurnal WHERE replid = '$idjurnal'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $nokas = $row[0];
 
 CloseDb();
 OpenDb();
-$sql = "SELECT departemen FROM $db_name_fina.pengeluaran p, $db_name_fina.jurnal j, $db_name_fina.tahunbuku t WHERE p.replid=$idtransaksi AND p.idjurnal=j.replid AND j.idtahunbuku=t.replid";
+$sql = "SELECT departemen FROM $db_name_fina.pengeluaran p, $db_name_fina.jurnal j, $db_name_fina.tahunbuku t WHERE p.replid='$idtransaksi' AND p.idjurnal=j.replid AND j.idtahunbuku=t.replid";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 $departemen = $row[departemen];

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -66,7 +66,7 @@ $cnt++;
 CloseDb();
 if ($op=="14075BUSYCODACALLDIFF"){
 	OpenDb();
-	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid=$_REQUEST[replid]"));
+	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'"));
 	//echo $GALLERY_DIR."photos\\".$r[filename];
 	//echo $GALLERY_DIR."thumbnails\\X".$r[filename]; exit;
 	if (file_exists($GALLERY_DIR."photos\\".$r[filename]) && file_exists($GALLERY_DIR."photos\\".$r[filename])){
@@ -78,7 +78,7 @@ if ($op=="14075BUSYCODACALLDIFF"){
 	}
 	//echo file_exists($GALLERY_DIR."photos\\".$r[filename]);
 	//exit;
-	QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid=$_REQUEST[replid]");
+	QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'");
 	CloseDb();
 ?>
 <script type="text/javascript">

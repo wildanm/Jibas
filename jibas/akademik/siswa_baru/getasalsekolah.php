@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ $urutan = $row['urutan'];
 <? // Olah untuk combo departemen
 	
 	OpenDb();
-	$sql_departemen="SELECT departemen,urutan FROM jbsakad.departemen WHERE urutan < $urutan ORDER BY urutan DESC LIMIT 1";			
+	$sql_departemen="SELECT departemen,urutan FROM jbsakad.departemen WHERE urutan < '$urutan' ORDER BY urutan DESC LIMIT 1";			
 	$result_departemen=QueryDB($sql_departemen);
 	if (mysql_num_rows($result_departemen) == 0) {
 		$dep_asal = $departemen;

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -60,7 +60,7 @@ if (mysql_num_rows($result_cek) > 0) {*/
 	if ($_REQUEST['action'] == 'Update') 
 		$filter = "AND replid <> $replid";
     
-	$sql_action = "SELECT tanggal1, tanggal2 FROM presensiharian WHERE (((tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN tanggal1 AND tanggal2) OR ('$tglakhir' BETWEEN tanggal1 AND tanggal2))) AND idkelas = $kelas AND idsemester = $semester $filter";	
+	$sql_action = "SELECT tanggal1, tanggal2 FROM presensiharian WHERE (((tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN tanggal1 AND tanggal2) OR ('$tglakhir' BETWEEN tanggal1 AND tanggal2))) AND idkelas = '$kelas' AND idsemester = '$semester' $filter";	
 		
 	$result_action = QueryDb($sql_action);
 	$sum = mysql_num_rows($result_action);
@@ -95,13 +95,13 @@ if (mysql_num_rows($result_cek) > 0) {*/
 BeginTrans();
 $success=0;
 if ($_REQUEST['action'] == 'Update') {
-	$sql_action = "DELETE FROM phsiswa WHERE idpresensi = $replid";		
+	$sql_action = "DELETE FROM phsiswa WHERE idpresensi = '$replid'";		
 	QueryDbTrans($sql_action,$success);
-	$sql_action = "DELETE FROM presensiharian WHERE replid = $replid";		
+	$sql_action = "DELETE FROM presensiharian WHERE replid = '$replid'";		
 	QueryDbTrans($sql_action,$success);
 } 
 
-$sql = "INSERT INTO presensiharian SET idkelas=$kelas, idsemester=$semester, tanggal1='$tglawal', tanggal2 = '$tglakhir', hariaktif=$hariaktif";
+$sql = "INSERT INTO presensiharian SET idkelas='$kelas', idsemester='$semester', tanggal1='$tglawal', tanggal2 = '$tglakhir', hariaktif='$hariaktif'";
 QueryDbTrans($sql,$success);
 //echo 'sql1'.$sql.' '.$success;;
 if ($success) {

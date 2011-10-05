@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -41,7 +41,7 @@ if (isset($_REQUEST['thn']))
 if ($pelajaran == -1) 	
 	$pel = "";
 else  
-	$pel = "AND pp.idpelajaran = $pelajaran" 
+	$pel = "AND pp.idpelajaran = '$pelajaran'" 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,7 +64,7 @@ else
     <? 	
 	if ($kelas <> "") { 
 		OpenDb();
-		$sql = "SELECT DAY(pp.tanggal), MONTH(pp.tanggal), pp.jam, p.nama, g.nama, pp.materi, pp.replid FROM presensipelajaran pp, pelajaran p, jbssdm.pegawai g WHERE pp.idkelas = $kelas AND pp.idsemester = $semester $pel AND MONTH(pp.tanggal) = $bln AND YEAR(pp.tanggal) = $thn AND pp.idpelajaran = p.replid AND pp.gurupelajaran = g.nip ORDER BY pp.tanggal, pp.jam ";
+		$sql = "SELECT DAY(pp.tanggal), MONTH(pp.tanggal), pp.jam, p.nama, g.nama, pp.materi, pp.replid FROM presensipelajaran pp, pelajaran p, jbssdm.pegawai g WHERE pp.idkelas = '$kelas' AND pp.idsemester = '$semester' $pel AND MONTH(pp.tanggal) = '$bln' AND YEAR(pp.tanggal) = '$thn' AND pp.idpelajaran = p.replid AND pp.gurupelajaran = g.nip ORDER BY pp.tanggal, pp.jam ";
 		
 		$result = QueryDb($sql);			 
 		$jum = mysql_num_rows($result);

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,17 +34,17 @@ OpenDb();
 	//5.Penerbit
 	//6.Penulis
 if ($state=='1')
-	$sql = "SELECT pu.replid FROM pustaka pu, daftarpustaka d WHERE d.perpustakaan=$id AND pu.replid=d.pustaka GROUP BY d.pustaka";
+	$sql = "SELECT pu.replid FROM pustaka pu, daftarpustaka d WHERE d.perpustakaan='$id' AND pu.replid=d.pustaka GROUP BY d.pustaka";
 elseif ($state=='2')
-	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.format=$id";
+	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.format='$id'";
 elseif ($state=='3')
-	$sql = "SELECT pu.replid FROM pustaka pu, rak r, katalog k WHERE pu.katalog=k.replid AND k.rak=r.replid AND r.replid=$id";
+	$sql = "SELECT pu.replid FROM pustaka pu, rak r, katalog k WHERE pu.katalog=k.replid AND k.rak=r.replid AND r.replid='$id'";
 elseif ($state=='4')
-	$sql = "SELECT pu.replid FROM pustaka pu, katalog k WHERE pu.katalog=k.replid AND k.replid=$id ";	
+	$sql = "SELECT pu.replid FROM pustaka pu, katalog k WHERE pu.katalog=k.replid AND k.replid='$id' ";	
 elseif ($state=='5')
-	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.penerbit=$id";	
+	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.penerbit='$id'";	
 elseif ($state=='6')
-	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.penulis=$id";			
+	$sql = "SELECT pu.replid FROM pustaka pu WHERE pu.penulis='$id'";			
 $result = QueryDb($sql);
 $num = @mysql_num_rows($result);
 //echo $sql."<br>";
@@ -103,7 +103,7 @@ $num = @mysql_num_rows($result);
                         </div>
                     </td>
                     <td>
-                    <span class="news_content1"><?=$row2[0]?></span></td>
+                    <span class="news_content1"><?=stripslashes($row2[0])?></span></td>
                   </tr>
                   <tr>
                     <td>

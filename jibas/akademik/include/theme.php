@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -27,18 +27,17 @@ require_once('common.php');
 require_once('sessioninfo.php');
 */
 function GetThemeDir() {
-OpenDb();
-$sql_tema="Select theme from jbsuser.hakakses where login='".SI_USER_ID()."' AND modul='SIMAKA'";
-$hasil=QueryDb($sql_tema);
-$row_tema=mysql_fetch_array($hasil);
-$row_tema2=mysql_num_rows($hasil);
+	OpenDb();
+	$sql_tema="Select theme from jbsuser.hakakses where login='".SI_USER_ID()."' AND modul='SIMAKA'";
+	$hasil=QueryDb($sql_tema);
+	$row_tema=mysql_fetch_array($hasil);
+	$row_tema2=mysql_num_rows($hasil);
 
-if ($row_tema2==0){
-	$theme=3;
+	if ($row_tema2==0){
+		$theme=3;
 	} else {
-	$theme=$row_tema['theme'];
+		$theme=$row_tema['theme'];
 	}
-	//$theme=SI_USER_THEME();
 	if ($theme == 1) {
 		return "theme/green/";
 	} elseif ($theme == 2) {
@@ -58,6 +57,5 @@ if ($row_tema2==0){
 	} elseif ($theme == 9) {
 		return "theme/granite/";
 	}
-
 }
 ?>

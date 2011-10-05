@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,7 +37,7 @@ $aspek = $_REQUEST['aspek'];
 OpenDb();
 $sql = "SELECT j.departemen, j.nama, p.nip, p.nama 
 			 FROM guru g, jbssdm.pegawai p, pelajaran j 
-			WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND j.replid = $id AND g.nip = '$nip'"; 
+			WHERE g.nip=p.nip AND g.idpelajaran = j.replid AND j.replid = '$id' AND g.nip = '$nip'"; 
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
@@ -47,7 +47,7 @@ $guru = $row[2].' - '.$row[3];
 $op = $_REQUEST['op'];
 if ($op == "xm8r389xemx23xb2378e23") 
 {
-	$sql = "DELETE FROM aturangrading WHERE idpelajaran = $id AND nipguru = '$nip' AND idtingkat = $idtingkat AND dasarpenilaian = '$aspek'"; 
+	$sql = "DELETE FROM aturangrading WHERE idpelajaran = '$id' AND nipguru = '$nip' AND idtingkat = '$idtingkat' AND dasarpenilaian = '$aspek'"; 
 	QueryDb($sql);	
 	?>
    <script>refresh();</script> 
@@ -161,8 +161,8 @@ function cetak() {
 	{
 		$sql1 = "SELECT g.dasarpenilaian, dp.keterangan
 					  FROM aturangrading g, tingkat t, dasarpenilaian dp 
-					 WHERE t.replid = g.idtingkat AND t.departemen = '$departemen' AND g.idpelajaran = $id 
-					   AND g.idtingkat = $row[replid] AND g.nipguru = '$nip' 
+					 WHERE t.replid = g.idtingkat AND t.departemen = '$departemen' AND g.idpelajaran = '$id' 
+					   AND g.idtingkat = '$row[replid]' AND g.nipguru = '$nip' 
 						AND g.dasarpenilaian = dp.dasarpenilaian
 				 GROUP BY g.dasarpenilaian";
 		$result1 = QueryDb($sql1);	?>
@@ -194,7 +194,7 @@ function cetak() {
 <? 		$sql2 = "SELECT g.replid, grade, nmin, nmax 
 						  FROM aturangrading g, tingkat t 
 						 WHERE t.replid = g.idtingkat AND t.departemen = '$departemen' AND g.idpelajaran = $id 
-						   AND g.idtingkat = $row[replid] AND g.dasarpenilaian = '$row1[0]' AND g.nipguru = '$nip' 
+						   AND g.idtingkat = '$row[replid]' AND g.dasarpenilaian = '$row1[0]' AND g.nipguru = '$nip' 
 					 ORDER BY grade";
 			$result2 = QueryDb($sql2);			
 			while ($row2 = @mysql_fetch_row($result2)) {

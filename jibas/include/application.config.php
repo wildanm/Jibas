@@ -3,7 +3,7 @@
  * JIBAS Road To Community 
  * Jaringan Informasi Bersama Antar Sekolah 
  *  
- * @version: 2.5.0 (Juni 20, 2011) 
+ * @version: 2.5.2 (October 5, 2011) 
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com) 
@@ -28,11 +28,10 @@ $G_START_YEAR='2008';
 /* Alamat Server aplikasi SISFO JIBAS 
    Alamat ini digunakan untuk menampilkan header cetak di laporan-laporan yang disediakan SISFO JIBAS 
    Gunakan alamat IP atau nama domainnya, jangan menggunakan localhost */
-$G_SERVER_ADDR='localhost';
+$G_SERVER_ADDR='jibas.wm';
 
 /* Direktori untuk menyimpan berkas-berkas unggahan dari aplikasi InfoGuru */
-//$FS_UPLOAD_DIR='C:\\GMS\\JIBAS\\xampp\\htdocs\\filesharing\\';
-$FS_UPLOAD_DIR='C:\\xampp\\htdocs\\filesharing\\';
+$FS_UPLOAD_DIR='/home/wildan/jobstuff/Software/Jibas/www/Jibas/filesharing';
 
 /* Direktori tempat menyimpan galeri foto di aplikasi InfoGuru */
 $IG_GALLERY_DIR='';
@@ -41,9 +40,9 @@ $IG_GALLERY_DIR='';
 $IS_GALLERY_DIR='';
 
 /* Sistem operasi yang digunakan ( win | lin ) */
-$G_OS='win';
+$G_OS='lin';
 
 /* Lokasi Sekolah */
-$G_LOKASI = "Bandung";
+$G_LOKASI = "Jakarta";
 
 ?>

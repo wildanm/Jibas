@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -79,7 +79,7 @@ class CK{
 			$lunas = $row['lunas'];
 			$keterangan = $row['keterangan'];
 			
-			$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+			$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 			$result2 = QueryDb($sql);
 			$pembayaran = 0;
 			if (mysql_num_rows($result2)) {
@@ -88,7 +88,7 @@ class CK{
 			};
 			$sisa = $besar - $pembayaran;
 			
-			$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt=$idbesarjtt ORDER BY tanggal DESC LIMIT 1";
+			$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
 			
 			$result2 = QueryDb($sql);
 			$byrakhir = 0;
@@ -131,7 +131,7 @@ class CK{
 			$idpenerimaan = $row['idpenerimaan'];
 			$namapenerimaan = $row['nama'];
 			
-			$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaaniuran WHERE idpenerimaan=$idpenerimaan AND nis='$nis'";
+			$sql = "SELECT SUM(jumlah) FROM $db_name_fina.penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis'";
 			$result2 = QueryDb($sql);
 			$pembayaran = 0;
 			if (mysql_num_rows($result2)) {
@@ -139,7 +139,7 @@ class CK{
 				$pembayaran = $row2[0];
 			};
 		
-			$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaaniuran WHERE idpenerimaan=$idpenerimaan AND nis='$nis' ORDER BY tanggal DESC LIMIT 1";
+			$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM $db_name_fina.penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis' ORDER BY tanggal DESC LIMIT 1";
 			$result2 = QueryDb($sql);
 			$byrakhir = 0;
 			$tglakhir = "";

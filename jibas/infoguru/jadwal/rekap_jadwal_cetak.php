@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -30,7 +30,7 @@ require_once('../include/db_functions.php');
 
 $info = $_REQUEST['info'];
 OpenDb();
-$sql="SELECT i.deskripsi, j.departemen, t.tahunajaran, t.tglmulai, t.tglakhir FROM infojadwal i, jadwal j, tahunajaran t WHERE i.replid=$info AND j.infojadwal = i.replid AND t.replid = i.idtahunajaran";
+$sql="SELECT i.deskripsi, j.departemen, t.tahunajaran, t.tglmulai, t.tglakhir FROM infojadwal i, jadwal j, tahunajaran t WHERE i.replid='$info' AND j.infojadwal = i.replid AND t.replid = i.idtahunajaran";
 
 $result=QueryDb($sql);
 CloseDb();
@@ -93,7 +93,7 @@ $row=@mysql_fetch_array($result);
 </tr>
 <? 	OpenDb();
     
-    $sql = "SELECT p.nip, p.nama, SUM(IF(j.status = 0, 1, 0)), SUM(IF(j.status = 1, 1, 0)), SUM(IF(j.status = 2, 1, 0)), SUM(j.njam), COUNT(DISTINCT(j.idkelas)), COUNT(DISTINCT(j.hari)) FROM jadwal j, jbssdm.pegawai p WHERE j.nipguru = p.nip AND j.infojadwal = $info GROUP BY j.nipguru ORDER BY p.nama";
+    $sql = "SELECT p.nip, p.nama, SUM(IF(j.status = 0, 1, 0)), SUM(IF(j.status = 1, 1, 0)), SUM(IF(j.status = 2, 1, 0)), SUM(j.njam), COUNT(DISTINCT(j.idkelas)), COUNT(DISTINCT(j.hari)) FROM jadwal j, jbssdm.pegawai p WHERE j.nipguru = p.nip AND j.infojadwal = '$info' GROUP BY j.nipguru ORDER BY p.nama";
     
     $result = QueryDb($sql);
     $cnt = 0;

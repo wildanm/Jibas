@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -40,7 +40,7 @@ $urutan = $_REQUEST[urutan];
 OpenDb();
 
 $sql = "SELECT * FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
-		  "WHERE c.idproses = $proses AND c.idkelompok = $kelompok AND k.idproses = p.replid ".
+		  "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		  "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan";
 		$result = QueryDb($sql);
 		

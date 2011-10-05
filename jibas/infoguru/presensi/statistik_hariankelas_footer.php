@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -96,7 +96,7 @@ function cetak() {
 	<td>
     <? 		
 	OpenDb();
-	$sql = "SELECT DISTINCT k.kelas, k.replid FROM presensiharian p, kelas k WHERE p.idkelas = k.replid AND k.idtingkat = $tingkat AND p.idsemester = $semester AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY k.kelas, p.tanggal1 ";	
+	$sql = "SELECT DISTINCT k.kelas, k.replid FROM presensiharian p, kelas k WHERE p.idkelas = k.replid AND k.idtingkat = '$tingkat' AND p.idsemester = '$semester' AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) ORDER BY k.kelas, p.tanggal1 ";	
 	//echo 'sql '.$sql;
 	$result = QueryDb($sql);			 
 	$field = mysql_num_fields($result);

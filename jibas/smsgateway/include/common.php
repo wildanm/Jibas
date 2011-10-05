@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -25,7 +25,7 @@ require_once("sessionchecker.php");
 
 $SMonth = array('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des');
 $LMonth = array('Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember');
-
+$Alphabet = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z');
 function RandStr($length) 
 {
 	$charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ123456789";
@@ -167,5 +167,68 @@ function GetLastId($field,$table)
 function ReplaceText($input,$output)
 {
 	return $output;
+}
+function CQ($string){
+	$string = trim($string);
+	$string = str_replace("'","`",$string);
+	$string = str_replace('"','`',$string);
+	return $string;
+}
+function pagination($showList,$pageList,$num,$url){
+	$page		= (isset($_GET['page']))?$_GET['page']:1;
+	$pagestart 	= (isset($_REQUEST['pagestart']))?$_REQUEST['pagestart']:1;
+	if (ceil($num/$showList)>1){
+	?>
+	<div class='pagination'>
+	<!--<div>-->
+	<table border="0" cellspacing="1" cellpadding="1" align="center">
+	  <tr>
+		<td>
+			<?php
+			if($page > 1){
+				$prev = $page-1;
+				$hal = ($prev<$pagestart)?$pagestart-pageList:$pagestart;
+				//echo "<td>";
+				echo "<div class='prevnext'>";
+				echo "<a class='paginationjs' href='$url&page=$prev&pagestart=$hal'><</a>";
+				echo "</div>";
+				//echo "</td>";
+			}
+			for ($i=$pagestart;$i<($pagestart+pageList);$i++){//20 jumlah tampilan link halaman
+				if ($i != $page){
+					if ($i<=ceil(($num/showList))){
+						//echo "<td>";
+						echo "<div class='page'>";
+						echo "<a class='paging paginationjs' href='$url&page=$i&pagestart=$pagestart'>$i</a>";
+						echo "</div>";
+						//echo "</td>";
+					}
+				}else{
+					//echo "<td>";
+					echo "<div class='selected'>";
+					echo "<span class='current'>$i</span>";	
+					echo "</div>";
+					//echo "</td>";
+				}
+			}
+			
+			if($page < ceil($num/showList)){
+				//echo "<td>";
+				$next=$page+1;
+				if ($next==$pagestart+pageList)
+					$pagestart = $pagestart+pageList;
+				echo "<div class='prevnext'>";
+				echo "<a class='paginationjs' href='$url&page=$next&pagestart=$pagestart'>></a>";
+				echo "</div>";
+				//echo "</td>";
+			}
+			?>
+		</td>
+	  </tr>
+	</table>
+	<!--</div>-->
+	</div>
+	<?php
+	}
 }
 ?>

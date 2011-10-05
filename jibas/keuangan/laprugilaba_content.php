@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -75,7 +75,7 @@ function cetak() {
    	$sql = "SELECT nama, kode, SUM(debet) AS debet, SUM(kredit) AS kredit FROM (
 			  (SELECT DISTINCT j.replid, ra.nama, ra.kode, jd.debet, jd.kredit 
 			     FROM rekakun ra, katerekakun k, jurnal j, jurnaldetail jd 
-			     WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+			     WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 			     AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'PENDAPATAN' 
 			     GROUP BY j.replid, ra.nama, ra.kode 
 			     ORDER BY ra.kode) AS X
@@ -85,7 +85,7 @@ function cetak() {
 	$sql1 = "SELECT nama, kode, SUM(debet) AS debet, SUM(kredit) AS kredit FROM (
 	           (SELECT DISTINCT j.replid, ra.nama, ra.kode, jd.debet, jd.kredit 
 			      FROM rekakun ra, katerekakun k, jurnal j, jurnaldetail jd 
-				  WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = $idtahunbuku 
+				  WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.idtahunbuku = '$idtahunbuku' 
 				  AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND ra.kategori = 'BIAYA' 
 				  GROUP BY j.replid, ra.nama, ra.kode 
 				  ORDER BY ra.kode) AS X

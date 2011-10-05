@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -126,7 +126,7 @@ for($k = 0; $k < count($darray); $k++)
 	{
 		$sql = "SELECT DISTINCT p.tanggal 
 		          FROM jbsfina.penerimaaniuran p, jbsfina.datapenerimaan dp, jbsfina.jurnal j
-				   WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku AND p.idpenerimaan = dp.replid 
+				   WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = dp.replid 
 				     AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 				ORDER BY p.tanggal ASC";
 	}
@@ -142,7 +142,7 @@ for($k = 0; $k < count($darray); $k++)
 	{
 		$sql = "SELECT DISTINCT p.tanggal 
 		          FROM jbsfina.penerimaaniurancalon p, jbsfina.datapenerimaan dp, jbsfina.jurnal j 
-				   WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku AND p.idpenerimaan = dp.replid 
+				   WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = dp.replid 
 				     AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 				ORDER BY p.tanggal ASC";
 	}
@@ -150,7 +150,7 @@ for($k = 0; $k < count($darray); $k++)
 	{
 		$sql = "SELECT DISTINCT p.tanggal
 		         FROM jbsfina.penerimaanlain p, jbsfina.datapenerimaan dp, jbsfina.jurnal j  
-				  WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku AND p.idpenerimaan = dp.replid 
+				  WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = dp.replid 
 				  AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 				  ORDER BY p.tanggal ASC";
 	}
@@ -199,31 +199,31 @@ for($k = 0; $k < count($darray); $k++)
 				{
 					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanjtt p, jbsfina.besarjtt b, jbsfina.datapenerimaan dp 
 							WHERE p.idbesarjtt = b.replid AND b.idpenerimaan = dp.replid
-							AND dp.replid = $idp AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
+							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "SKR")
 				{
 					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaaniuran p, jbsfina.datapenerimaan dp 
 							WHERE p.idpenerimaan = dp.replid 
-							AND dp.replid = $idp AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
+							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "CSWJB")
 				{
 					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsfina.datapenerimaan dp 
 							WHERE p.idbesarjttcalon = b.replid AND b.idpenerimaan = dp.replid
-							AND dp.replid = $idp AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
+							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "CSSKR")
 
 				{
 					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaaniurancalon p, jbsfina.datapenerimaan dp 
-							WHERE p.idpenerimaan = dp.replid AND dp.replid = $idp 
+							WHERE p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 							AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "LNN")
 				{
 					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanlain p, jbsfina.datapenerimaan dp 
-							WHERE p.idpenerimaan = dp.replid AND dp.replid = $idp 
+							WHERE p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 							AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -56,7 +56,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	OpenDb();
 	
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) 
 	{
@@ -79,7 +79,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	
 	$sql = "INSERT INTO jurnal 
 			   SET tanggal='$tanggal', transaksi='$_REQUEST[keperluan]', petugas='$petugas', 
-			   	   nokas='$nokas', idtahunbuku=$idtahunbuku, keterangan='$_REQUEST[keterangan]', sumber='jurnalumum'";
+			   	   nokas='$nokas', idtahunbuku='$idtahunbuku', keterangan='".CQ($_REQUEST['keterangan'])."', sumber='jurnalumum'";
 	QueryDbTrans($sql, $success);
 	
 	$sql = "SELECT LAST_INSERT_ID()";
@@ -98,14 +98,14 @@ if (1 == (int)$_REQUEST['issubmit'])
 		
 		if (strlen(trim($koderek)) > 0) 
 		{
-			$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal, koderek='$koderek', debet=$debet, kredit=$kredit";
+			$sql = "INSERT INTO jurnaldetail SET idjurnal='$idjurnal', koderek='$koderek', debet='$debet', kredit='$kredit'";
 			if ($success) 
 				QueryDbTrans($sql, $success);
 		}
 	}
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
 	
@@ -394,7 +394,7 @@ function focusNext(elemName, evt) {
         </tr>
   		<tr height="30">
     		<td colspan="3" align="center">
-        	<input type="button" class="but" name="Simpan" id="Simpan" value="Simpan" onclick="this.disabled = true; ValidateSimpan();" /></td>
+        	<input type="button" class="but" name="Simpan" id="Simpan" value="Simpan" onClick="this.disabled = true; ValidateSubmit();" /></td>
     	</tr>
         </table>
         </fieldset>

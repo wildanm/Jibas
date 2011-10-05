@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -157,7 +157,7 @@ parent.beritaguru_header.lihat();
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd1;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd1'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -171,7 +171,7 @@ parent.beritaguru_header.lihat();
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd1;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd1'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();
@@ -199,7 +199,7 @@ parent.beritaguru_header.lihat();
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd1;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd1'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -212,7 +212,7 @@ parent.beritaguru_header.lihat();
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd1;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd1'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();
@@ -229,7 +229,7 @@ if ($file2!=""){
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd2;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd2'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -243,7 +243,7 @@ if ($file2!=""){
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd2;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd2'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();
@@ -271,7 +271,7 @@ if ($file2!=""){
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd2;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd2'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -284,7 +284,7 @@ if ($file2!=""){
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd2;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd2'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();
@@ -299,7 +299,7 @@ if ($file3!=""){
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd3;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd3'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -313,7 +313,7 @@ if ($file3!=""){
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd3;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd3'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();
@@ -341,7 +341,7 @@ if ($file3!=""){
 				//alert ('Mau nagmbil dir+file pertama');
 				</script>
 			<?
-			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd3;
+			$sql="SELECT direktori,namafile FROM jbsvcr.lampiranberitaguru WHERE replid='$repd3'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			$row=@mysql_fetch_array($result);
@@ -354,7 +354,7 @@ if ($file3!=""){
 				//alert ('Mau happus dir+file pertama');
 				</script>
 			<?
-			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid=".$repd3;
+			$sql="DELETE FROM jbsvcr.lampiranberitaguru WHERE replid='$repd3'";
 			echo $sql."<br>";
 			$result=QueryDb($sql);
 			CloseDb();

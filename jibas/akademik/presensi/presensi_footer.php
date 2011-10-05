@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -64,16 +64,16 @@ $op = $_REQUEST['op'];
 if ($op == "dw8dxn8w9ms8zs22") {
 	$id=(int)$_REQUEST['id'];
 	OpenDb();
-	$sql = "UPDATE pelajaran SET aktif = $newaktif WHERE replid = $replid ";
+	$sql = "UPDATE pelajaran SET aktif = '$newaktif' WHERE replid = '$replid' ";
 	QueryDb($sql);
 	CloseDb();
 } else if ($op == "xm8r389xemx23xb2378e23") {
 	$replid=(int)$_REQUEST['replid'];
 	OpenDb();
-	$sql = "DELETE FROM ppsiswa WHERE idpp = $replid";
+	$sql = "DELETE FROM ppsiswa WHERE idpp = '$replid'";
 	//echo $sql;
 	QueryDb($sql);
-	$sql = "DELETE FROM presensipelajaran WHERE replid = $replid";
+	$sql = "DELETE FROM presensipelajaran WHERE replid = '$replid'";
 	//echo $sql;exit;
 	QueryDb($sql);
 	if(mysql_affected_rows() > 0) {
@@ -92,16 +92,16 @@ if ($op == "dw8dxn8w9ms8zs22") {
 
 OpenDb();
 if ($_REQUEST['replid']<> "") {
-	$sql1 = "SELECT k.idtingkat, s.departemen, p.idkelas FROM kelas k, semester s, presensipelajaran p WHERE p.replid = $_REQUEST[replid] AND p.idkelas = k.replid AND p.idsemester = s.replid"; 
+	$sql1 = "SELECT k.idtingkat, s.departemen, p.idkelas FROM kelas k, semester s, presensipelajaran p WHERE p.replid = '".$_REQUEST[replid]."' AND p.idkelas = k.replid AND p.idsemester = s.replid"; 
 	$result1 = QueryDb($sql1);
 	$row1 = mysql_fetch_array($result1);
 	$departemen = $row1['departemen'];
 	$tingkat = $row1['idtingkat'];
 		
-	$sql = "SELECT p.replid, p.gurupelajaran, p.keterangan, p.materi, p.objektif, p.refleksi, p.rencana, p.keterlambatan, p.jumlahjam, p.jenisguru, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, g.nama, k.idtahunajaran, p.jam FROM presensipelajaran p, jbssdm.pegawai g, kelas k WHERE p.replid = $_REQUEST[replid] AND g.nip = p.gurupelajaran AND p.idkelas = k.replid";	
+	$sql = "SELECT p.replid, p.gurupelajaran, p.keterangan, p.materi, p.objektif, p.refleksi, p.rencana, p.keterlambatan, p.jumlahjam, p.jenisguru, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, g.nama, k.idtahunajaran, p.jam FROM presensipelajaran p, jbssdm.pegawai g, kelas k WHERE p.replid = '".$_REQUEST['replid']."' AND g.nip = p.gurupelajaran AND p.idkelas = k.replid";	
 } else {
 	$tanggal = MySqlDateFormat($tanggal);
-	$sql = "SELECT p.replid, p.gurupelajaran, p.keterangan, p.materi, p.objektif, p.refleksi, p.rencana, p.keterlambatan, p.jumlahjam, p.jenisguru, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, g.nama, k.idtahunajaran, p.jam FROM presensipelajaran p, jbssdm.pegawai g, kelas k WHERE k.replid = $kelas AND p.idsemester=$semester AND p.idpelajaran=$pelajaran AND p.tanggal = '$tanggal' AND p.jam = '$waktu' AND g.nip = p.gurupelajaran AND p.idkelas = k.replid";	   	
+	$sql = "SELECT p.replid, p.gurupelajaran, p.keterangan, p.materi, p.objektif, p.refleksi, p.rencana, p.keterlambatan, p.jumlahjam, p.jenisguru, p.idkelas, p.idsemester, p.idpelajaran, p.tanggal, g.nama, k.idtahunajaran, p.jam FROM presensipelajaran p, jbssdm.pegawai g, kelas k WHERE k.replid = '$kelas' AND p.idsemester='$semester' AND p.idpelajaran='$pelajaran' AND p.tanggal = '$tanggal' AND p.jam = '$waktu' AND g.nip = p.gurupelajaran AND p.idkelas = k.replid";	   	
 }
 
 $result = QueryDb($sql);
@@ -288,7 +288,7 @@ function focusNext(elemName, evt) {
 	?>
     	<select name="jenis" id="jenis" style="width:150px;" onKeyPress="return focusNext('keterangan', event)">
     <?	OpenDb();
-		$sql = "SELECT s.replid,s.status FROM statusguru s, guru g WHERE g.nip = '$nip' AND g.idpelajaran = $pelajaran AND g.statusguru = s.status ORDER BY status";	
+		$sql = "SELECT s.replid,s.status FROM statusguru s, guru g WHERE g.nip = '$nip' AND g.idpelajaran = '$pelajaran' AND g.statusguru = s.status ORDER BY status";	
 		
 		$result = QueryDb($sql);
 		CloseDb();
@@ -342,7 +342,7 @@ function focusNext(elemName, evt) {
 		<? 
 		OpenDb();
 			
-		$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = $kelas AND s.aktif = 1 AND s.alumni = 0 AND k.replid = s.idkelas UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, ppsiswa p, kelas k WHERE p.idpp = $id AND p.nis = s.nis AND s.idkelas = k.replid ORDER BY nama";
+		$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = '$kelas' AND s.aktif = 1 AND s.alumni = 0 AND k.replid = s.idkelas UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, ppsiswa p, kelas k WHERE p.idpp = '$id' AND p.nis = s.nis AND s.idkelas = k.replid ORDER BY nama";
 		
 		$result = QueryDb($sql);		
 		$cnt = 1;
@@ -350,7 +350,7 @@ function focusNext(elemName, evt) {
 		
 		while ($row = @mysql_fetch_array($result)) {		
 			if ($id) {
-				$sql1 = "SELECT * FROM ppsiswa WHERE idpp = $id AND nis='$row[nis]'";
+				$sql1 = "SELECT * FROM ppsiswa WHERE idpp = '$id' AND nis='$row[nis]'";
 				
 				$result1 = QueryDb($sql1);
 				$jml = mysql_num_rows($result1);

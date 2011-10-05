@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -64,7 +64,7 @@ if ($jenis <> ""){
 		if ($nis <> "" && $nama <> "")
 			$string = "WHERE s.nis LIKE '%$nis%' AND s.nama LIKE '%$nama%'";
 	} elseif ($jenis == "combo") { 			
-		$string = "WHERE s.idkelas = $idkelas";
+		$string = "WHERE s.idkelas = '$idkelas'";
 	} else {
 		$string = "WHERE s.aktif = 1";
 	}
@@ -184,14 +184,14 @@ function refresh_daftar() {
 
 <? 	if ($jenis <> ""){ 
 		OpenDb();
-		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = $idtingkat AND s.idkelas = k.replid AND k.idtahunajaran = $idtahunajaran AND s.aktif=1 ORDER BY $urut $urutan";  
+		$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = '$idtingkat' AND s.idkelas = k.replid AND k.idtahunajaran = '$idtahunajaran' AND s.aktif=1 ORDER BY $urut $urutan";  
 		
 		$result_tot = QueryDb($sql_tot);
 		$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 		$jumlah = mysql_num_rows($result_tot);
 		$akhir = ceil($jumlah/5)*5;	
 		
-		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = $idtingkat AND s.idkelas = k.replid AND k.idtahunajaran = $idtahunajaran AND s.aktif=1 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+		$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid from jbsakad.siswa s, kelas k $string AND k.idtingkat = '$idtingkat' AND s.idkelas = k.replid AND k.idtahunajaran = '$idtahunajaran' AND s.aktif=1 ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		
 		$result_siswa = QueryDb($sql_siswa);
 		

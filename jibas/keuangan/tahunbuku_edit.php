@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -37,10 +37,10 @@ if (isset($_REQUEST['simpan']))
 	OpenDb();
 	$tanggalmulai = MySqlDateFormat($_REQUEST['tcicilan']);
 	
-	$sql = "SELECT * FROM tahunbuku WHERE tahunbuku = '$_REQUEST[tahunbuku]' AND departemen = '$_REQUEST[departemen]' AND replid <> $id";
+	$sql = "SELECT * FROM tahunbuku WHERE tahunbuku = '".CQ($_REQUEST[tahunbuku])."' AND departemen = '$_REQUEST[departemen]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
-	$sql1 = "SELECT * FROM tahunbuku WHERE awalan = '$_REQUEST[awalan]' AND departemen = '$_REQUEST[departemen]' AND replid <> $id";
+	$sql1 = "SELECT * FROM tahunbuku WHERE awalan = '".CQ($_REQUEST[awalan])."' AND departemen = '$_REQUEST[departemen]' AND replid <> '$id'";
 	$result1 = QueryDb($sql1);
 	
 	if (mysql_num_rows($result) > 0) 
@@ -60,17 +60,17 @@ if (isset($_REQUEST['simpan']))
 		BeginTrans();
 		$success = true;
 		
-		$sql = "UPDATE tahunbuku SET tahunbuku='$_REQUEST[tahunbuku]', tanggalmulai='$tanggalmulai', awalan='$_REQUEST[awalan]',	keterangan='$_REQUEST[keterangan]' WHERE replid = $id";
+		$sql = "UPDATE tahunbuku SET tahunbuku='".CQ($_REQUEST['tahunbuku'])."', tanggalmulai='$tanggalmulai', awalan='".CQ($_REQUEST['awalan'])."',	keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid = '$id'";
 		QueryDbTrans($sql, $success);
 		
 		if ($success)
 		{
-			$sql = "SELECT info1 FROM tahunbuku WHERE replid=$id";
+			$sql = "SELECT info1 FROM tahunbuku WHERE replid='$id'";
 			$idjurnal = FetchSingle($sql);
 			
 			if (strlen($idjurnal) > 0)
 			{
-				$sql = "UPDATE jurnal SET tanggal = '$tanggalmulai' WHERE replid = $idjurnal";
+				$sql = "UPDATE jurnal SET tanggal = '$tanggalmulai' WHERE replid = '$idjurnal'";
 				QueryDbTrans($sql, $success);
 			}
 		}
@@ -100,7 +100,7 @@ switch ($cek) {
 }
 
 OpenDb();
-$sql = "SELECT tahunbuku, departemen, awalan, keterangan, date_format(tanggalmulai, '%d-%m-%Y') AS tanggalmulai FROM tahunbuku WHERE replid = $id";
+$sql = "SELECT tahunbuku, departemen, awalan, keterangan, date_format(tanggalmulai, '%d-%m-%Y') AS tanggalmulai FROM tahunbuku WHERE replid = '$id'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 CloseDb();
@@ -112,11 +112,11 @@ $keterangan = $row['keterangan'];
 $tanggalmulai = $row['tanggalmulai'];
 
 if (isset($_REQUEST['tahunbuku']))
-	$tahunbuku = $_REQUEST['tahunbuku'];
+	$tahunbuku = CQ($_REQUEST['tahunbuku']);
 if (isset($_REQUEST['awalan']))
-	$awalan = $_REQUEST['awalan'];	
+	$awalan = CQ($_REQUEST['awalan']);	
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];
+	$keterangan = CQ($_REQUEST['keterangan']);
 if (isset($_REQUEST['tcicilan']))
 	$tanggalmulai = $_REQUEST['tcicilan'];
 	

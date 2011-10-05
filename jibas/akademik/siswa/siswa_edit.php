@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,18 +35,18 @@ require_once('../cek.php');
 $replid = $_REQUEST['replid']; 
 $cek = 0;
 
-$nis=trim($_REQUEST['nis']);
-$nisn=trim($_REQUEST['nisn']);
+$nis=CQ($_REQUEST['nis']);
+$nisn=CQ($_REQUEST['nisn']);
 $nis_lama=trim($_REQUEST['nis_lama']);
 $idangkatan=$_REQUEST['idangkatan'];
 $kelas = $_REQUEST['kelas'];
 $departemen = $_REQUEST['departemen'];
-$tahunmasuk=$_REQUEST['tahunmasuk'];
-$nama=$_REQUEST['nama'];
-$nama=str_replace("'", "`", $nama);
-$panggilan=$_REQUEST['panggilan'];
-$kelamin=$_REQUEST['kelamin'];
-$tmplahir=$_REQUEST['tmplahir'];
+$tahunmasuk=CQ($_REQUEST['tahunmasuk']);
+$nama=CQ($_REQUEST['nama']);
+//$nama=str_replace("'", "`", $nama);
+$panggilan=CQ($_REQUEST['panggilan']);
+$kelamin=CQ($_REQUEST['kelamin']);
+$tmplahir=CQ($_REQUEST['tmplahir']);
 $tgllahir=$_REQUEST['tgllahir'];
 $blnlahir=$_REQUEST['blnlahir'];
 $thnlahir=$_REQUEST['thnlahir'];;
@@ -57,7 +57,7 @@ $kondisi=$_REQUEST['kondisi'];
 
 $warga="WNI";
 if (isset($_REQUEST['warga']))
-	$warga = $_REQUEST['warga'];
+	$warga = CQ($_REQUEST['warga']);
 
 $urutananak = 1;
 if (isset($_REQUEST['urutananak'])) 
@@ -66,16 +66,16 @@ $jumlahanak = 1;
 if (isset($_REQUEST['jumlahanak'])) 
 	$jumlahanak=$_REQUEST['jumlahanak'];
 
-$bahasa=$_REQUEST['bahasa'];
-$alamatsiswa=$_REQUEST['alamatsiswa'];
-$kodepos=$_REQUEST['kodepos'];
-$telponsiswa=$_REQUEST['telponsiswa'];
-$hpsiswa=trim($_REQUEST['hpsiswa']);
+$bahasa=CQ($_REQUEST['bahasa']);
+$alamatsiswa=CQ($_REQUEST['alamatsiswa']);
+$kodepos=CQ($_REQUEST['kodepos']);
+$telponsiswa=CQ($_REQUEST['telponsiswa']);
+$hpsiswa=CQ(trim($_REQUEST['hpsiswa']));
 $hpsiswa=str_replace(' ','',$hpsiswa);
-$emailsiswa=$_REQUEST['emailsiswa'];
-$dep_asal=$_REQUEST['dep_asal'];
-$sekolah=$_REQUEST['sekolah'];
-$ketsekolah=$_REQUEST['ketsekolah'];
+$emailsiswa=CQ($_REQUEST['emailsiswa']);
+$dep_asal=CQ($_REQUEST['dep_asal']);
+$sekolah=CQ(stripslashes($_REQUEST['sekolah']));
+$ketsekolah=CQ($_REQUEST['ketsekolah']);
 $gol=$_REQUEST['gol'];
 
 $berat = 0;
@@ -85,9 +85,9 @@ $tinggi = 0;
 if (isset($_REQUEST['tinggi'])) 
 	$tinggi=$_REQUEST['tinggi'];
 	
-$kesehatan=$_REQUEST['kesehatan'];
-$namaayah=$_REQUEST['namaayah'];
-$namaibu=$_REQUEST['namaibu'];
+$kesehatan=CQ($_REQUEST['kesehatan']);
+$namaayah=CQ($_REQUEST['namaayah']);
+$namaibu=CQ($_REQUEST['namaibu']);
 
 $pendidikanayah=$_REQUEST['pendidikanayah'];
 $pendidikanibu=$_REQUEST['pendidikanibu'];
@@ -101,15 +101,15 @@ $penghasilanibu = 0;
 if (isset($_REQUEST['penghasilanibu'])) 
 	$penghasilanibu=$_REQUEST['penghasilanibu'];
 	
-$namawali=$_REQUEST['namawali'];
-$alamatortu=$_REQUEST['alamatortu'];
-$telponortu=$_REQUEST['telponortu'];
-$hportu=trim($_REQUEST['hportu']);
+$namawali=CQ($_REQUEST['namawali']);
+$alamatortu=CQ($_REQUEST['alamatortu']);
+$telponortu=CQ($_REQUEST['telponortu']);
+$hportu=CQ($_REQUEST['hportu']);
 $hportu=str_replace(' ','',$hportu);
-$emailayah=$_REQUEST['emailayah'];
-$emailibu=$_REQUEST['emailibu'];
-$alamatsurat=$_REQUEST['alamatsurat'];
-$keterangan=$_REQUEST['keterangan'];
+$emailayah=CQ($_REQUEST['emailayah']);
+$emailibu=CQ($_REQUEST['emailibu']);
+$alamatsurat=CQ($_REQUEST['alamatsurat']);
+$keterangan=CQ($_REQUEST['keterangan']);
 
 $almayah = 0;
 if (isset($_REQUEST['almayah'])) 
@@ -125,14 +125,14 @@ if (isset($_REQUEST['Simpan']))
 {
 	$sql_cek = "SELECT k.kapasitas, COUNT(s.replid) 
 				FROM kelas k, siswa s 
-				WHERE k.replid = $kelas AND s.idkelas = k.replid AND k.replid <> $_REQUEST[kelas_lama] AND s.aktif = 1 GROUP BY kelas"; 
+				WHERE k.replid = $kelas AND s.idkelas = k.replid AND k.replid <> '$_REQUEST[kelas_lama]' AND s.aktif = 1 GROUP BY kelas"; 
 	
-	$sql_kapasitas = "SELECT kapasitas FROM kelas WHERE replid = $kelas";
+	$sql_kapasitas = "SELECT kapasitas FROM kelas WHERE replid = '$kelas'";
 	$result_kapasitas = QueryDb($sql_kapasitas);
 	$row_kapasitas = mysql_fetch_row($result_kapasitas);
 	$kapasitas = $row_kapasitas[0];
 	
-	$sql_siswa = "SELECT COUNT(*) FROM siswa WHERE idkelas = $kelas AND aktif = 1";
+	$sql_siswa = "SELECT COUNT(*) FROM siswa WHERE idkelas = '$kelas' AND aktif = 1";
 	$result_siswa = QueryDb($sql_siswa);
 	$row_siswa = mysql_fetch_row($result_siswa);
 	$isi = $row_siswa[0];
@@ -213,7 +213,7 @@ if (isset($_REQUEST['Simpan']))
 			$success = true;
 			BeginTrans();
 
-			$sql_simpan="UPDATE jbsakad.siswa SET nis='$nis', nama='$nama', panggilan='$panggilan', tahunmasuk='$tahunmasuk', idangkatan=$idangkatan, idkelas=$kelas, suku='$suku', agama='$agama', status='$status', kondisi='$kondisi', kelamin='$kelamin', tmplahir='$tmplahir', tgllahir='$lahir', warga='$warga', anakke=$urutananak, jsaudara=$jumlahanak, bahasa='$bahasa', berat=$berat, tinggi=$tinggi, darah='$gol', alamatsiswa='$alamatsiswa', kodepossiswa='$kodepos', telponsiswa='$telponsiswa', hpsiswa='$hpsiswa', emailsiswa='$emailsiswa', kesehatan='$kesehatan', $sekolah_sql, ketsekolah='$ketsekolah', namaayah='$namaayah', namaibu='$namaibu', almayah=$almayah, almibu=$almibu, $pendidikanayah_sql, $pendidikanibu_sql, $pekerjaanayah_sql, $pekerjaanibu_sql, wali='$namawali', penghasilanayah='$penghasilanayah', penghasilanibu='$penghasilanibu', alamatortu='$alamatortu', telponortu='$telponortu', hportu='$hportu', emailayah='$emailayah', emailibu='$emailibu', alamatsurat='$alamatsurat', keterangan='$keterangan' $gantifoto WHERE replid = $replid";			
+			$sql_simpan="UPDATE jbsakad.siswa SET nis='$nis', nama='$nama', panggilan='$panggilan', tahunmasuk='$tahunmasuk', idangkatan='$idangkatan', idkelas='$kelas', suku='$suku', agama='$agama', status='$status', kondisi='$kondisi', kelamin='$kelamin', tmplahir='$tmplahir', tgllahir='$lahir', warga='$warga', anakke='$urutananak', jsaudara='$jumlahanak', bahasa='$bahasa', berat='$berat', tinggi='$tinggi', darah='$gol', alamatsiswa='$alamatsiswa', kodepossiswa='$kodepos', telponsiswa='$telponsiswa', hpsiswa='$hpsiswa', emailsiswa='$emailsiswa', kesehatan='$kesehatan', $sekolah_sql, ketsekolah='$ketsekolah', namaayah='$namaayah', namaibu='$namaibu', almayah='$almayah', almibu='$almibu', $pendidikanayah_sql, $pendidikanibu_sql, $pekerjaanayah_sql, $pekerjaanibu_sql, wali='$namawali', penghasilanayah='$penghasilanayah', penghasilanibu='$penghasilanibu', alamatortu='$alamatortu', telponortu='$telponortu', hportu='$hportu', emailayah='$emailayah', emailibu='$emailibu', alamatsurat='$alamatsurat', keterangan='$keterangan' $gantifoto, nisn = '$nisn' WHERE replid = '$replid'";			
 			QueryDbTrans($sql_simpan,$success);
 			
 			if ($success)
@@ -226,7 +226,7 @@ if (isset($_REQUEST['Simpan']))
 			if ($success)
 			{
 				$sql_kls = "UPDATE jbsakad.riwayatkelassiswa 
-							SET nis='$nis',idkelas=$kelas,mulai='$kumplit' WHERE nis='$nis' AND idkelas='$kelas_lama'";
+							SET nis='$nis',idkelas='$kelas',mulai='$kumplit' WHERE nis='$nis' AND idkelas='$kelas_lama'";
 				QueryDbTrans($sql_kls, $success);
 			}
 			
@@ -255,7 +255,7 @@ if (isset($_REQUEST['Simpan']))
 	}
 }
 
-$sql_siswa="SELECT c.tahunmasuk, c.nis, c.nama, c.panggilan, c.tahunmasuk, c.idangkatan, c.idkelas, c.suku, c.agama, c.status, c.kondisi, c.kelamin, c.tmplahir, DAY(c.tgllahir) AS tanggal, MONTH(c.tgllahir) AS bulan, YEAR(c.tgllahir) AS tahun, c.warga, c.anakke, c.jsaudara, c.bahasa, c.berat, c.tinggi, c.darah, c.foto, c.alamatsiswa, c.kodepossiswa, c.telponsiswa, c.hpsiswa, c.emailsiswa, c.kesehatan, c.asalsekolah, c.ketsekolah, c.namaayah, c.namaibu, c.almayah, c.almibu, c.pendidikanayah, c.pendidikanibu, c.pekerjaanayah, c.pekerjaanibu, c.wali, c.penghasilanayah, c.penghasilanibu, c.alamatortu, c.telponortu, c.hportu, c.emailayah, c.emailibu, c.alamatsurat, c.keterangan, t.replid AS tahunajaran, t.departemen, k.replid AS kelas, k.idtingkat AS tingkat,c.nisn AS nisn FROM siswa c, kelas k, tahunajaran t WHERE c.replid=$replid AND k.replid = c.idkelas AND k.idtahunajaran = t.replid";
+$sql_siswa="SELECT c.tahunmasuk, c.nis, c.nama, c.panggilan, c.tahunmasuk, c.idangkatan, c.idkelas, c.suku, c.agama, c.status, c.kondisi, c.kelamin, c.tmplahir, DAY(c.tgllahir) AS tanggal, MONTH(c.tgllahir) AS bulan, YEAR(c.tgllahir) AS tahun, c.warga, c.anakke, c.jsaudara, c.bahasa, c.berat, c.tinggi, c.darah, c.foto, c.alamatsiswa, c.kodepossiswa, c.telponsiswa, c.hpsiswa, c.emailsiswa, c.kesehatan, c.asalsekolah, c.ketsekolah, c.namaayah, c.namaibu, c.almayah, c.almibu, c.pendidikanayah, c.pendidikanibu, c.pekerjaanayah, c.pekerjaanibu, c.wali, c.penghasilanayah, c.penghasilanibu, c.alamatortu, c.telponortu, c.hportu, c.emailayah, c.emailibu, c.alamatsurat, c.keterangan, t.replid AS tahunajaran, t.departemen, k.replid AS kelas, k.idtingkat AS tingkat,c.nisn AS nisn FROM siswa c, kelas k, tahunajaran t WHERE c.replid='$replid' AND k.replid = c.idkelas AND k.idtahunajaran = t.replid";
 
 $result=QueryDb($sql_siswa);
 $row_siswa=mysql_fetch_array($result);
@@ -269,7 +269,8 @@ $thnlahir = (int)$row_siswa['tahun'];
 
 if ($row_siswa['asalsekolah'] <> NULL) 
 {
-	$query = "SELECT departemen FROM asalsekolah WHERE sekolah = '$row_siswa[asalsekolah]'";
+	$aslSek = addslashes($row_siswa['asalsekolah']);
+	$query = "SELECT departemen FROM asalsekolah WHERE sekolah = '$aslSek'";
 	$hasil = QueryDb($query);	
 	$row = mysql_fetch_array($hasil);
 	$dep_asal = $row['departemen'];

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -30,7 +30,7 @@ class CPenerbitAdd{
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "INSERT INTO penerbit SET kode='$_REQUEST[kode]', nama='$_REQUEST[nama]', alamat='$_REQUEST[alamat]', telpon='$_REQUEST[telpon]', email='$_REQUEST[email]', fax='$_REQUEST[fax]', website='$_REQUEST[website]', kontak='$_REQUEST[kontak]', keterangan='$_REQUEST[keterangan]'";
+				$sql = "INSERT INTO penerbit SET kode='".CQ($_REQUEST['kode'])."', nama='".CQ($_REQUEST['nama'])."', alamat='".CQ($_REQUEST['alamat'])."', telpon='".CQ($_REQUEST['telpon'])."', email='".CQ($_REQUEST['email'])."', fax='".CQ($_REQUEST['fax'])."', website='".CQ($_REQUEST['website'])."', kontak='".CQ($_REQUEST['kontak'])."', keterangan='".CQ($_REQUEST['keterangan'])."'";
 				$result = QueryDb($sql);
 				if ($result){
 					$sql = "SELECT replid FROM penerbit ORDER BY replid DESC LIMIT 1";

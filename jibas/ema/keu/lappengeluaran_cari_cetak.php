@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -126,14 +126,14 @@ $urutan = "ASC";
 	                   p.nip, p.nis, p.pemohonlain, p.penerima, date_format(p.tanggal, '%d-%b-%Y') as tanggal, date_format(p.tanggalkeluar, '%d-%b-%Y') as tanggalkeluar, 
 					   p.petugas, p.jumlah 
 			      FROM jbsfina.pengeluaran p, jbsfina.jurnal j, jbsfina.datapengeluaran d 
-				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
+				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
 				   AND p.idpengeluaran = d.replid AND d.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' $sqlwhere ORDER BY p.tanggal";         
 	
     $sql = "SELECT p.replid AS id, d.nama AS namapengeluaran, p.keperluan, p.keterangan, p.jenispemohon, 
 	               p.nip, p.nis, p.pemohonlain, p.penerima, date_format(p.tanggal, '%d-%b-%Y') as tanggal, date_format(p.tanggalkeluar, '%d-%b-%Y') as tanggalkeluar, 
 				   p.petugas, p.jumlah 
 		     FROM jbsfina.pengeluaran p, jbsfina.jurnal j, jbsfina.datapengeluaran d 
-			WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
+			WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
 			  AND p.idpengeluaran = d.replid AND d.departemen = '$departemen' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' 
 			      $sqlwhere 
 		 ORDER BY $urut $urutan"; 
@@ -173,7 +173,7 @@ $urutan = "ASC";
             $jenisinfo = "siswa";
         } else {
             $idpemohon = "";
-            $sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = " . $row[pemohonlain];
+            $sql = "SELECT nama FROM $db_name_fina.pemohonlain WHERE replid = '$row[pemohonlain]'";
             $jenisinfo = "pemohon lain";
         }
         $result2 = QueryDb($sql);

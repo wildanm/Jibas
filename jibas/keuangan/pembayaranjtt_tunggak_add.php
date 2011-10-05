@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -43,7 +43,7 @@ OpenDb();
 $sql = "SELECT nama FROM jbsakad.siswa WHERE nis = '$nis'";
 $nama = FetchSingle($sql);
 
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = $idpenerimaan";
+$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 $namapenerimaan = FetchSingle($sql);
 
 $tanggal = date('d-m-Y');
@@ -61,10 +61,10 @@ if (isset($_REQUEST['Simpan']))
 	$tcicilan = MySqlDateFormat($tcicilan);
 	$jcicilan = $_REQUEST['jcicilan'];
 	$jcicilan = UnformatRupiah($jcicilan);
-	$kcicilan = $_REQUEST['kcicilan'];
+	$kcicilan = CQ($_REQUEST['kcicilan']);
 		
 	//Ambil nama penerimaan
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = $idpenerimaan";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 	$row = FetchSingleRow($sql);
 	$namapenerimaan = $row[0];
 	$rekkas = $row[1];
@@ -79,7 +79,7 @@ if (isset($_REQUEST['Simpan']))
 	// FIXED: 27 Agustus 2010
 	$sql = "SELECT b.replid AS id, b.besar
   		   	 FROM besarjtt b
-   	   	WHERE b.nis = '$nis' AND b.idpenerimaan = $idpenerimaan AND b.info2 = '$idtahunbuku'";
+   	   	WHERE b.nis = '$nis' AND b.idpenerimaan = '$idpenerimaan' AND b.info2 = '$idtahunbuku'";
 	$res = QueryDb($sql);
 	$row = mysql_fetch_row($res);
 	$idbesarjtt = $row[0];
@@ -88,7 +88,7 @@ if (isset($_REQUEST['Simpan']))
 	//Cari tahu jumlah pembayaran cicilan yang sudah terjadi
 	$cicilan = 1;
 	$jml = 0;
-	$sql = "SELECT jumlah FROM penerimaanjtt WHERE idbesarjtt = $idbesarjtt";
+	$sql = "SELECT jumlah FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 	$result = QueryDb($sql);
 	while ($row = mysql_fetch_row($result)) 
 	{
@@ -114,7 +114,7 @@ if (isset($_REQUEST['Simpan']))
 	}
 		
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = $idtahunbuku";
+	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
 	$row = FetchSingleRow($sql);
 	$awalan = $row[0];
 	$cacah = $row[1];
@@ -137,12 +137,12 @@ if (isset($_REQUEST['Simpan']))
 		$success = SimpanDetailJurnal($idjurnal, "K", $rekpiutang, $jcicilan);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
+	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
 	
 	//simpan data cicilan di penerimaanjtt
-	$sql = "INSERT INTO penerimaanjtt SET idbesarjtt=$idbesarjtt, idjurnal=$idjurnal, tanggal='$tcicilan', 
+	$sql = "INSERT INTO penerimaanjtt SET idbesarjtt='$idbesarjtt', idjurnal='$idjurnal', tanggal='$tcicilan', 
 	        jumlah='$jcicilan', keterangan='$kcicilan', petugas='$petugas'";
 	if ($success) 
 		QueryDbTrans($sql, $success);
@@ -155,7 +155,7 @@ if (isset($_REQUEST['Simpan']))
 			$sql = "SET @DISABLE_TRIGGERS = 1;";
 			QueryDb($sql);
 			
-			$sql = "UPDATE besarjtt SET lunas=1 WHERE replid=$idbesarjtt";
+			$sql = "UPDATE besarjtt SET lunas=1 WHERE replid='$idbesarjtt'";
 			QueryDbTrans($sql, $success);
 			
 			$sql = "SET @DISABLE_TRIGGERS = NULL;";

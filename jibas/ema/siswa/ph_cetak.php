@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -31,7 +31,7 @@ $kelas = $_REQUEST['kelas'];
 $nis = $_REQUEST['nis'];
 
 OpenDb();
-$sql = "SELECT t.departemen, a.tahunajaran, k.kelas, t.tingkat, s.nama, a.tglmulai, a.tglakhir FROM tahunajaran a, kelas k, tingkat t, siswa s WHERE k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND k.replid = $kelas AND s.nis = '$nis'";  
+$sql = "SELECT t.departemen, a.tahunajaran, k.kelas, t.tingkat, s.nama, a.tglmulai, a.tglakhir FROM tahunajaran a, kelas k, tingkat t, siswa s WHERE k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND k.replid = '$kelas' AND s.nis = '$nis'";  
 
 $result = QueryDB($sql);	
 $row = mysql_fetch_array($result);
@@ -88,7 +88,7 @@ $tingkat = $row['tingkat'];
 <tr>
 	<td colspan="2" align="center"> 
 <? 	OpenDb();
-	$sql1 = "SELECT CONCAT(DATE_FORMAT(tanggal1,'%b'),' ',YEAR(tanggal1)) AS blnthn, SUM(hadir), SUM(ijin), SUM(sakit),  SUM(alpa),SUM(cuti), MONTH(tanggal1) FROM presensiharian p, phsiswa ph WHERE ph.nis = '$nis' AND ph.idpresensi = p.replid AND p.idkelas = $kelas AND (((p.tanggal1 BETWEEN '$tglmulai' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglmulai' AND '$tglakhir')) OR (('$tglmulai' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY blnthn ORDER BY YEAR(tanggal1), MONTH(tanggal1)";
+	$sql1 = "SELECT CONCAT(DATE_FORMAT(tanggal1,'%b'),' ',YEAR(tanggal1)) AS blnthn, SUM(hadir), SUM(ijin), SUM(sakit),  SUM(alpa),SUM(cuti), MONTH(tanggal1) FROM presensiharian p, phsiswa ph WHERE ph.nis = '$nis' AND ph.idpresensi = p.replid AND p.idkelas = '$kelas' AND (((p.tanggal1 BETWEEN '$tglmulai' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglmulai' AND '$tglakhir')) OR (('$tglmulai' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY blnthn ORDER BY YEAR(tanggal1), MONTH(tanggal1)";
 
 	$result1 = QueryDb($sql1);
 	$num = mysql_num_rows($result1);

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,14 +33,14 @@ $orig_suku=$_REQUEST['orig_suku'];
 $ERROR_MSG = "";
 if (isset($_POST['simpan'])) {
 	OpenDb();
-	$sql_cek ="SELECT * from jbsumum.suku where suku='$_REQUEST[suku]' AND replid <>'$orig_suku'";
+	$sql_cek ="SELECT * from jbsumum.suku where suku='".CQ($_REQUEST['suku'])."' AND replid <>'$orig_suku'";
 	$hasil=QueryDb($sql_cek);
 	
 	if (mysql_num_rows($hasil)>0){
 		CloseDb();
 		$ERROR_MSG = "Suku $suku sudah digunakan!";
 	} else {
-		$sql = "UPDATE jbsumum.suku SET suku='$_POST[suku]' WHERE replid ='$orig_suku'";
+		$sql = "UPDATE jbsumum.suku SET suku='".CQ($_REQUEST['suku'])."' WHERE replid ='$orig_suku'";
 		$result = QueryDb($sql);
 	
 		if ($result) { ?>

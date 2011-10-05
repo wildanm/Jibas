@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -77,7 +77,7 @@ if ($op == "xm8r389xemx23xb2378e23") {
 	BeginTrans();
 	$success=0;
 	
-	$sql1="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE nis='$nis' AND idkelas = $idkelas ORDER BY mulai DESC LIMIT 1";
+	$sql1="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE nis='$nis' AND idkelas = '$idkelas' ORDER BY mulai DESC LIMIT 1";
 	$result1=QueryDbTrans($sql1, $success);
 	
 	if ($success){
@@ -91,12 +91,12 @@ if ($op == "xm8r389xemx23xb2378e23") {
 	}
 	
 	if ($success){
-		$sql1="DELETE FROM jbsakad.alumni WHERE nis='$nis' AND departemen = '$departemen' AND klsakhir=$idkelas AND tgllulus = '$tglmutasi'";
+		$sql1="DELETE FROM jbsakad.alumni WHERE nis='$nis' AND departemen = '$departemen' AND klsakhir='$idkelas' AND tgllulus = '$tglmutasi'";
 		$result1=QueryDbTrans($sql1, $success);
 	}
 	
 	if ($success){
-		$sql1="DELETE FROM jbsakad.mutasisiswa WHERE replid=$_REQUEST[replid]";
+		$sql1="DELETE FROM jbsakad.mutasisiswa WHERE replid='$_REQUEST[replid]'";
 		$result1=QueryDbTrans($sql1, $success);
 	}
 	

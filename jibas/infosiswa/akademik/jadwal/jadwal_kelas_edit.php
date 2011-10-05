@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ if (isset($_REQUEST['replid']))
 	$replid = $_REQUEST['replid'];
 	
 OpenDb();
-$sql = "SELECT *, k.kelas, p.nama, t.replid AS tahun, t.tahunajaran FROM jadwal j, jbssdm.pegawai p, jbsakad.tahunajaran t, kelas k WHERE j.replid = $replid AND j.nipguru = p.nip AND k.replid = j.idkelas AND k.idtahunajaran = t.replid";
+$sql = "SELECT *, k.kelas, p.nama, t.replid AS tahun, t.tahunajaran FROM jadwal j, jbssdm.pegawai p, jbsakad.tahunajaran t, kelas k WHERE j.replid = '$replid' AND j.nipguru = p.nip AND k.replid = j.idkelas AND k.idtahunajaran = t.replid";
 $result = QueryDb($sql);
 CloseDb();
 $row = mysql_fetch_array($result);
@@ -84,13 +84,13 @@ $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {		
 	
 	OpenDb();
-	$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = $jam";
+	$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam'";
 	$result1 = QueryDb($sql1);
 	$row1 = mysql_fetch_array($result1);
 	$rep1 = $row1['replid'];
 	$jm1 = $row1['jam1'];
 	
-	$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = $jam2";
+	$sql2 = "SELECT replid, TIME_FORMAT(jam2, '%H:%i') AS jam2 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam2'";
 	$result2 = QueryDb($sql2);
 	$row2 = mysql_fetch_array($result2);
 	$rep2 = $row2['replid'];
@@ -98,10 +98,10 @@ if (isset($_REQUEST['Simpan'])) {
 	
 	$jum = $jam2 - $jam + 1;
    
-	$sql3 = "SELECT * FROM jadwal WHERE idkelas = '$kelas' AND hari = $hari AND jam1 < '$jm2' AND replid <> $replid";
+	$sql3 = "SELECT * FROM jadwal WHERE idkelas = '$kelas' AND hari = '$hari' AND jam1 < '$jm2' AND replid <> '$replid'";
 	$result3 = QueryDb($sql3);
 	
-	$sql4 = "SELECT * FROM jadwal WHERE departemen = '$departemen' AND hari = $hari AND nipguru = '$nipguru' AND jam2 > '$jm1' AND replid <> $replid";
+	$sql4 = "SELECT * FROM jadwal WHERE departemen = '$departemen' AND hari = '$hari' AND nipguru = '$nipguru' AND jam2 > '$jm1' AND replid <> '$replid'";
 	if (mysql_num_rows($result3) > 0) {
 		CloseDb();		
 		$ERROR_MSG = "Ada jadwal yang bentrok!";
@@ -109,7 +109,7 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();		
 		$ERROR_MSG = "Ada jadwal guru mengajar di kelas lain yang bentrok!";	
 	} else {
-		$sql = "UPDATE jadwal SET idkelas=$kelas, nipguru='$nipguru', idpelajaran = $pelajaran, departemen = '$departemen', infojadwal = $info, hari = $hari, jamke = $jam, njam = $jum, sifat = 1, status = $status, keterangan='$keterangan', jam1 = '$jm1', jam2 = '$jm2', idjam1 = $rep1, idjam2 = $rep2 WHERE replid = $replid";
+		$sql = "UPDATE jadwal SET idkelas='$kelas', nipguru='$nipguru', idpelajaran = '$pelajaran', departemen = '$departemen', infojadwal = '$info', hari = '$hari', jamke = '$jam', njam = '$jum', sifat = 1, status = '$status', keterangan='$keterangan', jam1 = '$jm1', jam2 = '$jm2', idjam1 = '$rep1', idjam2 = '$rep2' WHERE replid = '$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	

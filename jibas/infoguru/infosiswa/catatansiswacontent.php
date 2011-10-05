@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,12 +36,12 @@ $idkategori = "";
 if (isset($_REQUEST['idkategori']))
 	$idkategori = $_REQUEST['idkategori'];	
 OpenDb();
-$res=QueryDb("SELECT kategori FROM jbsvcr.catatankategori WHERE replid=$idkategori");
+$res=QueryDb("SELECT kategori FROM jbsvcr.catatankategori WHERE replid='$idkategori'");
 $row=@mysql_fetch_array($res);
 $namakat=$row[kategori];
 CloseDb();	
 OpenDb();
-$res=QueryDb("SELECT tahunajaran FROM jbsakad.tahunajaran WHERE replid=$tahunajaran");
+$res=QueryDb("SELECT tahunajaran FROM jbsakad.tahunajaran WHERE replid='$tahunajaran'");
 $row=@mysql_fetch_array($res);
 $namathnajrn=$row[tahunajaran];
 CloseDb();
@@ -50,7 +50,7 @@ if (isset($_REQUEST['op']))
 	$op = $_REQUEST['op'];
 if ($op=="kwe9823h98hd29h98hd9h"){
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.catatansiswa WHERE replid=$_REQUEST[replid]";
+	$sql="DELETE FROM jbsvcr.catatansiswa WHERE replid='$_REQUEST[replid]'";
 	QueryDb($sql);
 	?>
 	<script language="javascript" type="text/javascript">
@@ -111,7 +111,7 @@ Tahun Ajaran :
   OpenDb();
   $sql="SELECT c.replid as replid,c.judul as judul, c.catatan as catatan, c.nip as nip, p.nama as nama, c.tanggal as tanggal ".
   	   "FROM jbsvcr.catatansiswa c, jbssdm.pegawai p, jbsakad.kelas k ".
-	   "WHERE c.nis='$nis' AND c.idkelas=k.replid AND k.idtahunajaran=$tahunajaran AND p.nip=c.nip AND c.idkategori=$idkategori";
+	   "WHERE c.nis='$nis' AND c.idkelas=k.replid AND k.idtahunajaran='$tahunajaran' AND p.nip=c.nip AND c.idkategori='$idkategori'";
   //echo $sql;
   //exit;
   $result=QueryDb($sql);

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -33,7 +33,7 @@ $tglawal = $_REQUEST['tglawal'];
 $tglakhir = $_REQUEST['tglakhir'];
 
 OpenDb();
-$sql = "SELECT t.departemen, a.tahunajaran, s.semester, t.tingkat FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid AND s.replid = $semester AND t.replid = $tingkat";  
+$sql = "SELECT t.departemen, a.tahunajaran, s.semester, t.tingkat FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid AND s.replid = '$semester' AND t.replid = '$tingkat'";  
 
 $result = QueryDB($sql);	
 $row = mysql_fetch_array($result);
@@ -81,7 +81,7 @@ $row = mysql_fetch_array($result);
 </table>
 <br />
 <? 	OpenDb();
-	$sql = "SELECT DISTINCT k.kelas, k.replid FROM presensiharian p, kelas k WHERE p.idkelas = k.replid AND k.idtingkat = $tingkat AND p.idsemester = $semester AND ((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) ORDER BY k.kelas, p.tanggal1 ";	
+	$sql = "SELECT DISTINCT k.kelas, k.replid FROM presensiharian p, kelas k WHERE p.idkelas = k.replid AND k.idtingkat = '$tingkat' AND p.idsemester = '$semester' AND ((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) ORDER BY k.kelas, p.tanggal1 ";	
 	
 	$result = QueryDb($sql);
 	$jum = mysql_num_rows($result);

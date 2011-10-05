@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -124,7 +124,7 @@ OpenDb();
     
     <select name="kelas" id="kelas" onChange="change_kelas()" style="width:98px" onkeypress="return focusNext1('siswa', event, 'pilih', 1, 0)">
 <?	if ($tingkat <> "") {
-		$sql="SELECT k.replid,k.kelas FROM jbsakad.kelas k,jbsakad.tahunajaran ta,jbsakad.tingkat ti WHERE k.idtahunajaran=ta.replid AND k.idtingkat=ti.replid AND ti.departemen='$departemen' AND ti.replid = $tingkat AND k.aktif=1 AND ta.aktif = 1 ORDER BY k.kelas";
+		$sql="SELECT k.replid,k.kelas FROM jbsakad.kelas k,jbsakad.tahunajaran ta,jbsakad.tingkat ti WHERE k.idtahunajaran=ta.replid AND k.idtingkat=ti.replid AND ti.departemen='$departemen' AND ti.replid = '$tingkat' AND k.aktif=1 AND ta.aktif = 1 ORDER BY k.kelas";
     	$result=QueryDb($sql);
     	while ($row=@mysql_fetch_array($result)){
             if ($kelas == "")
@@ -145,7 +145,7 @@ OpenDb();
     <p>
 <? 
 if ($kelas <> "" && $tingkat <> "" && $angkatan <> "") { 
-	$sql = "SELECT s.nis, s.nama, k.kelas FROM jbsakad.siswa s,jbsakad.kelas k WHERE s.aktif=1 AND k.replid=s.idkelas AND s.alumni=0 AND k.replid='$kelas' AND s.idangkatan = $angkatan ORDER BY $urut $urutan"; 
+	$sql = "SELECT s.nis, s.nama, k.kelas FROM jbsakad.siswa s,jbsakad.kelas k WHERE s.aktif=1 AND k.replid=s.idkelas AND s.alumni=0 AND k.replid='$kelas' AND s.idangkatan = '$angkatan' ORDER BY $urut $urutan"; 
 	$result = QueryDb($sql);
 	
 	if (mysql_num_rows($result) > 0) {

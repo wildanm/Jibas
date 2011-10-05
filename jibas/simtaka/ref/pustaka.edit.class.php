@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -26,21 +26,21 @@ class CPustakaEdit{
 	function OnStart(){
 		global $db_name_umum;
 		if (isset($_REQUEST[simpan])){
-			$sql = "SELECT nama FROM perpustakaan WHERE nama='$_REQUEST[nama]' AND replid <> $_REQUEST[replid]";
+			$sql = "SELECT nama FROM perpustakaan WHERE nama='".CQ($_REQUEST['nama'])."' AND replid <> '$_REQUEST[replid]'";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
 			if ($num>0){
 				$this->exist();
 			} else {
-				$sql = "UPDATE $db_name_umum.identitas SET perpustakaan='$_REQUEST[nama]' WHERE departemen='$_REQUEST[dep]'";
+				$sql = "UPDATE $db_name_umum.identitas SET perpustakaan='".CQ($_REQUEST['nama'])."' WHERE departemen='$_REQUEST[dep]'";
 				$result = QueryDb($sql);
-				$sql = "UPDATE perpustakaan SET nama='$_REQUEST[nama]', keterangan='$_REQUEST[keterangan]' WHERE replid=$_REQUEST[replid]";
+				$sql = "UPDATE perpustakaan SET nama='".CQ($_REQUEST['nama'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$_REQUEST[replid]'";
 				$result = QueryDb($sql);
 				if ($result)
 					$this->success();
 			}
 		} else {
-			$sql = "SELECT * FROM perpustakaan WHERE replid=$_REQUEST[id]";
+			$sql = "SELECT * FROM perpustakaan WHERE replid='$_REQUEST[id]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
 			$this->replid = $_REQUEST[id];

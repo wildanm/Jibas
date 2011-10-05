@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -36,7 +36,7 @@ $urutan = $_REQUEST['urutan'];
 
 OpenDb();
 	
-$sql = "SELECT p.nama, t.tahunajaran, t.departemen FROM jbssdm.pegawai p, jbsakad.tahunajaran t WHERE nip = '$nip' AND t.replid = $tahunajaran" ;   
+$sql = "SELECT p.nama, t.tahunajaran, t.departemen FROM jbssdm.pegawai p, jbsakad.tahunajaran t WHERE nip = '$nip' AND t.replid = '$tahunajaran'" ;   
 
 $result = QueryDB($sql);
 
@@ -84,7 +84,7 @@ $row = mysql_fetch_array($result);
 <br />
 <? 		
 	OpenDb();
-	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, k.kelas, l.nama, s.status, p.keterlambatan, p.jumlahjam, p.materi, p.keterangan, p.replid FROM presensipelajaran p, kelas k, pelajaran l, statusguru s WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND k.idtahunajaran = $tahunajaran ORDER BY $urut $urutan";
+	$sql = "SELECT DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, k.kelas, l.nama, s.status, p.keterlambatan, p.jumlahjam, p.materi, p.keterangan, p.replid FROM presensipelajaran p, kelas k, pelajaran l, statusguru s WHERE p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = '$nip' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND p.jenisguru = s.replid AND k.idtahunajaran = '$tahunajaran' ORDER BY $urut $urutan";
 	
 	$result = QueryDb($sql);			 
 	$jum_hadir = mysql_num_rows($result);
@@ -137,7 +137,7 @@ $row = mysql_fetch_array($result);
 	while ($row = @mysql_fetch_array($result)) {
 		$replid = $row['replid'];
 		
-		$sql1 = "SELECT COUNT(*), SUM(p.jumlahjam) FROM presensipelajaran p, pelajaran l, kelas k WHERE p.gurupelajaran = '$nip' AND tanggal BETWEEN '$tglawal' AND '$tglakhir' AND jenisguru = $replid AND p.idpelajaran = l.replid AND p.idkelas = k.replid AND k.idtahunajaran = $tahunajaran ";
+		$sql1 = "SELECT COUNT(*), SUM(p.jumlahjam) FROM presensipelajaran p, pelajaran l, kelas k WHERE p.gurupelajaran = '$nip' AND tanggal BETWEEN '$tglawal' AND '$tglakhir' AND jenisguru = '$replid' AND p.idpelajaran = l.replid AND p.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' ";
 		$result1 = QueryDb($sql1);	
 		$row1 = @mysql_fetch_row($result1);
 ?>

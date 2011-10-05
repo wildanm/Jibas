@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -35,7 +35,7 @@ if (isset($_REQUEST['id']))
 		
 if ($id <> "") {	
 	OpenDb();
-	$sql = "SELECT DAY(tanggal1) AS tgl1, MONTH(tanggal1) AS bln, YEAR(tanggal1) AS th, DAY(tanggal2) AS tgl2, hariaktif FROM presensiharian WHERE replid = $id";
+	$sql = "SELECT DAY(tanggal1) AS tgl1, MONTH(tanggal1) AS bln, YEAR(tanggal1) AS th, DAY(tanggal2) AS tgl2, hariaktif FROM presensiharian WHERE replid = '$id'";
 	$result = QueryDb($sql);
 	CloseDb();
 	$row = mysql_fetch_array($result);
@@ -46,7 +46,7 @@ if ($id <> "") {
 	$th = $row['th'];
 	$hariaktif = $row['hariaktif'];
 	//$th2 = $row['th2'];
-	$filter = " UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s,phsiswa p, kelas k WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = $id ";
+	$filter = " UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s,phsiswa p, kelas k WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = '$id' ";
 }
 
 if (isset($_REQUEST['tgl1']))
@@ -69,7 +69,7 @@ if (isset($_REQUEST['hariaktif']))
 	$hariaktif = $_REQUEST['hariaktif'];
 	
 OpenDb();
-$sql = "SELECT t.tahunajaran, t.tglmulai, t.tglakhir, k.kelas FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = $kelas"; 
+$sql = "SELECT t.tahunajaran, t.tglmulai, t.tglakhir, k.kelas FROM tahunajaran t, kelas k WHERE k.idtahunajaran = t.replid AND k.replid = '$kelas'"; 
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $awal = explode('-',$row[1]);
@@ -124,9 +124,9 @@ $op = $_REQUEST['op'];
 if ($op == "xm8r389xemx23xb2378e23") {
 	$replid=(int)$_REQUEST['replid'];
 	OpenDb();
-	$sql = "DELETE FROM phsiswa WHERE idpresensi = $replid";
+	$sql = "DELETE FROM phsiswa WHERE idpresensi = '$replid'";
 	QueryDb($sql);
-	$sql = "DELETE FROM presensiharian WHERE replid = $replid";
+	$sql = "DELETE FROM presensiharian WHERE replid = '$replid'";
 	QueryDb($sql);
 	
 	
@@ -469,7 +469,7 @@ function focusNext(elemName, evt) {
 
 <?
 	OpenDb();
-	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = $kelas AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas $filter ORDER BY nama";
+	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = '$kelas' AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas $filter ORDER BY nama";
 	
 	$result = QueryDb($sql);		
 	$cnt = 1;
@@ -570,7 +570,7 @@ function focusNext(elemName, evt) {
 			} 	
 			
 			if ($id <> "") {						
-				$sql1 = "SELECT * FROM phsiswa WHERE idpresensi = $id AND nis='$row[nis]'";
+				$sql1 = "SELECT * FROM phsiswa WHERE idpresensi = '$id' AND nis='$row[nis]'";
 				$result1 = QueryDb($sql1);
 				$row1 = mysql_fetch_array($result1);
 				if (mysql_num_rows($result1) > 0) {

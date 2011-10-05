@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -42,7 +42,7 @@ $keg = NULL;
 $op = $_REQUEST['op'];
 if ($op == "xm8r389xemx23xb2378e23") {	
 	OpenDb();
-	$sql = "DELETE FROM aktivitaskalender WHERE replid = $_REQUEST[replid]";	
+	$sql = "DELETE FROM aktivitaskalender WHERE replid = '$_REQUEST[replid]'";	
 	QueryDb($sql);
 	CloseDb();
 }
@@ -54,7 +54,7 @@ OpenDb();
 $kalender = $row[0];
 if (isset($_REQUEST[kalender]))
 	$kalender = $_REQUEST['kalender'];
-	$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), t.tglakhir FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t where k.replid=$kalender AND k.idtahunajaran = t.replid";
+	$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), t.tglakhir FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t where k.replid='$kalender' AND k.idtahunajaran = t.replid";
 	$result = QueryDb($sql_kalender);
 	//echo "sql ".$sql_kalender;
 	
@@ -356,7 +356,7 @@ function refresh() {
 <tr>
 	<td>
     <? 	OpenDb();
-		$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = $kalender";
+		$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = '$kalender'";
 		$result = QueryDb($sql);
 		
 		if (@mysql_num_rows($result)>0){

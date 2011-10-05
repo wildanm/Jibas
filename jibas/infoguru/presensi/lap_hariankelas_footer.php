@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -131,7 +131,7 @@ function change_urut(urut,urutan) {
 	OpenDb();
 	//$sql = "SELECT s.nis, s.nama, SUM(ph.hadir), SUM(ph.ijin), SUM(ph.sakit), SUM(ph.alpa), SUM(ph.cuti), s.idkelas, s.aktif, k.kelas FROM presensiharian p, phsiswa ph, siswa s, kelas k WHERE ph.nis = s.nis AND ph.idpresensi = p.replid AND p.idkelas = $kelas AND k.replid = s.idkelas AND p.idsemester = $semester AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis ORDER BY s.nama ";
 	
-	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir) AS hadir, SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, s.idkelas, s.aktif FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis WHERE s.idkelas = $kelas AND p.idsemester = $semester AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis ORDER BY $urut $urutan";
+	$sql = "SELECT s.nis, s.nama, SUM(ph.hadir) AS hadir, SUM(ph.ijin) AS ijin, SUM(ph.sakit) AS sakit, SUM(ph.alpa) AS alpa, SUM(ph.cuti) AS cuti, s.idkelas, s.aktif FROM siswa s LEFT JOIN (phsiswa ph INNER JOIN presensiharian p ON p.replid = ph.idpresensi) ON ph.nis = s.nis WHERE s.idkelas = '$kelas' AND p.idsemester ='$semester' AND (((p.tanggal1 BETWEEN '$tglawal' AND '$tglakhir') OR (p.tanggal2 BETWEEN '$tglawal' AND '$tglakhir')) OR (('$tglawal' BETWEEN p.tanggal1 AND p.tanggal2) OR ('$tglakhir' BETWEEN p.tanggal1 AND p.tanggal2))) GROUP BY s.nis ORDER BY $urut $urutan";
 	
 	$result = QueryDb($sql);			 
 	$jum = mysql_num_rows($result);

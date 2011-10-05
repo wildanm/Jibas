@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -38,7 +38,7 @@ if (isset($_REQUEST['Simpan'])) {
 	if ($num > 0){
 		$row = mysql_fetch_array($res);
 		$replid = $row['replid'];
-		$sql="UPDATE jbsumum.identitas SET foto = '$foto_data' WHERE replid=$replid";
+		$sql="UPDATE jbsumum.identitas SET foto = '$foto_data' WHERE replid='$replid'";
 	} else {
 		$nama = "nama=NULL";
 		$sql="INSERT INTO jbsumum.identitas SET foto = '$foto_data' ";
@@ -90,7 +90,7 @@ if (isset($_REQUEST['Simpan'])) {
 		if ($num > 0){
 			$row = mysql_fetch_array($res);
 			$replid = $row['replid'];
-			$sql="UPDATE jbsumum.identitas SET foto_sem = '$foto_data' WHERE replid=$_REQUEST[replid]";
+			$sql="UPDATE jbsumum.identitas SET foto_sem = '$foto_data' WHERE replid='$_REQUEST[replid]'";
 		} else {
 			$nama = "nama=NULL";
 			$sql="INSERT INTO jbsumum.identitas SET foto_sem = '$foto_data' ";

@@ -3,7 +3,7 @@
  * JIBAS Road To Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 2.5.2 (October 5, 2011)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
@@ -34,15 +34,15 @@ if (isset($_REQUEST['departemen']))
 
 $proses = "";
 if (isset($_REQUEST['proses']))
-	$proses = $_REQUEST['proses'];
+	$proses = CQ($_REQUEST['proses']);
 
 $kode = "";
 if (isset($_REQUEST['kode']))
-	$kode = $_REQUEST['kode'];
+	$kode = CQ($_REQUEST['kode']);
 	
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
-	$keterangan = $_REQUEST['keterangan'];	
+	$keterangan = CQ($_REQUEST['keterangan']);	
 $cek = 0;	
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) {
@@ -69,7 +69,7 @@ if (isset($_REQUEST['Simpan'])) {
 			$result1 = QueryDb($sql1);
 			$row1 = mysql_fetch_row($result1); 
 			
-			$sql2 = "UPDATE prosespenerimaansiswa SET aktif = 0 WHERE replid <> $row1[0] AND departemen = '$departemen'";			
+			$sql2 = "UPDATE prosespenerimaansiswa SET aktif = 0 WHERE replid <> '$row1[0]' AND departemen = '$departemen'";			
 			QueryDb($sql2);
 			CloseDb();		
 		?>
