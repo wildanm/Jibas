@@ -1,0 +1,167 @@
+<html>
+	<head>
+	<title>Ajax Chat 3.1 (Room 1)</title>
+    <script language="javascript" src="SpryValidationTextField.js"></script>
+    <link href="SpryValidationTextField.css" rel="stylesheet" type="text/css">
+    
+	</head>
+	<body background="../jibasinfoguru/00813_irishclovers_1680x1050.jpg" >
+	
+	<table border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="78" height="78" style="background-image:url(images/chat_01.png); background-repeat:no-repeat;">&nbsp;</td>
+    <td width="25" style="background-image:url(images/chat_02.png); background-repeat:repeat-x;">&nbsp;</td>
+    <td width="78" style="background-image:url(images/chat_04.png); background-repeat:no-repeat;">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="78" background="images/chat_07.png">&nbsp;</td>
+    <td bgcolor="#FFFFFF">
+			<p id="chatwindow"> </p>		
+<!--			<textarea id="chatwindow" rows="19" cols="95" readonly></textarea><br>
+--><br>
+</td>
+    <td background="images/chat_09.png">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="78" height="60" background="images/chat_10.png">&nbsp;</td>
+    <td background="images/chat_11.png">&nbsp;</td>
+    <td background="images/chat_12.png">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="78" background="images/chat_15.png">&nbsp;</td>
+    <td bgcolor="#FFFFFF">
+	  <input align="middle" id="chatnick" type="text" size="9" maxlength="9" >&nbsp;
+	  <input id="chatmsg" onFocus="focus('chatmsg')" onBlur="unfocus('chatmsg')" type="text" size="60" maxlength="80"  onkeyup="keyup(event.keyCode);"> 
+			<input type="button" value="Kirim" onClick="submit_msg();" style="cursor:pointer; background-image:url(../jibasinfoguru/style/formbg2.gif); color:#99FF00;">
+    </td>
+    <td background="images/chat_17.png">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="78" height="83" background="images/chat_18.png">&nbsp;</td>
+    <td background="images/chat_19.png">&nbsp;</td>
+    <td background="images/chat_20.png">&nbsp;</td>
+  </tr>
+</table>
+		
+
+	</body>
+</html>
+
+<script type="text/javascript">
+
+/****************************************************************
+ * Most Simple Ajax Chat Script (www.linuxuser.at)		*
+ * Version: 3.1							*
+ * 								*
+ * Author: Chris (chris[at]linuxuser.at)			*
+ * Contributors: Derek, BlueScreenJunky (http://forums.linuxuser.at/viewtopic.php?f=6&t=17)
+ *								*
+ * Licence: GPLv2						*
+ ****************************************************************/
+ 
+/* Settings you might want to define */
+	var waittime=800;		
+
+/* Internal Variables & Stuff */
+	chatmsg.focus()
+	document.getElementById("chatwindow").innerHTML = "loading...";
+
+	var xmlhttp = false;
+	var xmlhttp2 = false;
+
+
+/* Request for Reading the Chat Content */
+function ajax_read(url) {
+	if(window.XMLHttpRequest){
+		xmlhttp=new XMLHttpRequest();
+		if(xmlhttp.overrideMimeType){
+			xmlhttp.overrideMimeType('text/xml');
+		}
+	} else if(window.ActiveXObject){
+		try{
+			xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
+		} catch(e) {
+			try{
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+			} catch(e){
+			}
+		}
+	}
+
+	if(!xmlhttp) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+
+	xmlhttp.onreadystatechange = function() {
+	if (xmlhttp.readyState==4) {
+		document.getElementById("chatwindow").innerHTML = xmlhttp.responseText;
+
+		zeit = new Date(); 
+		ms = (zeit.getHours() * 24 * 60 * 1000) + (zeit.getMinutes() * 60 * 1000) + (zeit.getSeconds() * 1000) + zeit.getMilliseconds(); 
+		intUpdate = setTimeout("ajax_read('chat.txt?x=" + ms + "')", waittime)
+		}
+	}
+
+	xmlhttp.open('GET',url,true);
+	xmlhttp.send(null);
+}
+
+/* Request for Writing the Message */
+function ajax_write(url){
+	if(window.XMLHttpRequest){
+		xmlhttp2=new XMLHttpRequest();
+		if(xmlhttp2.overrideMimeType){
+			xmlhttp2.overrideMimeType('text/xml');
+		}
+	} else if(window.ActiveXObject){
+		try{
+			xmlhttp2=new ActiveXObject("Msxml2.XMLHTTP");
+		} catch(e) {
+			try{
+				xmlhttp2=new ActiveXObject("Microsoft.XMLHTTP");
+			} catch(e){
+			}
+		}
+	}
+
+	if(!xmlhttp2) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+
+	xmlhttp2.open('GET',url,true);
+	xmlhttp2.send(null);
+}
+
+/* Submit the Message */
+function submit_msg(){
+	nick = document.getElementById("chatnick").value;
+	msg = document.getElementById("chatmsg").value;
+
+	if (nick == "") { 
+		check = prompt("please enter username:"); 
+		if (check === null) return 0; 
+		if (check == "") check = "anonymous"; 
+		document.getElementById("chatnick").value = check;
+		nick = check;
+	} 
+
+	document.getElementById("chatmsg").value = "";
+	ajax_write("w.php?m=" + msg + "&n=" + nick);
+}
+
+/* Check if Enter is pressed */
+function keyup(arg1) { 
+	if (arg1 == 13) submit_msg(); 
+}
+
+/* Start the Requests! ;) */
+var intUpdate = setTimeout("ajax_read('chat.txt')", waittime);
+
+</script>
+<script language="javascript">
+	var sprytextfield1 = new Spry.Widget.ValidationTextField("chatnick");
+	var sprytextfield1 = new Spry.Widget.ValidationTextField("chatmsg");
+</script>
+
