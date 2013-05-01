@@ -29,6 +29,7 @@ require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
 require_once('library/departemen.php');
 require_once('include/errorhandler.php');
+require_once('library/openthinksas.jibas.php');
 
 if (getLevel() == 2)
 { ?>
@@ -243,7 +244,7 @@ function change_baris() {
 			if ($departemen == "")
 				$departemen = $value; ?>
         <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?> >
-        <?=$value ?>
+        <?=getDepartemenInOpenThinkSAS($value) ?>
         </option>
         <?		} ?>
       	</select></td> 

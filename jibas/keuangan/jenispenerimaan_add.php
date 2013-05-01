@@ -28,6 +28,7 @@ require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/theme.php');
 require_once('include/sessioninfo.php');
+require_once('library/openthinksas.jibas.php');
 
 $idkategori = $_REQUEST['idkategori'];
 $departemen = $_REQUEST['departemen'];
@@ -178,7 +179,11 @@ function panggil(elem)
     </tr>
     <tr>
         <td align="left"><strong>Departemen</strong></td>
-        <td align="left"><input type="text" name="departemen" id="departemen" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=$departemen ?>">
+        <td align="left">
+          <?php OpenDb();?>
+          <input type="text" name="departemen_openthinksas" id="departemen_openthinksas" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=getDepartemenInOpenThinkSAS($departemen) ?>">
+          <?php CloseDb();?>
+          <input type="hidden" name="departemen" id="departemen" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=$departemen ?>">
         </td>
     </tr>
     <tr>

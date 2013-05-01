@@ -32,7 +32,7 @@ $G_START_YEAR='2011';
 $G_SERVER_ADDR='http://jibas.wm/';
 
 /* Sistem operasi yang digunakan ( win | lin ) */
-$G_OS='win';
+$G_OS='lin';
 
 /* Lokasi Sekolah */
 $G_LOKASI="Depok";

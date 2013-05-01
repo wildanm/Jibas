@@ -28,6 +28,7 @@ require_once('include/rupiah.php');
 require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
+require_once('library/openthinksas.jibas.php');
 require_once('library/departemen.php');
 
 $from = $_REQUEST['from'];
@@ -224,7 +225,7 @@ function change_urut(urut,urutan) {
 		foreach ($dep as $value) { 
 			if ($departemen == "")
 				$departemen = $value ?>
-	    	<option value="<?=$value ?>" <?=StringIsSelected($departemen, $value) ?> > <?=$value ?></option>
+	    	<option value="<?=$value ?>" <?=StringIsSelected($departemen, $value) ?> > <?= getDepartemenInOpenThinkSAS($value) ?></option>
 <?  	} ?>     
 </select>
         </td>

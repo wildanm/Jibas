@@ -29,6 +29,7 @@ require_once('include/rupiah.php');
 require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('library/departemen.php');
+require_once('library/openthinksas.jibas.php');
 
 if (getLevel() == 2) 
 { ?>
@@ -227,7 +228,7 @@ OpenDb();
             $dep = getDepartemen(getAccess());
             foreach($dep as $value) 
             {  ?>
-                <option value="<?=$value ?>"><?=$value ?></option>
+                <option value="<?=$value ?>"><?=getDepartemenInOpenThinkSAS($value) ?></option>
             <? } ?>    
             </select>&nbsp;
             </td>
