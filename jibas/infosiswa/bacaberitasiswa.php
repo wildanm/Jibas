@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -63,20 +63,20 @@ $tglberita=$row['tgl']." ".$namabulan[$row['bln']-1]." ".$row['thn'];
 <table id="Table_01" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>
-			<img src="images_slice/BGNews_01.png" width="12" height="11" alt=""></td>
-		<td width="*" height="11" colspan="2" background="images_slice/BGNews_02.png">			</td>
+			<img src="images/BGNews_01.png" width="12" height="11" alt=""></td>
+		<td width="*" height="11" colspan="2" background="images/BGNews_02.png">			</td>
 		<td>
-			<img src="images_slice/BGNews_03.png" width="18" height="11" alt=""></td>
+			<img src="images/BGNews_03.png" width="18" height="11" alt=""></td>
 	</tr>
 	<tr>
-	  <td background="images_slice/BGNews_04.png"></td>
-	  <td background="images_slice/BGNews_05.png"><div align="left" style="padding-bottom:10px"><span style="color:#339900; font-size:20px; font-weight:bold">.:</span><span style="color:#FF6600; font-family:Calibri; font-size:16px; font-weight:bold; ">Berita Siswa</span></div></td>
-	  <td align="right" valign="top" background="images_slice/BGNews_05.png"><img src="images/ico/hapus.png" width="16" height="16" style="cursor:pointer" onclick="window.close();" /></td>
-	  <td background="images_slice/BGNews_06.png"></td>
+	  <td background="images/BGNews_04.png"></td>
+	  <td background="images/BGNews_05.png"><div align="left" style="padding-bottom:10px"><span style="color:#339900; font-size:20px; font-weight:bold">.:</span><span style="color:#FF6600; font-family:Calibri; font-size:16px; font-weight:bold; ">Berita Siswa</span></div></td>
+	  <td align="right" valign="top" background="images/BGNews_05.png"><img src="images/ico/hapus.png" width="16" height="16" style="cursor:pointer" onclick="window.close();" /></td>
+	  <td background="images/BGNews_06.png"></td>
   </tr>
 	<tr>
-		<td background="images_slice/BGNews_04.png" width="12">			</td>
-		<td width="*" colspan="2" background="images_slice/BGNews_05.png">
+		<td background="images/BGNews_04.png" width="12">			</td>
+		<td width="*" colspan="2" background="images/BGNews_05.png">
             <table width="100%" border="0" cellspacing="0">
               <tr>
                 <td width="62" scope="row" align="left"><strong>Dari </strong></td>
@@ -121,14 +121,14 @@ $tglberita=$row['tgl']." ".$namabulan[$row['bln']-1]." ".$row['thn'];
         ?></td>
               </tr>
         	</table>		</td>
-		<td background="images_slice/BGNews_06.png" width="18">			</td>
+		<td background="images/BGNews_06.png" width="18">			</td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/BGNews_07.png" width="12" height="20" alt=""></td>
-		<td width="*" height="17" colspan="2" background="images_slice/BGNews_08.png">			</td>
+			<img src="images/BGNews_07.png" width="12" height="20" alt=""></td>
+		<td width="*" height="17" colspan="2" background="images/BGNews_08.png">			</td>
 		<td>
-			<img src="images_slice/BGNews_09.png" width="18" height="20" alt=""></td>
+			<img src="images/BGNews_09.png" width="18" height="20" alt=""></td>
 	</tr>
 </table>
 </body>

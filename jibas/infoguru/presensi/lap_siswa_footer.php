@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -151,8 +151,7 @@ function change_urut1(urut1,urutan1) {
 <!-- TABLE UTAMA -->
 <tr>
 	<td colspan="2">
-	
-	<? 		
+<? 		
 	OpenDb();
 	$sql = "SELECT k.kelas, DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, pp.catatan, l.nama, g.nama, p.materi, pp.replid FROM presensipelajaran p, ppsiswa pp, jbssdm.pegawai g, kelas k, pelajaran l WHERE pp.idpp = p.replid AND p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = g.nip AND pp.nis = '$nis' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND pp.statushadir = 0 ORDER BY $urut $urutan" ;
 	

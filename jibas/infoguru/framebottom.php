@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,24 +22,9 @@
  **[N]**/ ?>
 <?
 require_once("include/theme.php"); 
-/*if (isset($_REQUEST['theme'])){
-	$theme = (int)$_REQUEST['theme'];
-} else {
-	$theme = 1;
-}
-if ($theme == 1) {
-	$thm ="images/theme/lavender/";
-} elseif ($theme == 2) {
-	$thm = "images/theme/red/";
-} elseif ($theme == 3) {
-	$thm = "images/theme/green/";
-} elseif ($theme == 4) {
-	$thm = "images/theme/blue/";
-} elseif ($theme == 5) {
-	$thm = "images/theme/black/";
-}
-*/
-require_once("include/sessioninfo.php"); 
+require_once("include/sessioninfo.php");
+require_once("include/sessionchecker.php");
+
 $nama = SI_USER_NAME();
 if ($nama=="landlord")
 	$nama = "Administrator JIBAS [Infoguru]";
@@ -58,14 +43,6 @@ function get_fresh(){
 </head>
 
 <body style="background-color:#000" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" onload="startclock('clock')">
-<!--<table width="100%" border="0" cellpadding="0" cellspacing="0">
-<tr height="36">
-	<td width="41" background="<?=GetThemeDir(SI_USER_THEME())?>bkmain_09.jpg">&nbsp;</td>
-	<td width="0" background="<?=GetThemeDir(SI_USER_THEME())?>bkmain_10a.jpg" align="left"><font color=#FFFFFF face="verdana" size="1"><b>&nbsp;Selamat Datang <?=$nama?></b></font></td>
-	<td width="0" background="<?=GetThemeDir(SI_USER_THEME())?>bkmain_10a.jpg" align="right"><font color="yellow" face="verdana" size="1"><strong><div id="clock"></div></strong></font></td>
-	<td width="42" background="<?=GetThemeDir(SI_USER_THEME())?>bkmain_11.jpg" align="right">&nbsp;</td>
-</tr>
-</table>-->
 <table id="Table_01" width="100%"  border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>

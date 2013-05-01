@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,33 +21,37 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-//require_once('../include/errorhandler.php');
-//require_once('../inc/sessioninfo.php');
-
+require_once('../inc/sessionchecker.php');
 require_once('../inc/common.php');
 require_once('../inc/config.php');
 require_once('../inc/getheader.php');
 require_once('../inc/db_functions.php');
 require_once('../inc/rupiah.php');
 
-$nis=$_REQUEST['nis'];
+$nis = $_REQUEST['nis'];
 
 OpenDb();
-$sql = "SELECT t.departemen FROM siswa s, kelas k, tingkat t WHERE s.nis='$nis' AND s.idkelas=k.replid AND k.idtingkat=t.replid";
-//echo $sql;
+$sql = "SELECT t.departemen
+	      FROM siswa s, kelas k, tingkat t
+		 WHERE s.nis='$nis' AND s.idkelas=k.replid AND k.idtingkat=t.replid";
 $result = QueryDb($sql);
 $row = @mysql_fetch_row($result);
 $departemen = $row[0];
-CloseDb();
 
-OpenDb();
-$sql="SELECT c.nis, c.nama, c.panggilan, c.tahunmasuk, c.idkelas, c.suku, c.agama, c.status, c.kondisi, c.kelamin, c.tmplahir, DAY(c.tgllahir) AS tanggal, MONTH(c.tgllahir) AS bulan, YEAR(c.tgllahir) AS tahun, c.tgllahir, c.warga, c.anakke, c.jsaudara, c.bahasa, c.berat, c.tinggi, c.darah, c.foto, c.alamatsiswa, c.kodepossiswa, c.telponsiswa, c.hpsiswa, c.emailsiswa, c.kesehatan, c.asalsekolah, c.ketsekolah, c.namaayah, c.namaibu, c.almayah, c.almibu, c.pendidikanayah, c.pendidikanibu, c.pekerjaanayah, c.pekerjaanibu, c.wali, c.penghasilanayah, c.penghasilanibu, c.alamatortu, c.telponortu, c.hportu, c.emailayah, c.emailibu, c.alamatsurat, c.keterangan,t.departemen, t.tahunajaran, k.kelas, c.nisn FROM siswa c, kelas k, tahunajaran t WHERE c.nis='$nis' AND k.replid = c.idkelas AND k.idtahunajaran = t.replid";
-//echo $sql;
+$sql = "SELECT c.nis, c.nama, c.panggilan, c.tahunmasuk, c.idkelas, c.suku,
+			   c.agama, c.status, c.kondisi, c.kelamin, c.tmplahir, DAY(c.tgllahir) AS tanggal,
+			   MONTH(c.tgllahir) AS bulan, YEAR(c.tgllahir) AS tahun, c.tgllahir, c.warga, c.anakke,
+			   c.jsaudara, c.bahasa, c.berat, c.tinggi, c.darah, c.foto, c.alamatsiswa, c.kodepossiswa,
+			   c.telponsiswa, c.hpsiswa, c.emailsiswa, c.kesehatan, c.asalsekolah, c.ketsekolah,
+			   c.namaayah, c.namaibu, c.almayah, c.almibu, c.pendidikanayah, c.pendidikanibu,
+			   c.pekerjaanayah, c.pekerjaanibu, c.wali, c.penghasilanayah, c.penghasilanibu,
+			   c.alamatortu, c.telponortu, c.hportu, c.emailayah, c.emailibu, c.alamatsurat, c.keterangan,
+			   t.departemen, t.tahunajaran, k.kelas, c.nisn
+		  FROM siswa c, kelas k, tahunajaran t
+		 WHERE c.nis='$nis' AND k.replid = c.idkelas AND k.idtahunajaran = t.replid";
 $result = QueryDb($sql);
-
 $row_siswa = @mysql_fetch_array($result); 
 CloseDb();
-
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">

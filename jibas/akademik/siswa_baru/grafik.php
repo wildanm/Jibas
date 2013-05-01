@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,14 +43,14 @@ $iddasar=$_REQUEST['iddasar'];
 </head>
 <body topmargin="0" leftmargin="0">
 
-<table width="50%" border="0" cellpadding="2" cellspacing="2">
+<table width="100%" border="0" cellpadding="2" cellspacing="2">
 <tr>
     <td align="center">
     <a href="#" onclick="newWindow('calon_statistik_cetak.php?dasar=<?=$dasar?>&departemen=<?=$departemen?>&idproses=<?=$idproses?>&tabel=<?=$tabel?>&iddasar=<?=$iddasar?>&lup=no','Cetak',787,551,'resizable=1,scrollbars=1,status=0,toolbar=0');"><img src="../images/ico/print.png" border="0"/>&nbsp;Cetak</a>
     </td>
 </tr>
 <tr>
-    <td>
+    <td align="center" valign="top">
     <img src="statistik_batang.php?iddasar=<?=$iddasar?>&departemen=<?=$departemen?>&idproses=<?=$idproses?>"/>
    	<p>
     <img src="statistik_pie.php?iddasar=<?=$iddasar?>&departemen=<?=$departemen?>&idproses=<?=$idproses?>" />

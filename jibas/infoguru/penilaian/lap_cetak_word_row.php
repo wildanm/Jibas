@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -547,10 +547,16 @@ mso-break-type:section-break'>
 								"GROUP BY pel.nama";
 	$result_get_pelajaran_komentar=QueryDb($sql_get_pelajaran_komentar);
 	$cntpel_komentar=1;
-	while ($row_get_pelajaran_komentar=@mysql_fetch_array($result_get_pelajaran_komentar)){
-	$sql_get_komentar="SELECT k.komentar FROM jbsakad.komennap k, jbsakad.infonap i WHERE k.nis='$nis' AND i.idpelajaran='$row_get_pelajaran_komentar[replid]' AND i.replid=k.idinfo";
-	$result_get_komentar=QueryDb($sql_get_komentar);
-	$row_get_komentar=@mysql_fetch_row($result_get_komentar);
+	while ($row_get_pelajaran_komentar=@mysql_fetch_array($result_get_pelajaran_komentar))
+    {
+        $sql_get_komentar = "SELECT k.komentar
+                               FROM jbsakad.komennap k, jbsakad.infonap i
+                              WHERE k.nis='$nis'
+                                AND i.idpelajaran='$row_get_pelajaran_komentar[replid]'
+                                AND i.idsemester = '$semester'
+                                AND i.replid=k.idinfo";
+        $result_get_komentar=QueryDb($sql_get_komentar);
+    	$row_get_komentar=@mysql_fetch_row($result_get_komentar);
 	?>
 	<tr>
 	<td height="25"><span class="style5"><?=$row_get_pelajaran_komentar[nama]?></span></td>

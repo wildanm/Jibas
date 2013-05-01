@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,79 +21,68 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-require_once('../../sessionchecker.php');
 require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
-$op="";
+require_once('../../include/fileutil.php');
+require_once('../../include/sessionchecker.php');
+
+$op = "";
 if (isset($_REQUEST[op]))
 	$op=$_REQUEST[op];
-$page='t';
+  
+$page = 't';
 if (isset($_REQUEST[page]))
-	$page = $_REQUEST[page];	
+	$page = $_REQUEST[page];
+	
 OpenDb();
-$sql="SELECT * FROM jbsvcr.galerifoto WHERE nis='".SI_USER_ID()."'";
-$result=QueryDb($sql);
-$num=@mysql_num_rows($result);
-$cnt=1;
-while ($row=@mysql_fetch_array($result)){
-	$gbr[$cnt]="../../library/gambar.php?replid=".$row[replid]."&table=jbsvcr.galerifoto";
-	$gbrkcl[$cnt]="../../library/gambar.php?replid=".$row[replid]."&table=jbsvcr.galerifoto";
-	$ket[$cnt]=$row[keterangan];
-	$nama[$cnt]=$row[nama];
-	$fn[$cnt]=$row[filename];
-	$rep[$cnt]=$row[replid];
-$cnt++;
+$sql = "SELECT * FROM jbsvcr.galerifoto WHERE idguru='".SI_USER_ID()."'";
+$result = QueryDb($sql);
+$num = @mysql_num_rows($result);
+$cnt = 1;
+while ($row = @mysql_fetch_array($result))
+{
+	$ket[$cnt] = $row[keterangan];
+	$nama[$cnt] = $row[nama];
+	$fn[$cnt] = $row[filename];
+	$rep[$cnt] = $row[replid];
+	
+	$cnt++;
 }
 CloseDb();
-//mkdir($GALLERY_DIR."thumbnails\\", 0777);
-//chmod($GALLERY_DIR."thumbnails\\", 0644);
-if ($op=="14075BUSYCODACALLDIFF"){
+
+if ($op == "14075BUSYCODACALLDIFF")
+{
 	OpenDb();
-	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'"));
-	//echo $GALLERY_DIR."photos\\".$r[filename];
-	//echo $GALLERY_DIR."thumbnails\\X".$r[filename]; exit;
-	if (file_exists($GALLERY_DIR."photos\\".$r[filename]) && file_exists($GALLERY_DIR."thumbnail\\".$r[filename])){
-		delete($GALLERY_DIR."photos\\".$r[filename]);
-		delete($GALLERY_DIR."thumbnail\\".$r[filename]);
-		QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'");
-		//echo $GALLERY_DIR."photos\\".$r[filename]; exit;
-	} else {
-		//echo "none";
-		//echo $GALLERY_DIR."photos\\".$r[filename]; exit;
-	}
-	//echo file_exists($GALLERY_DIR."photos\\".$r[filename]);
-	//exit;
+	$sql = "SELECT * FROM jbsvcr.galerifoto WHERE replid = '$_REQUEST[replid]'";
+	$res = QueryDb($sql);
+	$r = mysql_fetch_array($res);
 	
-	CloseDb();
-?>
-<script type="text/javascript">
-	document.location.href="galerifoto.php?page=t";	
-</script>
+	$fimage = "$FILESHARE_UPLOAD_DIR/galerisiswa/photos/" . $r[filename];
+	if (file_exists($fimage))
+	   delete($fimage);
+	   
+	$fimage = "$FILESHARE_UPLOAD_DIR/galerisiswa/thumbnails/" . $r[filename];
+	if (file_exists($fimage))
+	   delete($fimage);   
+	   
+	$sql = "DELETE FROM jbsvcr.galerifoto WHERE replid = '$_REQUEST[replid]'";
+	QueryDb($sql);
+	
+	CloseDb(); ?>
+	<script type="text/javascript">
+		document.location.href="galerifoto.php?page=t";	
+	</script>
 <?
 }
-if ($op=="DIFFBUSYCODACALL14077"){
+
+if ($op == "DIFFBUSYCODACALL14077")
+{
 	OpenDb();
-	$sql = "UPDATE jbsvcr.galerifoto SET nama='$_REQUEST[newName]',keterangan='$_REQUEST[newKet]' WHERE replid='$_REQUEST[replid]'";
-	//echo($sql);
+	$sql = "UPDATE jbsvcr.galerifoto
+			   SET nama='$_REQUEST[newName]', keterangan='" . CQ($_REQUEST['newKet']) . "'
+			 WHERE replid='$_REQUEST[replid]'";
 	QueryDb($sql);
 	CloseDb();
 	?>
@@ -117,10 +106,13 @@ if ($op=="DIFFBUSYCODACALL14077"){
 <script language="javascript" src="../../script/ajax.js"></script>
 <script src="SpryTabbedPanels.js" type="text/javascript"></script>
 <script language="javascript" >
-function get_fresh(){
+function get_fresh()
+{
 	document.location.href="galerifoto.php";
 }
-function over(id){
+
+function over(id)
+{
 	var actmenu = document.getElementById('actmenu').value;
 	if (actmenu==id)
 		return false;
@@ -130,7 +122,9 @@ function over(id){
 	else 
 		document.getElementById('tabimages').src='../../images/t_over.png';
 }
-function out(id){
+
+function out(id)
+{
 	var actmenu = document.getElementById('actmenu').value;
 	if (actmenu==id)
 		return false;
@@ -225,22 +219,30 @@ function simpanUbah(x,replid)
   <tr>
     <td height="50" align="left"><font size="4" style="background-color:#ffcc66">&nbsp;</font>&nbsp;<font size="4" color="Gray">Galeri Foto</font><br />
 <a href="../../home.php"  target="framecenter">Home</a> > <strong>Galeri Foto</strong><br /><br /></td>
-    <td align="right" valign="bottom"><a href="galerifoto_ss.php"><img src="../../images/ico/filmstrip.gif" border="0">&nbsp;Filmstrip</a>&nbsp;&nbsp;<a href="#" onClick="newWindow('tambahfoto.php','TambahFoto','550','207','resizable=1,scrollbars=0,status=0,toolbar=0');"><img src="../../images/ico/tambah.png" border="0" />&nbsp;Tambah Foto</a><br></td>
+    <td align="right" valign="bottom">
+	<a href="galerifoto_ss.php"><img src="../../images/ico/filmstrip.gif" border="0">&nbsp;Slideshow</a>&nbsp;&nbsp;
+	<a href="#" onClick="newWindow('tambahfoto.php?pagesource=tt','TambahFoto','550','207','resizable=1,scrollbars=0,status=0,toolbar=0');"><img src="../../images/ico/tambah.png" border="0" />&nbsp;Tambah Foto</a><br>
+	</td>
   </tr>
   <tr>
     <td colspan="2" align="left">
        	<table width="100%" border="0" cellspacing="0" align="center">
 			  <? if ($num>0){ ?>  
-			  <?	for ($i=1;$i<=$num;$i++){ ?>
-			  <?		if ($i==1 || $i-1%5==0) { ?>
+			  <?	for ($i=1;$i<=$num;$i++)
+					{
+						$fphoto = "$FILESHARE_ADDR/galerisiswa/photos/".$fn[$i];
+						$fthumb = "$FILESHARE_ADDR/galerisiswa/thumbnails/".$fn[$i]; ?>
+			  <?		if ($i==1 || $i - 1 % 5==0)  { ?>
 							<tr>
 			  <?		} ?>
-						<td height="125" align="center"><a title="<?=$ket[$i]?>" href="<?=$WEB_GALLERY_DIR?>photos/<?=$fn[$i]?>" rel="lytebox[vacation]" >
-							<img title="Klik untuk melihat ukuran sebenarnya" src="<?=$WEB_GALLERY_DIR?>thumbnail/<?=$fn[$i]?>" width="80" style="cursor:pointer;"></a>
+						<td height="125" align="center">
+							<a title="<?=$ket[$i]?>" href="<?=$fphoto?>" rel="lytebox[vacation]" >
+							<img title="Klik untuk melihat ukuran sebenarnya"
+								 src="<?=$fthumb?>" width="80" style="cursor:pointer;">
+							</a>
                             <br>
-                            <span class="style4" id="spanNama<?=$i?>"><?=$nama[$i]?>
-                            </span>
-					    <input type="text" id="txtNama<?=$i?>" value="<?=$nama[$i]?>" style="display:none">
+                            <span class="style4" id="spanNama<?=$i?>"><?=$nama[$i]?></span>
+							<input type="text" id="txtNama<?=$i?>" value="<?=$nama[$i]?>" style="display:none">
 							<br>
 					    	<textarea id="txtKet<?=$i?>" name="txtKet<?=$i?>" style="display:none"><?=$ket[$i]?></textarea>
 							<span id="spanKet<?=$i?>" class="style5"><?=$ket[$i]?>
@@ -251,7 +253,7 @@ function simpanUbah(x,replid)
                             &nbsp;
 							<img title="Ubah Nama&Keterangan" id="editIcon<?=$i?>" src="../../images/ico/ubah.png" style="cursor:pointer;" onClick="ubah('<?=$i?>','<?=$num?>')">
 							<img title="Simpan" id="saveIcon<?=$i?>" src="../../images/ico/disk.png" style="cursor:pointer; display:none" onClick="simpanUbah('<?=$i?>','<?=$rep[$i]?>')">							</td>
-			  <?		if ($i%5==0) { ?>
+			  <?		if ($i % 5==0) { ?>
 							</tr>
 			  <?		} ?>
 			  <?	} ?>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,13 +59,10 @@ if (isset($_REQUEST['idkelas']))
 if (isset($_REQUEST['lunas']))
 	$statuslunas = (int)$_REQUEST['lunas'];
 
-OpenDb();	
+OpenDb();
+
 $sql = "SELECT departemen FROM jbsakad.angkatan WHERE replid='$idangkatan'"; 	
-$result = QueryDb($sql);    
-$row = mysql_fetch_row($result);	
-$departemen = $row[0];
-
-
+$departemen = FetchSingle($sql);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -147,9 +144,7 @@ else
 		}
 	}
 }
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$max_n_cicilan = $row[0];
+$max_n_cicilan = FetchSingle($sql);
 $table_width = 810 + $max_n_cicilan * 90;
 
 //Dapatkan namapenerimaan
@@ -158,19 +153,16 @@ $namapenerimaan = FetchSingle($sql);
 
 $namatingkat = "(all)";
 $namakelas = "(all)";
-if ($idkelas <> -1 && $idtingkat <> -1) 
+if ($idkelas <> -1) 
 {
 	$sql = "SELECT kelas FROM jbsakad.kelas WHERE replid='$idkelas'";
-	$result = QueryDb($sql);
-	$row = mysql_fetch_row($result);
-	$namakelas = $row[0];
-} 
-else 
+	$namakelas = FetchSingle($sql);
+}
+
+if ($idtingkat <> -1)
 {
 	$sql = "SELECT tingkat FROM jbsakad.tingkat WHERE replid='$idtingkat'";
-	$result = QueryDb($sql);
-	$row = mysql_fetch_row($result);
-	$namatingkat = $row[0];
+	$namatingkat = FetchSingle($sql);
 } 
 
 $sql = "SELECT angkatan, departemen FROM jbsakad.angkatan WHERE replid='$idangkatan'";
@@ -216,7 +208,8 @@ $departemen = $row[1];
     <td width="125" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">
       <?=$namapenerimaan ?>
     </font></strong></td>
-    <td width="125" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Total Pembayaran</font></strong></td>
+    <td width="125" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Total Besar Pembayaran</font></strong></td>
+	<td width="125" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Total Diskon</font></strong></td>
     <td width="125" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Total Tunggakan</font></strong></td>
     <td width="200" align="center" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Keterangan</font></strong></td>
 </tr>
@@ -227,6 +220,16 @@ if ($statuslunas == -1)
 	if ($idtingkat == -1) 
 	{
 		// semua tingkat & kelas
+		$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya
+						   FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+						  WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan 
+						    AND s.idangkatan = $idangkatan AND s.idkelas = k.replid AND k.idtingkat = t.replid";
+						   
+		$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon
+						  FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+						 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan 
+						   AND s.idangkatan = $idangkatan AND s.idkelas = k.replid AND k.idtingkat = t.replid";
+						   
 		$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
 		              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
 						 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' 
@@ -243,6 +246,16 @@ if ($statuslunas == -1)
 		if ($idkelas == -1) 
 		{
 			// semua kelas di tingkat terpilih
+			$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya
+							  FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
+							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
+							   AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid";
+							   
+			$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon
+							  FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
+							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
+							   AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid";
+							   
 			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
 			              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
@@ -256,7 +269,17 @@ if ($statuslunas == -1)
 		} 
 		else 
 		{
-			// tingkat & kelas terpilih			
+			// tingkat & kelas terpilih
+			$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya 
+							  FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k
+							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
+							   AND s.idkelas = k.replid AND s.idangkatan = $idangkatan";
+							   
+			$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon 
+									FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
+									WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
+									AND s.idkelas = k.replid AND s.idangkatan = $idangkatan";
+									
 			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
 			              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
 							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
@@ -275,6 +298,16 @@ else
 	if ($idtingkat == -1) 
 	{
 		// semua tingkat & kelas
+		$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya
+						  FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+						 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan
+						   AND s.idkelas = k.replid AND k.idtingkat = t.replid AND b.lunas = $statuslunas";
+						   
+		$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon 
+						  FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+						 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan
+						   AND s.idkelas = k.replid AND k.idtingkat = t.replid AND b.lunas = $statuslunas";
+						   
 		$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
 		              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
 						 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan'
@@ -289,7 +322,17 @@ else
 	else 
 	{
 		if ($idkelas == -1) 
-		{ 
+		{
+			$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya
+							  FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
+							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
+							   AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid AND b.lunas = $statuslunas";
+							   
+			$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon 
+							  FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
+							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
+							   AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid AND b.lunas = $statuslunas";
+							   
 			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
 			              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
@@ -304,6 +347,16 @@ else
 		} 
 		else 
 		{
+			$sql_sum_biaya = "SELECT SUM(b.besar) AS TotalBiaya
+							  FROM besarjtt b, jbsakad.siswa s, jbsakad.kelas k
+						 	 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
+							  AND s.idkelas = k.replid AND b.lunas = $statuslunas AND s.idangkatan = $idangkatan";
+							  
+			$sql_sum_bayar_diskon = "SELECT SUM(p.jumlah) AS TotalBayar, SUM(p.info1) AS TotalDiskon  
+							  FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
+						 	 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
+							  AND s.idkelas = k.replid AND b.lunas = $statuslunas AND s.idangkatan = $idangkatan";
+							  
 			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
 			              FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
 							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
@@ -322,9 +375,6 @@ $result_tot = QueryDb($sql_tot);
 $result = QueryDb($sql);
 $cnt = 0;
 	
-$totalbiayaall = 0;
-$totalbayarall = 0;
-
 while ($row = mysql_fetch_array($result)) 
 {
 	$idbesarjtt = $row['id'];
@@ -364,9 +414,9 @@ while ($row = mysql_fetch_array($result))
 	$nbayar = $row2[0];
 	$nblank = $max_n_cicilan - $nbayar;
 	$totalbayar = 0;
-	
+	$totaldiskon = 0;
 	if ($nbayar > 0) {
-		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt' ORDER BY tanggal";
+		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah, info1 FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt' ORDER BY tanggal";
 		$result2 = QueryDb($sql);
 		
 		$x=0;
@@ -374,7 +424,9 @@ while ($row = mysql_fetch_array($result))
 		$bg2=$bg1;
 		if ($x%2==0 || $x==0)
 			$bg2="#d3fffd";
-			$totalbayar = $totalbayar + $row2[1]; ?>
+			$totalbayar = $totalbayar + $row2[1] + $row2[2];
+			$totaldiskon = $totaldiskon + $row2[2];
+			?>
             <td bgcolor="<?=$bg2?>">
                 <table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse" bordercolor="#000000">
                 <tr height="20"><td align="center"><font size="2" face="Arial">
@@ -404,6 +456,9 @@ while ($row = mysql_fetch_array($result))
     <td align="right"><font size="2" face="Arial">
       <?=$totalbayar ?>
     </font></td>
+	<td align="right"><font size="2" face="Arial">
+      <?=$totaldiskon ?>
+    </font></td>
     <td align="right"><font size="2" face="Arial">
       <?=$besarjtt - $totalbayar ?>
     </font></td>
@@ -413,27 +468,21 @@ while ($row = mysql_fetch_array($result))
 </tr>
 <?
 }
-
-//if ($total-1 == $page) {
-	$totbiayaall = 0;
-	$totbayarall = 0;
+	$totalBiayaAll = FetchSingle($sql_sum_biaya);
 	
-	while ($row_tot = mysql_fetch_array($result_tot)) {
-		$jum = $row_tot['jumlah'];
-		if ($row_tot == NULL) $jum = 0;
-		$totbiayaall += $row_tot['besar'];
-		$totbayarall += $jum;
-		
-	}
+	$row = FetchSingleRow($sql_sum_bayar_diskon);
+	$totalBayarAll = $row[0] + $row[1];
+	$totalDiskonAll = $row[1];
 ?>
 <tr height="40">
 	<td align="center" colspan="<?=5 + $max_n_cicilan ?>" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong>T O T A L</strong></font></td>
-	<td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totbiayaall ?></strong></font></td>
-    <td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totalbayarall ?></strong></font></td>
-    <td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totbiayaall - $totalbayarall ?></strong></font></td>
+	<td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totalBiayaAll ?></strong></font></td>
+    <td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totalBayarAll ?></strong></font></td>
+	<td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totalDiskonAll ?></strong></font></td>
+    <td align="right" bgcolor="#999900"><font color="#FFFFFF" size="2" face="Arial"><strong><?=$totalBiayaAll - $totalBayarAll?></strong></font></td>
     <td bgcolor="#999900">&nbsp;</td>
 </tr>
-<? //} ?>
+
 </table>
 <? CloseDb() ?>
 </body>

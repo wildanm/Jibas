@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,85 +27,86 @@ require_once('../../include/common.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+
 OpenDb();
 
-	$kalender = $_REQUEST['kalender'];
-	//$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), t.tglakhir FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t where k.replid=$kalender AND k.idtahunajaran = t.replid";
-	$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), k.kalender, t.tglmulai, t.tglakhir, k.departemen, k.aktif, k.terlihat FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t WHERE k.replid='$kalender' AND k.idtahunajaran = t.replid";
-	//echo "sql ".$sql_kalender; exit;
-	$result = QueryDb($sql_kalender);
-	//echo "sql ".$sql_kalender;
-	//if (mysql_num_rows($result) > 0) {
-	
-		$row = mysql_fetch_row($result);
-		$departemen = $row[7];
-		$akademik = $row[4];
-		//$periode = LongDateFormat($row[5]).' s/d '.LongDateFormat($row[6]);
-		$periode = TglTextLong($row[5]).' s/d '.TglTextLong($row[6]);
+$kalender = $_REQUEST['kalender'];
+$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), k.kalender,
+						t.tglmulai, t.tglakhir, k.departemen, k.aktif, k.terlihat
+				   FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t
+				  WHERE k.replid='$kalender' AND k.idtahunajaran = t.replid";
+$result = QueryDb($sql_kalender);
+$row = mysql_fetch_row($result);
+$departemen = $row[7];
+$akademik = $row[4];
+$periode = TglTextLong($row[5]).' s/d '.TglTextLong($row[6]);
 
-		if ($row[8] == 1) 
-			$aktif = 'Aktif';
-		else
-			$aktif = 'Tidak Aktif';
+if ($row[8] == 1) 
+	$aktif = 'Aktif';
+else
+	$aktif = 'Tidak Aktif';
 			
-		if ($row[9] == 1) 
-			$terlihat = 'Terlihat';
-		else
-			$aktif = 'Tidak Terlihat';
-		$bulan1 = $row[0];
-		$tahun1 = $row[1];
-		$bulan2 = $row[2];
-		$tahun2 = $row[3];
+if ($row[9] == 1) 
+	$terlihat = 'Terlihat';
+else
+	$aktif = 'Tidak Terlihat';
+	
+$bulan1 = $row[0];
+$tahun1 = $row[1];
+$bulan2 = $row[2];
+$tahun2 = $row[3];
 		
-		$bln = $bulan1;
-		//if (isset($_REQUEST['bln']))
-		//	$bln = $_REQUEST['bln'];
+$bln = $bulan1;
+//if (isset($_REQUEST['bln']))
+//	$bln = $_REQUEST['bln'];
+
+$thn = $tahun1;
+//if (isset($_REQUEST['thn']))
+//	$thn = $_REQUEST['thn'];
+$prevbln = $bulan1;
+//if (isset($_REQUEST['prevbln']))
+//	$prevbln = $_REQUEST['prevbln'];
+$prevthn = $tahun1;
+//if (isset($_REQUEST['prevthn']))
+//	$prevthn = $_REQUEST['prevthn'];
+$next = 0;
+if (isset($_REQUEST['next']))
+	$next = $_REQUEST['next'];	
 		
-		$thn = $tahun1;
-		//if (isset($_REQUEST['thn']))
-		//	$thn = $_REQUEST['thn'];
-		$prevbln = $bulan1;
-		//if (isset($_REQUEST['prevbln']))
-		//	$prevbln = $_REQUEST['prevbln'];
-		$prevthn = $tahun1;
-		//if (isset($_REQUEST['prevthn']))
-		//	$prevthn = $_REQUEST['prevthn'];
-		$next = 0;
-		if (isset($_REQUEST['next']))
-			$next = $_REQUEST['next'];	
-		
-		$last = 0;
-		$tahun = $thn;
-		$bul = $bln+5;
-		if ($bln > 6) {
-			$bul = ($bln+5)-12;
-			$tahun = $thn+1;
-		}
-		
-		//echo "Masuk bln ".$bln." bul ".$bul." bulan2 ".$bulan2." tahun ".$tahun." tahun2 ".$tahun2;
-		
-		if ($bul >= $bulan2 && $tahun >= $tahun2) {	
-			$last = 1;
-			//echo "Masuk bul >= bulan2 & tahun >= tahun2";
-		}
-		
-		if ($bln == $bulan1 && $thn == $tahun1) {
-			$next = 0;
-			//Masuk bln == bulan1 & thn == tahun1
-		}
+$last = 0;
+$tahun = $thn;
+$bul = $bln+5;
+if ($bln > 6) {
+	$bul = ($bln+5)-12;
+	$tahun = $thn+1;
+}
+
+//echo "Masuk bln ".$bln." bul ".$bul." bulan2 ".$bulan2." tahun ".$tahun." tahun2 ".$tahun2;
+
+if ($bul >= $bulan2 && $tahun >= $tahun2) {	
+	$last = 1;
+	//echo "Masuk bul >= bulan2 & tahun >= tahun2";
+}
+
+if ($bln == $bulan1 && $thn == $tahun1) {
+	$next = 0;
+	//Masuk bln == bulan1 & thn == tahun1
+}
 		
 
 $color = array("#afafaf","#000000");
 
-
-OpenDb();
-function loadKalender1($kalender) {
-	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' ORDER BY tanggalawal"; 
+function loadKalender1($kalender)
+{
+	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal),
+				   DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir)
+			  FROM aktivitaskalender
+			 WHERE idkalender = '$kalender' ORDER BY tanggalawal"; 
 	
 	$result = QueryDb($sql);
 	$i = 0;	
-	unset($GLOBALS[keg][row]);
-	while($row = mysql_fetch_row($result)) {		
+	while($row = mysql_fetch_row($result))
+	{		
 		$tgl1 = explode('-',$row[2]);
 		$tgl2 = explode('-',$row[3]);
 		$awal = $tgl1[2].'/'.$tgl1[1].'/'.substr($tgl1[0],2,2).' - '.$tgl2[2].'/'.$tgl2[1].'/'.substr($tgl2[0],2,2);
@@ -118,15 +119,19 @@ function loadKalender1($kalender) {
 	return true;
 }	
 
-function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
+function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2)
+{
 	global $keg;
 	$batastgl1 = $tahun1."-".$bulan1."-1";
 	$batastgl2 = $tahun2."-".$bulan2."-31";
 	
-	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' AND (('$batastgl1' BETWEEN tanggalawal AND tanggalakhir) OR ('$batastgl2' BETWEEN tanggalawal AND tanggalakhir) OR (tanggalawal BETWEEN '$batastgl1' AND '$batastgl2') OR (tanggalakhir BETWEEN '$batastgl1' AND '$batastgl2')) ORDER BY tanggalawal";  
-
+	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir),
+				   DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir)
+			  FROM aktivitaskalender
+			 WHERE idkalender = '$kalender'
+			   AND (('$batastgl1' BETWEEN tanggalawal AND tanggalakhir) OR ('$batastgl2' BETWEEN tanggalawal AND tanggalakhir) OR (tanggalawal BETWEEN '$batastgl1' AND '$batastgl2') OR (tanggalakhir BETWEEN '$batastgl1' AND '$batastgl2')) ORDER BY tanggalawal";  
 	$result = QueryDb($sql);
-	unset($GLOBALS[jadwal][row]);
+	
 	while($row = mysql_fetch_row($result)) {
 				
 		if ($row[6]<= 7)
@@ -216,52 +221,34 @@ function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
 		
 		$GLOBALS[jadwal][row][$row[0]][$baris][$kolom][njam] = $selisih;
 		$GLOBALS[jadwal][row][$row[0]][$baris][$kolom][awal] = $tanggal;
-		
 	}
 	return true;
 }
 
-function getCell1($r, $c, $id) {
+function getCell1($r, $c, $id, $m) {
 	global $mask, $jadwal, $color;	
 	if($mask[$c] == 0) {
 		if(isset($jadwal[row][$id][$r][$c])) {	
+			
 			$mask[$c+1] = $jadwal[row][$id][$r][$c][njam] - 1;
-				
-			$m = $r;
-			if ($r > count($color)-1) 
-				$m = $r - ((count($color)-1)*(int)substr($r,0,1)+1);
-								
-			$kol = $jadwal[row][$id][$r][$c][njam];
-			//$s = "";
-			//for ($xx=1;$xx<=$kol;$xx++){
-				//$s = $s."<td align='center' valign='middle'><font color='#000' size='+2'>&nbsp;</font></td>";
-			//	$s = $s."<td align='center' valign='middle' style=\"background-image:url(../images/black.GIF)\" ><img src='../images/black.jpg'></td>";	
-			//}
+			
 			$dt=split("-",$jadwal[row][$id][$r][$c][awal]);
 			$dt1=split("/",$dt[0]);
 			$dt2=split("/",$dt[1]);
-			$s = "<td align='center' valign='middle' colspan='{$jadwal[row][$id][$r][$c][njam]}'>";
-			//$s = $jadwal[row][$id][$r][$c][njam];
-			//$s.= "<font class='thismonth'>$dt1[0]-$dt2[0]</font>";
-			$s.= "<img src='imagetext.php?string=$dt1[0]-$dt2[0]&span=$kol' border='0'>";
-			//$s.= "<font class='thismonth'>{$jadwal[row][$id][$r][$c][awal]}</font>";						
-			//$s.= "<br><img src='../images/ico/lihat.png' style='cursor:pointer'";
-			//$s.= " onclick='lihat($id)'> &nbsp;";			
-			//$s.= "<img src='../images/ico/ubah.png' style='cursor:pointer'";
-			//$s.= " onclick='edit($id)'> &nbsp;";
-			//$s.= "<img src='../images/ico/hapus.png' style='cursor:pointer'";
-			//$s.= " onclick='hapus($id)'>";
+								
+			$s = "<td align='center' valign='middle' style='background-color: {$color[$m][1]}' colspan='{$jadwal[row][$id][$r][$c][njam]}'>";
+			$s.= "<font class='thismonth'>$dt1[0] - $dt2[0]</font>";
 			$s.= "</td>";
 			
 			return $s;
 		} else {			
 			$mask[$c+1] = 0;			
-			$s = "<td align='center' valign='middle' style='background-color: #FFFFFF'>";
+			$s = "<td align='center' valign='middle' style='background-color: #FFF'>";
 			$s.= "</td>";
 			return $s;
 		}
 	} else {
-		$mask[$c+1] = $mask[$c]-1;
+		$mask[$c+1] = $mask[$c]-1;	
 	}
 }
 ?>
@@ -270,7 +257,7 @@ function getCell1($r, $c, $id) {
 <head>
 <link rel="stylesheet" type="text/css" href="../../style/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS SIMAKA [Cetak Kalender Akademik]</title>
+<title>JIBAS InfoSiswa [Cetak Kalender Akademik]</title>
 <script language="javascript" src="../../script/tools.js"></script>
 <script type="text/javascript" language="javascript" src="../../javascript/tables.js"></script>
 <script type="text/javascript" language="javascript" src="../../javascript/common.js"></script>
@@ -323,8 +310,7 @@ function getCell1($r, $c, $id) {
 <!-- TABLE CENTER -->
 <tr>
 	<td>
-    <? 	OpenDb();
-		$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = '$kalender'";
+    <? 	$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = '$kalender'";
 		$result = QueryDb($sql);
 		
 		if (@mysql_num_rows($result)>0){
@@ -576,7 +562,9 @@ function getCell1($r, $c, $id) {
 </td>
 </tr>
 </table>
-		
+<?
+CloseDb();
+?>		
 </body>
 <script language="javascript">
 window.print();

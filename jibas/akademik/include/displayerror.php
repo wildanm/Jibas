@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,14 +58,32 @@ if ($_SESSION['errno'] != 0)
 	if ($_SESSION['errtype'] == 1 && $_SESSION['errno'] == 1451) 
 	{
 		$errstr  = "<center><br><br><br><br><br><br><font familiy='Verdana' color='#666666' size='2' style='text-decoration:none'><strong>Maaf, anda tidak dapat menghapus data ini, karena telah digunakan oleh data lainnya!</strong></font><br><br><br><br><br><br></center>";
-	} 
+	}
 	else 
 	{	
 		$errstr  = "<center><h2>Maaf, telah terjadi kesalahan</h2></center>\n";
 		
+		// errno 1146 : Table '%s.%s' doesn't exist 
+		// errno 1449 : The user specified as a definer ('root'@'%') does not exist
+		// errno 2006 : MySQL server has gone away
+		if (in_array($_SESSION['errno'], array(1146, 1449, 2006)))
+		{
+			$errstr .= "<center>
+							Ada kesalahan pada instalasi atau konfigurasi basis data. Silahkan periksa kembali instalasi dan konfigurasi basis data yang digunakan.
+							Anda bisa mencari solusi perbaikannya di <a style='color:blue; text-decoration:underline;' target='_blank' href='http://forum.jibas.net'>Forum Diskusi JIBAS</a>
+							atau <a style='color:blue; text-decoration:underline;' target='_blank' href='http://support.jibas.net'>Support Center JIBAS</a> 
+							</font><br><br></center>";
+			$_SESSION['issend'] = false;				
+		}
+		
 		if ($_SESSION['issend'])
-	        $errstr .= "<p align='center'>Jalankan terlebih dahulu <font style='text-weight:bold; color:green'><strong>JIBAS Live Update</strong></font> untuk memperbaiki masalah ini. Jika masalah masih muncul, laporkan kesalahan berikut ke <a style='color:blue; text-decoration:underline;' target='_blank' href='http://support.jibas.net'>http://support.jibas.net</a></p>\n";
-			
+		{
+	      $errstr .= "<p align='center'>
+							Jalankan <font style='text-weight:bold; color:green'><strong>JIBAS Live Update</strong></font> untuk memperbaiki masalah ini
+							atau cari solusi perbaikannya di <a style='color:blue; text-decoration:underline;' target='_blank' href='http://forum.jibas.net'>Forum Diskusi JIBAS</a>.
+							Jika masalah masih terjadi, laporkan kesalahan berikut ke <a style='color:blue; text-decoration:underline;' target='_blank' href='http://support.jibas.net'>Support Center JIBAS</a></p>\n";
+		}
+		
 		$errstr .= "<table border='1' cellpadding='0' cellspacing='0' style='border-width: 1px; border-collapse: collapse' width='100%'>\r\n";
 		$errstr .= "<tr>\r\n";
 		$errstr .= "<td width='15%' style='background-color:#CCC' align='left'><strong>Waktu</strong></td>\r\n";

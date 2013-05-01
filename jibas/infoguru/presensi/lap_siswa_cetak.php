@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,8 +27,8 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/getheader.php');
+
 $nis = $_REQUEST['nis'];
-$pelajaran=$_REQUEST['pelajaran'];
 $tglawal = $_REQUEST['tglawal'];
 $tglakhir = $_REQUEST['tglakhir'];
 $urut = $_REQUEST['urut'];	
@@ -45,11 +45,6 @@ $departemen = $row[0];
 $sql = "SELECT nama FROM siswa WHERE nis='$nis'";   
 $result = QueryDB($sql);	
 $row = mysql_fetch_array($result);
-if ($pelajaran=='-1') {
-	$filter="";
-} else {
-	$filter=" AND l.replid='$pelajaran'";
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -64,33 +59,41 @@ if ($pelajaran=='-1') {
 <table border="0" cellpadding="10" cellpadding="5" width="780" align="left">
 <tr>
 	<td align="left" valign="top" colspan="2">
-<?=getHeader($departemen)?>
-
-<center>
-  <font size="4"><strong>LAPORAN PRESENSI PELAJARAN SISWA</strong></font><br />
- </center><br /><br />
-<table>
+		<?=getHeader($departemen)?>
+		<center>
+			<font size="4"><strong>LAPORAN PRESENSI PELAJARAN SISWA</strong></font><br />
+		</center>
+		<br /><br />
+	</td>
+</tr>	
 <tr>
-	<td><strong>Siswa</strong></td>
+		<td><strong>Siswa</strong></td>
     <td><strong>: <?=$nis.' - '.$row['nama']?></strong></td>
 </tr>
-<!--<tr>
-	<td><strong>Nama</strong></td>
-    <td><strong>: <?=$row['nama']?></strong></td>
-</tr>-->
 <tr>
-	<td><strong>Periode Presensi</strong></td>
+		<td><strong>Periode Presensi</strong></td>
     <td><strong>: <?=format_tgl($tglawal).' s/d '. format_tgl($tglakhir) ?></strong></td>
 </tr>
 </table>
+
 <br />
 <? 		
 	OpenDb();
-	$sql = "SELECT k.kelas, DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, pp.catatan, l.nama, g.nama, p.materi, pp.replid FROM  presensipelajaran p, ppsiswa pp, jbssdm.pegawai g, kelas k, pelajaran l WHERE  pp.idpp = p.replid AND p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = g.nip AND pp.nis = '$nis' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND pp.statushadir = 0 $filter ORDER BY $urut $urutan" ;
+
+	$sql = "SELECT k.kelas, DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, pp.catatan, l.nama, g.nama, p.materi, pp.replid
+					  FROM presensipelajaran p, ppsiswa pp, jbssdm.pegawai g, kelas k, pelajaran l
+					 WHERE pp.idpp = p.replid AND p.idkelas = k.replid AND p.idpelajaran = l.replid
+					   AND p.gurupelajaran = g.nip AND pp.nis = '$nis'
+						 AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND pp.statushadir = 0 $filter
+					 ORDER BY $urut $urutan" ;
 	$result = QueryDb($sql);			 
 	$jum_hadir = mysql_num_rows($result);
 	
-	$sql1 = "SELECT k.kelas, DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, pp.catatan, l.nama, g.nama, p.materi, pp.replid FROM presensipelajaran p, ppsiswa pp, jbssdm.pegawai g, kelas k, pelajaran l WHERE  pp.idpp = p.replid AND p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = g.nip AND pp.nis = '$nis' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND pp.statushadir <> 0 $filter ORDER BY $urut1 $urutan1" ;
+	$sql1 = "SELECT k.kelas, DAY(p.tanggal), MONTH(p.tanggal), YEAR(p.tanggal), p.jam, pp.catatan, l.nama, g.nama, p.materi, pp.replid
+						 FROM presensipelajaran p, ppsiswa pp, jbssdm.pegawai g, kelas k, pelajaran l
+						WHERE pp.idpp = p.replid AND p.idkelas = k.replid AND p.idpelajaran = l.replid AND p.gurupelajaran = g.nip
+						  AND pp.nis = '$nis' AND p.tanggal BETWEEN '$tglawal' AND '$tglakhir' AND pp.statushadir <> 0 $filter
+						ORDER BY $urut1 $urutan1" ;
 	$result1 = QueryDb($sql1);			 
 	$jum_absen = mysql_num_rows($result1);
 
@@ -116,7 +119,7 @@ if ($pelajaran=='-1') {
     ?>	
     <tr>        			
         <td height="25" align="center"><?=$cnt?></td>      	
-      	<td height="25" align="center"><?=$row[1].'-'.$row[2].'-'.substr($row[3],2,2)?></td>
+      	<td height="25" align="center"><?=ShortDateFormat($row[3].'-'.$row[2].'-'.$row[1])?></td>
       	<td height="25" align="center"><?=substr($row[4],0,5)?></td>
         <td height="25" align="center"><?=$row[0]?></td>        
       	<td height="25"><?=$row[5]?></td>
@@ -157,7 +160,7 @@ if ($pelajaran=='-1') {
     ?>	
     <tr>        			
         <td height="25" align="center"><?=$cnt?></td>        
-        <td height="25" align="center"><?=$row1[1].'-'.$row1[2].'-'.substr($row1[3],2,2)?></td>
+        <td height="25" align="center"><?=ShortDateFormat($row[3].'-'.$row[2].'-'.$row[1])?></td>
         <td height="25" align="center"><?=substr($row1[4],0,5)?></td>
         <td height="25" align="center"><?=$row1[0]?></td>
         <td height="25"><?=$row1[5]?></td>

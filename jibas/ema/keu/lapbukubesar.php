@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -48,6 +48,18 @@ $tgl2 = $row[0];
 $bln2 = $row[1];
 $thn2 = $row[2];
 
+$tgl1 = 0;
+if (isset($_REQUEST['tgl1']))
+	$tgl1 = (int)$_REQUEST['tgl1'];
+
+$bln1 = 0;
+if (isset($_REQUEST['bln1']))
+	$bln1 = (int)$_REQUEST['bln1'];
+
+$thn1 = 0;
+if (isset($_REQUEST['thn1']))
+	$thn1 = (int)$_REQUEST['thn1'];
+	
 if (isset($_REQUEST['tgl2']))
 	$tgl2 = (int)$_REQUEST['tgl2'];
 

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,11 +31,13 @@ require_once('include/db_functions.php');
 require_once('include/theme.php');
 require_once('include/sessioninfo.php');
 
+OpenDb();
+
 $idpembayaran = $_REQUEST['idpembayaran'];
 
-OpenDb();
 $sql = "SELECT c.nopendaftaran, b.besar, b.lunas, p.idbesarjttcalon, c.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
-               p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang 
+               p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang, pn.info1 AS rekdiskon,
+			   p.info1 AS diskon, pn.replid AS idpenerimaan 
 			 FROM penerimaanjttcalon p, besarjttcalon b, jbsakad.calonsiswa c, datapenerimaan pn 
  			WHERE p.replid = '$idpembayaran' AND p.idbesarjttcalon = b.replid AND b.idcalon = c.replid AND b.idpenerimaan = pn.replid";
 
@@ -43,39 +45,58 @@ $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 
 $no = $row['nopendaftaran'];
-$nama = $row['nama'];
+$namasiswa = $row['nama'];
 $idjurnal = $row['idjurnal'];
 $tanggal = $row['tanggal'];
 $keterangan = $row['keterangan'];
+$idpenerimaan = $row['idpenerimaan'];
 $namapenerimaan = $row['namapenerimaan'];
 $besar = $row['jumlah'];
+$besardiskon = $row['diskon'];
 $idbesarjtt = $row['idbesarjttcalon'];
 $besarjtt = $row['besar'];
 $lunas = $row['lunas'];
 $rekkas = $row['rekkas'];
 $rekpiutang = $row['rekpiutang'];
 $rekpendapatan = $row['rekpendapatan'];
-
+$rekdiskon = $row['rekdiskon'];
+$jdiskon = $row['diskon'];
 $jbayar = $besar;
-if (isset($_REQUEST['jcicilan']))
-	$jbayar = $_REQUEST['jcicilan'];
-if (isset($_REQUEST['tcicilan']))
-	$tanggal = $_REQUEST['tcicilan'];
-if (isset($_REQUEST['kcicilan']))
-	$keterangan = $_REQUEST['kcicilan'];
-if (isset($_REQUEST['alasan']))
-	$alasan = $_REQUEST['alasan'];	
+$jcicilan = $jbayar + $jdiskon;
+
+//-- cek rekening diskon ------------------
+$sql = "SELECT replid FROM datapenerimaan WHERE replid=$idpenerimaan AND info1 IS NOT NULL";
+if (0 == (int)FetchSingle($sql))
+{
+	//-- rek diskon belum ada, warning user ---------------
+	CloseDb();
+	
+	echo "<br><br>";
+	echo "<table border='1' style='font-family:Verdana; font-size:12px; border-width:1px; border-color:#8eb83e; background-color:#e8f4d0;' cellpadding='10' cellspacing='0'><tr height='200'><td align='center' valign='middle'>";
+	echo "<strong>Mohon Maaf</strong>";
+	echo "<br><br>";
+	echo "Kode untuk rekening <strong><font color='red'>diskon</font></strong> untuk penerimaan \"<strong>$namapenerimaan</strong>\" belum ada. Silahkan tentukan dahulu kode rekening <strong><font color='red'>diskon</font></strong> di menu <strong>Penerimaan > Jenis Penerimaan</strong>";
+	echo "<br><br>";
+	echo "Rekening <strong><font color='red'>diskon</font></strong> adalah pasangan rekening <strong><font color='red'>pendapatan</font></strong>. ";
+	echo "Contohnya, untuk rekening pendapatan <strong>412 Pendapatan DSP</strong> maka rekening diskonnya misalnya <strong>422 Diskon DSP</strong>.";
+	echo "<br><br>";
+	echo "<input type='button' value='Tutup' onclick='window.close()'>";
+	echo "</td></tr></table>";
+	
+	exit();
+}
 
 if (1 == (int)$_REQUEST['issubmit']) 
 {
 	$jcicilan = UnformatRupiah($_REQUEST['jcicilan']);
-	$tcicilan = $_REQUEST['tcicilan'];
-	$tcicilan = MySqlDateFormat($tcicilan);
+	$tcicilan = MySqlDateFormat($_REQUEST['tcicilan']);
 	$kcicilan = CQ($_REQUEST['kcicilan']);
+	$jdiskon = (int)UnformatRupiah($_REQUEST['jdiskon']);
+	$jbayar = $jcicilan - $jdiskon;
 	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 	
-	if ($jcicilan == $besar) 
+	if ($jbayar == $besar && $jdiskon == $besardiskon) 
 	{
 		//--------------------------------------------------------------
 		// Hanya mengubah informasi pembayaran tanpa mengubah besarnya  
@@ -109,27 +130,48 @@ if (1 == (int)$_REQUEST['issubmit'])
 		// Mengubah besar pembayaran  
 		// ---------------------------
 		
-		$sql = "SELECT sum(jumlah) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' AND replid <> '$idpembayaran'";
-		$totalcicilan = FetchSingle($sql);
-		
+		$sql = "SELECT SUM(jumlah), SUM(info1)
+				FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' AND replid <> '$idpembayaran'";
+		$row = FetchSingleRow($sql);
+		$totalcicilan = $row[0];
+		$totaldiskon = $row[1];
+				
 		$errmsg = "";
-		if (($totalcicilan + $jcicilan) > $besarjtt) 
+		if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon > $besarjtt) 
 		{
 			$errmsg = "Maaf, pembayaran tidak dapat dilakukan! Jumlah pembayaran cicilan lebih besar daripada bayaran yang harus dilunasi";
+			CloseDb();
 		}
 		else
 		{
 			$lunas = 0;
-			if (($totalcicilan + $jcicilan) == $besarjtt)
+			$ketjurnal = "";
+			if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon == $besarjtt)
+			{
+				$ketjurnal = "Pelunasan $namapenerimaan calon siswa $namasiswa ($nis)";
 				$lunas = 1;
+			}
+			else
+			{
+				$cicilan = 0;
+				$sql = "SELECT replid FROM penerimaanjttcalon WHERE idbesarjttcalon='$idbesarjtt' ORDER BY tanggal, replid ASC";
+				$res = QueryDb($sql);
+				while($row = mysql_fetch_row($res))
+				{
+					$cicilan++;
+					if ($row[0] == $idpembayaran)
+						break;
+				}
+				$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan calon siswa $namasiswa ($nis)";
+				$lunas = 0;
+			}
 				
+			BeginTrans();
 			$success = true;
-			BeginTrans();	
 			
-			$sql = "UPDATE penerimaanjttcalon SET jumlah='$jcicilan', keterangan='$kcicilan', tanggal='$tcicilan', 
-			        alasan='$alasan', petugas='$petugas' WHERE replid = '$idpembayaran'";
-			if ($success) 
-				QueryDbTrans($sql, $success);
+			$sql = "UPDATE penerimaanjttcalon SET jumlah='$jbayar', keterangan='$kcicilan', tanggal='$tcicilan', 
+			        alasan='$alasan', petugas='$petugas', info1='$jdiskon' WHERE replid = '$idpembayaran'";
+			QueryDbTrans($sql, $success);
 			
 			$idjurnal = 0;
 			if ($success)
@@ -138,16 +180,32 @@ if (1 == (int)$_REQUEST['issubmit'])
 				$idjurnal = FetchSingle($sql);
 			}
 			
-			// update jurnaldetail
 			if ($success)
 			{
-				$sql = "UPDATE jurnaldetail SET debet='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
+				$sql = "UPDATE jurnal SET transaksi='$ketjurnal' WHERE replid = '$idjurnal'";
+				QueryDbTrans($sql, $success);	
+			}
+			
+			if ($success)
+			{
+				$sql = "UPDATE jurnaldetail SET debet='$jbayar' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
 			if ($success)
 			{
 				$sql = "UPDATE jurnaldetail SET kredit='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekpiutang' AND debet=0";
+				QueryDbTrans($sql, $success);	
+			}
+			
+			if ($success)
+			{
+				$sql = "SELECT COUNT(replid) FROM jurnaldetail WHERE idjurnal='$idjurnal' AND koderek='$rekdiskon'";
+				$nJurnalDiskon = FetchSingle($sql);
+				if ($nJurnalDiskon == 0 && $jdiskon > 0)
+					$sql = "INSERT INTO jurnaldetail SET debet='$jdiskon', idjurnal='$idjurnal', koderek='$rekdiskon', kredit=0";
+				else
+					$sql = "UPDATE jurnaldetail SET debet='$jdiskon' WHERE idjurnal='$idjurnal' AND koderek='$rekdiskon' AND kredit=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
@@ -163,18 +221,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 				QueryDb($sql);
 			}
 			
-			if ($success)
-				CommitTrans();
-			else
-				RollbackTrans();
-				
-			CloseDb();
-		}
-		
-		if (strlen($errmsg) == 0) 
-		{
 			if ($success) 
 			{
+				CommitTrans();
+				CloseDb();
 				echo  "<script language='javascript'>";
 				echo  "opener.refresh();";
 				echo  "window.close();";
@@ -183,6 +233,8 @@ if (1 == (int)$_REQUEST['issubmit'])
 			} 
 			else 
 			{
+				RollbackTrans();
+				CloseDb();
 				echo  "<script language='javascript'>";
 				echo  "alert('Gagal menyimpan data!);";
 				echo  "</script>";
@@ -190,7 +242,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 		}
 	}
 }
-CloseDb();
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -237,15 +289,30 @@ function validasiAngka()
 	var angka = document.getElementById("angkacicilan").value;
 	if(isNaN(angka)) 
 	{
-		alert ('Besarnya cicilan harus berupa bilangan!');
+		alert ('Besar cicilan harus berupa bilangan!');
 		document.getElementById('jcicilan').value = "";
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
 	else if(angka < 0)
 	{
-		alert ('Besarnya cicilan tidak boleh negatif!');
+		alert ('Besar cicilan tidak boleh negatif!');
 		document.getElementById('jcicilan').focus();
+		return false;
+	}
+	
+	var diskon = document.getElementById("angkadiskon").value;
+	if(isNaN(diskon)) 
+	{
+		alert ('Besar diskon harus berupa bilangan!');
+		document.getElementById('jdiskon').value = "";
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+	else if(diskon < 0)
+	{
+		alert ('Besar diskon tidak boleh negatif!');
+		document.getElementById('jdiskon').focus();
 		return false;
 	}
 	return true;
@@ -257,16 +324,32 @@ function salinangka()
 	document.getElementById("angkacicilan").value = angka;
 }
 
+function salindiskon()
+{	
+	var diskon = document.getElementById("jdiskon").value;
+	document.getElementById("angkadiskon").value = diskon;
+}
+
 function focusNext(elemName, evt) 
 {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
     if (charCode == 13) 
-	 {
+	{
 		document.getElementById(elemName).focus();
-      return false;
+		return false;
     }
     return true;
+}
+
+function CalculatePay()
+{
+	var cicilan = document.getElementById("jcicilan").value;
+	var diskon = document.getElementById("jdiskon").value;
+	cicilan = rupiahToNumber(cicilan);
+	diskon = rupiahToNumber(diskon);
+	var bayar = cicilan - diskon;
+	document.getElementById("jbayar").value = numberToRupiah(bayar);
 }
 </script>
 </head>
@@ -297,20 +380,35 @@ function focusNext(elemName, evt)
     </tr>
     <tr>
         <td><strong>Nama</strong></td>
-        <td colspan="2"><input type="text" size="30" value="<?=$no . " - " . $nama ?>" readonly style="background-color:#CCCC99"/></td>
+        <td colspan="2"><input type="text" size="30" value="<?=$no . " - " . $namasiswa ?>" readonly style="background-color:#CCCC99"/></td>
     </tr>
     <tr>
-        <td><strong>Jumlah Cicilan</strong></td>
-        <td colspan="2"><input type="text" name="jcicilan" id="jcicilan" value="<?=FormatRupiah($jbayar) ?>" onblur="formatRupiah('jcicilan')" onfocus="unformatRupiah('jcicilan')" onKeyPress="return focusNext('alasan', event)" onkeyup="salinangka()"/>
-        <input type="hidden" name="angkacicilan" id="angkacicilan" value="<?=$jbayar?>" /></td>
+        <td><strong>Cicilan</strong></td>
+        <td colspan="2">
+			<input type="text" name="jcicilan" id="jcicilan" value="<?=FormatRupiah($jcicilan) ?>" onblur="CalculatePay(); formatRupiah('jcicilan')" onfocus="unformatRupiah('jcicilan')" onKeyPress="return focusNext('jdiskon', event)" onkeyup="salinangka()"/>
+			<input type="hidden" name="angkacicilan" id="angkacicilan" value="<?=$jbayar?>" />
+		</td>
+    </tr>
+	<tr>
+        <td><strong>Diskon</strong></td>
+        <td colspan="2">
+			<input type="text" name="jdiskon" id="jdiskon" value="<?=FormatRupiah($jdiskon) ?>" onblur="CalculatePay(); formatRupiah('jdiskon')" onfocus="unformatRupiah('jdiskon')" onKeyPress="return focusNext('alasan', event)" onkeyup="salindiskon()"/>
+			<input type="hidden" name="angkadiskon" id="angkadiskon" value="<?=$jdiskon?>" />
+        </td>
+    </tr>
+	<tr>
+        <td>Bayar</td>
+        <td colspan="2">
+			<input type="text" name="jbayar" id="jbayar" readonly="readonly" value="<?=$jbayar?>" style="background-color: #CCCCCC"/>
+        </td>
     </tr>
     <tr>
         <td><strong>Tanggal</strong></td>
         <td>
-        <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" onClick="Calendar.setup()" style="background-color:#CCCC99"> </td>
+        <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" style="background-color:#CCCC99"> </td>
         <td width="45%">
-        <img src="images/calendar.jpg" name="tabel" border="0" id="btntanggal" onMouseOver="showhint('Buka kalendar!', this, event, '100px')"/>
-	    </td>        
+        &nbsp;
+	     </td>        
     </tr>
     <tr>
         <td valign="top"><strong>Alasan Perubahan</strong></td>
@@ -349,21 +447,6 @@ function focusNext(elemName, evt)
 </body>
 </html>
 <script language="javascript">
-  Calendar.setup(
-    {
-      //inputField  : "tanggalshow","tanggal"
-	  inputField  : "tcicilan",         // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format
-      button      : "btntanggal"       // ID of the button
-    }
-   );
-    Calendar.setup(
-    {
-      inputField  : "tcicilan",        // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format	  
-	  button      : "tcicilan"       // ID of the button
-    }
-  );
 var sprytextfield1 = new Spry.Widget.ValidationTextField("tcicilan");
 var sprytextfield1 = new Spry.Widget.ValidationTextField("jcicilan");
 var sprytextarea1 = new Spry.Widget.ValidationTextarea("kcicilan");

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,11 +24,9 @@
 require_once('../../include/errorhandler.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
-require_once('../../include/getheader.php');
 require_once('../../include/common.php');
-//require_once('../../include/theme.php');
 require_once('../../include/db_functions.php');
-//require_once('../../cek.php');
+require_once("../../include/sessionchecker.php");
 
 OpenDb();
 $disable = "";
@@ -237,9 +235,9 @@ function loadKalender1($kalender, $id) {
 }
 </style>
 
-<script language="javascript" src="../../script/ajax.js"></script>
-<script language="JavaScript" src="../../script/tooltips.js"></script>
-<script language="JavaScript" src="../../script/tools.js"></script>
+<script language="javascript" src="../script/ajax.js"></script>
+<script language="JavaScript" src="../script/tooltips.js"></script>
+<script language="JavaScript" src="../script/tools.js"></script>
 <script language="javascript">
 function GoToLastMonth() {
 	var replid = document.getElementById('replid').value;
@@ -356,7 +354,7 @@ function tampil(replid) {
 				
 				$tglnow = $thn.'-'.$bln.'-'.$tgl;
 				$sql1 = "SELECT * FROM aktivitaskalender WHERE '$tglnow' BETWEEN tanggalawal AND tanggalakhir ".
-						"AND replid = $replid ";
+						"AND replid = '$replid' ";
 				$result1 = QueryDb($sql1);
 				$jum1 = mysql_num_rows($result1);	
 				if ($jum1 > 0)

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,7 +89,7 @@ function scrollMiddle() {
     <td colspan="2">&nbsp;</td>
   </tr>
   <tr>
-    <td width="81" align="right"><a href="jadwal/jadwal_kelas_main.php" onMouseOver="showhint('Jadwal Setiap Kelas', this, event, '100px')"><img src="images_slice/jadwal_12.jpg" alt="" border="0"></a></td>
+    <td width="81" align="right"><a href="jadwal/jadwal_kelas_main.php" onMouseOver="showhint('Jadwal Setiap Kelas', this, event, '100px')"><img src="images/jadwal_12.jpg" alt="" border="0"></a></td>
     <td width="91%" align="left"><a href="jadwal/jadwal_kelas_main.php" onMouseOver="showhint('Jadwal Setiap Kelas', this, event, '100px')">Jadwal Setiap Kelas</a></td>
   </tr>
   <tr>
@@ -98,7 +98,7 @@ function scrollMiddle() {
   </tr>
   <? if (SI_USER_LEVEL()!=0){ ?>
   <tr>
-    <td width="81" align="right"><a href="jadwal/jadwal_guru_main.php" onMouseOver="showhint('Penyusunan Jadwal Setiap Guru', this, event, '100px')"><img src="images_slice/jadwal_02.jpg" alt="" border="0"></a></td>
+    <td width="81" align="right"><a href="jadwal/jadwal_guru_main.php" onMouseOver="showhint('Penyusunan Jadwal Setiap Guru', this, event, '100px')"><img src="images/jadwal_02.jpg" alt="" border="0"></a></td>
     <td align="left"><a href="jadwal/jadwal_guru_main.php" onMouseOver="showhint('Penyusunan Jadwal Setiap Guru', this, event, '100px')">Jadwal Setiap Guru</a></td>
   </tr>
   <? } ?>

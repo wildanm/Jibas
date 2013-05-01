@@ -27,9 +27,8 @@
 	    newWindow(addr, 'BrowseImage','650','630','resizable=0,scrollbars=1,status=0,toolbar=0');
 	}
 	
-	function Accept(replid) {
-		//var dir_img = "http://192.168.1.234/jibasinfoguru/";
-		document.getElementById("src").value = "gambar.php?replid="+replid+"&table=jbsvcr.gambartiny";
+	function Accept(imageAddress) {
+		document.getElementById("src").value = imageAddress;
 	}
     </script>
 	<base target="_self" />

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,132 +58,132 @@ function change_theme(theme){
 <table id="Table_01" width="491" height="434" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="3" rowspan="6">
-			<img src="images_slice/referensi_01.jpg" width="75" height="229" alt=""></td>
+			<img src="images/referensi_01.jpg" width="75" height="229" alt=""></td>
 		<td rowspan="2">
-			<a href="referensi/pegawai.php" onMouseOver="showhint('Pendataan Pegawai', this, event, '100px')"><img src="images_slice/referensi_02.jpg" width="67" height="83" alt="" border="0"></a></td>
+			<a href="referensi/pegawai.php" onMouseOver="showhint('Pendataan Pegawai', this, event, '100px')"><img src="images/referensi_02.jpg" width="67" height="83" alt="" border="0"></a></td>
 		<td colspan="11">
-			<img src="images_slice/referensi_03.jpg" width="348" height="35" alt=""></td>
+			<img src="images/referensi_03.jpg" width="348" height="35" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="35" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="35" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="7" rowspan="2">
-			<img src="images_slice/referensi_04.jpg" width="250" height="57" alt=""></td>
-		<td colspan="2" rowspan="3"><a href="referensi/identitas.php" onMouseOver="showhint('Identitas Sekolah', this, event, '100px')"><img src="images_slice/referensi_05.jpg" width="56" height="91" alt="" border="0"></a></td>
+			<img src="images/referensi_04.jpg" width="250" height="57" alt=""></td>
+		<td colspan="2" rowspan="3"><a href="referensi/identitas.php" onMouseOver="showhint('Identitas Sekolah', this, event, '100px')"><img src="images/referensi_05.jpg" width="56" height="91" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="5">
-			<img src="images_slice/referensi_06.jpg" width="42" height="194" alt=""></td>
+			<img src="images/referensi_06.jpg" width="42" height="194" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="48" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="48" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="8">
-			<img src="images_slice/referensi_07.jpg" width="67" height="350" alt=""></td>
+			<img src="images/referensi_07.jpg" width="67" height="350" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="9" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="9" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="3">
-			<img src="images_slice/referensi_08.jpg" width="59" height="137" alt=""></td>
+			<img src="images/referensi_08.jpg" width="59" height="137" alt=""></td>
 		<td colspan="3" rowspan="2">
-			<a href="referensi/departemen.php" onMouseOver="showhint('Pendataan Departemen', this, event, '100px')"><img src="images_slice/referensi_09.jpg" width="78" height="71" alt="" border="0"></a></td>
+			<a href="referensi/departemen.php" onMouseOver="showhint('Pendataan Departemen', this, event, '100px')"><img src="images/referensi_09.jpg" width="78" height="71" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="3">
-			<img src="images_slice/referensi_10.jpg" width="113" height="137" alt=""></td>
+			<img src="images/referensi_10.jpg" width="113" height="137" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="34" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="34" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="2">
-			<img src="images_slice/referensi_11.jpg" width="56" height="103" alt=""></td>
+			<img src="images/referensi_11.jpg" width="56" height="103" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="37" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="37" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<img src="images_slice/referensi_12.jpg" width="78" height="66" alt=""></td>
+			<img src="images/referensi_12.jpg" width="78" height="66" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="66" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="66" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="4">
-			<img src="images_slice/referensi_13.jpg" width="10" height="204" alt=""></td>
+			<img src="images/referensi_13.jpg" width="10" height="204" alt=""></td>
 		<td>
-			<a href="referensi/angkatan.php" onMouseOver="showhint('Pendataan Angkatan', this, event, '100px')"><img src="images_slice/referensi_14.jpg" width="53" height="76" alt="" border="0"></a></td>
+			<a href="referensi/angkatan.php" onMouseOver="showhint('Pendataan Angkatan', this, event, '100px')"><img src="images/referensi_14.jpg" width="53" height="76" alt="" border="0"></a></td>
 		<td rowspan="4">
-			<img src="images_slice/referensi_15.jpg" width="12" height="204" alt=""></td>
+			<img src="images/referensi_15.jpg" width="12" height="204" alt=""></td>
 		<td rowspan="4">
-			<img src="images_slice/referensi_16.jpg" width="4" height="204" alt=""></td>
+			<img src="images/referensi_16.jpg" width="4" height="204" alt=""></td>
 		<td colspan="2">
-			<a href="referensi/tingkat.php" onMouseOver="showhint('Pendataan Tingkat', this, event, '100px')"><img src="images_slice/referensi_17.jpg" width="59" height="76" alt="" border="0"></a></td>
+			<a href="referensi/tingkat.php" onMouseOver="showhint('Pendataan Tingkat', this, event, '100px')"><img src="images/referensi_17.jpg" width="59" height="76" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="2">
-			<img src="images_slice/referensi_18.jpg" width="74" height="130" alt=""></td>
+			<img src="images/referensi_18.jpg" width="74" height="130" alt=""></td>
 		<td>
-			<a href="referensi/tahunajaran.php" onMouseOver="showhint('Pendataan Tahun Ajaran', this, event, '100px')"><img src="images_slice/referensi_19.jpg" width="71" height="76" alt="" border="0"></a></td>
+			<a href="referensi/tahunajaran.php" onMouseOver="showhint('Pendataan Tahun Ajaran', this, event, '100px')"><img src="images/referensi_19.jpg" width="71" height="76" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="4">
-			<img src="images_slice/referensi_20.jpg" width="54" height="204" alt=""></td>
+			<img src="images/referensi_20.jpg" width="54" height="204" alt=""></td>
 		<td colspan="2">
-			<a href="referensi/semester.php" onMouseOver="showhint('Pendataan Semester', this, event, '100px')"><img src="images_slice/referensi_21.jpg" width="61" height="76" alt="" border="0"></a></td>
+			<a href="referensi/semester.php" onMouseOver="showhint('Pendataan Semester', this, event, '100px')"><img src="images/referensi_21.jpg" width="61" height="76" alt="" border="0"></a></td>
 		<td rowspan="4">
-			<img src="images_slice/referensi_22.jpg" width="25" height="204" alt=""></td>
+			<img src="images/referensi_22.jpg" width="25" height="204" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="76" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="76" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="3">
-			<img src="images_slice/referensi_23.jpg" width="53" height="128" alt=""></td>
+			<img src="images/referensi_23.jpg" width="53" height="128" alt=""></td>
 		<td colspan="2">
-			<img src="images_slice/referensi_24.jpg" width="59" height="54" alt=""></td>
+			<img src="images/referensi_24.jpg" width="59" height="54" alt=""></td>
 		<td rowspan="3">
-			<img src="images_slice/referensi_25.jpg" width="71" height="128" alt=""></td>
+			<img src="images/referensi_25.jpg" width="71" height="128" alt=""></td>
 		<td colspan="2" rowspan="3">
-			<img src="images_slice/referensi_26.jpg" width="61" height="128" alt=""></td>
+			<img src="images/referensi_26.jpg" width="61" height="128" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="54" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="54" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<a href="referensi/kelas.php" onMouseOver="showhint('Pendataan Kelas', this, event, '100px')"><img src="images_slice/referensi_27.jpg" width="68" height="71" alt="" border="0"></a></td>
+			<a href="referensi/kelas.php" onMouseOver="showhint('Pendataan Kelas', this, event, '100px')"><img src="images/referensi_27.jpg" width="68" height="71" alt="" border="0"></a></td>
 		<td rowspan="2">
-			<img src="images_slice/referensi_28.jpg" width="65" height="74" alt=""></td>
+			<img src="images/referensi_28.jpg" width="65" height="74" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="71" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="71" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<img src="images_slice/referensi_29.jpg" width="68" height="3" alt=""></td>
+			<img src="images/referensi_29.jpg" width="68" height="3" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="3" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="3" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/spacer.gif" width="10" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="10" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="53" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="53" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="12" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="12" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="67" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="67" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="4" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="4" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="55" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="55" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="4" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="4" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="9" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="9" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="65" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="65" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="71" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="71" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="42" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="42" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="12" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="12" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="44" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="44" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="17" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="17" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="25" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="25" height="1" alt=""></td>
 		<td></td>
 	</tr>
 </table>

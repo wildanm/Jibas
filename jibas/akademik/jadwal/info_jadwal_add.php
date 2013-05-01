@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,21 +29,24 @@ require_once('../include/db_functions.php');
 require_once("../include/theme.php");
 require_once('../cek.php');
 
+OpenDb();
+
 $tahunajaran = $_REQUEST['tahunajaran'];
-$deskripsi=CQ($_REQUEST['deskripsi']);
+$deskripsi = CQ($_REQUEST['deskripsi']);
 
 $ERROR_MSG = "";
-if (isset($_REQUEST['Simpan'])) {
-	OpenDb();
-	$sql_simpan_cek="SELECT * FROM jbsakad.infojadwal WHERE deskripsi='$deskripsi' AND idtahunajaran = '$tahunajaran'"; 
- 
-	$result_simpan_cek=QueryDb($sql_simpan_cek);	
-	if (mysql_num_rows($result_simpan_cek) > 0) {
-		CloseDb();
+if (isset($_REQUEST['Simpan']))
+{
+	$sql_simpan_cek = "SELECT * FROM jbsakad.infojadwal WHERE deskripsi='$deskripsi' AND idtahunajaran = '$tahunajaran'"; 
+	$result_simpan_cek = QueryDb($sql_simpan_cek);	
+	if (mysql_num_rows($result_simpan_cek) > 0)
+	{
 		$ERROR_MSG = "Jadwal ".$deskripsi." sudah digunakan!";
-	} else {
-		$sql_simpan = "INSERT INTO jbsakad.infojadwal SET aktif = 0, deskripsi = '$deskripsi', idtahunajaran = '$tahunajaran'";  
-		$result_simpan = QueryDb($sql_simpan); 
+	}
+	else
+	{
+		$sql_simpan = "INSERT INTO jbsakad.infojadwal SET aktif = 1, deskripsi = '$deskripsi', idtahunajaran = '$tahunajaran'";  
+		$result_simpan = QueryDb($sql_simpan);
 		CloseDb();
 		?>
 		<script language="javascript">						
@@ -52,10 +55,8 @@ if (isset($_REQUEST['Simpan'])) {
         </script>
         <?
 	}	
-	CloseDb();
 }
 
-OpenDb();
 $sql = "SELECT * FROM tahunajaran WHERE replid = '$tahunajaran'";
 $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
@@ -151,6 +152,9 @@ function focusNext(elemName, evt) {
 <? } ?>
 </body>
 </html>
+<?
+CloseDb();
+?>
 <script language="javascript">
 var sprytextfield1 = new Spry.Widget.ValidationTextField("deskripsi");
 </script>

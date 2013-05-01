@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,8 +24,23 @@
 require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
-require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+require_once('../../include/fileutil.php');
+
+$op = "";
+if (isset($_REQUEST['op']))
+	$op=$_REQUEST['op'];
+
+if ($op == "bzux834hx8x7x934983xihxf084")
+{
+	OpenDb();
+	
+	$sql = "DELETE FROM jbsvcr.beritasekolah WHERE replid='$_REQUEST[replid]'";
+	$result = QueryDb($sql);
+	
+	CloseDb();
+}
 
 $bulan="";
 if (isset($_REQUEST['bulan']))
@@ -38,15 +53,6 @@ $varbaris=10;
 $page=0;
 if (isset($_REQUEST['page']))
 	$page = $_REQUEST['page'];
-$op="";
-if (isset($_REQUEST['op']))
-	$op = $_REQUEST['op'];
-if ($op=="bzux834hx8x7x934983xihxf084"){
-	OpenDb();
-	$sql = "DELETE FROM jbsvcr.beritasekolah WHERE replid='$_REQUEST[replid]'";
-	QueryDb($sql);
-	CloseDb();
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -121,8 +127,8 @@ function chg_title_color(id,stat){
   <tr>
   <? OpenDb();
   $sql_tot="SELECT b.replid as replid, b.judul as judul, DATE_FORMAT(b.tanggal, '%e %b %Y') as tanggal, TIME_FORMAT(b.tanggal, '%H:%i') as waktu, ".
-  		"b.abstrak as abstrak, b.isi as isi, p.nama as nama, p.nis as nis FROM jbsvcr.beritasekolah b, jbsakad.siswa p ".
-		"WHERE p.nis=b.idpengirim AND MONTH(b.tanggal)='$bulan' AND YEAR(b.tanggal)='$tahun' AND NOT b.jenisberita=3 ORDER BY replid DESC";
+  		"b.abstrak as abstrak, b.isi as isi FROM jbsvcr.beritasekolah b ".
+		"WHERE MONTH(b.tanggal)='$bulan' AND YEAR(b.tanggal)='$tahun' ORDER BY replid DESC";
   //echo $sql1;
   $result_tot=QueryDb($sql_tot);
   $total = ceil(mysql_num_rows($result_tot)/(int)$varbaris);
@@ -158,8 +164,7 @@ function chg_title_color(id,stat){
 	</select>   
     <input <?=$disnext?> type="button" class="but" name="next" title="Selanjutnya" value=">" onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">&nbsp;dari&nbsp;<?=$total?> 
 	<? } ?><br><br>
-    
-    <table width="100%" border="0" cellspacing="5" cellpadding="5">
+	<table width="80%" border="0" cellspacing="5" cellpadding="5">
       <tr>
         <td align='center' valign='top'>
           <?
@@ -177,15 +182,26 @@ function chg_title_color(id,stat){
 		  $cnt=(int)$page*(int)$varbaris+1;
 		  }
 		  while ($row1=@mysql_fetch_array($result1)){
-		  if ($i==1 || $i%2==1){ ?><tr><? }	?>
-    	  <td valign='top'>
-            <table align="center" width="300" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer; ">
+		  if ($i==1 || $i%3==1){
+		  	?>
+            <tr>
+          	<?
+		  }
+			?>
+        		<td align="center" valign='top'>
+            <?
+		  ?>
+			<? if (@mysql_num_rows($result1)==1) { ?>
+            <div style="margin-left:100px" align="left">
+			<? } ?>
+            <table width="300" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" align="left" >
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
-                <td><img src="../../images/ico/arr1.gif" />&nbsp;<em><span style="font-size: 9px; color:#990000"><?=$row1['tanggal']?>&nbsp;<?=$row1['waktu']?></span></em></td>
+                <td align="left"><img src="../../images/ico/arr1.gif" />&nbsp;<em><span style="font-size: 9px; color:#990000"><?=$row1['tanggal']?>&nbsp;<?=$row1['waktu']?></span></em></td>
                 <td align="right"></td>
               </tr>
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
-                <td colspan="2"><span id="title<?=$row1['replid']?>" class="style1"><?=$row1['judul']?></span>
+                <td colspan="2" align="left">
+				<span id="title<?=$row1['replid']?>" class="style1"><?=$row1['judul']?></span>
                 <br />
                 <em>
 					<?
@@ -210,11 +226,8 @@ function chg_title_color(id,stat){
                 </td>
               </tr>
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
-                <td colspan="2">
-					<?=$row1[abstrak];
-					//$is=$row1['isi'];
-                    //echo removetag($is,250);
-                    ?>
+                <td colspan="2" align="left">
+					<?=$row1[abstrak];?>
                 </td>
               </tr>
               <tr>
@@ -223,28 +236,25 @@ function chg_title_color(id,stat){
                         <img src="../../images/ico/ubah.png" border="0" onclick="ubah('<?=$row1[replid]?>','<?=$page?>')" style="cursor:pointer;" title="Ubah Berita ini !" />&nbsp;<img src="../../images/ico/hapus.png" border="0" onclick="hapus('<?=$row1[replid]?>')" style="cursor:pointer;" title="Hapus Berita ini !" />
 	                <? } ?>              	</td>
               </tr>
-              <tr>
-              	<td colspan="2" style="background-image:url(../../images/box_hr1.gif); background-repeat:repeat-x">&nbsp;</td>
-              </tr>
             </table>
-            <br />
+			<? if (@mysql_num_rows($result1)==1) { ?>
+            </div>
+			<? } ?>
+			<br />
 		<?="</td>";
-		if ($i%2==0)
+		if ($i%3==0)
 			echo "</tr>";
 		$i++;
 		}
 		} else {
 		?>
-        <div align="center">Tidak ada berita</div>
+        <div align="center" class="divNotif">Tidak ada berita Sekolah</div>
         <?
 		}
 		?>
         </td>
       </tr>
     </table>
-    
-    
-    
 
 
 		<script language='JavaScript'>

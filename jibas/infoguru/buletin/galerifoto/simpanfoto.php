@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,81 +27,77 @@ require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
 require_once('../../include/imageresizer.php');
 require_once('../../include/fileinfo.php');
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
+require_once('../../include/fileutil.php');
+require_once('../../include/sessionchecker.php');
+
 $source = $_REQUEST["source"];
-for ($i=1;$i<=3;$i++){
+for ($i = 1; $i <= 3; $i++)
+{
 	$nama = $_REQUEST["nama".$i];
 	$keterangan = $_REQUEST["keterangan".$i];
-	$foto	  =	$_FILES["file".$i];
+	$foto =	$_FILES["file".$i];
   	
+	$idguru = SI_USER_ID();
+	$salt = RandomString(7);
+	
 	$origfile = $foto['name'];
-	$ext 	  = GetFileExt($origfile);
-	$fn  	  = GetFileName($origfile);
-	$fn  	  = str_replace(" ", "", $fn);
-	$fn 	  = date('ymdHis') . "-" . $fn . $ext;
-	$output1  = "photos/".$fn;
-	$output2  = "thumbnail/".$fn;	
-	if (!is_dir("photos/")){
-		mkdir("photos");
-		chmod(0777,"photos");
+	$ext = GetFileExt($origfile);
+	$fn = GetFileName($origfile);
+	$fn = str_replace(" ", "", $fn);
+	$fn = date('ymdHis') . "-" . $idguru . "-" . $salt . "-" . $fn;
+	$fn = md5($fn) . $ext;
+	
+	$output1 = "$FILESHARE_UPLOAD_DIR/galeriguru/photos/";
+	if (!is_dir($output1))
+	{
+		mkdir($output1, 0750, true);
+		
+		$fhtaccess = "$output1/.htaccess";
+		$fhtaccess = str_replace("//", "/", $fhtaccess);
+		if ($fp = @fopen($fhtaccess, "w"))
+		{
+			@fwrite($fp, "Options -Indexes\r\n");
+			@fclose($fp);
+		}
 	}
-	if (!is_dir("thumbnail/")){
-		mkdir("thumbnail");
-		chmod(0777,"thumbnail");
+	
+	$output2 = "$FILESHARE_UPLOAD_DIR/galeriguru/thumbnails/";	
+	if (!is_dir($output2))
+	{
+		mkdir($output2, 0740, true);
+		
+		$fhtaccess = "$output2/.htaccess";
+		$fhtaccess = str_replace("//", "/", $fhtaccess);
+		if ($fp = @fopen($fhtaccess, "w"))
+		{
+			@fwrite($fp, "Options -Indexes\r\n");
+			@fclose($fp);
+		}
 	}
 
-	if ($origfile!=""){
-	ResizeImage($foto, 500, 300, 70, $output1);
-	//echo "Masuk 1 ";
-	$foto_data1=addslashes(fread(fopen($output1,"r"),filesize($output1)));
+	if ($origfile != "")
+	{
+	   $output1 = "$output1/$fn";
+		ResizeImage($foto, 800, 600, 70, $output1);
+		
+		$output2 = "$output2/$fn";
+		ResizeImage($foto, 125, 75, 70, $output2);
 	
-	if ($foto_data1!="")
-		$sqlfoto1=",filename='$fn'";
-	else
-		$sqlfoto1="";
-
-	ResizeImage($foto, 125, 75, 70, $output2);
-	//echo "Masuk 2";	
-	OpenDb();
-	$sql="INSERT INTO jbsvcr.galerifoto SET idguru='".SI_USER_ID()."',nama='$nama',keterangan='$keterangan' $sqlfoto1";
-	//echo $sql;
-	$result=QueryDb($sql);
-	$result2=QueryDb("SELECT replid FROM jbsvcr.galerifoto ORDER BY replid DESC LIMIT 1");
-	$row2=@mysql_fetch_array($result2);
-	//if ($foto_data2!="")
-	//	QueryDb("UPDATE jbsvcr.galerifoto SET $sqlfoto2 WHERE replid=$row2[replid]");
+		OpenDb();
+		$sql = "INSERT INTO jbsvcr.galerifoto
+				   SET idguru='".SI_USER_ID()."', nama='$nama', keterangan='$keterangan', filename='$fn'";
+		$result = QueryDb($sql);
+		CloseDb();
 	
-	
-	if (!$result){
-	?>
-	<script language="javascript">
-		alert ('Gagal menyimpan Gambar <?=$foto[name]?>');
-		opener.ubah_profil();
-		window.close()
-	</script>
-	<?
-			}
+		if (!$result)
+		{ ?>
+		<script language="javascript">
+			alert ('Gagal menyimpan Gambar <?=$foto[name]?>');
+			opener.ubah_profil();
+			window.close()
+		</script>
+	<?	}
 	}
-	CloseDb();
-	//delete($filename);
-	
-
 }
 ?>
 <script language="javascript">

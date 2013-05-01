@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/common.php');
 require_once('../include/sessioninfo.php');
-
+require_once('../include/sessionchecker.php');
 
 $nis = SI_USER_ID();
 
@@ -41,7 +41,7 @@ CloseDb();
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS INFOGURU [Daftar Siswa]</title>
+<title>JIBAS InfoSiswa</title>
 <link rel="stylesheet" type="text/css" href="../style/style.css" />
 <link rel="stylesheet" type="text/css" href="../script/tooltips.css" />
 <script src="../script/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
@@ -53,21 +53,12 @@ CloseDb();
 <link rel="stylesheet" type="text/css" href="../style/calendar-win2k-1.css">
 <script language="javascript" src="../script/cal2.js"></script>
 <script language="javascript" src="../script/cal_conf2.js"></script>
-<!--
- 
+<script type="text/javascript">
 
-<link type="text/css" href="../script/jquery3/themes/default/ui.all.css" rel="stylesheet" />
-<script type="text/javascript" src="../script/jquery3/jquery-1.2.6.js"></script>
-<script type="text/javascript" src="../script/jquery3/ui/ui.core.js"></script>
-<script type="text/javascript" src="../script/jquery3/ui/ui.tabs.js"></script>
-<link type="text/css" href="../script/jquery3/demos.css" rel="stylesheet" />
-<script type="text/javascript">
-$(function() {
-	$("#tabs").tabs();
-});
-</script>
--->
-<script type="text/javascript">
+sendRequestText("keuangan.php", showKeu, "nis=<?=$nis?>");
+function showKeu(x){
+	document.getElementById('keuangan').innerHTML = x;
+}
 
 sendRequestText("data_pribadi.php", showDP, "nis=<?=$nis?>");
 function showDP(x){
@@ -98,22 +89,7 @@ sendRequestText("perpustakaan.php", showPerpus, "nis=<?=$nis?>");
 function showPerpus(x){
 	document.getElementById('perpus').innerHTML = x;
 }
-/*
-sendRequestText("catatanck.php", showCPRI, "nis=<?=$nis?>");
-function showCPRI(x){
-	document.getElementById('cpri').innerHTML = x;
-}
 
-sendRequestText("catatanpp.php", showCPEL, "nis=<?=$nis?>");
-function showCPEL(x){
-	document.getElementById('cpel').innerHTML = x;
-}
-
-sendRequestText("catatanph.php", showCHAR, "nis=<?=$nis?>");
-function showCHAR(x){
-	document.getElementById('char').innerHTML = x;
-}
-*/
 function chg_tab_sem(nis,replid,pelajaran,kelas,i,nmsem,num){
 	//alert ('Masoooookkkkkkk_'+i);
 	document.getElementById('active_tab').value = i;
@@ -350,9 +326,6 @@ function change_pel() {
 	sendRequestText("nilai.php", showNIL, "nis_awal="+nis_awal+"&nis="+nis+"&departemen="+departemen+"&tahunajaran="+tahunajaran+"&kelas="+kelas+"&pelajaran="+pelajaran);
 	
 }
-//function cetak(semester){
-//	alert ('Masuk nih '+semester);
-//}
 
 function show_wait(areaId) {
 	var x = document.getElementById("waitBox").innerHTML;
@@ -408,28 +381,20 @@ function cetaknil(panel){
                         <div id="TabbedPanels1" class="TabbedPanels">
                             <ul class="TabbedPanelsTabGroup">
                                 <li class="TabbedPanelsTab">Data&nbsp;Pribadi</li>
+								<li class="TabbedPanelsTab">Keuangan</li>
                                 <li class="TabbedPanelsTab">Presensi&nbsp;Harian</li>
                                 <li class="TabbedPanelsTab">Presensi&nbsp;Pelajaran</li>
                                 <li class="TabbedPanelsTab">Nilai</li>
                                 <li class="TabbedPanelsTab">Rapor</li>
-                                <!--
-								<li class="TabbedPanelsTab">Catatan&nbsp;Pribadi</li>
-                                <li class="TabbedPanelsTab">Catatan&nbsp;Pelajaran</li>
-                                <li class="TabbedPanelsTab">Catatan&nbsp;Harian</li>
-								-->
                                 <li class="TabbedPanelsTab">Perpustakaan</li>
                             </ul>
                             <div class="TabbedPanelsContentGroup">
                                 <div class="TabbedPanelsContent" id="datapribadi"></div>
+								<div class="TabbedPanelsContent" id="keuangan"></div>
                                 <div class="TabbedPanelsContent" id="ph"></div>
                                 <div class="TabbedPanelsContent" id="pp"></div>
                                 <div class="TabbedPanelsContent" id="nilai"></div>
                                 <div class="TabbedPanelsContent" id="rapor"></div>
-                                <!--
-								<div class="TabbedPanelsContent" id="cpri"></div>
-                                <div class="TabbedPanelsContent" id="cpel"></div>
-                                <div class="TabbedPanelsContent" id="char"></div>
-								-->
                                 <div class="TabbedPanelsContent" id="perpus"></div>
                             </div>
                         </div>
@@ -442,12 +407,7 @@ function cetaknil(panel){
 </table>
    
 <script type="text/javascript">
-<!--
 var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-//-->
 </script>
 </body>
 </html>
-<script type="text/javascript">
-	//var TabbedPanels2 = new Spry.Widget.TabbedPanels("TabbedPanels2");
-</script>

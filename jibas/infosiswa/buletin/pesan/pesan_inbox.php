@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,165 +26,76 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
+require_once('../../include/sessionchecker.php');
+
 $op="";
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
-if ($op=="34983xihxf084bzux834hx8x7x93"){
-	$numdel=(int)$_REQUEST["numdel"]-1;
-	$msgall=$_REQUEST["listdel"];
-	$x=0;
-	$msg=explode("|",$msgall);
-	while ($x<=$numdel){
-		if ($msg[$x]!=""){
-		OpenDb();
-		//Cek ada gak di pesan terkirim punya pengirim
-		$sql1 = "SELECT replid FROM jbsvcr.pesanterkirim WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."')";
-		//echo $sql1;
-		$res1 = QueryDb($sql1);
-		$exist = @mysql_num_rows($res1);
-		if ($exist==0){//Kalo gak ada, hapus semua...........
-			//Ambil direktori+namafiel buat dihapus
-			$sql2="SELECT l.direktori as direktori, l.namafile as namafile FROM jbsvcr.lampiranpesan l, jbsvcr.tujuanpesan t, jbsvcr.pesan p WHERE p.replid=t.idpesan AND p.replid=l.idpesan AND t.replid='".$msg[$x]."' AND t.idpesan=l.idpesan";
-			$res2 = QueryDb($sql2);
-			$file="file";
-			$cntdel=0;
-			while ($row2=@mysql_fetch_array($res2)){
-				$mydirs[$cntdel]=$UPLOAD_DIR."pesan\\".$row2['direktori'].$row2['namafile'];
-				$mydir[$cntdel]=str_replace("/","\\",$mydirs[$cntdel]);
-				$cntdel++;	
+	
+if ($op == "34983xihxf084bzux834hx8x7x93")
+{
+	$numdel = (int)$_REQUEST["numdel"]-1;
+	$msgall = $_REQUEST["listdel"];
+	$x = 0;
+	$msg = explode("|",$msgall);
+	OpenDb();
+	while ($x <= $numdel)
+	{
+		if ($msg[$x] != "")
+		{
+			//Cek ada gak di pesan terkirim punya pengirim
+			$sql1 = "SELECT replid FROM jbsvcr.pesanterkirim WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."')";
+			$res1 = QueryDb($sql1);
+			$exist = @mysql_num_rows($res1);
+			if ($exist == 0)
+			{
+				$sql3 = "SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='$msg[$x]'";
+				$res3 = QueryDb($sql3);
+				$row3 = @mysql_fetch_array($res3);
+				$idpesan = $row3[replid];
+
+				$sql4 = "DELETE FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
+				QueryDb($sql4);
+
+				$sql5 = "SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."') AND replid<>'$msg[$x]'";
+				$res5 = QueryDb($sql5);				
+				if (@mysql_num_rows($res5)==0)
+				{
+					$sql6 = "DELETE FROM jbsvcr.pesan WHERE replid='$idpesan'";
+					QueryDb($sql6);
+				}
 			}
-			//echo $mydir[0]."<br>";
-			//echo $mydir[1]."<br>";
-			//echo $mydir[2]."<br>";
-			//exit;
-			delete($mydir[0]);
-			delete($mydir[1]);
-			delete($mydir[2]);
-
-			$sql7="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan=(SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='".$msg[$x]."')";
-			QueryDb($sql7);
-
-			$sql3 = "SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='$msg[$x]'";
-			$res3 = QueryDb($sql3);
-			$row3 = @mysql_fetch_array($res3);
-			$idpesan = $row3[replid];
-
-			$sql4 = "DELETE FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
-			QueryDb($sql4);
-
-			$sql5 = "SELECT * FROM jbsvcr.tujuanpesan WHERE idpesan=(SELECT p.replid as replid FROM jbsvcr.pesan p, jbsvcr.tujuanpesan t WHERE t.idpesan=p.replid AND t.replid='".$msg[$x]."') AND replid<>'$msg[$x]'";
-			//echo $sql5;
-			$res5 = QueryDb($sql5);
-			if (@mysql_num_rows($res5)==0){
-			$sql6 = "DELETE FROM jbsvcr.pesan WHERE replid='$idpesan'";
-			QueryDb($sql6);
+			else
+			{
+				$sql4 = "UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid='$msg[$x]'";
+				QueryDb($sql4);
 			}
-		} else {
-			$sql4 = "UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE replid='$msg[$x]'";
-			QueryDb($sql4);
-		}
-		CloseDb();
-		}
-		
-	$x++;
+		}	
+		$x++;
 	}
-}
-if ($op=="f3fxxa7svys774l3067den747hhd783uu83"){//Mindahin ke draft
-	$numdel=(int)$_REQUEST["numdel"]-1;
-	$msgall=$_REQUEST["listdel"];
-	//echo $msgall."<br>";exit;
-	$x=0;
-	$msg=explode("|",$msgall);
-	while ($x<=$numdel){
-		if ($msg[$x]!=""){
-		OpenDb();
-		$sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='$msg[$x]'";
-		$result=QueryDb($sql);
-		$row=@mysql_fetch_array($result);
-		//echo $sql."_1<br>";
-		$sql2="SELECT replid,tanggalpesan,judul,pesan,idguru,nis FROM jbsvcr.pesan WHERE replid='$row[idpesan]'";
-		$result2=QueryDb($sql2);
-		$row2=@mysql_fetch_row($result2);
-		$sender="";
-		if ($row2[4]!="")
-			$sender = $row2[4];
-		else
-			$sender = $row2[5];
-		//echo $sql2."_2<br>";
-		$sql3="INSERT INTO jbsvcr.draft SET tanggalpesan='$row2[1]',judul='$row2[2]',pesan='$row2[3]',idpemilik='".SI_USER_ID()."',idpengirim='$sender'";
-		$result3=QueryDb($sql3);
-		//echo $sql3."_3<br>";
-		$sql4="SELECT replid FROM jbsvcr.draft WHERE idpemilik='".SI_USER_ID()."' ORDER BY replid DESC LIMIT 1";
-		$result4=QueryDb($sql4);
-		$row4=@mysql_fetch_array($result4);
-		$lastid=$row4[replid];
-		//echo $sql4."_4<br>";
-		$sql5="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$row2[0]'";
-		$result5=QueryDb($sql5);
-		//$row5=@mysql_fetch_array($result5);
-		//echo $sql5."_5<br>";
-		$updir = $UPLOAD_DIR."pesan\\";
-		$dir_bln=date(m);
-		$dir_thn=date(Y);
-		$dir = $updir . $dir_thn . $dir_bln;
-		if (!is_dir($dir)) 
-			mkdir($dir, 0777);
-		$newdir=$dir."\\";
-		$dir_db = $dir_thn . $dir_bln."/";
-		//$new_dir_db = str_replace("\\","/",$dir_db);
-		while ($row5=@mysql_fetch_array($result5)){
-		$dir_awal=str_replace("/","\\",$row5['direktori'].$row5['namafile']);
-		$dir_sumber=$UPLOAD_DIR."pesan\\".$dir_awal;
-		copy($dir_sumber, $newdir.SI_USER_ID()."-".$row5['namafile']);
-		//echo $row5['direktori'].$row5['namafile'];
-		$sql6="INSERT INTO jbsvcr.lampirandraft SET idpesan='$lastid',direktori='$dir_db',namafile='".SI_USER_ID()."-".$row5['namafile']."'";
-		$result6=QueryDb($sql6);
-		}
-		$sql7="UPDATE jbsvcr.tujuanpesan SET aktif=0, baru=0 WHERE idpesan='$row2[0]' AND idpenerima='".SI_USER_ID()."'";
-		$result7=QueryDb($sql7);
-		CloseDb();
-		}
-	$x++;
-	}
+	CloseDb();
 }
 
-if ($op=="baca"){
+if ($op=="baca")
+{
 	OpenDb();
 	$sql="UPDATE jbsvcr.tujuanpesan SET baru=0 WHERE replid='$_REQUEST[replid]'";
-	//echo $sql;
-	//exit;
 	$result=QueryDb($sql);
-	CloseDb();
-	?>
+	CloseDb(); ?>
 	<script language="javascript">
 		document.location.href="pesanbaca.php?replid=<?=$_REQUEST[replid]?>";
 	</script>
 	<?
-	
 }
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
+	
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $idguru=SI_USER_ID();
 $varbaris=10;
 $page=0;
@@ -351,12 +262,12 @@ function savepesan(){
 	<? } ?><br><br>
     <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
   <tr>
-    <th width="43" height="30" class="header" scope="row"><div align="center">No</div></th>
-    <td width="71" height="30" class="header"><div align="center"><input type="checkbox" name="cek" id="cek" onClick="cek_all()" title="Pilih semua" onMouseOver="showhint('Pilih semua', this, event, '120px')"/></div></td>
-	<td width="62" class="header">&nbsp;</td>
-	<td width="146" class="header"><div align="center">Tanggal</div></td>
-    <td width="618" height="30" class="header"><div align="center">Pengirim</div></td>
-    <td width="268" class="header"><div align="center">Judul</div></td>
+    <th width="3%" height="30" class="header" scope="row"><div align="center">No</div></th>
+    <td width="3%" height="30" class="header"><div align="center"><input type="checkbox" name="cek" id="cek" onClick="cek_all()" title="Pilih semua" onMouseOver="showhint('Pilih semua', this, event, '120px')"/></div></td>
+	<td width="5%" class="header">&nbsp;</td>
+	<td width="12%" class="header"><div align="center">Tanggal</div></td>
+    <td width="20%" height="30" class="header"><div align="center">Pengirim</div></td>
+    <td width="*" class="header"><div align="center">Judul</div></td>
    </tr>
   <?
   OpenDb();
@@ -393,17 +304,10 @@ function savepesan(){
 	<input type="hidden" name="rep<?=$count?>" id="rep<?=$count?>" value="<?=$row1[replid]?>"/>	</td>
 	<td align="center">
     <table cellpadding="0" cellspacing="0"><tr>
-	<? 
-	$sql2="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$row1[replid2]'";
-	$result2=QueryDb($sql2); 
-	?>
 	<? if ($row1['baru']==1) { ?>
     	<td><img src="../../images/ico/unread.png" width="16" height="13" title="Belum dibaca..." /></td><td><img src="../../images/ico/new.png" width="10" height="14" /></td>
 	<? } else { ?>
     	<td><img src="../../images/ico/readen.png" width="15" height="14" title="Sudah dibaca..." /></td>
-	<? } ?>
-    <? if (@mysql_num_rows($result2)>0){ ?>
-    	<td><img src="../../images/ico/attachment.png" width="10" height="13" title="Disertai Lampiran"/></td>
 	<? } ?>
     </tr></table>    </td>
 	<td height="25"><?=$depan?><div align="center"><?=$row1['tanggal']?><br><?=$row1['waktu']?></div><?=$belakang?></td>
@@ -427,21 +331,12 @@ function savepesan(){
 	?>
 	<?=$belakang?></td>
     
-    <td height="25"><?=$depan?><a href="#" onClick="bacapesan('<?=$row1['replid']?>')">
-	<? 
-	$judul=substr($row1['judul'],0,20);
-	if (strlen($row1['judul'])>20){
-	echo $judul." ...";
-	} else {
-	echo $judul;
-	}
-	?></a><?=$belakang?></td>
-    <!--<td><?=$depan?>
-    <?
-	//while ($row2=@mysql_fetch_array($result2)){
-		//echo "<a title='Buka lampiran ini!' href=\"#\" onclick=newWindow('".$row2[direktori].$row2[namafile]."','View',640,480,'resizable=1'); ><img border='0' src='../../images/ico/titik.png' width='5' heiht='5'/> ".$row2['namafile']."</a><br>";
-	//}
-	?><?=$belakang?></td>-->
+    <td height="25">
+	<?=$depan?>
+	<a href="#" onClick="bacapesan('<?=$row1['replid']?>')">
+	<?=$row1['judul'];?>
+	</a>
+	<?=$belakang?></td>
   </tr>
   <? 
   $cnt++;
@@ -458,9 +353,8 @@ function savepesan(){
 <input type="hidden" name="numpesan" id="numpesan" value="<?=$numpesan?>">
 <input type="hidden" name="listdel" id="listdel">
 <input type="hidden" name="numdel" id="numdel">
-<? if ($numpesan>0){ ?>
-<input type="button" class="but" name="del_pesan" id="del_pesan" value="Hapus" onClick="delpesan()">
-<input type="button" class="but" name="movepesan" id="movepesan" value="Pindahkan ke Draft" onClick="savepesan()">
+<? if ($numpesan>0) { ?>
+	<input type="button" class="but" name="del_pesan" id="del_pesan" value="Hapus Pesan Terpilih" onClick="delpesan()">
 <? } ?>
 </form>
 </body>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -156,15 +156,15 @@ function cetak(replid) {
   </tr>
   <tr height="20">
     <td>7.</td>
-    <td>Anak ke berapa</td>
+    <td>Anak ke</td>
     <td>:
       <? if ($row_siswa['anakke']!=0) { echo $row_siswa['anakke']; }?></td>
   </tr>
   <tr height="20">
     <td>8.</td>
-    <td>Jumlah Saudara</td>
+    <td>Dari</td>
     <td>:
-      <? if ($row_siswa['jsaudara']!=0) { echo $row_siswa['jsaudara']; }?></td>
+      <? if ($row_siswa['jsaudara']!=0) { echo $row_siswa['jsaudara']; }?> bersaudara</td>
   </tr>
   <tr height="20">
     <td>9.</td>

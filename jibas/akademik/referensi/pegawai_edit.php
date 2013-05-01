@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -40,7 +40,8 @@ $row_pegawai = @mysql_fetch_array($result_pegawai);
 $bagian = $row_pegawai['bagian'];
 $nip = $row_pegawai['nip'];
 $nama = $row_pegawai['nama'];
-$gelar = $row_pegawai['gelar'];
+$gelarawal = $row_pegawai['gelarawal'];
+$gelarakhir = $row_pegawai['gelarakhir'];
 $panggilan = $row_pegawai['panggilan'];
 $kelamin = $row_pegawai['kelamin'];
 $tempatlahir = $row_pegawai['tmplahir'];
@@ -48,11 +49,6 @@ $lahir = explode("-",$row_pegawai['tgllahir']);
 $tgllahir = $lahir[2];
 $blnlahir = $lahir[1];
 $thnlahir = $lahir[0];
-/*
-$tgllahir = substr($row_pegawai['tgllahir'],6,2);
-$blnlahir = substr($row_pegawai['tgllahir'],5,2);
-$thnlahir = substr($row_pegawai['tgllahir'],0,4);
-*/
 $agama = $row_pegawai['agama'];
 $suku = $row_pegawai['suku'];
 $menikah = $row_pegawai['nikah'];
@@ -69,8 +65,10 @@ if (isset($_REQUEST['nip']))
 	$nip = CQ($_REQUEST['nip']);
 if (isset($_REQUEST['nama']))
 	$nama = CQ($_REQUEST['nama']);
-if (isset($_REQUEST['gelar']))
-	$gelar = CQ($_REQUEST['gelar']);
+if (isset($_REQUEST['gelarawal']))
+	$gelarawal = CQ($_REQUEST['gelarawal']);
+if (isset($_REQUEST['gelarakhir']))
+	$gelarakhir = CQ($_REQUEST['gelarakhir']);    
 if (isset($_REQUEST['panggilan']))
 	$panggilan = CQ($_REQUEST['panggilan']);
 if (isset($_REQUEST['kelamin']))
@@ -144,7 +142,7 @@ if (isset($_REQUEST['simpan']))
 	{
 		$nama = str_replace("'", "`", $nama);
 		$query = "UPDATE jbssdm.pegawai 
-					 SET nip='$nip', nama='$nama', gelar='$gelar', panggilan='$panggilan', tmplahir='$tempatlahir', 
+					 SET nip='$nip', nama='$nama', gelarawal='$gelarawal', gelarakhir='$gelarakhir', panggilan='$panggilan', tmplahir='$tempatlahir', 
 					 	 tgllahir='$lahir', agama='$agama', suku='$suku',nikah='$menikah', noid='$identitas',alamat='$alamat',
 						 telpon='$telpon',handphone='$handphone',email='$email', bagian='$bagian', keterangan='$keterangan', 
 						 kelamin='$kelamin' $gantifoto WHERE replid = '$replid' ";
@@ -549,8 +547,16 @@ function change_bln() {
     </tr>
     <tr>
       	<td><strong>Nama</strong></td>
-      	<td><input name="nama" type="text" id="nama" size="30" value="<?=$nama?>"  onKeyPress="return focusNext('panggilan', event)" onFocus="showhint('Nama tidak boleh kosong!', this, event, '100px');panggil('nama')"/>            </td>
+      	<td><input name="nama" type="text" id="nama" size="30" value="<?=$nama?>"  onKeyPress="return focusNext('gelarawal', event)" onFocus="showhint('Nama tidak boleh kosong!', this, event, '100px');panggil('nama')"/>            </td>
 	</tr>
+    <tr>
+      	<td>Gelar Awal</td>
+      	<td><input type="text" name="gelarawal" id="gelarawal" size="30" value="<?=$gelarawal?>"  onKeyPress="return focusNext('gelarakhir', event)" onFocus="panggil('gelar')"/></td>
+    </tr>
+    <tr>
+      	<td>Gelar Akhir</td>
+      	<td><input type="text" name="gelarakhir" id="gelarakhir" size="30" value="<?=$gelarakhir?>"  onKeyPress="return focusNext('panggilan', event)" onFocus="panggil('gelar')"/></td>
+    </tr>
     <tr>
       	<td>Panggilan</td>
       	<td><input type="text" name="panggilan" id="panggilan" size="30" value="<?=$panggilan?>"  onKeyPress="return focusNext('kelamin', event)" onFocus="panggil('panggilan')"/></td>
@@ -564,12 +570,8 @@ function change_bln() {
         	<input type="radio" name="kelamin" value="p"
     	<? 	if ($kelamin=="p") 
     			echo "checked='checked'";
-    	?> onKeyPress="return focusNext('gelar', event)"/>&nbsp;Perempuan</td>
+    	?> onKeyPress="return focusNext('tempatlahir', event)"/>&nbsp;Perempuan</td>
    	</tr>
-    <tr>
-      	<td>Gelar</td>
-      	<td><input type="text" name="gelar" id="gelar" size="30" value="<?=$gelar?>"  onKeyPress="return focusNext('tempatlahir', event)" onFocus="panggil('gelar')"/></td>
-    </tr>
     <tr>
     	<td><strong>Tempat Lahir</strong></td>
         <td><input type="text" name="tempatlahir" id="tempatlahir" size="30" value="<?=$tempatlahir?>" onKeyPress="return focusNext('tgllahir', event)" onFocus="showhint('Tempat Lahir tidak boleh kosong!', this, event, '100px');panggil('tempatlahir')"/></td>
@@ -641,7 +643,7 @@ function change_bln() {
     </tr>
     <tr>
         <td valign="top">Alamat</td>
-        <td colspan="2"><textarea name="alamat" cols="40" rows="3" id="alamat" onKeyPress="return focusNext('telpon', event)" onFocus="panggil('alamat')"><?=$alamat?>
+        <td colspan="2"><textarea name="alamat" cols="40" rows="2" id="alamat" onKeyPress="return focusNext('telpon', event)" onFocus="panggil('alamat')"><?=$alamat?>
         </textarea></td>
     </tr>
     <tr>
@@ -664,7 +666,7 @@ function change_bln() {
     <tr>
         <td valign="top">Keterangan</td>
         <td colspan="2" valign="top">
-            <textarea name="keterangan" id="keterangan" cols="40" rows="3" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$keterangan?></textarea>
+            <textarea name="keterangan" id="keterangan" cols="40" rows="2" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$keterangan?></textarea>
         </td>
     </tr>
     <tr>

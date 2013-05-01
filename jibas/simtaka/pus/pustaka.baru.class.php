@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -257,7 +257,7 @@ class CPustaka{
 	}
 	function GetPustaka(){
 		 if (SI_USER_LEVEL()==2){
-			$sql = "SELECT * FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
+			$sql = "SELECT * FROM perpustakaan WHERE replid='".SI_USER_IDPERPUS()."' ORDER BY nama";
 		 } else {
 			$sql = "SELECT * FROM perpustakaan ORDER BY nama";
 		 }
@@ -286,7 +286,7 @@ class CPustaka{
         </table>
 		<?
 		if (SI_USER_LEVEL()==2){
-			$sql = "SELECT * FROM perpustakaan WHERE replid<>".SI_USER_DEPT()." ORDER BY nama";
+			$sql = "SELECT * FROM perpustakaan WHERE replid<>".SI_USER_IDPERPUS()." ORDER BY nama";
 			$result = QueryDb($sql);
 			$cnt=1;
 			while ($row = @mysql_fetch_array($result)){ ?>
@@ -392,7 +392,9 @@ class CPustaka{
 		//exit;
 		$this->reload_page();	
 	}
-	function GenKodePustaka($katalog,$penulis,$judul,$format,$counter){
+	
+	function GenKodePustaka($katalog,$penulis,$judul,$format,$counter)
+	{
 		$sql = "SELECT kode FROM katalog WHERE replid='$katalog'";
 		$result = QueryDb($sql);
 		$ktlg = @mysql_fetch_row($result);
@@ -401,32 +403,40 @@ class CPustaka{
 		$result = QueryDb($sql);
 		$pnls = @mysql_fetch_row($result);
 		
-		$jdl = substr($judul,0,1);
+		$jdl = substr($judul, 0, 1);
 	
 		$sql = "SELECT kode FROM format WHERE replid='$format'";
 		$result = QueryDb($sql);
 		$frmt = @mysql_fetch_row($result);
 		
-		
-		$counter = (int)$counter;
-		
-		if (strlen($counter)==1)
-			$cnt = "0000".$counter;
-		if (strlen($counter)==2)
-			$cnt = "000".$counter;
-		if (strlen($counter)==3)
-			$cnt = "00".$counter;
-		if (strlen($counter)==4)
-			$cnt = "0".$counter;
-		if (strlen($counter)==5)
-			$cnt = $counter;
+		$cnt = str_pad($counter, 5, "0", STR_PAD_LEFT);
 
-		$kode = $ktlg[0]."/".$pnls[0]."/".$jdl."/".$cnt."/".$frmt[0];
-		
+		$unique = true;
+		$addcnt = 0;
+		do
+		{
+			$kode = $ktlg[0] . "/" . $pnls[0] . "/" . $jdl . "/" . $cnt . "/" . $frmt[0];
+			
+			$sql = "SELECT COUNT(replid) FROM daftarpustaka WHERE kodepustaka = '$kode'";
+			$result = QueryDb($sql);
+			$row = mysql_fetch_row($result);
+			
+			if ($row[0] > 0)
+			{
+				$addcnt++;
+				$cnt = "$cnt.$addcnt";
+				$unique = false;
+			}
+			else
+			{
+				$unique = true;
+			}
+		}
+		while(!$unique);
 		
 		return $kode;
-
 	}
+	
 	function delete_file($file){ 
 	  $delete = @unlink($file); 
 	  clearstatcache();

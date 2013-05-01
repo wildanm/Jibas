@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,15 +59,20 @@ if (isset($_REQUEST['simpan']))
 }
 
 OpenDb();
+
 $sql = "SELECT * FROM rekakun WHERE kode='$_REQUEST[kode]'";
 $result = QueryDb($sql);
-CloseDb();
-
 $row = mysql_fetch_array($result);
 $kode = $row['kode'];
 $nama = CQ($row['nama']);
 $keterangan = CQ($row['keterangan']);
 $kategori = $row['kategori'];
+
+$sql = "SELECT replid FROM jurnaldetail WHERE koderek='$kode' LIMIT 1";
+$result = QueryDb($sql);
+$isDisabled = mysql_num_rows($result) > 0 ? "readonly='readonly'" : "";
+
+CloseDb();
 
 $edit_kode = "";
 if (isset($_REQUEST['edit_kode']))
@@ -140,13 +145,13 @@ function panggil(elem){
     </tr>
     <tr>
         <td><strong>Kode</strong></td>
-        <td><input type="text" name="edit_kode" id="edit_kode" value="<?=$edit_kode?>" maxlength="20" size="20" onKeyPress="return focusNext('nama', event)" onFocus="panggil('edit_kode')">
+        <td><input type="text" name="edit_kode" id="edit_kode" <?=$isDisabled?> value="<?=$edit_kode?>" maxlength="20" size="20" onKeyPress="return focusNext('nama', event)" onFocus="panggil('edit_kode')">
         <input type="hidden" name="kode" id="kode" value="<?=$kode?>" />
         </td>
     </tr>
     <tr>
         <td><strong>Nama</strong></td>
-        <td><input type="text" name="nama" id="nama" value="<?=$nama?>" maxlength="100" size="30" onKeyPress="return focusNext('keterangan', event)" onFocus="panggil('nama')"></td>
+        <td><input type="text" name="nama" id="nama" value="<?=$nama?>" <?=$isDisabled?> maxlength="100" size="30" onKeyPress="return focusNext('keterangan', event)" onFocus="panggil('nama')"></td>
     </tr>
     <tr>
         <td valign="top">Keterangan</td>

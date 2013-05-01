@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -115,7 +115,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 		RollbackTrans();
 
 	CloseDb();
-	header("Location: pembayaran_lainnya.php?idkategori=$idkategori&idpenerimaan=$idpenerimaan&idtahunbuku=$idtahunbuku");
+	
+	$r = rand(10000, 99999);
+	header("Location: pembayaran_lainnya.php?r=$r&idkategori=$idkategori&idpenerimaan=$idpenerimaan&idtahunbuku=$idtahunbuku");
+	
 	exit();
 }
 
@@ -202,7 +205,7 @@ function validasiAngka() {
 }
 
 function cetakkuitansi(id) {
-	newWindow('kuitansilain.php?id='+id,'CetakKuitansiLain','750','850','resizable=1,scrollbars=1,status=0,toolbar=0');
+	newWindow('kuitansilain.php?id='+id,'CetakKuitansiLain','360','650','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
 function editpembayaran(id) {
@@ -282,9 +285,9 @@ function panggil(elem){
             <tr>
                 <td><strong>Tanggal</strong></td>
                 <td>
-                <input type="text" name="tcicilan" id="tcicilan" readonly value="<?=$tanggal ?>" onKeyPress="return focusNext('kbayar', event)" onClick="Calendar.setup()" style="background-color:#CCCC99"> </td>
+                <input type="text" name="tcicilan" id="tcicilan" readonly value="<?=$tanggal ?>" onKeyPress="return focusNext('kbayar', event)" style="background-color:#CCCC99"> </td>
                 <td width="60%">
-                <img src="images/calendar.jpg" name="tabel" border="0" id="btntanggal" onMouseOver="showhint('Buka kalendar!', this, event, '100px')"/>
+                &nbsp;
                 </td>        
             </tr>
             <tr>
@@ -361,20 +364,3 @@ function panggil(elem){
 </body>
 
 </html>
-<script language="javascript">
-  Calendar.setup(
-    {
-      //inputField  : "tanggalshow","tanggal"
-	  inputField  : "tcicilan",         // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format
-      button      : "btntanggal"       // ID of the button
-    }
-   );
-    Calendar.setup(
-    {
-      inputField  : "tcicilan",        // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format	  
-	  button      : "tcicilan"       // ID of the button
-    }
-  );
-</script>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -147,7 +147,7 @@ $width = 1180 + $n_arrpen * 600;
         <td width="80" rowspan="2">Telpon Ortu</td>
         <td width="80" rowspan="2">HP Ortu</td>
         <? for ($i = 0; $i < $n_arrpen; $i++) { ?>
-        <td width="600" colspan="7"><?=$arrpen[$i][1]?></td>
+        <td width="800" colspan="8"><?=$arrpen[$i][1]?></td>
         <? } ?> 
 	</tr>
     <tr align="center" class="header">
@@ -155,6 +155,7 @@ $width = 1180 + $n_arrpen * 600;
         <td width="100">Cicilan</td>
         <td width="100">Total</td>
         <td width="100">Pembayaran</td>
+		<td width="100">Diskon</td>
         <td width="100">Sisa</td>
         <td width="100">Tgl.Akhir</td>
         <td width="100">Bay.Akhir</td>
@@ -166,11 +167,11 @@ $width = 1180 + $n_arrpen * 600;
 
 	$arrtotal = array();
 	for($i = 0; $i < $n_arrpen; $i++)
-		for($j = 0; $j < 7; $j++)
-			if ($j > 0 && $j < 4)
-				$arrtotal[$i * 7 + $j] = 0;
+		for($j = 0; $j < 8; $j++)
+			if ($j > 0 && $j < 5)
+				$arrtotal[$i * 8 + $j] = 0;
 			else
-				$arrtotal[$i * 7 + $j] = "";
+				$arrtotal[$i * 8 + $j] = "";
 
 	while ($row = mysql_fetch_array($res))
 	{ 
@@ -201,21 +202,22 @@ $width = 1180 + $n_arrpen * 600;
         <? for ($i = 0; $i < $n_arrpen; $i++) 
 		{ 
 			$idpenerimaan = $arrpen[$i][0];
-			$sql = "SELECT b.nis, b.besar, SUM(p.jumlah) AS jumlah, b.cicilan
+			$sql = "SELECT b.nis, b.besar, SUM(p.jumlah) AS jumlah, b.cicilan, SUM(p.info1) AS diskon
 			          FROM besarjtt b, penerimaanjtt p
 					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = '$idpenerimaan' AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
 				  GROUP BY b.nis";
 			$res2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($res2);
 			$besar = $row2[1];
-			$jumlah = $row2[2];
+			$jumlah = $row2[2] + $row2[4];
 			$bcicilan = $row2[3];
+			$diskon = $row2[4];
 			$sisa = $besar - $jumlah;
 			
 			$sql = "SELECT DATE_FORMAT(p.tanggal, '%d-%b-%Y') AS tanggal, p.jumlah, p.keterangan
 				      FROM besarjtt b, penerimaanjtt p 
 					 WHERE b.replid = p.idbesarjtt AND b.idpenerimaan = '$idpenerimaan' AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'
-				  ORDER BY tanggal DESC
+				  ORDER BY tanggal DESC, p.replid DESC
 				     LIMIT 1";
 			$res2 = QueryDb($sql);
 			$row2 = mysql_fetch_row($res2);
@@ -225,11 +227,12 @@ $width = 1180 + $n_arrpen * 600;
 			
 			if ($sisa != 0)
 			{
-				$idx = $i * 7;
+				$idx = $i * 8;
 				$arrtotal[$idx] += $bcicilan;
 				$arrtotal[$idx + 1] += $besar;
 				$arrtotal[$idx + 2] += $jumlah;
-				$arrtotal[$idx + 3] += $sisa;
+				$arrtotal[$idx + 3] += $diskon;
+				$arrtotal[$idx + 4] += $sisa;
 			}
 						
 			if ($sisa == 0)
@@ -241,6 +244,7 @@ $width = 1180 + $n_arrpen * 600;
 	            <td align="right" style="background-color:<?=$color?>"><?=$bcicilan?></td>
                 <td align="right" style="background-color:<?=$color?>"><?=$besar?></td>
                 <td align="right" style="background-color:<?=$color?>"><?=$jumlah?></td>
+				<td align="right" style="background-color:<?=$color?>"><?=$diskon?></td>
                 <td align="right" style="background-color:<?=$color?>"><?=$sisa?></td>
                 <td align="center" style="background-color:<?=$color2?>"><?=$tglakhir?></td>
                 <td align="right" style="background-color:<?=$color2?>"><?=$jumakhir?></td>
@@ -252,8 +256,8 @@ $width = 1180 + $n_arrpen * 600;
 	<tr height="25">
     	<td colspan="12" style="background-color:#3CF" align="right"><strong>T O T A L</strong></td>
 <?		for($i = 0; $i < $n_arrpen; $i++) 
-			for($j = 0; $j < 7; $j++)
-				if ($j < 4)
+			for($j = 0; $j < 8; $j++)
+				if ($j < 5)
 					echo  "<td align='right' style='background-color:#3CF'>" . $arrtotal[$i * 7 + $j] . "</td>";	
 				else
 					echo  "<td style='background-color:#3CF'>&nbsp</td>"; ?>

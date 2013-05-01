@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,6 +22,8 @@
  **[N]**/ ?>
 <?
 require_once('../../include/sessioninfo.php');
+require_once('../../include/sessionchecker.php');
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
@@ -40,7 +42,6 @@ if (isset($_REQUEST['tahun']))
 </HEAD>
 <FRAMESET COLS="*,245" FRAMEBORDER="no" border="0">
 	<frame src="pesanguru_add.php" name="pesanguru_add" id="pesanguru_add" scrolling="auto">
-	<!--<frame src="tujuanpesan.php?bulan=<?=$bulan?>&tahun=<?=$tahun?>" name="pesanguru_tujuan" id="pesanguru_tujuan" scrolling="auto">-->
 	<frameset rows="50,*">
 		<frame src="pesanguru_tujuan.php?bulan=<?=$bulan?>&tahun=<?=$tahun?>" name="tujuan_header" id="tujuan_header" scrolling="no">
 		<frame src="pesanguru_tujuan_footer.php" name="tujuan_footer" id="tujuan_footer">

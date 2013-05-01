@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,9 +26,11 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+
 $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
+	
 OpenDb();
 $sql="SELECT idpesan FROM jbsvcr.tujuanpesan WHERE replid='$replid'";
 $result=QueryDb($sql);
@@ -45,8 +47,6 @@ $result4=QueryDb($sql4);
 $row2=@mysql_fetch_array($result4);
 $senderstate = "siswa";
 }
-$sql3="SELECT * FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
-$result3=QueryDb($sql3);
 CloseDb();	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -105,25 +105,30 @@ function balas(idpesan,senderstate){
 	<tr>
 		<td background="../../images_slice/BGNews_04.png" width="12">	  </td>
 	  <td width="*" colspan="2" background="../../images_slice/BGNews_05.png">
-            	<span class="style1">
-              <span class="style5">Dari :</span> 
-              <?=$row2[nama]?><br /><br /><hr style="color:#006633" />
-              <span class="style6">Judul :</span> 
-              <?=$row2[judul]?><br />
-              <hr style="color:#006633" />
-              <span class="style5">Pesan :</span> 
-              <?=$row2[pesan]?><br />
-              <hr style="color:#006633" />
-              <? if (@mysql_num_rows($result3)>0) { ?>
-              <span class="style5">Lampiran :</span> <br />
-              <?
-              while ($row3=@mysql_fetch_array($result3)){
-                  $updir = $WEB_UPLOAD_DIR."pesan/";
-                  echo "<a title='Buka lampiran ini!' href='".$updir.$row3[direktori].$row3[namafile]."' target='_blank' ><img border='0' src='../../images/ico/titik.png' width='5' heiht='5'/> ".$row3['namafile']."</a><br>";
-              }
-              }
-              ?>
-              </span>	  </td>
+            	<table width="95%" border="0" cellspacing="2" cellpadding="2" align="center">
+              <tr>
+                <td width="11%" valign="top"><span class="style1"><span class="style5">Dari</span></span></td>
+                <td width="2%" valign="top"><span class="style5">:</span></td>
+                <td width="87%"><span class="style1">
+                  <?=$row2[nama]?>
+                </span></td>
+              </tr>
+              <tr>
+                <td valign="top"><span class="style6">Judul</span></td>
+                <td valign="top"><span class="style5">:</span></td>
+                <td><span class="style1">
+                  <?=$row2[judul]?>
+                </span></td>
+              </tr>
+              <tr>
+                <td valign="top"><span class="style5">Pesan</span></td>
+                <td valign="top"><span class="style5">:</span></td>
+                <td><font style="font-size: 11px; line-height: 18px">
+                  <?=$row2[pesan]?>
+                </span></td>
+              </tr>
+            </table>
+		</td>
 		<td background="../../images_slice/BGNews_06.png" width="18">	  </td>
 	</tr>
 	<tr>

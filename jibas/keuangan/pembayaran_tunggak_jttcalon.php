@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -178,7 +178,7 @@ function simpan_besar()
 
 function cetakkuitansi(id) 
 {
-	newWindow('kuitansijtt.php?id='+id+'&status=calon', 'CetakKuitansi','750','850','resizable=1,scrollbars=1,status=0,toolbar=0'		)
+	newWindow('kuitansijtt.php?id='+id+'&status=calon', 'CetakKuitansi','360','850','resizable=1,scrollbars=1,status=0,toolbar=0'		)
 }
 
 function editpembayaran(id) 
@@ -366,7 +366,7 @@ function panggil(elem){
         		if ($nbayar > 0) 
 				{
 					$sql = "SELECT p.replid AS id, j.nokas, j.idtahunbuku, date_format(p.tanggal, '%d-%b-%Y') as tanggal, 
-										p.keterangan, p.jumlah, p.petugas 
+										p.keterangan, p.jumlah, p.petugas, p.info1 AS diskon 
 								 FROM penerimaanjttcalon p, besarjttcalon b, jurnal j
 								WHERE p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt' ORDER BY p.tanggal ASC";
 					$result = QueryDb($sql);
@@ -395,20 +395,25 @@ function panggil(elem){
         <tr height="30" align="center">
             <td class="header" width="5%">No</td>
             <td class="header" width="20%">No. Jurnal/Tgl</td>
-            <td class="header" width="21%">Besarnya</td>
+            <td class="header" width="21%">Besar</td>
+			<td class="header" width="21%">Diskon</td>
             <td class="header" width="*">Keterangan</td>
             <td class="header" width="12%">Petugas</td>
             <td class="header">&nbsp;</td>
         </tr>
 <? 		$cnt = 0;
 			$total = 0;
+			$total_diskon = 0;
 			while ($row = mysql_fetch_array($result)) 
 			{
-			  $total += $row['jumlah'];  ?>
+			  $total += $row['jumlah'];
+			  $total_diskon += $row['diskon'];
+			  ?>
            <tr height="25">
                <td align="center"><?=++$cnt?></td>
                <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
                <td align="right"><?=FormatRupiah($row['jumlah'])?></td>
+			   <td align="right"><?=FormatRupiah($row['diskon'])?></td>
                <td align="left"><?=$row['keterangan'] ?></td>
                <td align="center"><?=$row['petugas'] ?></td>
                <? if ($row['idtahunbuku'] == $idtahunbuku_aktif) { ?>
@@ -424,10 +429,11 @@ function panggil(elem){
            </tr>
         <?
         	}
-        	$sisa = $besar - $total;?>
+        	$sisa = $besar - $total - $total_diskon;?>
         <tr height="35">
             <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
             <td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
+			<td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total_diskon) ?></strong></font></td>
             <td bgcolor="#996600" align="right"><font color="#FFFFFF">Sisa <strong><?=FormatRupiah($sisa) ?></strong></font></td>
             <td bgcolor="#996600" colspan="3">&nbsp;</td>
         </tr>

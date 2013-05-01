@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,15 +21,21 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CSiswa{
+
+class CSiswa
+{
 	var $dep;
     var $tkt;
 	var $kls;
 	var $ta;
-	function OnStart(){
+	
+	function OnStart()
+	{
 		
 	}
-	function ShowStudentList(){
+	
+	function ShowStudentList()
+	{
 		?>
 		<link href="../style/style.css" rel="stylesheet" type="text/css" />
 		<div id="TabbedPanels1" class="TabbedPanels">
@@ -50,27 +56,25 @@ class CSiswa{
         </script>
         <?
 	}
-	function ShowInfoSiswa_js(){
-		?>
-        <script src="../script/ajax.js" type="text/javascript"></script>
-        <script src="siswa.js" type="text/javascript"></script>
-        <script src="info.js" type="text/javascript"></script>
-		<script src="../script/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
-		<link href="../script/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
-		<?
-	}
-	function GetDep(){
+	
+	function GetDep()
+	{
 		echo "<select name='dep' id='dep' onChange='chg_dep()' class='cmbfrm' style='width:125px'>";
 		$sql = "SELECT * FROM departemen WHERE aktif=1 ORDER BY urutan";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
 		$i=0;
-		if ($num==0){
+		if ($num == 0)
+		{
 			echo "<option value=''>Tidak ada Data</option>";
-		} else {
-			while ($row = @mysql_fetch_array($result)){
-			if($i==0) $this->dep = $row[departemen];
-			++$i;
+		}
+		else
+		{
+			while ($row = @mysql_fetch_array($result))
+			{
+				if($i==0)
+					$this->dep = $row[departemen];
+				++$i;
 				if ($dep == "")
 					$dep = $row[departemen];
 				echo "<option value='$row[departemen]' ".StringIsSelected($dep,$row[departemen]).">$row[departemen]</option>";
@@ -78,18 +82,25 @@ class CSiswa{
 		}
 		echo "</select>";
 	}
-	function GetTkt(){
+	
+	function GetTkt()
+	{
 		$dep = $this->dep ;
 		echo "<select name='tkt' id='tkt' onChange='chg_tkt()' class='cmbfrm' style='width:125px'>";
 		$sql = "SELECT * FROM tingkat WHERE departemen = '$dep' AND aktif=1 ORDER BY tingkat";
 		$result = QueryDb($sql);
 		$i=0;
 		$num = @mysql_num_rows($result);
-		if ($num==0){
+		if ($num==0)
+		{
 			echo "<option value=''>Tidak ada Data</option>";
-		} else {
-			while ($row = @mysql_fetch_array($result)){
-				if($i==0) $this->tkt = $row[replid];
+		}
+		else
+		{
+			while ($row = @mysql_fetch_array($result))
+			{
+				if($i==0)
+					$this->tkt = $row[replid];
 				++$i;
 				if ($tkt == "")
 					$tkt = $row[replid];
@@ -106,29 +117,34 @@ class CSiswa{
 		echo "<input type='hidden' name='ta' id='ta' value='$ta' />";
 	}
 	
-	function GetKls(){
+	function GetKls()
+	{
 		$tkt = $this->tkt ;
 		$ta = $this->ta ;
-		//if ($ta=="")
-			//$ta = $_REQUEST[ta];
-		//echo "SELECT * FROM kelas WHERE idtingkat='$tkt' AND idtahunajaran='$ta' AND aktif = 1 ORDER BY kelas";
-		
+				
 		echo "<select name='kls' id='kls' onChange='chg_kls()' class='cmbfrm' style='width:125px'>";
-		if ($tkt==""){
+		if ($tkt=="")
+		{
 			echo "<option value=''>Tidak ada Data</option>";	
-		} else {
+		}
+		else
+		{
 			$i=0;
 			$sql = "SELECT * FROM kelas WHERE idtingkat='$tkt' AND idtahunajaran='$ta' AND aktif = 1 ORDER BY kelas";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
-			if ($num==0){
+			if ($num==0)
+			{
 				echo "<option value=''>Tidak ada Data</option>";	
-			} else {
-				while ($row = @mysql_fetch_array($result)){
-					if($i==0) $this->kls = $row[replid];
+			}
+			else
+			{
+				while ($row = @mysql_fetch_array($result))
+				{
+					if($i==0)
+						$this->kls = $row[replid];
 					++$i;
 					if ($kls == "")
-						//$kls = $this->kls;
 						$kls = $row[replid];
 						
 					echo "<option value='$row[replid]' ".StringIsSelected($kls,$row[replid]).">$row[kelas]</option>";
@@ -137,7 +153,9 @@ class CSiswa{
 		}
 		echo "</select>";	
 	}
-	function GetSis(){
+	
+	function GetSis()
+	{
 		$kls = $this->kls ;
 		echo "<table width='100%' border='1' class='tab'>
 		  <tr>
@@ -150,13 +168,15 @@ class CSiswa{
 		//echo $sql;
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
-		if ($num==0){
-			echo "<tr>
-    			<td height='20' colspan='4' align='center' class='nodata'>Tidak ada Data</td>
-  			</tr>";	
-		} else {
+		if ($num==0)
+		{
+			echo "<tr><td height='20' colspan='4' align='center' class='nodata'>Tidak ada Data</td></tr>";	
+		}
+		else
+		{
 			$cnt=1;
-			while ($row = @mysql_fetch_array($result)){
+			while ($row = @mysql_fetch_array($result))
+			{
 				if ($tkt == "")
 					$tkt = $row[replid];
 				echo "<tr>
@@ -170,7 +190,9 @@ class CSiswa{
 		}
 		echo "</table>";
 	}
-	function GetSisCari(){
+	
+	function GetSisCari()
+	{
 		$nis = $this->nis ;
 		$nama = $this->nama ;
 		$nisn = $this->nisn ;
@@ -192,13 +214,17 @@ class CSiswa{
 		$sql = "SELECT * FROM siswa WHERE $filter aktif = 1 ORDER BY nama";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
-		if ($num==0){
+		if ($num==0)
+		{
 			echo "<tr>
     			<td height='20' colspan='4' align='center' class='nodata'>Tidak ada Data</td>
   			</tr>";	
-		} else {
+		}
+		else
+		{
 			$cnt=1;
-			while ($row = @mysql_fetch_array($result)){
+			while ($row = @mysql_fetch_array($result))
+			{
 				echo "<tr>
 					<td height='20' align='center'>$cnt</td>
 					<td height='20' align='center'>$row[nis]</td>

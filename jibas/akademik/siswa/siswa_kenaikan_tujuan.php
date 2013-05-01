@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,48 +70,58 @@ $urutan_tingkat = $row_tingkat['urutan'];
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
 
-if ($op=="hgiu82kjs98uqjq89wuj89sga"){
-	$nis=$_REQUEST['nis'];
+if ($op=="hgiu82kjs98uqjq89wuj89sga")
+{
+	$nis = $_REQUEST['nis'];
 	
 	OpenDb();
 	BeginTrans();
 	$success=0;
+	
 	$sql_rwyt_del="DELETE FROM jbsakad.riwayatkelassiswa WHERE nis='$nis' AND idkelas='$kelas'";
 	QueryDbTrans($sql_rwyt_del, $success);
-	if ($success){
-		$sql_rwyt_get="SELECT r.idkelas, k.idtingkat, k.idtahunajaran  FROM jbsakad.riwayatkelassiswa r, jbsakad.kelas k WHERE r.nis='$nis' AND r.idkelas = k.replid ORDER BY mulai DESC LIMIT 1";
-		$result_rwyt_get=QueryDbTrans($sql_rwyt_get, $success);
-		$row_rwyt_get=mysql_fetch_row($result_rwyt_get);
+	
+	if ($success)
+	{
+		$sql_rwyt_get = "SELECT r.idkelas, k.idtingkat, k.idtahunajaran
+						   FROM jbsakad.riwayatkelassiswa r, jbsakad.kelas k
+						  WHERE r.nis='$nis' AND r.idkelas = k.replid
+						  ORDER BY mulai DESC LIMIT 1";
+		$result_rwyt_get = QueryDbTrans($sql_rwyt_get, $success);
+		$row_rwyt_get = mysql_fetch_row($result_rwyt_get);
 	}
-	if ($success){
-		$sql_rwyt_upd="UPDATE jbsakad.riwayatkelassiswa SET aktif=1 WHERE nis='$nis' AND idkelas='$row_rwyt_get[0]'";
+	
+	if ($success)
+	{
+		$sql_rwyt_upd = "UPDATE jbsakad.riwayatkelassiswa
+							SET aktif=1
+						  WHERE nis='$nis' AND idkelas='$row_rwyt_get[0]'";
 		QueryDbTrans($sql_rwyt_upd, $success);
 	}
-	if ($success){
-		$sql_siswa_upd="UPDATE jbsakad.siswa SET idkelas='$row_rwyt_get[0]' WHERE nis='$nis'";
+	
+	if ($success)
+	{
+		$sql_siswa_upd = "UPDATE jbsakad.siswa SET idkelas='$row_rwyt_get[0]' WHERE nis='$nis'";
 		QueryDbTrans($sql_siswa_upd, $success);
 	}
 	
-	if ($success){
-		CommitTrans();
-		?>
+	if ($success)
+	{
+		CommitTrans(); ?>
 		<script language="javascript">
-			parent.siswa_kenaikan_menu.location.href="siswa_kenaikan_menu.php?kelas=<?=$row_rwyt_get[0]?>&departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaranawal?>&tingkat=<?=$tingkatawal?>&pilihan=2&jenis=combo";
-			parent.siswa_kenaikan_pilih.setfirstpage();
-			//parent.siswa_kenaikan_pilih.location.href="siswa_kenaikan_pilih.php?kelas=<?=$row_rwyt_get[0]?>&pilihan=2&jenis=combo&departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaranawal?>&tingkat=<?=$tingkatawal?>";
-			
+			parent.siswa_kenaikan_pilih.location.reload();
 		</script>
-		<?
-	} else {
+<?	}
+	else
+	{
 		RollBackTrans();
 	}
 	CloseDb();
-	//$page=0;
-	//$hal=0;
 }
 
 $ERROR_MSG = "";
-if ($op=="x2378e23dkofh73n25ki9234"){
+if ($op=="x2378e23dkofh73n25ki9234")
+{
 	$nis=$_REQUEST['nis'];
 	$ket=CQ($_REQUEST['ket']);
 	$kelasawal=$_REQUEST['kelasawal'];
@@ -126,32 +136,50 @@ if ($op=="x2378e23dkofh73n25ki9234"){
 	$result_jum_kelas_tujuan=QueryDb($sql_jum_kelas_tujuan);
 	$row_jum_kelas_tujuan=mysql_fetch_row($result_jum_kelas_tujuan);
 	
-	if ((int)$kap_kelas_tujuan <= (int)$row_jum_kelas_tujuan[0]){
+	if ((int)$kap_kelas_tujuan <= (int)$row_jum_kelas_tujuan[0])
+	{
 		$ERROR_MSG = "Kapasitas kelas tujuan sudah penuh. Silahkan pilih kelas tujuan lain!";
-	} else { // Jika jumlah murid kelas tujuan < dari kapasitasnya 
+	}
+	else
+	{
+		// Jika jumlah murid kelas tujuan < dari kapasitasnya 
 		$tahunsekarang=date(Y);
 		$bulansekarang=date(m);
 		$tanggalsekarang=date(j);
 		$sekarang=$tahunsekarang."-".$bulansekarang."-".$tanggalsekarang;
+
 		OpenDb();
-		
 		BeginTrans();
 		$success=0;
-		$sql_naik="UPDATE jbsakad.siswa SET idkelas='$kelas' WHERE nis='$nis'";
+		
+		$sql_naik = "UPDATE jbsakad.siswa
+						SET idkelas='$kelas'
+					  WHERE nis='$nis'";
+		"$sql_naik<br>";
 		QueryDbTrans($sql_naik, $success);
 			
-		$sql_naik_kelas_update="UPDATE jbsakad.riwayatkelassiswa SET aktif=0 WHERE nis='$nis' AND idkelas='$kelasawal'";		
+		$sql_naik_kelas_update = "UPDATE jbsakad.riwayatkelassiswa
+									 SET aktif=0
+								   WHERE nis='$nis' AND idkelas='$kelasawal'";
 		if ($success)
 			QueryDbTrans($sql_naik_kelas_update, $success);
 				
-		$sql_naik_kelas_insert="INSERT INTO jbsakad.riwayatkelassiswa SET idkelas='$kelas', aktif=1, nis='$nis' , mulai='$sekarang',status=1,keterangan='$ket'";
+		$sql_naik_kelas_insert = "INSERT INTO jbsakad.riwayatkelassiswa
+									 SET idkelas='$kelas', aktif=1, nis='$nis', mulai='$sekarang', status=1, keterangan='$ket'";
 		if ($success)
 			QueryDbTrans($sql_naik_kelas_insert, $success);	
 				
 		if ($success)
-			CommitTrans(); 
+		{
+			CommitTrans();	?>
+			<script language="javascript">
+				parent.siswa_kenaikan_pilih.location.reload();
+			</script>
+<?		}
 		else
+		{
 			RollbackTrans();
+		}
 		CloseDb();	
 	}
 }   

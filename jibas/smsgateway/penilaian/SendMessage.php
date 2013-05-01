@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,26 +24,13 @@
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/common.php');
-OpenDb();
-//echo "<pre>";
-//print_r($_REQUEST);
-//echo "</pre>";
-/*
-   [op] => SavePenilaian
-    [Type] => 1
-    [Dep] => SMA
-    [Kls] => -1
-    [IDPel] => 35
-    [IDUjian] => 89
-    [NumData] => 9
-    [Date1] => 2007-1-1
-    [Date2] => 2007-1-1
-    [Sender] => GMS
-    [KeSiswa] => 1
-    [SendDate] => 2007-1-1 15:15:00
 
-	
-*/
+OpenDb();
+
+echo "<pre>";
+print_r($_REQUEST);
+echo "</pre>";
+
 $op	= $_REQUEST['op'];
 
 $Type		= $_REQUEST['Type'];
@@ -56,28 +43,40 @@ $NumData	= $_REQUEST['NumData'];
 $Date1		= $_REQUEST['Date1'];
 $Date2		= $_REQUEST['Date2'];
 $Sender		= CQ($_REQUEST['Sender']);
+
 $KeSiswa	= $_REQUEST['KeSiswa'];
 if ($KeSiswa=="")
 	$KeSiswa = 0;
+
 $KeOrtu		= $_REQUEST['KeOrtu'];
 if ($KeOrtu=="")
 	$KeOrtu = 0;
+
 $SendDate	= $_REQUEST['SendDate'];
 
-if ($op=='SavePenilaian'){
-	if ($Type=='0'){
+if ($op=='SavePenilaian')
+{
+	if ($Type=='0')
+	{
 		$NIS = $NIS;	
-	} else {
-		if ($Kls=='-1'){
+	}
+	else
+	{
+		if ($Kls=='-1')
+		{
 			$sql =  "SELECT s.nis FROM $db_name_akad.siswa s, $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
 					"WHERE ta.departemen='$Dep' AND ti.departemen='$Dep' AND ta.replid=k.idtahunajaran AND ti.replid=k.idtingkat AND ".
 					"s.idkelas=k.replid AND s.aktif=1";
-		} else {
+		}
+		else
+		{
 			$sql =  "SELECT nis FROM $db_name_akad.siswa WHERE idkelas='$Kls' AND aktif=1";
 		}
+		
 		$res = QueryDb($sql);
 		$NIS = "";
-		while ($row = @mysql_fetch_row($res)){
+		while ($row = @mysql_fetch_row($res))
+		{
 			if ($NIS == "")
 				$NIS = $row[0];
 			else
@@ -111,8 +110,6 @@ if ($op=='SavePenilaian'){
 		$row = @mysql_fetch_row($res);
 		$smsgeninfo .= ", Penilaian : ".$row[0];
 	}
-
-	
 
 	if ($IDUjian=='-1'){
 		$smsgeninfo .= ", Jenis Ujian : All";

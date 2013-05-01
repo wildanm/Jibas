@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,10 +23,10 @@
 <?
 include('sessionchecker.php');
 require_once('include/sessioninfo.php');
-$inputcatatan="<a href='infosiswa/catatansiswamain.php'><img src='images_slice/catatankejadian_07.jpg' alt='' width='92' height='106' border='0'></a>";
+$inputcatatan="<a href='infosiswa/catatansiswamain.php'><img src='images/catatankejadian_07.jpg' alt='' width='92' height='106' border='0'></a>";
 $img="";
 if (SI_USER_LEVEL()==0){
-	$inputcatatan="<img src='images_slice/catatankejadian_07a.jpg' alt='' width='92' height='106' border='0'>";
+	$inputcatatan="<img src='images/catatankejadian_07a.jpg' alt='' width='92' height='106' border='0'>";
 	$img="a";
 }
 ?>
@@ -46,40 +46,40 @@ if (SI_USER_LEVEL()==0){
 <table id="Table_01" width="215" height="250" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="5">
-			<img src="images_slice/catatankejadian_01.jpg" width="214" height="24" alt=""></td>
+			<img src="images/catatankejadian_01.jpg" width="214" height="24" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="24" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="24" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="4">
-			<img src="images_slice/catatankejadian_02.jpg" width="11" height="226" alt=""></td>
+			<img src="images/catatankejadian_02.jpg" width="11" height="226" alt=""></td>
 		<td>
-			<a href="infosiswa/catatankategori.php"><img src="images_slice/catatankejadian_03<?=$img?>.jpg" alt="" width="80" height="83" border="0"></a></td>
-<td colspan="3" rowspan="2"><img src="images_slice/catatankejadian_04<?=$img?>.jpg" width="123" height="97" alt=""></td>
+			<a href="infosiswa/catatankategori.php"><img src="images/catatankejadian_03<?=$img?>.jpg" alt="" width="80" height="83" border="0"></a></td>
+<td colspan="3" rowspan="2"><img src="images/catatankejadian_04<?=$img?>.jpg" width="123" height="97" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="83" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="83" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="3">
-			<img src="images_slice/catatankejadian_05.jpg" width="80" height="143" alt=""></td>
+			<img src="images/catatankejadian_05.jpg" width="80" height="143" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="14" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="14" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="2">
-			<img src="images_slice/catatankejadian_06.jpg" width="16" height="129" alt=""></td>
+			<img src="images/catatankejadian_06.jpg" width="16" height="129" alt=""></td>
 		<td>
 			<?=$inputcatatan?></td>
 <td rowspan="2">
-			<img src="images_slice/catatankejadian_08<?=$img?>.jpg" width="15" height="129" alt=""></td>
+			<img src="images/catatankejadian_08<?=$img?>.jpg" width="15" height="129" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="106" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="106" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/catatankejadian_09.jpg" width="92" height="23" alt=""></td>
+			<img src="images/catatankejadian_09.jpg" width="92" height="23" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="23" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="23" alt=""></td>
 	</tr>
 </table>
 <!-- End ImageReady Slices -->

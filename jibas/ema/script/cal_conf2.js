@@ -1,6 +1,8 @@
 
 //Define calendar(s): addCalendar ("Unique Calendar Name", "Window title", "Form element's name", Form name")
 addCalendar("Calendar1", "Select Date", "tcicilan", "main");
+addCalendar("CalendarISCATPHAR1", "Pilih Tanggal", "tglawal", "panel5");
+addCalendar("CalendarISCATPHAR2", "Pilih Tanggal", "tglakhir", "panel5");
 
 // default settings for English
 // Uncomment desired lines and modify its values

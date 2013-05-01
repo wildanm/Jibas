@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,14 +32,18 @@ require_once('include/sessioninfo.php');
 $id = $_REQUEST['id'];
 $departemen = $_REQUEST['departemen'];
 
-if (isset($_REQUEST['simpan'])) {
+if (isset($_REQUEST['simpan']))
+{
 	OpenDb();
 	$sql = "SELECT replid FROM datapengeluaran WHERE nama = '$_REQUEST[nama]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
-	if (mysql_num_rows($result) > 0) {
+	if (mysql_num_rows($result) > 0)
+	{
 		$MYSQL_ERROR_MSG = "Pengeluaran $_REQUEST[nama] telah ada sebelumnya!";
-	} else {
+	}
+	else
+	{
 		$besar = $_REQUEST['besar'];
 		if ($besar == "") $besar = 0;
 		$besar = UnformatRupiah($besar);
@@ -48,7 +52,8 @@ if (isset($_REQUEST['simpan'])) {
 		$result = QueryDb($sql);
 		CloseDb();
 	
-		if ($result) { ?>
+		if ($result)
+		{ ?>
 			<script language="javascript">
 				opener.refresh();
 				window.close();
@@ -120,7 +125,9 @@ function accept_rekening(kode, nama, flag) {
 		document.getElementById('norekdebet').value = kode;
 	} 
 }
-function cari_rek(flag, kategori) {
+
+function cari_rek(flag, kategori)
+{
 	newWindow('carirek.php?flag='+flag+'&kategori='+kategori, 'CariRekening','550','438','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
@@ -178,13 +185,23 @@ function panggil(elem){
     
     <tr>
         <td align="left"><strong>Rek. Kas</strong></td>
-        <td align="left"><input type="text" name="rekkredit" id="rekkredit" value="<?=$rekkredit . " " . $namarekkredit ?>" readonly style="background-color:#CCCC99" onClick="cari_rek(1,'HARTA')" maxlength="100" size="30" onKeyPress="cari_rek(1,'HARTA');return focusNext('rekdebet',event);" onFocus="panggil('rekkredit')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
-        <input type="hidden" name="norekkredit" id="norekkredit"  value="<?=$rekkredit ?>" />        </td>
+        <td align="left">
+			<input type="text" name="rekkredit" id="rekkredit" value="<?=$rekkredit . " " . $namarekkredit ?>"
+				readonly style="background-color:#CCCC99" onClick="cari_rek(1,'HARTA')" maxlength="100" size="30"
+				onKeyPress="cari_rek(1,'HARTA');return focusNext('rekdebet',event);" onFocus="panggil('rekkredit')">
+			&nbsp;<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekkredit" id="norekkredit"  value="<?=$rekkredit ?>" />
+		</td>
     </tr>
     <tr>
         <td align="left"><strong>Rek. Beban</strong></td>
-        <td align="left"><input type="text" name="rekdebet" id="rekdebet" value="<?=$rekdebet  . " " . $namarekdebet ?>" readonly style="background-color:#CCCC99" onClick="cari_rek(2,'BIAYA')" maxlength="100" size="30" onKeyPress="cari_rek(2,'BIAYA');return focusNext('keterangan',event);" onFocus="panggil('rekdebet')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(2,'BIAYA')"><img src="images/ico/lihat.png" border="0" /></a>
-        <input type="hidden" name="norekdebet" id="norekdebet" value="<?=$rekdebet ?>" />        </td>
+        <td align="left">
+			<input type="text" name="rekdebet" id="rekdebet" value="<?=$rekdebet  . " " . $namarekdebet ?>"
+				readonly style="background-color:#CCCC99" onClick="cari_rek(2,'BIAYA')" maxlength="100" size="30"
+				onKeyPress="cari_rek(2,'BIAYA');return focusNext('keterangan',event);" onFocus="panggil('rekdebet')">
+			&nbsp;<a href="#" onClick="JavaScript:cari_rek(2,'BIAYA')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekdebet" id="norekdebet" value="<?=$rekdebet ?>" />
+		</td>
     </tr>
     <tr>
         <td align="left" valign="top">Keterangan</td>

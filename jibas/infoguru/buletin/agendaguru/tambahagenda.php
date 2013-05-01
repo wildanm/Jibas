@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,25 +25,29 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $tanggal=$_REQUEST['tanggal'];
-if (isset($_REQUEST['simpan'])){
-OpenDb();
-$judul=$_REQUEST['judul'];
-$komentar=$_REQUEST['komentar'];
-$tgl=explode("-",$_REQUEST['tanggal']);
-$tanggal=$tgl[2]."-".$tgl[1]."-".$tgl[0];
-$idguru=SI_USER_ID();
-$sql="INSERT INTO jbsvcr.agenda SET tanggal='$tanggal',judul='$judul',komentar='$komentar',idguru='$idguru',nis=NULL";
-$result=QueryDb($sql);
-CloseDb();
-if ($result){
-?>
-<script language="javascript">
-	opener.get_fresh('<?=$tgl[1]?>','<?=$tgl[2]?>');
-	window.close();
-</script>
-<?
-	}
+if (isset($_REQUEST['simpan']))
+{
+	OpenDb();
+	$judul = CQ($_REQUEST['judul']);
+	$komentar = $_REQUEST['komentar'];
+	$komentar = str_replace("'", "#sq;", $komentar);
+	$tgl = explode("-",$_REQUEST['tanggal']);
+	$tanggal=$tgl[2]."-".$tgl[1]."-".$tgl[0];
+	$idguru=SI_USER_ID();
+	$sql="INSERT INTO jbsvcr.agenda
+			SET tanggal='$tanggal', judul='$judul',komentar='$komentar',idguru='$idguru',nis=NULL";
+	$result=QueryDb($sql);
+	CloseDb();
+	if ($result)
+	{ ?>
+		<script language="javascript">
+			opener.get_fresh('<?=$tgl[1]?>','<?=$tgl[2]?>');
+			window.close();
+		</script>
+<?	}
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -59,20 +63,21 @@ if ($result){
 <script language="javascript" type="text/javascript" src="../../script/tinymce/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
 tinyMCE.init({
-		mode : "textareas",
+		mode : "exact",
 		theme : "advanced",
+        elements : "komentar", 
 		skin : "o2k7",
 		skin_variant : "silver",
 		plugins : "safari,pagebreak,style,layer,table,save,advhr,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",		
-		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-		theme_advanced_buttons2 : "forecolor,backcolor,fullscreen,print,|,cut,copy,paste,pastetext,|,search,replace,|,bullist,numlist,|,hr,removeformat,|,sub,sup,|,charmap,image",
-		theme_advanced_buttons3 : "tablecontrols",
+		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect,forecolor,backcolor,fullscreen,print",
+		theme_advanced_buttons2 : "cut,copy,paste,pastetext,|,search,replace,|,bullist,numlist,|,hr,removeformat,|,sub,sup,|,charmap,image,|,tablecontrols",
 		theme_advanced_toolbar_location : "top",
 		theme_advanced_toolbar_align : "left",
 		theme_advanced_statusbar_location : "bottom",
 		theme_advanced_resizing : false,
 		content_css : "../../style/content.css"
 	});
+
 	function validate()
 {
 	var judul = document.getElementById('judul').value;

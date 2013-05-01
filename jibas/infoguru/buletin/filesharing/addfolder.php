@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,51 +26,51 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/common.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-require_once('../../include/theme.php'); 
+require_once('../../include/theme.php');
+require_once('../../include/sessionchecker.php'); 
 
 if (isset($_REQUEST['iddir']))
 	$iddir = $_REQUEST['iddir'];
+	
 OpenDb();
-$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE idroot=0";
+
+$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE idroot = 0";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $rootname = $row[0];
 
-$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid='$iddir'";
+$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE replid = '$iddir'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $dfullpath = $row[0];
 $fullpath = str_replace($rootname, "", $dfullpath);
+
 CloseDb();
+
 $cek = 0;
 $ERROR_MSG = "";
-if (isset($_REQUEST['Simpan'])) {
-	$rootfolder_db=trim($_REQUEST[fullpath]);
-	$dir = $rootfolder_db.$_REQUEST[folder]."/";
-	$root = str_replace($WEB_UPLOAD_DIR, $UPLOAD_DIR."fileshare".GetOSSlash(), $dir);
-	//echo "<br>0 ".$root;
-	$newdir = str_replace("/", GetOSSlash(), $root);
-	//
-	
-	$newdir = $UPLOAD_DIR."fileshare".GetOSSlash().$newdir;
-	//echo "<br>1 ".$newdir;
-	//exit;
-	$newdir = str_replace("\\\\", GetOSSlash(), $newdir);
-	$newdir = str_replace("root\\", "", $newdir);
-	$newdir = str_replace("root/", "", $newdir);
-	//echo "<br>2 ".$newdir;
-	
-	if (!is_dir($newdir)) {
-		//echo("<br>3 ".$newdir);
-		mkdir($newdir, 0777);
-		chmod($newdir, 0777);
+$FileShareDir = "$FILESHARE_UPLOAD_DIR/fileshare/";
+if (isset($_REQUEST['Simpan']))
+{
+	$rootfolder_db = trim($_REQUEST[fullpath]);
+	$dir_db = $rootfolder_db . $_REQUEST[folder] . "/";
+	$dir_real = str_replace($rootname, $FileShareDir, $dir_db);
+		
+	if (!file_exists($dir_real))
+	{
+		mkdir($dir_real, 0750, true);
+		
+		$fhtaccess = "$dir_real/.htaccess";
+		$fhtaccess = str_replace("//", "/", $fhtaccess);
+		if ($fp = @fopen($fhtaccess, "w"))
+		{
+			@fwrite($fp, "Options -Indexes\r\n");
+			@fclose($fp);
+		}
 	}
-	//$newdir=$dir."\\"."\\";
-	//$newdir=trim($newdir);
+	
 	OpenDb();
-	$sql="INSERT INTO jbsvcr.dirshare SET idroot=$iddir,dirname='$_REQUEST[folder]',dirfullpath='$dir',idguru='".SI_USER_ID()."'";
-	//echo $sql;
-	//exit;
+	$sql="INSERT INTO jbsvcr.dirshare SET idroot=$iddir, dirname='$_REQUEST[folder]', dirfullpath='$dir_db', idguru='".SI_USER_ID()."'";
 	QueryDb($sql);
 	CloseDb();
 	?>
@@ -105,9 +105,7 @@ if (folder.length==0){
 	return true
 	
 }
-function caripegawai() {
-	newWindow('../../../jibassimaka2/library/caripegawai.php?flag=0', 'CariPegawai','600','565','resizable=1,scrollbars=1,status=0,toolbar=0');
-}
+
 function kopikecopy(){
 	var x=document.getElementById('folder').value;
 	document.getElementById('copydir').value=x;

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,137 +58,137 @@ function change_theme(theme){
     <table id="Table_01" width="540" height="460" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="13">
-			<img src="images_slice/siswa_baru_01.gif" width="539" height="14" alt=""></td>
+			<img src="images/siswa_baru_01.gif" width="539" height="14" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="14" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="14" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="12">
-			<img src="images_slice/siswa_baru_02.gif" width="12" height="445" alt=""></td>
+			<img src="images/siswa_baru_02.gif" width="12" height="445" alt=""></td>
 		<td>
-			<a href="siswa_baru/proses.php" onMouseOver="showhint('Pendataan Proses Penerimaan Siswa Baru', this, event, '100px')"><img src="images_slice/siswa_baru_03.gif" alt="" width="90" height="87" border="0"></a></td>
+			<a href="siswa_baru/proses.php" onMouseOver="showhint('Pendataan Proses Penerimaan Siswa Baru', this, event, '100px')"><img src="images/siswa_baru_03.gif" alt="" width="90" height="87" border="0"></a></td>
 		<td colspan="6" rowspan="2">
-			<img src="images_slice/siswa_baru_04.gif" width="175" height="126" alt=""></td>
+			<img src="images/siswa_baru_04.gif" width="175" height="126" alt=""></td>
 		<td>
-			<a href="siswa_baru/kelompok.php" onMouseOver="showhint('Pendataan Kelompok Penerimaan Siswa Baru', this, event, '100px')"><img src="images_slice/siswa_baru_05.gif" alt="" width="67" height="87" border="0"></a></td>
+			<a href="siswa_baru/kelompok.php" onMouseOver="showhint('Pendataan Kelompok Penerimaan Siswa Baru', this, event, '100px')"><img src="images/siswa_baru_05.gif" alt="" width="67" height="87" border="0"></a></td>
 		<td colspan="4" rowspan="3">
-			<img src="images_slice/siswa_baru_06.gif" width="195" height="206" alt=""></td>
+			<img src="images/siswa_baru_06.gif" width="195" height="206" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="87" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="87" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="5">
-			<img src="images_slice/siswa_baru_07.gif" width="90" height="211" alt=""></td>
+			<img src="images/siswa_baru_07.gif" width="90" height="211" alt=""></td>
 		<td rowspan="6">
-			<img src="images_slice/siswa_baru_08.gif" width="67" height="226" alt=""></td>
+			<img src="images/siswa_baru_08.gif" width="67" height="226" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="4">
-			<img src="images_slice/siswa_baru_09.gif" width="11" height="172" alt=""></td>
+			<img src="images/siswa_baru_09.gif" width="11" height="172" alt=""></td>
 		<td colspan="3" rowspan="2">
-			<a href="siswa_baru/calon_main.php" onMouseOver="showhint('Pendataan Calon Siswa', this, event, '100px')"><img src="images_slice/siswa_baru_10.gif" alt="" width="134" height="119" border="0"></a></td>
+			<a href="siswa_baru/calon_main.php" onMouseOver="showhint('Pendataan Calon Siswa', this, event, '100px')"><img src="images/siswa_baru_10.gif" alt="" width="134" height="119" border="0"></a></td>
 		<td colspan="2" rowspan="5">
-			<img src="images_slice/siswa_baru_11.gif" width="30" height="187" alt=""></td>
+			<img src="images/siswa_baru_11.gif" width="30" height="187" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="80" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="80" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="4">
-			<img src="images_slice/siswa_baru_12.gif" width="54" height="107" alt=""></td>
+			<img src="images/siswa_baru_12.gif" width="54" height="107" alt=""></td>
 		<td rowspan="2">
-			<img src="images_slice/siswa_baru_13.gif" width="132" height="66" alt="" style="cursor:pointer" onClick="alert ('Gunakan menu Tahun Ajaran di bagian referensi \nuntuk mendata Tahun Ajaran');"></td>
+			<img src="images/siswa_baru_13.gif" width="132" height="66" alt="" style="cursor:pointer" onClick="alert ('Gunakan menu Tahun Ajaran di bagian referensi \nuntuk mendata Tahun Ajaran');"></td>
 		<td rowspan="9">
-			<img src="images_slice/siswa_baru_14.gif" width="9" height="239" alt=""></td>
+			<img src="images/siswa_baru_14.gif" width="9" height="239" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
-		<td colspan="3" rowspan="2"><img src="images_slice/siswa_baru_15.gif" width="134" height="53" alt=""></td>
+		<td colspan="3" rowspan="2"><img src="images/siswa_baru_15.gif" width="134" height="53" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="27" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="27" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="7">
-			<img src="images_slice/siswa_baru_16.gif" width="132" height="173" alt=""></td>
+			<img src="images/siswa_baru_16.gif" width="132" height="173" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="26" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="26" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3" rowspan="2">
-			<a href="siswa_baru/cari_main.php" onMouseOver="showhint('Pencarian Calon Siswa', this, event, '100px')"><img src="images_slice/siswa_baru_17.gif" alt="" width="139" height="59" border="0"></a></td>
+			<a href="siswa_baru/cari_main.php" onMouseOver="showhint('Pencarian Calon Siswa', this, event, '100px')"><img src="images/siswa_baru_17.gif" alt="" width="139" height="59" border="0"></a></td>
 		<td colspan="2" rowspan="3">
-			<img src="images_slice/siswa_baru_18.gif" width="96" height="72" alt=""></td>
+			<img src="images/siswa_baru_18.gif" width="96" height="72" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="15" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="15" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="5">
-			<img src="images_slice/siswa_baru_19.gif" width="25" height="132" alt=""></td>
+			<img src="images/siswa_baru_19.gif" width="25" height="132" alt=""></td>
 		<td colspan="3" rowspan="3">
 			<a href="siswa_baru/penempatan_main.php" onMouseOver="showhint('Penempatan Calon Siswa', this, event, '100px')">
-			<img style="cursor:pointer" src="images_slice/siswa_baru_20.gif" alt="" width="121" height="113" border="0">
+			<img style="cursor:pointer" src="images/siswa_baru_20.gif" alt="" width="121" height="113" border="0">
 			</a>
         </td>
 		<td rowspan="5">
-			<img src="images_slice/siswa_baru_21.gif" width="5" height="132" alt=""></td>
+			<img src="images/siswa_baru_21.gif" width="5" height="132" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="44" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="44" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<img src="images_slice/siswa_baru_22.gif" width="139" height="13" alt=""></td>
+			<img src="images/siswa_baru_22.gif" width="139" height="13" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="13" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="13" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4" rowspan="2">
-			<a href="siswa_baru/statistik_main.php" onMouseOver="showhint('Statistik Calon Siswa', this, event, '100px')"><img src="images_slice/siswa_baru_23.jpg" alt="" width="160" height="64" border="0"></a></td>
+			<a href="siswa_baru/statistik_main.php" onMouseOver="showhint('Statistik Calon Siswa', this, event, '100px')"><img src="images/siswa_baru_23.jpg" alt="" width="160" height="64" border="0"></a></td>
 		<td rowspan="3">
-			<img src="images_slice/siswa_baru_24.gif" width="75" height="75" alt=""></td>
+			<img src="images/siswa_baru_24.gif" width="75" height="75" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="56" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="56" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3" rowspan="2">
-			<img src="images_slice/siswa_baru_25.gif" width="121" height="19" alt=""></td>
+			<img src="images/siswa_baru_25.gif" width="121" height="19" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="8" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4">
-			<img src="images_slice/siswa_baru_26.gif" width="160" height="11" alt=""></td>
+			<img src="images/siswa_baru_26.gif" width="160" height="11" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="11" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="11" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/spacer.gif" width="12" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="12" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="90" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="90" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="11" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="11" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="38" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="38" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="21" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="21" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="75" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="75" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="25" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="25" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="5" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="5" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="67" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="67" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="49" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="49" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="5" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="5" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="132" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="132" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="9" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="9" height="1" alt=""></td>
 		<td></td>
 	</tr>
 </table>

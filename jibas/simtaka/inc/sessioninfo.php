@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,32 +24,42 @@
 session_name("jbsperpus");
 session_start();
 
-function SI_USER_NAME() {
+function SI_USER_NAME()
+{
 	return $_SESSION['nama'];
 }
 
-function SI_USER_ID() {
+function SI_USER_ID()
+{
 	return $_SESSION['login'];
 }
 
-function SI_USER_LEVEL() {
+function SI_USER_LEVEL()
+{
 	return ($_SESSION['tingkat']);
 }
 
-function SI_USER_DEPT() {
-	if ($_SESSION['tingkat']==2) {
+function SI_USER_DEPT()
+{
+	if ($_SESSION['tingkat'] == 2)
 		return ($_SESSION['perpustakaan']);	
-	} else {
+	else
 		return ('ALL');
-	}
+}
+
+function SI_USER_IDPERPUS()
+{
+	if ($_SESSION['tingkat'] == 2)
+		return ($_SESSION['idperpustakaan']);	
+	else
+		return ('ALL');
 }
 
 function IsAdmin()
 {
-	if ($_SESSION['tingkat']==0 || $_SESSION['tingkat']==1) {
+	if ($_SESSION['tingkat'] == 0 || $_SESSION['tingkat'] == 1) 
 		return true;
-	} else {
+	else 
 		return false;
-	}
 }
 ?>

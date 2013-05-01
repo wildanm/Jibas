@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -116,12 +116,9 @@ if ($aktif == 1) {
 <script language="javascript" src="../script/tools.js"></script>
 <script language="javascript">
 
-function pindah(replid) {	
+function pindah(replid, nisn)
+{	
 	var departemen = document.getElementById('departemen').value;
-	//var angkatan = document.getElementById('angkatan').value;
-	//var tahunajaran = document.getElementById('tahunajaran').value;
-	//var tingkat = document.getElementById('tingkat').value;
-	//var kelas = document.getElementById('kelas').value;	
 	var proses = document.getElementById('proses').value;
 	var kelompok = document.getElementById('kelompok').value;
 	var cari = document.getElementById('cari').value;	
@@ -145,7 +142,7 @@ function pindah(replid) {
 		return false;
 	}
 	
-	newWindow('penempatan_simpan.php?departemen='+departemen+'&angkatan='+angkatan+'&tahunajaran='+tahunajaran+'&tingkat='+tingkat+'&kelas='+kelas+'&proses='+proses+'&kelompok='+kelompok+'&replid='+replid+'&cari='+cari+'&no='+no+'&nama='+nama, 'PenempatanCalonSiswa','465','370','resizable=1,scrollbars=1,status=0,toolbar=0')
+	newWindow('penempatan_simpan.php?nisn='+nisn+'&departemen='+departemen+'&angkatan='+angkatan+'&tahunajaran='+tahunajaran+'&tingkat='+tingkat+'&kelas='+kelas+'&proses='+proses+'&kelompok='+kelompok+'&replid='+replid+'&cari='+cari+'&no='+no+'&nama='+nama, 'PenempatanCalonSiswa','465','370','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
 function hapus(replid,nis) {
@@ -375,7 +372,7 @@ function refresh_daftar() {
         
         <td align="center">
 		<? if ($row['replidsiswa'] == NULL) { ?>
-        <input type="button" name="pindah" id="pindah" value=" > " class="but" onClick="pindah(<?=$row['replid'] ?>)" onmouseover="showhint('Klik untuk menempatkan calon siswa!', this, event, '90px')"/>        
+        <input type="button" name="pindah" id="pindah" value=" > " class="but" onClick="pindah(<?=$row['replid']?>, '<?=$row[nisn]?>')" onmouseover="showhint('Klik untuk menempatkan calon siswa!', this, event, '90px')"/>        
         <? } ?>
         </td>
 		

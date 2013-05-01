@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,24 +25,33 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $bulan="";
 if (isset($_REQUEST['bulan']))
-	$bulan=$_REQUEST['bulan'];		
+	$bulan=$_REQUEST['bulan'];
+	
 $page="";
 if (isset($_REQUEST['page']))
 	$page=$_REQUEST['page'];
+	
 $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
-$idpengirim=SI_USER_ID();
-OpenDb();
-$sql="SELECT judul,isi,replid,abstrak,DATE_FORMAT(tanggal,'%d-%m-%Y') as tanggal, jenisberita as berita ,jenisberita as berita FROM jbsvcr.beritasekolah WHERE replid='$replid'";
-$result=QueryDb($sql);
-$row=@mysql_fetch_array($result);
+	
+$idpengirim = SI_USER_ID();
 
+OpenDb();
+$sql = "SELECT judul, isi, replid, abstrak, DATE_FORMAT(tanggal,'%d-%m-%Y') as tanggal,
+               jenisberita as berita ,jenisberita as berita
+		 	 FROM jbsvcr.beritasekolah
+		   WHERE replid = '$replid'";
+$result = QueryDb($sql);
+$row = @mysql_fetch_array($result);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -166,11 +175,22 @@ function hapusfile(field){
   </tr>
   <tr>
     <th valign="top" scope="row">Abstrak</th>
-    <td colspan="2"><textarea name="abstrak" id="abstrak" cols="100"><?=$row['abstrak']?></textarea></td>
+    <td colspan="2">
+		<textarea name="abstrak" id="abstrak" cols="100">
+<?		$abstrak = $row['abstrak'];
+		$abstrak = str_replace("#sq;", "'", $abstrak);
+		echo $abstrak;	 ?>
+		</textarea>
+	 </td>
   </tr>
   <tr>
     <th valign="top" scope="row">Isi</th>
-    <td colspan="2"><textarea name="isi" id="isi" rows="30" cols="100"><?=$row['isi']?></textarea></td>
+    <td colspan="2">
+		<textarea name="isi" id="isi" rows="30" cols="100">
+<?	 	$isi = $row['isi'];
+		$isi = str_replace("#sq;", "'", $isi);
+		echo $isi; ?>
+		</textarea></td>
   </tr>
 
   <tr>

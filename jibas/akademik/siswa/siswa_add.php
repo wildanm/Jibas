@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1038,25 +1038,23 @@ function change_bln() {
     	<td><strong>Suku</strong></td>
     	<td colspan="2">
             <div id="InfoSuku">
-              <select name="suku" id="suku" class="ukuran"  onkeypress="return focusNext('status', event)" onFocus="panggil('suku')" onBlur="unfokus('suku')">
+            <select name="suku" id="suku" class="ukuran"  onkeypress="return focusNext('status', event)" onFocus="panggil('suku')" onBlur="unfokus('suku')">
                 <option value="">[Pilih Suku]</option>
-                <? // Olah untuk combo suku
-            $sql_suku="SELECT suku,urutan,replid FROM jbsumum.suku ORDER BY urutan";
-            $result_suku=QueryDB($sql_suku);
-            while ($row_suku = mysql_fetch_array($result_suku)) {
-            ?>
-                <option value="<?=$row_suku['suku']?>"<?=StringIsSelected($row_suku['suku'],$suku)?> >
-                  <?=$row_suku['suku']?>
-                  </option>
-                <?
-            } 
-            // Akhir Olah Data suku
-            ?>
-              </select>
-              <? if (SI_USER_LEVEL() != $SI_USER_STAFF) { ?>
-            <img src="../images/ico/tambah.png" onClick="tambah_suku();" onMouseOver="showhint('Tambah Suku!', this, event, '50px')" />
-            <? } ?>
-            </div>    	</td>
+<?              $sql_suku="SELECT suku,urutan,replid FROM jbsumum.suku ORDER BY urutan";
+                $result_suku=QueryDB($sql_suku);
+                while ($row_suku = mysql_fetch_array($result_suku))
+                {
+                    ?>
+                    <option value="<?=$row_suku['suku']?>"<?=StringIsSelected($row_suku['suku'], $suku)?> >
+                    <?=$row_suku['suku']?>
+                    </option>
+<?              }   ?>
+            </select>
+<?          if (SI_USER_LEVEL() != $SI_USER_STAFF) { ?>
+                <img src="../images/ico/tambah.png" onClick="tambah_suku();" onMouseOver="showhint('Tambah Suku!', this, event, '50px')" />
+<?          } ?>
+            </div>
+        </td>
   	</tr>
   	
   	<tr>

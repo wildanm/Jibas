@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $idpesan="";
 if (isset($_REQUEST['idpesan']))
 	$idpesan=$_REQUEST['idpesan'];
@@ -126,10 +128,6 @@ function hapusfile(field){
     <th width="134" scope="row"><div align="left">Judul</div></th>
     <td colspan="2"><input type="text" maxlength="254" name="judul" id="judul" size="50" value="Balasan : <?=$judul?>" /></td>
   </tr>
-  <!--<tr>
-    <th scope="row"><div align="left">Tanggal Tampil</div></th>
-    <td colspan="2"><input title="Klik untuk membuka kalender !" type="text" name="tanggal" id="tanggal" size="25" readonly="readonly" class="disabled" value="<?=date(d)."-".date(m)."-".date(Y); ?>"/><img title="Klik untuk membuka kalender !" src="../../images/ico/calendar_1.png" name="btntanggal" width="16" height="16" border="0" id="btntanggal"/></td>
-  </tr>-->
   <tr>
     <th colspan="3" valign="top" align="left" scope="row"  ><div align="left"><fieldset><legend>Pesan</legend>
           <textarea name="pesan" rows="20" id="pesan" style="width:100%">
@@ -142,57 +140,17 @@ function hapusfile(field){
     </fieldset></div></th>
     </tr>
   <tr>
-    <th colspan="3" scope="row"></th>
-    </tr>
-  <tr>
     <th colspan="3" scope="row">
-      <table width="100%" align="left" border="0" cellspacing="0">
-        <tr>
-          <th rowspan="3" scope="row"><div align="left">Lampiran</div></th>
-            <td><div align="center">#1</div></td>
-            <td><input size="25" type="file" id="file1" name="file1"/><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-            <td rowspan="3"><button name="kirim" value="Kirim" type="submit" class="but style1" id="kirim" style="width:100px;" />Kirim
-              </button></td>
-          </tr>
-        <tr>
-          <td><div align="center">#2</div></td>
-            <td><input size="25" type="file" name="file2" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-          </tr>
-        <tr>
-          <td><div align="center">#3</div></td>
-            <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-          </tr>
-      </table></th>
+	<button name="kirim" value="Kirim" type="submit" class="but style1" id="kirim" style="width:100px;" />Kirim
+              </button>	
+	</th>
     </tr>
-  <!--tr>
-    <td colspan="3" scope="row"><div align="center">
-      <input name="kirim" type="submit" class="but" id="kirim" value="Kirim" style="width:100px;" />
-    </div></td>
-    </tr-->
 </table>
     </td>
   </tr>
 </table>
 </form>
 </body>
-<script type="text/javascript">
-  /*
-  Calendar.setup(
-    {
-	  inputField  : "tanggal",         
-      ifFormat    : "%d-%m-%Y",  
-      button      : "btntanggal"    
-    }
-   );
-   Calendar.setup(
-    {
-	  inputField  : "tanggal",      
-      ifFormat    : "%d-%m-%Y",   
-      button      : "tanggal"     
-    }
-   );
-  */
-</script>
 </html>
 <script language="javascript">
 var sprytextfield1 = new Spry.Widget.ValidationTextField("judul");

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,17 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
+	
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $idguru=SI_USER_ID();	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -65,11 +70,6 @@ tinyMCE.init({
 		content_css : "../../style/content.css"
 	});
 	
-	
-	function OpenUploader() {
-	    var addr = "UploaderMain.aspx";
-	    newWindow(addr, 'Uploader','720','630','resizable=1,scrollbars=1,status=0,toolbar=0');
-    }
 function validate(){
 	var judul=document.getElementById('judul').value;
 	var pesan=tinyMCE.get('pesan').getContent();
@@ -141,23 +141,7 @@ function simpan(){
       <textarea name="pesan" id="pesan" rows="27" style="width:100%"></textarea></th>
     </tr>
 </table>
-    <table width="100%" border="0" cellspacing="0">
-      <tr>
-        <th scope="row">&nbsp;</th>
-        <td><div align="center">#1</div></td>
-        <td><input size="25" type="file" id="file1" name="file1"/><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-      </tr>
-      <tr>
-        <th scope="row">Lampiran</th>
-        <td><div align="center">#2</div></td>
-        <td><input size="25" type="file" name="file2" id="file2" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-      </tr>
-      <tr>
-        <th scope="row">&nbsp;</th>
-        <td><div align="center">#3</div></td>
-        <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-      </tr>
-    </table></td>
+    </td>
   </tr>
 </table>
 </form>

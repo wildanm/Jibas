@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,9 +39,12 @@ if (isset($_REQUEST['nip']))
 $nama = "";
 if (isset($_REQUEST['nama']))
 	$nama = CQ($_REQUEST['nama']);
-$gelar = "";
-if (isset($_REQUEST['gelar']))
-	$gelar = CQ($_REQUEST['gelar']);
+$gelarawal = "";
+if (isset($_REQUEST['gelarawal']))
+	$gelarawal = CQ($_REQUEST['gelarawal']);
+$gelarakhir = "";
+if (isset($_REQUEST['gelarakhir']))
+	$gelarakhir = CQ($_REQUEST['gelarakhir']);
 $panggilan = "";
 if (isset($_REQUEST['panggilan']))
 	$panggilan = CQ($_REQUEST['panggilan']);
@@ -133,7 +136,7 @@ if (isset($_REQUEST['simpan']))
 	else 
 	{
 		$nama = str_replace("'", "`", $nama);
-		$query = "INSERT INTO jbssdm.pegawai SET nip='$nip', nama='$nama', gelar='$gelar', panggilan='$panggilan', 
+		$query = "INSERT INTO jbssdm.pegawai SET nip='$nip', nama='$nama', gelarawal='$gelarawal', gelarakhir='$gelarakhir', panggilan='$panggilan', 
 				  tmplahir='$tempatlahir', tgllahir='$lahir', agama='$agama', suku='$suku',nikah='$menikah', noid='$identitas',
 				  alamat='$alamat',telpon='$telpon',handphone='$handphone',email='$email', bagian='$bagian', keterangan='$keterangan', 
 				  aktif='1', kelamin='$kelamin', pinpegawai='$pin' $gantifoto";
@@ -530,8 +533,16 @@ function cek() {
     </tr>
     <tr>
     	<td><strong>Nama</strong></td>
-        <td colspan="2"><input name="nama" type="text" id="nama" size="30" value="<?=$nama?>"  onKeyPress="return focusNext('panggilan',event)" onFocus="showhint('Nama tidak boleh kosong!', this, event, '100px');panggil('nama')"/></td>
+        <td colspan="2"><input name="nama" type="text" id="nama" size="30" value="<?=$nama?>"  onKeyPress="return focusNext('gelarawal',event)" onFocus="showhint('Nama tidak boleh kosong!', this, event, '100px');panggil('nama')"/></td>
     </tr>
+	<tr>
+    	<td>Gelar Awal</td>
+       	<td colspan="2"><input type="text" name="gelarawal" id="gelarawal" size="30" value="<?=$gelarawal?>"  onKeyPress="return focusNext('gelarakhir', event)" onFocus="panggil('gelarawal')"/></td>
+   	</tr>
+	<tr>
+    	<td>Gelar Akhir</td>
+       	<td colspan="2"><input type="text" name="gelarakhir" id="gelarakhir" size="30" value="<?=$gelarakhir?>"  onKeyPress="return focusNext('panggilan', event)" onFocus="panggil('gelarakhir')"/></td>
+   	</tr>
     <tr>
     	<td>Panggilan</td>
         <td colspan="2"><input type="text" name="panggilan" id="panggilan" size="30" value="<?=$panggilan?>"  onKeyPress="return focusNext('kelamin',event)" onFocus="panggil('panggilan')"/></td>
@@ -545,11 +556,7 @@ function cek() {
         	<input type="radio" name="kelamin" id="kelamin" value="p"
     	<? 	if ($kelamin=="p") 
     			echo "checked='checked'";
-    	?> onKeyPress="return focusNext('gelar', event)"/>&nbsp;Perempuan</td>
-   	</tr>
-    <tr>
-    	<td>Gelar</td>
-       	<td colspan="2"><input type="text" name="gelar" id="gelar" size="30" value="<?=$gelar?>"  onKeyPress="return focusNext('tempatlahir', event)" onFocus="panggil('gelar')"/></td>
+    	?> onKeyPress="return focusNext('tempatlahir', event)"/>&nbsp;Perempuan</td>
    	</tr>
     <tr>
     	<td><strong>Tempat Lahir</strong></td>
@@ -637,7 +644,7 @@ function cek() {
    <tr>
        	<td valign="top">Alamat</td>
        	<td colspan="2">
-        <textarea name="alamat" id="alamat" cols="40" rows="3" onKeyPress="return focusNext('telpon', event)" onFocus="panggil('alamat')"><?=$alamat?></textarea></td>
+        <textarea name="alamat" id="alamat" cols="40" rows="2" onKeyPress="return focusNext('telpon', event)" onFocus="panggil('alamat')"><?=$alamat?></textarea></td>
    </tr>
    <tr>
        	<td>Telepon</td>
@@ -657,7 +664,7 @@ function cek() {
     </tr>
     <tr>
         <td valign="top">Keterangan</td>
-        <td valign="top" colspan="2"><textarea name="keterangan" id="keterangan" cols="40" rows="3" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$keterangan?></textarea>        </td>
+        <td valign="top" colspan="2"><textarea name="keterangan" id="keterangan" cols="40" rows="2" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$keterangan?></textarea>        </td>
     </tr>
 	<tr>
     	<td align="center" colspan="3">

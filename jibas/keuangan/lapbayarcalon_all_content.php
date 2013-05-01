@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -66,21 +66,16 @@ $sql = "SELECT count(b.replid)
           FROM besarjttcalon b, penerimaanjttcalon p 
 			WHERE p.idbesarjttcalon = b.replid AND b.idcalon='$replid' AND b.info2='$idtahunbuku'
 			  AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'";
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$nwajib = $row[0];
+$nwajib = FetchSingle($sql);
 
 $sql = "SELECT count(p.replid) 
           FROM penerimaaniurancalon p, jurnal j
 			WHERE p.idjurnal = j.replid AND j.idtahunbuku='$idtahunbuku'
 			  AND p.idcalon='$replid' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'"; 
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$niuran = $row[0];
+$niuran = FetchSingle($sql);
 
 $sql = "SELECT s.nama, s.nopendaftaran FROM jbsakad.calonsiswa s WHERE s.replid = '$replid'";
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
+$row = FetchSingleRow($sql);
 $namacalon = $row[0];
 $no = $row[1];
 ?>
@@ -117,24 +112,25 @@ while ($row = mysql_fetch_array($result)) {
 	$lunas = $row['lunas'];
 	$keterangan = $row['keterangan'];
 	
-	$sql = "SELECT SUM(jumlah) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
-	$result2 = QueryDb($sql);
-	$pembayaran = 0;
-	if (mysql_num_rows($result2)) {
-		$row2 = mysql_fetch_row($result2);
-		$pembayaran = $row2[0];
-	};
+	$sql = "SELECT SUM(jumlah), SUM(info1) FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt'";
+	$row2 = FetchSingleRow($sql);
+	$pembayaran = $row2[0] + $row2[1];
+	$diskon = $row2[1];
 	$sisa = $besar - $pembayaran;
 	
-	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaanjttcalon WHERE idbesarjttcalon='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
+	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal, info1 FROM penerimaanjttcalon WHERE idbesarjttcalon='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
+	$dknakhir = 0;
 	$tglakhir = "";
-	if (mysql_num_rows($result2)) {
+	if (mysql_num_rows($result2))
+	{
 		$row2 = mysql_fetch_row($result2);
 		$byrakhir = $row2[0];
 		$tglakhir = $row2[1];
-	};	?>
+		$dknakhir = $row2[2];
+	};
+	?>
     <table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="center" bordercolor="#000000">
     <tr height="35">
         <td colspan="4" bgcolor="#99CC00"><font size="2"><strong><em><?=$namapenerimaan?></em></strong></font></td>
@@ -146,10 +142,14 @@ while ($row = mysql_fetch_array($result)) {
         <td width="43%" bgcolor="#CCFF66" align="center"><strong>Keterangan</strong></td>
     </tr>
     <tr height="25">
-        <td bgcolor="#CCFF66"><strong>Jumlah Pembayaran</strong> </td>
+        <td bgcolor="#CCFF66"><strong>Jumlah Besar Pembayaran</strong> </td>
         <td bgcolor="#FFFFFF" align="right"><?=FormatRupiah($pembayaran) ?></td>
-        <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="2"><?=FormatRupiah($byrakhir) . "<br><i>" . $tglakhir . "</i>" ?> </td>
-        <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="2"><?=$keterangan ?></td>
+        <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="3"><?=FormatRupiah($byrakhir) . "<br><i>" . $tglakhir . "</i><br>(diskon " . FormatRupiah($dknakhir) . ")" ?> </td>
+        <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="3"><?=$keterangan ?></td>
+    </tr>
+	<tr height="25">
+        <td bgcolor="#CCFF66"><strong>Jumlah Diskon</strong> </td>
+        <td bgcolor="#FFFFFF" align="right"><?=FormatRupiah($diskon) ?></td>
     </tr>
     <tr height="25">
         <td bgcolor="#CCFF66"><strong>Sisa Bayaran</strong> </td>
@@ -171,12 +171,7 @@ while ($row = mysql_fetch_array($result)) {
 	$namapenerimaan = $row['nama'];
 	
 	$sql = "SELECT SUM(jumlah) FROM penerimaaniurancalon WHERE idpenerimaan='$idpenerimaan' AND idcalon='$replid'";
-	$result2 = QueryDb($sql);
-	$pembayaran = 0;
-	if (mysql_num_rows($result2)) {
-		$row2 = mysql_fetch_row($result2);
-		$pembayaran = $row2[0];
-	};
+	$pembayaran = FetchSingle($sql);
 
 	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaaniurancalon WHERE idpenerimaan='$idpenerimaan' AND idcalon='$replid' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);

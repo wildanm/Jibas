@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -121,14 +121,14 @@ for($k = 0; $k < count($darray); $k++)
 		
 		if ($idkategori == "JTT")
 		{
-			$sql = "SELECT SUM(p.jumlah) 
+			$sql = "SELECT SUM(p.jumlah), SUM(p.info1) 
 			          FROM jbsfina.penerimaanjtt p, jbsfina.besarjtt b, jbsfina.datapenerimaan dp 
 			         WHERE p.idbesarjtt = b.replid AND b.info2 = '$idtahunbuku' AND b.idpenerimaan = dp.replid
 					     AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'";
 		}
 		elseif ($idkategori == "SKR")
 		{
-			$sql = "SELECT SUM(p.jumlah) 
+			$sql = "SELECT SUM(p.jumlah), 0 
 			          FROM jbsfina.penerimaaniuran p, jbsfina.datapenerimaan dp, jbsfina.jurnal j
 			         WHERE p.idpenerimaan = dp.replid
 					     AND p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
@@ -136,21 +136,21 @@ for($k = 0; $k < count($darray); $k++)
 		}
 		elseif ($idkategori == "CSWJB")
 		{
-			$sql = "SELECT SUM(p.jumlah) 
+			$sql = "SELECT SUM(p.jumlah), SUM(p.info1)
 			          FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsfina.datapenerimaan dp 
 			         WHERE p.idbesarjttcalon = b.replid AND b.info2 = '$idtahunbuku' AND b.idpenerimaan = dp.replid
 					     AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'";
 		}
 		elseif ($idkategori == "CSSKR")
 		{
-			$sql = "SELECT SUM(p.jumlah) 
+			$sql = "SELECT SUM(p.jumlah), 0 
 			          FROM jbsfina.penerimaaniurancalon p, jbsfina.datapenerimaan dp, jbsfina.jurnal j
 			         WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 					     AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'";
 		}
 		elseif ($idkategori == "LNN")
 		{
-			$sql = "SELECT SUM(p.jumlah) 
+			$sql = "SELECT SUM(p.jumlah), 0 
 			          FROM jbsfina.penerimaanlain p, jbsfina.datapenerimaan dp , jbsfina.jurnal j
 			         WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 					     AND dp.departemen='$dept' AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2'";
@@ -160,7 +160,7 @@ for($k = 0; $k < count($darray); $k++)
 		$jrow = mysql_fetch_row($jres);
 		$jumlah = 0;
 		if (!is_null($jrow[0]))
-			$jumlah = $jrow[0]; 
+			$jumlah = $jrow[0];
 		
 		$subtotal = $subtotal + $jumlah;
 		$rarray[$cnt][0] = $pen;

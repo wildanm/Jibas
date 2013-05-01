@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -104,7 +104,6 @@ function loadKalender1($kalender) {
 	
 	$result = QueryDb($sql);
 	$i = 0;	
-	unset($GLOBALS[keg][row]);
 	while($row = mysql_fetch_row($result)) {		
 		$tgl1 = explode('-',$row[2]);
 		$tgl2 = explode('-',$row[3]);
@@ -124,9 +123,9 @@ function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
 	$batastgl2 = $tahun2."-".$bulan2."-31";
 	
 	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' AND (('$batastgl1' BETWEEN tanggalawal AND tanggalakhir) OR ('$batastgl2' BETWEEN tanggalawal AND tanggalakhir) OR (tanggalawal BETWEEN '$batastgl1' AND '$batastgl2') OR (tanggalakhir BETWEEN '$batastgl1' AND '$batastgl2')) ORDER BY tanggalawal";  
-
+	//echo "<br>".$sql;
 	$result = QueryDb($sql);
-	unset($GLOBALS[jadwal][row]);
+	
 	while($row = mysql_fetch_row($result)) {
 				
 		if ($row[6]<= 7)
@@ -216,52 +215,34 @@ function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
 		
 		$GLOBALS[jadwal][row][$row[0]][$baris][$kolom][njam] = $selisih;
 		$GLOBALS[jadwal][row][$row[0]][$baris][$kolom][awal] = $tanggal;
-		
 	}
 	return true;
 }
 
-function getCell1($r, $c, $id) {
+function getCell1($r, $c, $id, $m) {
 	global $mask, $jadwal, $color;	
 	if($mask[$c] == 0) {
 		if(isset($jadwal[row][$id][$r][$c])) {	
+			
 			$mask[$c+1] = $jadwal[row][$id][$r][$c][njam] - 1;
-				
-			$m = $r;
-			if ($r > count($color)-1) 
-				$m = $r - ((count($color)-1)*(int)substr($r,0,1)+1);
-								
-			$kol = $jadwal[row][$id][$r][$c][njam];
-			//$s = "";
-			//for ($xx=1;$xx<=$kol;$xx++){
-				//$s = $s."<td align='center' valign='middle'><font color='#000' size='+2'>&nbsp;</font></td>";
-			//	$s = $s."<td align='center' valign='middle' style=\"background-image:url(../images/black.GIF)\" ><img src='../images/black.jpg'></td>";	
-			//}
+			
 			$dt=split("-",$jadwal[row][$id][$r][$c][awal]);
 			$dt1=split("/",$dt[0]);
 			$dt2=split("/",$dt[1]);
-			$s = "<td align='center' valign='middle' colspan='{$jadwal[row][$id][$r][$c][njam]}'>";
-			//$s = $jadwal[row][$id][$r][$c][njam];
-			//$s.= "<font class='thismonth'>$dt1[0]-$dt2[0]</font>";
-			$s.= "<img src='imagetext.php?string=$dt1[0]-$dt2[0]&span=$kol' border='0'>";
-			//$s.= "<font class='thismonth'>{$jadwal[row][$id][$r][$c][awal]}</font>";						
-			//$s.= "<br><img src='../images/ico/lihat.png' style='cursor:pointer'";
-			//$s.= " onclick='lihat($id)'> &nbsp;";			
-			//$s.= "<img src='../images/ico/ubah.png' style='cursor:pointer'";
-			//$s.= " onclick='edit($id)'> &nbsp;";
-			//$s.= "<img src='../images/ico/hapus.png' style='cursor:pointer'";
-			//$s.= " onclick='hapus($id)'>";
+								
+			$s = "<td align='center' valign='middle' style='background-color: {$color[$m][1]}' colspan='{$jadwal[row][$id][$r][$c][njam]}'>";
+			$s.= "<font class='thismonth'>$dt1[0] - $dt2[0]</font>";
 			$s.= "</td>";
 			
 			return $s;
 		} else {			
 			$mask[$c+1] = 0;			
-			$s = "<td align='center' valign='middle' style='background-color: #FFFFFF'>";
+			$s = "<td align='center' valign='middle' style='background-color: #FFF'>";
 			$s.= "</td>";
 			return $s;
 		}
 	} else {
-		$mask[$c+1] = $mask[$c]-1;
+		$mask[$c+1] = $mask[$c]-1;	
 	}
 }
 ?>

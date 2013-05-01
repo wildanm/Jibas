@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -75,7 +75,12 @@ if ($_REQUEST['action'] == 'Update') {
 
 BeginTrans();
 $success=0;
-$sql = "INSERT INTO presensipelajaran SET idkelas='$kelas', idsemester='$semester', idpelajaran='$pelajaran', tanggal='$tanggal', jam='$waktu', gurupelajaran='$nip', jenisguru='$jenis', keterangan='$keterangan', materi='$materi', objektif='$objektif', refleksi='$refleksi', rencana='$materi_lanjut', keterlambatan='$telat', jumlahjam='$jumlah'";
+$sql = "INSERT INTO presensipelajaran
+			  SET idkelas='$kelas', idsemester='$semester', idpelajaran='$pelajaran', tanggal='$tanggal',
+			      jam='$waktu', gurupelajaran='$nip', jenisguru='$jenis',
+					keterangan='".CQ($keterangan)."', materi='".CQ($materi)."',
+					objektif='".CQ($objektif)."', refleksi='".CQ($refleksi)."',
+					rencana='".CQ($materi_lanjut)."', keterlambatan='$telat', jumlahjam='$jumlah'";
 QueryDbTrans($sql,$success);
 //$result = QueryDb($sql);
 //echo 'sql1'.$sql.' '.$success;		

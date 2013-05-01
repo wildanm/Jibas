@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -41,28 +41,30 @@ if (isset($_REQUEST['info_jadwal']))
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
 
-if ($op=="dw8dxn8w9ms8zs22"){
-	OpenDb();
+OpenDb();
+
+if ($op=="dw8dxn8w9ms8zs22")
+{
 	$sql_update_aktif = "UPDATE jbsakad.infojadwal SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql_update_aktif);
-	CloseDb();
-} else if ($op=="xm8r389xemx23xb2378e23"){
-	OpenDb();
+}
+else if ($op=="xm8r389xemx23xb2378e23")
+{
 	$sql_delete = "DELETE FROM jbsakad.infojadwal WHERE replid = '$_REQUEST[info_jadwal]'";
-	$result=QueryDb($sql_delete);
-	if ($result){
+	$result = QueryDb($sql_delete);
+	if ($result)
+	{
+		CloseDb();
 	?>
-	<script type="text/javascript" language="javascript">
-		document.location.href="jadwal_guru_header.php";
-		parent.footer.location.href="blank_jadwalguru.php";
-	</script>
+		<script type="text/javascript" language="javascript">
+			document.location.href="jadwal_guru_header.php";
+			parent.footer.location.href="blank_jadwalguru.php";
+		</script>
 	<?
-		
 	}
-
 }
 
-OpenDb();
+
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -79,7 +81,8 @@ OpenDb();
 <script language="javascript" src="../script/tools.js"></script>
 <script language="javascript">
 
-function change_departemen() {
+function change_departemen()
+{
 	var nip = document.getElementById('nipguru').value;
 	var nama = document.getElementById('namaguru').value; 
 	var departemen=document.getElementById("departemen").value;
@@ -87,7 +90,8 @@ function change_departemen() {
 	parent.footer.location.href="blank_jadwalguru.php";
 }
 
-function change_tahunajaran() {
+function change_tahunajaran()
+{
 	var nip = document.getElementById('nipguru').value;
 	var nama = document.getElementById('namaguru').value; 
 	var departemen=document.getElementById("departemen").value;
@@ -96,7 +100,8 @@ function change_tahunajaran() {
 	parent.footer.location.href="blank_jadwalguru.php";
 }
 
-function change(jadwal, ajaran, dep){	
+function change(jadwal, ajaran, dep)
+{	
 	var info_jadwal = document.getElementById('info_jadwal').value;
 	var nip = document.getElementById('nipguru').value;
 	var nama = document.getElementById('nama').value;		
@@ -210,10 +215,8 @@ function focusNext(elemName, evt) {
         </select>       
         <select name="tahunajaran" id="tahunajaran" onChange="change_tahunajaran()" style="width:200px;" onkeypress="return focusNext('info_jadwal', event)">
    		 	<?
-			OpenDb();
 			$sql = "SELECT replid,tahunajaran,aktif FROM jbsakad.tahunajaran where departemen='$departemen' ORDER BY aktif DESC, replid DESC";
 			$result = QueryDb($sql);
-			CloseDb();
 			while ($row = @mysql_fetch_array($result)) {
 				if ($tahunajaran == "") 
 					$tahunajaran = $row['replid'];
@@ -231,22 +234,26 @@ function focusNext(elemName, evt) {
     </tr>
    	<tr>
         <td><strong>Info Jadwal</strong></td>
-        <td colspan="3"><select name="info_jadwal" id="info_jadwal" onChange="change(0)" style="width:285px" onkeypress="return focusNext('tabel', event)">
-          <? 	OpenDb();
-            $sql_info_jadwal="SELECT i.replid, i.deskripsi, i.aktif FROM jbsakad.infojadwal i, tahunajaran a WHERE i.idtahunajaran = a.replid AND a.departemen = '$departemen' AND i.idtahunajaran = '$tahunajaran' ORDER BY i.aktif DESC";						            
-			$result_info_jadwal=QueryDb($sql_info_jadwal);
-            while ($row_info_jadwal=@mysql_fetch_array($result_info_jadwal)){
-                if ($info_jadwal=="")
-                    $info_jadwal=$row_info_jadwal['replid'];
+        <td colspan="3">
+			<select name="info_jadwal" id="info_jadwal" onChange="change(0)" style="width:285px" onkeypress="return focusNext('tabel', event)">
+<?          $sql_info_jadwal = "SELECT i.replid, i.deskripsi, i.aktif
+								FROM jbsakad.infojadwal i, tahunajaran a
+								WHERE i.idtahunajaran = a.replid AND a.departemen='$departemen'
+								AND i.idtahunajaran = '$tahunajaran' AND i.aktif=1 ORDER BY i.aktif DESC";						            
+			$result_info_jadwal = QueryDb($sql_info_jadwal);
+            while ($row_info_jadwal = @mysql_fetch_array($result_info_jadwal))
+			{
+                if ($info_jadwal == "")
+                    $info_jadwal = $row_info_jadwal['replid'];
+					
                 if ($row_info_jadwal['aktif']) 
                     $ada = '(Aktif)';
                 else 
-                    $ada = '';			 
-        ?>
-          <option value="<?=$row_info_jadwal['replid']?>" <?=StringIsSelected($row_info_jadwal['replid'],$info_jadwal)?>>
-          <?=$row_info_jadwal['deskripsi'].' '.$ada?>
-          </option>
-          <?  } ?>
+                    $ada = '';	?>
+				<option value="<?=$row_info_jadwal['replid']?>" <?=StringIsSelected($row_info_jadwal['replid'],$info_jadwal)?>>
+				<?=$row_info_jadwal['deskripsi'].' '.$ada?>
+		        </option>
+<?  		} ?>
         </select>
 			<img src="../images/ico/tambah.png" onClick="newWindow('info_jadwal.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>','InfoJadwal','600','425','resizable=1,scrollbars=1,status=0,toolbar=0')" onMouseOver="showhint('Tambah Info Jadwal!', this, event, '80px')" />           
 		</td>

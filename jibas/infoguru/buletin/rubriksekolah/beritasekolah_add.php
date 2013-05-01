@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +25,16 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
+	
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $idguru=SI_USER_ID();	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -80,12 +84,6 @@ tinyMCE.init({
 		content_css : "../../style/content.css"
 	});
 
-	
-	
-	function OpenUploader() {
-	    var addr = "UploaderMain.aspx";
-	    newWindow(addr, 'Uploader','720','630','resizable=1,scrollbars=1,status=0,toolbar=0');
-    }
 function validate(){
 	var judul=document.getElementById('judul').value;
 	var abstrak=tinyMCE.get('abstrak').getContent();
@@ -112,9 +110,7 @@ function validate(){
 	}
 	return true;
 }
-function hapusfile(field){
-	document.getElementById(field).value="";
-}
+
 </script>
 <style type="text/css">
 <!--

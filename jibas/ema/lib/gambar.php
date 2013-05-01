@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,27 +29,28 @@ if (isset($_REQUEST[nis]))
 	$nis=$_REQUEST['nis'];
 else 
 	$nip=$_REQUEST['nip'];
+	
 OpenDb();
 header("Content-type: image/jpeg");
 if (isset($_REQUEST[nis]))
-	$query = "SELECT foto FROM siswa WHERE nis = '$nis'";
+	$query = "SELECT foto FROM jbsakad.siswa WHERE nis = '$nis'";
 else 
-	$query = "SELECT foto FROM $db_name_sdm.pegawai WHERE nip = '$nip'";
+	$query = "SELECT foto FROM jbssdm.pegawai WHERE nip = '$nip'";
 $result = QueryDb($query);
-$num = @mysql_num_rows($result);
-if ($row = mysql_fetch_array($result)) {
-    if($row[foto]) {
+if ($row = mysql_fetch_array($result))
+{
+    if($row[foto])
+	{
         echo $row[foto];
-    }else {
+    }
+	else
+	{
     	$filename = "../img/no_image.png";
         $handle = fopen($filename, "r");
         $contents = fread($handle, filesize($filename));
 
         echo $contents;
     }
-  }
-//}
+}
 CloseDb();
-
-
 ?>

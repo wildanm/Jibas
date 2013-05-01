@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,9 +37,11 @@ $nis = (string)$_REQUEST['nis'];
 $idtahunbuku = (int)$_REQUEST['idtahunbuku'];
 $keterangan = (string)$_REQUEST['keterangan'];
 $alasan = (string)$_REQUEST['alasan'];
+
 $lunas = 0;
 if (isset($_REQUEST['lunas']))
 	$lunas = $_REQUEST['lunas'];
+	
 $errmsg = $_REQUEST['errmsg'];
 
 OpenDb();
@@ -295,8 +297,9 @@ if ($op == "348328947234923")
 	// if ($idbesarjtt > 0) 
 	
 	CloseDb();
-		
-	header("Location: pembayaran_jtt.php?idkategori=$idkategori&idpenerimaan=$idpenerimaan&nis=$nis&idtahunbuku=$idtahunbuku&errmsg=$errmsg&besar=$besar&cicilan=$cicilan&keterangan=$_REQUEST[keterangan]&lunas=$lunas");
+
+    $r = rand(10000, 99999);		
+	header("Location: pembayaran_jtt.php?r=$r&idkategori=$idkategori&idpenerimaan=$idpenerimaan&nis=$nis&idtahunbuku=$idtahunbuku&errmsg=$errmsg&besar=$besar&cicilan=$cicilan&keterangan=$_REQUEST[keterangan]&lunas=$lunas");
 	
 	exit();
 } 
@@ -491,12 +494,12 @@ function ValidateSubmit()
 
 function cetakkuitansi(id) 
 {
-	newWindow('kuitansijtt.php?id='+id, 'CetakKuitansi','750','850','resizable=1,scrollbars=1,status=0,toolbar=0'		)
+	newWindow('kuitansijtt.php?id='+id, 'CetakKuitansi','360','650','resizable=1,scrollbars=1,status=0,toolbar=0'		)
 }
 
 function editpembayaran(id) 
 {
-	newWindow('pembayaranjtt_edit.php?idpembayaran='+id,'EditPembayaran','425','392','resizable=1,scrollbars=1,status=0,toolbar=0')
+	newWindow('pembayaranjtt_edit.php?idpembayaran='+id,'EditPembayaran','425','450','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
 function edit() 
@@ -530,7 +533,7 @@ function cetak()
 
 function tambah() 
 {	
-	newWindow('pembayaranjtt_add.php?idpenerimaan=<?=$idpenerimaan?>&idkategori=<?=$idkategori?>&nis=<?=$nis?>&idtahunbuku=<?=$idtahunbuku?>','tes','405','340','resizable=1,scrollbars=1,status=0,toolbar=0');
+	newWindow('pembayaranjtt_add.php?idpenerimaan=<?=$idpenerimaan?>&idkategori=<?=$idkategori?>&nis=<?=$nis?>&idtahunbuku=<?=$idtahunbuku?>','tes','400','380','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
 function focusNext(elemName, evt) 
@@ -704,7 +707,10 @@ function panggil(elem)
         
        	$info = "Pembayaran Pertama";
         if ($nbayar > 0) {
-			$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas FROM penerimaanjtt p, besarjtt b, jurnal j WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt' ORDER BY p.tanggal ASC";
+			$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas, p.info1 AS diskon
+					FROM penerimaanjtt p, besarjtt b, jurnal j
+					WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt'
+					ORDER BY p.tanggal, p.replid ASC";
 			$result = QueryDb($sql);
 			if (mysql_num_rows($result) > 1) 
 				$info = "Pembayaran Cicilan";
@@ -730,43 +736,40 @@ function panggil(elem)
         <tr height="30" align="center">
             <td class="header" width="5%">No</td>
             <td class="header" width="20%">No. Jurnal/Tgl</td>
-            <td class="header" width="21%">Besarnya</td>
+            <td class="header" width="16%">Besar</td>
+			<td class="header" width="16%">Diskon</td>
             <td class="header" width="*">Keterangan</td>
             <td class="header" width="12%">Petugas</td>
-            <? //if ($edit == 0) { ?>
             <td class="header">&nbsp;</td>
-            <? //} ?>
         </tr>
-        <? 
-			
-			$cnt = 0;
-			$total = 0;
-			while ($row = mysql_fetch_array($result)) {
-				$total += $row['jumlah'];
-        ?>
-        <tr height="25">
-            <td align="center"><?=++$cnt?></td>
-            <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
-            <td align="right"><?=FormatRupiah($row['jumlah'])?></td>
-            <td align="left"><?=$row['keterangan'] ?></td>
-            <td align="center"><?=$row['petugas'] ?></td>
-            <? //if ($edit == 0) { ?>
-            <td align="center">
-            	<a href="#" onclick="cetakkuitansi(<?=$row['id'] ?>)"><img src="images/ico/print.png" border="0" onMouseOver="showhint('Cetak Kuitansi Pembayaran!', this, event, '100px')"/></a>&nbsp;
-        	<?  if (getLevel() != 2) { ?>
-                <a href="#" onclick="editpembayaran(<?=$row['id'] ?>)"><img src="images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Pembayaran Cicilan!', this, event, '120px')" /></a>
-        	<?	} ?>
-            </td>
-            <? //} ?>
-        </tr>
-        <?
-        	}
-        	$sisa = $besar - $total;?>
+<? 		$cnt = 0;
+		$total = 0;
+		$total_diskon = 0;
+		while ($row = mysql_fetch_array($result))
+		{
+			$total += $row['jumlah'] + $row['diskon'];
+			$total_diskon += $row['diskon']; ?>
+			<tr height="25">
+				<td align="center"><?=++$cnt?></td>
+				<td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
+				<td align="right"><?=FormatRupiah($row['jumlah'] + $row['diskon'])?></td>
+				<td align="right"><?=FormatRupiah($row['diskon'])?></td>
+				<td align="left"><?=$row['keterangan'] ?></td>
+				<td align="center"><?=$row['petugas'] ?></td>
+				<td align="center">
+					<a href="#" onclick="cetakkuitansi(<?=$row['id'] ?>)"><img src="images/ico/print.png" border="0" onMouseOver="showhint('Cetak Kuitansi Pembayaran!', this, event, '100px')"/></a>&nbsp;
+				<?  if (getLevel() != 2) { ?>
+					<a href="#" onclick="editpembayaran(<?=$row['id'] ?>)"><img src="images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Pembayaran Cicilan!', this, event, '120px')" /></a>
+				<?	} ?>
+				</td>
+			</tr>
+<?	    }
+       	$sisa = $besar - $total;?>
         <tr height="35">
             <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
             <td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
-            <td bgcolor="#996600" align="right"><font color="#FFFFFF">Sisa <strong><?=FormatRupiah($sisa) ?></strong></font></td>
-            <td bgcolor="#996600" colspan="3">&nbsp;</td>
+			<td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total_diskon) ?></strong></font></td>
+            <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF">Sisa <strong><?=FormatRupiah($sisa) ?></strong></font></td>
         </tr>
         </table>
         <script language='JavaScript'>
@@ -803,8 +806,3 @@ alert('<?=$errmsg ?>');
 <? } ?>
 </body>
 </html>
-
-<!--<script language="javascript">
-	var sprytextfield2 = new Spry.Widget.ValidationTextField("besar");
-	var sprytextarea1 = new Spry.Widget.ValidationTextarea("keterangan");
-</script>-->

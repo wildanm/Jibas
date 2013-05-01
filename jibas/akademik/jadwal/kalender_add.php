@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,24 +36,39 @@ $aktif = $_REQUEST['aktif'];
 $filter = "";
 
 $ERROR_MSG = "";
-if (isset($_REQUEST['Simpan'])) {
+if (isset($_REQUEST['Simpan']))
+{
 	OpenDb();
-	$sql_simpan_cek="SELECT * FROM jbsakad.kalenderakademik WHERE kalender='$kalender' AND departemen = '$departemen'"; 
- 
-	$result_simpan_cek=QueryDb($sql_simpan_cek);	
-	if (mysql_num_rows($result_simpan_cek) > 0) {
+	
+	$sql_simpan_cek = "SELECT replid
+								FROM jbsakad.kalenderakademik
+							  WHERE kalender = '$kalender'
+							    AND departemen = '$departemen'"; 
+	$result_simpan_cek = QueryDb($sql_simpan_cek);	
+	if (mysql_num_rows($result_simpan_cek) > 0)
+	{
 		CloseDb();
-		$ERROR_MSG = $kalender." sudah digunakan!";
-	} else {
-		$sql_simpan="INSERT INTO jbsakad.kalenderakademik SET kalender='$kalender', idtahunajaran = '$tahunajaran', departemen = '$departemen', aktif = '$aktif'"; 
+		$ERROR_MSG = $kalender . " sudah digunakan!";
+	}
+	else
+	{
+		$sql = "SELECT COUNT(replid)
+				    FROM jbsakad.kalenderakademik
+				   WHERE departemen = '$departemen'";
+		$res = QueryDb($sql);
+		$row = mysql_fetch_row($res);
+		$aktif = (int)$row[0] == 0 ? 1 : 0;
 		
-		$result_simpan=QueryDb($sql_simpan);
+		$sql_simpan = "INSERT INTO jbsakad.kalenderakademik
+							   SET kalender = '$kalender', idtahunajaran = '$tahunajaran',
+									 departemen = '$departemen', aktif = $aktif"; 
+		$result_simpan = QueryDb($sql_simpan);
 		
-		if ($result_simpan){
-			$sql1 = "SELECT LAST_INSERT_ID(replid) FROM jbsakad.kalenderakademik ORDER BY replid DESC LIMIT 1";
+		if ($result_simpan)
+		{
+			$sql1 = "SELECT LAST_INSERT_ID()";
 			$result1 = QueryDb($sql1);
 			$row1 = mysql_fetch_row($result1); 
-					
 			?>
 			<script language="javascript">						
 				opener.refresh('<?=$row1[0]?>');				
@@ -66,17 +81,20 @@ if (isset($_REQUEST['Simpan'])) {
 }
 
 OpenDb();
-$sql = "SELECT idtahunajaran FROM kalenderakademik WHERE departemen='$departemen' ORDER BY aktif DESC, replid DESC";
+$sql = "SELECT idtahunajaran
+			 FROM kalenderakademik
+			WHERE departemen='$departemen'
+			ORDER BY aktif DESC, replid DESC";
 $result = QueryDb($sql);
 CloseDb();
-if (mysql_num_rows($result) > 0) {
-	$filter = "AND replid <> ";
-	while ($row = @mysql_fetch_array($result)) {
-		$id[] = $row['idtahunajaran'];
+if (mysql_num_rows($result) > 0)
+{
+	$filter = "";
+	while ($row = @mysql_fetch_array($result))
+	{
+		$filter .= " AND replid <> " . $row['idtahunajaran'];
 	}
-	$filter.= implode($id, " AND replid <> ");
 }
-
 ?>
 <html>
 <head>
@@ -91,20 +109,23 @@ if (mysql_num_rows($result) > 0) {
 <script type="text/javascript" language="javascript" src="../script/tools.js"></script>
 <script type="text/javascript" language="javascript" src="../script/validasi.js"></script>
 <script type="text/javascript" language="javascript">
-function validate() {
+function validate()
+{
 	return validateEmptyText('tahunajaran', 'Tahun Ajaran') &&
-			validateEmptyText('kalender', 'Kalender Akademik'); 
+			 validateEmptyText('kalender', 'Kalender Akademik'); 
 }
 
-function focusNext(elemName, evt) {
-    evt = (evt) ? evt : event;
-    var charCode = (evt.charCode) ? evt.charCode :
-        ((evt.which) ? evt.which : evt.keyCode);
-    if (charCode == 13) {
+function focusNext(elemName, evt)
+{
+   evt = (evt) ? evt : event;
+   var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
+   if (charCode == 13)
+	{
 		document.getElementById(elemName).focus();
-        return false;
-    }
-    return true;
+      return false;
+   }
+	
+   return true;
 }
 </script>
 </head>
@@ -136,26 +157,27 @@ function focusNext(elemName, evt) {
     <tr>
         <td><strong>Tahun Ajaran</strong></td>
         <td>  
-        <select name="tahunajaran" id="tahunajaran" style="width:200px;" onKeyPress="return focusNext('kalender', event)">
-   		 	<?
-			OpenDb();
-			$sql = "SELECT replid,tahunajaran,aktif FROM tahunajaran where departemen='$departemen' $filter ORDER BY aktif DESC, replid DESC";
+			<select name="tahunajaran" id="tahunajaran" style="width:200px;" onKeyPress="return focusNext('kalender', event)">
+<?			OpenDb();
+			$sql = "SELECT replid, tahunajaran, aktif
+						 FROM tahunajaran
+						WHERE departemen='$departemen'
+								$filter
+						ORDER BY aktif DESC, replid DESC";
 			$result = QueryDb($sql);
 			CloseDb();
-			while ($row = @mysql_fetch_array($result)) {
+			while ($row = @mysql_fetch_array($result))
+			{
 				if ($tahunajaran == "") 
 					$tahunajaran = $row['replid'];
+					
 				if ($row['aktif']) 
 					$ada = '(Aktif)';
 				else 
-					$ada = '';			 
-			?>
-            
-    		<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tahunajaran)?> ><?=$row['tahunajaran'].' '.$ada?></option>
-    		<?
-			}
-    		?>
-    	</select>   
+					$ada = ''; ?>
+				<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tahunajaran)?> ><?=$row['tahunajaran'].' '.$ada?></option>
+<?			}	?>
+			</select>
         </td>
     </tr>
     <tr>

@@ -1,12 +1,12 @@
 <? 
 /**[N]** 
- * JIBAS Road To Community 
+ * JIBAS Education Community 
  * Jaringan Informasi Bersama Antar Sekolah 
  *  
- * @version: 2.5.2 (October 5, 2011) 
+ * @version: 3.0 (January 09, 2013) 
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com) 
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
  * This program is free software: you can redistribute it and/or modify 
  * it under the terms of the GNU General Public License as published by 
@@ -21,28 +21,19 @@
  * You should have received a copy of the GNU General Public License 
  **[N]**/ ?>
 <?
-
 /* Awal tahun pendataan menggunakan SISFO JIBAS */
-$G_START_YEAR='2008';
+$G_START_YEAR='2011';
 
 /* Alamat Server aplikasi SISFO JIBAS 
-   Alamat ini digunakan untuk menampilkan header cetak di laporan-laporan yang disediakan SISFO JIBAS 
-   Gunakan alamat IP atau nama domainnya, jangan menggunakan localhost */
-$G_SERVER_ADDR='jibas.wm';
-
-/* Direktori untuk menyimpan berkas-berkas unggahan dari aplikasi InfoGuru */
-$FS_UPLOAD_DIR='/home/wildan/jobstuff/Software/Jibas/www/Jibas/filesharing';
-
-/* Direktori tempat menyimpan galeri foto di aplikasi InfoGuru */
-$IG_GALLERY_DIR='';
-
-/* Direktori tempat menyimpan galeri foto di aplikasi InfoSiswa */
-$IS_GALLERY_DIR='';
+     Alamat ini digunakan untuk menampilkan header cetak di laporan-laporan yang disediakan SISFO JIBAS 
+     PERHATIAN:
+       UNTUK PENGGUNAAN MULTIUSER di LOCAL AREA NETWORK
+       JANGAN MENGGUNAKAN localhost, TETAPI GUNAKAN IP Address atau Hostname */
+$G_SERVER_ADDR='http://jibas.wm/';
 
 /* Sistem operasi yang digunakan ( win | lin ) */
-$G_OS='lin';
+$G_OS='win';
 
 /* Lokasi Sekolah */
-$G_LOKASI = "Jakarta";
-
+$G_LOKASI="Depok";
 ?>

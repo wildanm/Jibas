@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,71 +21,34 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-require_once('../../sessionchecker.php');
+require_once('../../include/sessionchecker.php');
 require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
+
 $op="";
 if (isset($_REQUEST[op]))
 	$op=$_REQUEST[op];
+	
 $page='t';
 if (isset($_REQUEST[page]))
-	$page = $_REQUEST[page];	
+	$page = $_REQUEST[page];
+	
 OpenDb();
 $sql="SELECT * FROM jbsvcr.galerifoto WHERE idguru='".SI_USER_ID()."'";
 $result=QueryDb($sql);
 $num=@mysql_num_rows($result);
 $cnt=1;
-while ($row=@mysql_fetch_array($result)){
-	$gbr[$cnt]="../../library/gambar.php?replid=".$row[replid]."&table=jbsvcr.galerifoto";
-	$gbrkcl[$cnt]="../../library/gambar.php?replid=".$row[replid]."&table=jbsvcr.galerifoto";
+while ($row=@mysql_fetch_array($result))
+{
 	$ket[$cnt]=$row[keterangan];
 	$nama[$cnt]=$row[nama];
 	$fn[$cnt]=$row[filename];
 	$rep[$cnt]=$row[replid];
-$cnt++;
+	$cnt++;
 }
 CloseDb();
-if ($op=="14075BUSYCODACALLDIFF"){
-	OpenDb();
-	$r = @mysql_fetch_array(QueryDb("SELECT * FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'"));
-	//echo $GALLERY_DIR."photos\\".$r[filename];
-	//echo $GALLERY_DIR."thumbnails\\X".$r[filename]; exit;
-	if (file_exists($GALLERY_DIR."photos\\".$r[filename]) && file_exists($GALLERY_DIR."photos\\".$r[filename])){
-		delete($GALLERY_DIR."photos\\".$r[filename]);
-		delete($GALLERY_DIR."thumbnails\\".$r[filename]);
-		//echo "exist";
-	} else {
-		//echo "none";
-	}
-	//echo file_exists($GALLERY_DIR."photos\\".$r[filename]);
-	//exit;
-	QueryDb("DELETE FROM jbsvcr.galerifoto WHERE replid='$_REQUEST[replid]'");
-	CloseDb();
-?>
-<script type="text/javascript">
-	document.location.href="galerifoto.php?page=t";	
-</script>
-<?
-}
 ?>
 <html>
 <head>
@@ -165,28 +128,27 @@ function show(id){
   </tr>
   <tr>
     <td align="left" colspan='2'>
-	<table border='0' width='100%' align='center'>
+	<table border='0' width='100%'>
       <tr>
         <td width='25%'>&nbsp;</td>
         <td width='*'>
-		<? if ($num>0){ ?>
-              <ul id="slideshow">
-                <? for ($i=1;$i<=$num;$i++){ ?>
-                <li>
-                  <h3>
-                    <?=$nama[$i]?>
-                  </h3>
-                  <span>
-                    <?=$WEB_GALLERY_DIR?>photos/<?=$fn[$i]?>
-                  </span>
-                  <p>
-                    <?=$ket[$i]?>
-                  </p>
-                  <a href="#"><img src="<?=$WEB_GALLERY_DIR?>thumbnail/<?=$fn[$i]?>" alt="" /></a> </li>
-                <? } ?>
-              </ul>
-			<div id="wrapper">
-                <div id="fullsize">
+<? 		if ($num>0)
+		{ ?>
+			<ul id="slideshow">
+<? 			for ($i = 1; $i <= $num; $i++)
+			{
+				$fphoto = "$FILESHARE_ADDR/galeriguru/photos/".$fn[$i];
+				$fthumb = "$FILESHARE_ADDR/galeriguru/thumbnails/".$fn[$i]; ?>
+				<li>
+					<h3><?=$nama[$i]?></h3>
+					<span><?=$fphoto?></span>
+					<p><?=$ket[$i]?></p>
+					<a href="#"><img src="<?=$fthumb?>" height="480" alt="" /></a>
+				</li>
+<? 			} ?>
+            </ul>
+			<div id="wrapper" >
+                <div id="fullsize" style="width: 800px; height: 600px;">
                   <div id="imgprev" class="imgnav" title="Previous Image"></div>
                   <div id="imglink"></div>
                   <div id="imgnext" class="imgnav" title="Next Image"></div>
@@ -196,16 +158,16 @@ function show(id){
                     <p></p>
                   </div>
                 </div>
-            <div id="thumbnails">
-                  <div id="slideleft" title="Slide Left"></div>
-              <div id="slidearea">
-                    <div id="slider"></div>
-              </div>
-              <div id="slideright" title="Slide Right"></div>
-            </div>
-          </div>
-          <script type="text/javascript" src="../../script/TinySlideshow/compressed.js"></script>
-              <script type="text/javascript">
+				<div id="thumbnails" style="visibility: hidden;">
+				   <div id="slideleft" title="Slide Left"></div>
+				   <div id="slidearea">
+					  <div id="slider"></div>
+				   </div>
+				   <div id="slideright" title="Slide Right"></div>
+				</div>
+			</div>
+			<script type="text/javascript" src="../../script/TinySlideshow/compressed.js"></script>
+            <script type="text/javascript">
                 $('slideshow').style.display='none';
                 $('wrapper').style.display='block';
                 var slideshow=new TINY.slideshow("slideshow");
@@ -218,18 +180,19 @@ function show(id){
                     slideshow.left="slideleft";
                     slideshow.right="slideright";
                     slideshow.scrollSpeed=4;
+					slideshow.height=480;
                     slideshow.spacing=5;
                     slideshow.active="#fff";
                     slideshow.init("slideshow","image","imgprev","imgnext","imglink");
                 }
             </script>
-              <? } else { ?>
-              <table width="100%" border="0" cellspacing="0" align="center">
-                <tr>
-                  <td><div align="center"><em>Tidak ada foto</em></div></td>
-                </tr>
-              </table>
-          <? } ?>
+<? 	   } else { ?>
+            <table width="100%" border="0" cellspacing="0" align="center">
+            <tr>
+              <td><div align="center"><em>Tidak ada foto</em></div></td>
+            </tr>
+            </table>
+<? 	   } ?>
         </td>
         <td width='25%'>&nbsp;</td>
       </tr>

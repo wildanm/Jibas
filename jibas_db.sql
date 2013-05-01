@@ -1,8 +1,6 @@
--- MySQL dump 10.13  Distrib 5.1.43, for Win32 (ia32)
 --
--- Host: localhost    Database: jbsakad
--- ------------------------------------------------------
--- Server version	5.5.15
+-- DATABASE DUMP for SISFO Sekolah JIBAS 3.0 (09 January 2013)
+--
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -47,7 +45,7 @@ CREATE TABLE `aktivitaskalender` (
   KEY `FK_aktivitaskalender_kalenderakademik` (`idkalender`),
   KEY `IX_aktivitaskalender_ts` (`ts`,`issync`),
   CONSTRAINT `FK_aktivitaskalender_kalenderakademik` FOREIGN KEY (`idkalender`) REFERENCES `kalenderakademik` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -400,7 +398,7 @@ CREATE TABLE `aturangrading` (
 
 LOCK TABLES `aturangrading` WRITE;
 /*!40000 ALTER TABLE `aturangrading` DISABLE KEYS */;
-INSERT INTO `aturangrading` VALUES (207,'101',26,45,'Praktik','75.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',34878,0),(208,'101',26,45,'Praktik','60.0','74.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',39560,0),(209,'101',26,45,'Praktik','50.0','59.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',27637,0),(210,'101',26,45,'Praktik','40.0','49.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',19503,0),(211,'101',26,45,'Praktik','0.0','39.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',14603,0),(217,'101',27,45,'Pemahaman Konsep','75.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',14507,0),(218,'101',27,45,'Pemahaman Konsep','60.0','74.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',28724,0),(219,'101',27,45,'Pemahaman Konsep','50.0','59.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',34571,0),(220,'101',27,45,'Pemahaman Konsep','40.0','49.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',21151,0),(221,'101',27,45,'Pemahaman Konsep','0.0','39.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',2041,0),(222,'101',27,45,'Praktik','70.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',12283,0),(223,'101',27,45,'Praktik','50.0','69.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',55290,0),(224,'101',27,45,'Praktik','40.0','49.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',43011,0),(225,'101',27,45,'Praktik','30.0','39.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',49186,0),(226,'101',27,45,'Praktik','0.0','29.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',51364,0),(227,'101',28,45,'Pemahaman Konsep','75.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',43731,0),(228,'101',28,45,'Pemahaman Konsep','60.0','74.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',64565,0),(229,'101',28,45,'Pemahaman Konsep','50.0','59.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',60569,0),(230,'101',28,45,'Pemahaman Konsep','40.0','49.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',43622,0),(231,'101',28,45,'Pemahaman Konsep','0.0','39.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',36402,0),(242,'101',28,45,'Praktik','70.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',51145,0),(243,'101',28,45,'Praktik','50.0','69.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',15456,0),(244,'101',28,45,'Praktik','40.0','49.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',54904,0),(245,'101',28,45,'Praktik','30.0','39.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',31562,0),(246,'101',28,45,'Praktik','0.0','29.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',58628,0),(252,'101',26,45,'Pemahaman Konsep','75.0','100.0','A',NULL,NULL,NULL,'2010-03-02 03:06:17',1865,0),(253,'101',26,45,'Pemahaman Konsep','60.0','74.9','B',NULL,NULL,NULL,'2010-03-02 03:06:17',30031,0),(254,'101',26,45,'Pemahaman Konsep','50.0','59.9','C',NULL,NULL,NULL,'2010-03-02 03:06:17',13500,0),(255,'101',26,45,'Pemahaman Konsep','40.0','49.9','D',NULL,NULL,NULL,'2010-03-02 03:06:17',42936,0),(256,'101',26,45,'Pemahaman Konsep','0.0','39.9','E',NULL,NULL,NULL,'2010-03-02 03:06:17',43118,0);
+INSERT INTO `aturangrading` VALUES (207,'101',26,45,'Praktik',75.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',34878,0),(208,'101',26,45,'Praktik',60.0,74.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',39560,0),(209,'101',26,45,'Praktik',50.0,59.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',27637,0),(210,'101',26,45,'Praktik',40.0,49.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',19503,0),(211,'101',26,45,'Praktik',0.0,39.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',14603,0),(217,'101',27,45,'Pemahaman Konsep',75.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',14507,0),(218,'101',27,45,'Pemahaman Konsep',60.0,74.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',28724,0),(219,'101',27,45,'Pemahaman Konsep',50.0,59.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',34571,0),(220,'101',27,45,'Pemahaman Konsep',40.0,49.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',21151,0),(221,'101',27,45,'Pemahaman Konsep',0.0,39.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',2041,0),(222,'101',27,45,'Praktik',70.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',12283,0),(223,'101',27,45,'Praktik',50.0,69.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',55290,0),(224,'101',27,45,'Praktik',40.0,49.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',43011,0),(225,'101',27,45,'Praktik',30.0,39.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',49186,0),(226,'101',27,45,'Praktik',0.0,29.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',51364,0),(227,'101',28,45,'Pemahaman Konsep',75.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',43731,0),(228,'101',28,45,'Pemahaman Konsep',60.0,74.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',64565,0),(229,'101',28,45,'Pemahaman Konsep',50.0,59.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',60569,0),(230,'101',28,45,'Pemahaman Konsep',40.0,49.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',43622,0),(231,'101',28,45,'Pemahaman Konsep',0.0,39.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',36402,0),(242,'101',28,45,'Praktik',70.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',51145,0),(243,'101',28,45,'Praktik',50.0,69.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',15456,0),(244,'101',28,45,'Praktik',40.0,49.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',54904,0),(245,'101',28,45,'Praktik',30.0,39.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',31562,0),(246,'101',28,45,'Praktik',0.0,29.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',58628,0),(252,'101',26,45,'Pemahaman Konsep',75.0,100.0,'A',NULL,NULL,NULL,'2010-03-02 03:06:17',1865,0),(253,'101',26,45,'Pemahaman Konsep',60.0,74.9,'B',NULL,NULL,NULL,'2010-03-02 03:06:17',30031,0),(254,'101',26,45,'Pemahaman Konsep',50.0,59.9,'C',NULL,NULL,NULL,'2010-03-02 03:06:17',13500,0),(255,'101',26,45,'Pemahaman Konsep',40.0,49.9,'D',NULL,NULL,NULL,'2010-03-02 03:06:17',42936,0),(256,'101',26,45,'Pemahaman Konsep',0.0,39.9,'E',NULL,NULL,NULL,'2010-03-02 03:06:17',43118,0);
 /*!40000 ALTER TABLE `aturangrading` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -631,7 +629,7 @@ CREATE TABLE `bobotnau` (
   KEY `IX_bobotnau_ts` (`ts`,`issync`),
   CONSTRAINT `FK_bobotnau_infobobot` FOREIGN KEY (`idinfo`) REFERENCES `infobobotnau` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_bobotnau_ujian` FOREIGN KEY (`idujian`) REFERENCES `ujian` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -670,7 +668,7 @@ CREATE TABLE `calonsiswa` (
   `warga` varchar(5) DEFAULT NULL,
   `anakke` tinyint(2) unsigned DEFAULT '0',
   `jsaudara` tinyint(2) unsigned DEFAULT '0',
-  `bahasa` varchar(60) DEFAULT NULL,
+  `bahasa` varchar(30) DEFAULT NULL,
   `berat` decimal(4,1) unsigned DEFAULT '0.0',
   `tinggi` decimal(4,1) unsigned DEFAULT '0.0',
   `darah` varchar(2) DEFAULT NULL,
@@ -680,18 +678,18 @@ CREATE TABLE `calonsiswa` (
   `telponsiswa` varchar(20) DEFAULT NULL,
   `hpsiswa` varchar(20) DEFAULT NULL,
   `emailsiswa` varchar(100) DEFAULT NULL,
-  `kesehatan` varchar(255) DEFAULT NULL,
+  `kesehatan` varchar(150) DEFAULT NULL,
   `asalsekolah` varchar(100) DEFAULT NULL,
-  `ketsekolah` varchar(255) DEFAULT NULL,
-  `namaayah` varchar(100) DEFAULT NULL,
-  `namaibu` varchar(100) DEFAULT NULL,
+  `ketsekolah` varchar(100) DEFAULT NULL,
+  `namaayah` varchar(60) DEFAULT NULL,
+  `namaibu` varchar(60) DEFAULT NULL,
   `almayah` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `almibu` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `pendidikanayah` varchar(20) DEFAULT NULL,
   `pendidikanibu` varchar(20) DEFAULT NULL,
-  `pekerjaanayah` varchar(100) DEFAULT NULL,
-  `pekerjaanibu` varchar(100) DEFAULT NULL,
-  `wali` varchar(100) DEFAULT NULL,
+  `pekerjaanayah` varchar(60) DEFAULT NULL,
+  `pekerjaanibu` varchar(60) DEFAULT NULL,
+  `wali` varchar(60) DEFAULT NULL,
   `penghasilanayah` int(10) unsigned DEFAULT '0',
   `penghasilanibu` int(10) unsigned DEFAULT '0',
   `alamatortu` varchar(100) DEFAULT NULL,
@@ -709,9 +707,9 @@ CREATE TABLE `calonsiswa` (
   `ujian3` decimal(5,2) NOT NULL DEFAULT '0.00',
   `ujian4` decimal(5,2) NOT NULL DEFAULT '0.00',
   `ujian5` decimal(5,2) NOT NULL DEFAULT '0.00',
-  `info1` varchar(255) DEFAULT NULL,
-  `info2` varchar(255) DEFAULT NULL,
-  `info3` varchar(255) DEFAULT NULL,
+  `info1` varchar(20) DEFAULT NULL,
+  `info2` varchar(20) DEFAULT NULL,
+  `info3` varchar(20) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `token` smallint(5) unsigned NOT NULL DEFAULT '0',
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -1244,7 +1242,7 @@ CREATE TABLE `infojadwal` (
   KEY `FK_infojadwal_tahunajaran` (`idtahunajaran`),
   KEY `IX_infojadwal_ts` (`ts`,`issync`),
   CONSTRAINT `FK_infojadwal_tahunajaran` FOREIGN KEY (`idtahunajaran`) REFERENCES `tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1465,7 +1463,7 @@ CREATE TABLE `jadwal` (
   CONSTRAINT `FK_jadwal_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_jadwal_pegawai` FOREIGN KEY (`nipguru`) REFERENCES `jbssdm`.`pegawai` (`nip`) ON UPDATE CASCADE,
   CONSTRAINT `FK_jadwal_pelajaran` FOREIGN KEY (`idpelajaran`) REFERENCES `pelajaran` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1792,7 +1790,7 @@ CREATE TABLE `kalenderakademik` (
   KEY `IX_kalenderakademik_ts` (`ts`,`issync`),
   CONSTRAINT `FK_kalenderakademik_departemen` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`departemen`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_kalenderakademik_tahunajaran` FOREIGN KEY (`idtahunajaran`) REFERENCES `tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2090,7 +2088,7 @@ CREATE TABLE `kelompokcalonsiswa` (
   KEY `FK_kelompokcalonsiswa_prosespenerimaansiswa` (`idproses`),
   KEY `IX_kelompokcalonsiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_kelompokcalonsiswa_prosespenerimaansiswa` FOREIGN KEY (`idproses`) REFERENCES `prosespenerimaansiswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2629,7 +2627,7 @@ CREATE TABLE `nau` (
   CONSTRAINT `FK_nau_idsemester` FOREIGN KEY (`idsemester`) REFERENCES `semester` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_nau_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_nau_nis` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2728,7 +2726,7 @@ CREATE TABLE `nilaiujian` (
   KEY `IX_nilaiujian_ts` (`ts`,`issync`),
   CONSTRAINT `FK_nilaiujian_idujian` FOREIGN KEY (`idujian`) REFERENCES `ujian` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_nilaiujian_nis` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2932,7 +2930,7 @@ CREATE TABLE `phsiswa` (
   KEY `IX_phsiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_phsiswa_presensiharian` FOREIGN KEY (`idpresensi`) REFERENCES `presensiharian` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_phsiswa_siswa` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3352,7 +3350,7 @@ CREATE TABLE `presensiharian` (
   KEY `IX_presensiharian_ts` (`ts`,`issync`),
   CONSTRAINT `FK_presensiharian_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_presensiharian_semester` FOREIGN KEY (`idsemester`) REFERENCES `semester` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3449,9 +3447,9 @@ CREATE TABLE `presensipelajaran` (
   `keterlambatan` tinyint(4) DEFAULT NULL,
   `jumlahjam` decimal(4,2) NOT NULL DEFAULT '0.00',
   `jenisguru` int(10) unsigned NOT NULL DEFAULT '0',
-  `info1` varchar(255) DEFAULT NULL,
-  `info2` varchar(255) DEFAULT NULL,
-  `info3` varchar(255) DEFAULT NULL,
+  `info1` varchar(20) DEFAULT NULL,
+  `info2` varchar(20) DEFAULT NULL,
+  `info3` varchar(20) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `token` smallint(5) unsigned NOT NULL DEFAULT '0',
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -3565,7 +3563,7 @@ CREATE TABLE `prosespenerimaansiswa` (
   KEY `FK_prosespenerimaansiswa_departemen` (`departemen`),
   KEY `IX_prosespenerimaansiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_prosespenerimaansiswa_departemen` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`departemen`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3664,10 +3662,10 @@ CREATE TABLE `ratauk` (
   KEY `FK_ratauk_idujian` (`idujian`),
   KEY `FK_ratauk_kelas` (`idkelas`),
   KEY `IX_ratauk_ts` (`ts`,`issync`),
-  CONSTRAINT `FK_ratauk_idujian` FOREIGN KEY (`idujian`) REFERENCES `ujian` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_ratauk_idsemester` FOREIGN KEY (`idsemester`) REFERENCES `semester` (`replid`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_ratauk_idujian` FOREIGN KEY (`idujian`) REFERENCES `ujian` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_ratauk_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3776,7 +3774,7 @@ CREATE TABLE `rataus` (
   CONSTRAINT `FK_rataus_jenis` FOREIGN KEY (`idjenis`) REFERENCES `jenisujian` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_rataus_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_rataus_nis` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3878,7 +3876,7 @@ CREATE TABLE `riwayatdeptsiswa` (
   KEY `IX_riwayatdeptsiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_riwayatdeptsiswa_departemen` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`departemen`) ON UPDATE CASCADE,
   CONSTRAINT `FK_riwayatdeptsiswa_siswa` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -3979,7 +3977,7 @@ CREATE TABLE `riwayatkelassiswa` (
   KEY `IX_riwayatkelassiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_riwayatkelassiswa_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_riwayatkelassiswa_siswa` FOREIGN KEY (`nis`) REFERENCES `siswa` (`nis`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4083,7 +4081,7 @@ CREATE TABLE `rpp` (
   CONSTRAINT `FK_rpp_pelajaran` FOREIGN KEY (`idpelajaran`) REFERENCES `pelajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_rpp_semester` FOREIGN KEY (`idsemester`) REFERENCES `semester` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_rpp_tingkat` FOREIGN KEY (`idtingkat`) REFERENCES `tingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -4337,18 +4335,18 @@ CREATE TABLE `siswa` (
   `telponsiswa` varchar(20) DEFAULT NULL,
   `hpsiswa` varchar(20) DEFAULT NULL,
   `emailsiswa` varchar(100) DEFAULT NULL,
-  `kesehatan` varchar(255) DEFAULT NULL,
+  `kesehatan` varchar(150) DEFAULT NULL,
   `asalsekolah` varchar(100) DEFAULT NULL,
-  `ketsekolah` varchar(255) DEFAULT NULL,
-  `namaayah` varchar(100) DEFAULT NULL,
-  `namaibu` varchar(100) DEFAULT NULL,
+  `ketsekolah` varchar(100) DEFAULT NULL,
+  `namaayah` varchar(60) DEFAULT NULL,
+  `namaibu` varchar(60) DEFAULT NULL,
   `almayah` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `almibu` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `pendidikanayah` varchar(20) DEFAULT NULL,
   `pendidikanibu` varchar(20) DEFAULT NULL,
-  `pekerjaanayah` varchar(100) DEFAULT NULL,
-  `pekerjaanibu` varchar(100) DEFAULT NULL,
-  `wali` varchar(100) DEFAULT NULL,
+  `pekerjaanayah` varchar(60) DEFAULT NULL,
+  `pekerjaanibu` varchar(60) DEFAULT NULL,
+  `wali` varchar(60) DEFAULT NULL,
   `penghasilanayah` int(10) unsigned DEFAULT '0',
   `penghasilanibu` int(10) unsigned DEFAULT '0',
   `alamatortu` varchar(100) DEFAULT NULL,
@@ -4358,16 +4356,16 @@ CREATE TABLE `siswa` (
   `alamatsurat` varchar(100) DEFAULT NULL,
   `keterangan` text,
   `frompsb` tinyint(1) unsigned DEFAULT '0',
-  `ketpsb` varchar(255) DEFAULT NULL,
+  `ketpsb` varchar(100) DEFAULT NULL,
   `statusmutasi` int(10) unsigned DEFAULT NULL,
   `alumni` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 bukan alumni, 1 alumni',
   `pinsiswa` varchar(25) NOT NULL,
   `pinortu` varchar(25) NOT NULL,
   `pinortuibu` varchar(25) NOT NULL,
   `emailibu` varchar(100) DEFAULT NULL,
-  `info1` varchar(255) DEFAULT NULL,
-  `info2` varchar(255) DEFAULT NULL,
-  `info3` varchar(255) DEFAULT NULL,
+  `info1` varchar(20) DEFAULT NULL,
+  `info2` varchar(20) DEFAULT NULL,
+  `info3` varchar(20) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `token` smallint(5) unsigned NOT NULL DEFAULT '0',
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -4900,7 +4898,7 @@ CREATE TABLE `ujian` (
   CONSTRAINT `FK_ujian_idsemester` FOREIGN KEY (`idsemester`) REFERENCES `semester` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_ujian_kelas` FOREIGN KEY (`idkelas`) REFERENCES `kelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_ujian_rpp` FOREIGN KEY (`idrpp`) REFERENCES `rpp` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5000,7 +4998,7 @@ CREATE TABLE `deleteddata` (
   `datatoken` smallint(5) unsigned NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `IX_DELETEDDATA_SYNC` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5059,9 +5057,10 @@ CREATE TABLE `liveupdate` (
   `repl_searchstr` varchar(255) DEFAULT NULL,
   `repl_replacestr` varchar(255) DEFAULT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 Disable, 1 Enable',
+  `message` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`liveupdateid`),
   UNIQUE KEY `UX_liveupdate` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5094,7 +5093,7 @@ CREATE TABLE `liveupdateconfig` (
 
 LOCK TABLES `liveupdateconfig` WRITE;
 /*!40000 ALTER TABLE `liveupdateconfig` DISABLE KEYS */;
-INSERT INTO `liveupdateconfig` VALUES ('MIN_UPDATE_ID','297','Please Don\'t Change This Value');
+INSERT INTO `liveupdateconfig` VALUES ('MIN_UPDATE_ID','436','-');
 /*!40000 ALTER TABLE `liveupdateconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5127,6 +5126,56 @@ LOCK TABLES `liveupdatefile` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `liveupdatefile2`
+--
+
+DROP TABLE IF EXISTS `liveupdatefile2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `liveupdatefile2` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `liveupdateid` int(10) unsigned NOT NULL,
+  `berkas` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `IX_LIVEUPDATEID` (`liveupdateid`)
+) ENGINE=MyISAM AUTO_INCREMENT=55 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `liveupdatefile2`
+--
+
+LOCK TABLES `liveupdatefile2` WRITE;
+/*!40000 ALTER TABLE `liveupdatefile2` DISABLE KEYS */;
+/*!40000 ALTER TABLE `liveupdatefile2` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `liveupdatefiledown`
+--
+
+DROP TABLE IF EXISTS `liveupdatefiledown`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `liveupdatefiledown` (
+  `liveupdateid` int(10) unsigned NOT NULL,
+  `filename` varchar(150) NOT NULL,
+  `filesize` int(10) unsigned NOT NULL,
+  `rectime` datetime NOT NULL,
+  PRIMARY KEY (`liveupdateid`,`filename`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `liveupdatefiledown`
+--
+
+LOCK TABLES `liveupdatefiledown` WRITE;
+/*!40000 ALTER TABLE `liveupdatefiledown` DISABLE KEYS */;
+/*!40000 ALTER TABLE `liveupdatefiledown` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `pkchanges`
 --
 
@@ -5146,7 +5195,7 @@ CREATE TABLE `pkchanges` (
   `oldpk` varchar(100) CHARACTER SET latin1 NOT NULL,
   PRIMARY KEY (`replid`),
   KEY `IX_PKCHANGES_SYNC` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5179,8 +5228,42 @@ CREATE TABLE `syncconfig` (
 
 LOCK TABLES `syncconfig` WRITE;
 /*!40000 ALTER TABLE `syncconfig` DISABLE KEYS */;
-INSERT INTO `syncconfig` VALUES ('DATABASE_ID','TVQvIxw7my9elIfRnUYYY6Z1Gw9cpcdau4Kc8jUikXpUn','Please Don\'t Change OR Delete This Value');
+INSERT INTO `syncconfig` VALUES ('DATABASE_ID','TVQvIxw7my9elIfRnUYYY6Z1Gw9cpcdau4Kc8jUikXpUn',' ');
 /*!40000 ALTER TABLE `syncconfig` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `synchistory`
+--
+
+DROP TABLE IF EXISTS `synchistory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `synchistory` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `method` varchar(15) NOT NULL,
+  `transferid` varchar(15) NOT NULL,
+  `synctype` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `starttime` datetime NOT NULL,
+  `endtime` datetime NOT NULL,
+  `synctime` datetime NOT NULL,
+  `syncfile` varchar(255) NOT NULL,
+  `repopath` varchar(700) NOT NULL,
+  `appid` varchar(5) NOT NULL,
+  `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `filesize` int(10) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `IX_SYNCHISTORY` (`method`,`synctype`,`starttime`,`appid`,`synctime`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `synchistory`
+--
+
+LOCK TABLES `synchistory` WRITE;
+/*!40000 ALTER TABLE `synchistory` DISABLE KEYS */;
+/*!40000 ALTER TABLE `synchistory` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -5227,7 +5310,7 @@ CREATE TABLE `version` (
 
 LOCK TABLES `version` WRITE;
 /*!40000 ALTER TABLE `version` DISABLE KEYS */;
-INSERT INTO `version` VALUES ('2.5.1','2011-08-07 00:00:00');
+INSERT INTO `version` VALUES ('3.0','2013-01-09 00:00:00');
 /*!40000 ALTER TABLE `version` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -5797,7 +5880,7 @@ CREATE TABLE `besarjtt` (
   KEY `IX_besarjtt_ts` (`ts`,`issync`),
   CONSTRAINT `FK_besarjtt_siswa` FOREIGN KEY (`nis`) REFERENCES `jbsakad`.`siswa` (`nis`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pembayaranjtt_penerimaan` FOREIGN KEY (`idpenerimaan`) REFERENCES `datapenerimaan` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -5933,7 +6016,7 @@ CREATE TABLE `besarjttcalon` (
   KEY `IX_besarjttcalon_ts` (`ts`,`issync`),
   CONSTRAINT `FK_besarjttcalon_calonsiswa` FOREIGN KEY (`idcalon`) REFERENCES `jbsakad`.`calonsiswa` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_besarjttcalon_penerimaan` FOREIGN KEY (`idpenerimaan`) REFERENCES `datapenerimaan` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6119,7 +6202,7 @@ CREATE TABLE `datapenerimaan` (
 
 LOCK TABLES `datapenerimaan` WRITE;
 /*!40000 ALTER TABLE `datapenerimaan` DISABLE KEYS */;
-INSERT INTO `datapenerimaan` VALUES (9,'SPP Bulanan',NULL,'JTT','111','411','150',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA',NULL,NULL,NULL,'2010-03-02 03:06:52',41237,0),(11,'Dana Sumbangan Pendidikan',NULL,'CSWJB','111','412','152',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA',NULL,NULL,NULL,'2010-08-03 11:18:36',12756,0),(12,'Sumbangan BOS',NULL,'LNN','113','414','152',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA',NULL,NULL,NULL,'2010-03-02 03:06:52',5601,0),(13,'Tabungan Siswa',NULL,'SKR','112','413','150',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA',NULL,NULL,NULL,'2010-03-02 03:06:52',55264,0),(14,'Sumbangan Pendidikan',NULL,'CSSKR','112','413','152',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA',NULL,NULL,NULL,'2010-03-02 03:06:52',62929,0);
+INSERT INTO `datapenerimaan` VALUES (9,'SPP Bulanan',NULL,'JTT','111','411','150',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA','421',NULL,NULL,'2012-01-02 00:14:49',41237,0),(11,'Dana Sumbangan Pendidikan',NULL,'CSWJB','111','412','153',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA','422',NULL,NULL,'2012-01-02 00:59:59',12756,0),(12,'Sumbangan BOS',NULL,'LNN','113','414','154',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA','424',NULL,NULL,'2012-01-02 01:01:04',5601,0),(13,'Tabungan Siswa',NULL,'SKR','112','413','150',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA','423',NULL,NULL,'2012-01-02 00:57:14',55264,0),(14,'Sumbangan Pendidikan',NULL,'CSSKR','112','415','153',1,'Sekedar contoh. Menu ini mengatur setiap jenis penerimaan yang mungkin diterima sekolah. Anda harus menentukan rekening Kas, Pendapatan dan Piutang untuk setiap transaksi penerimaan.','SMA','425',NULL,NULL,'2012-01-02 00:59:39',62929,0);
 /*!40000 ALTER TABLE `datapenerimaan` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -6224,7 +6307,7 @@ CREATE TABLE `datapengeluaran` (
 
 LOCK TABLES `datapengeluaran` WRITE;
 /*!40000 ALTER TABLE `datapengeluaran` DISABLE KEYS */;
-INSERT INTO `datapengeluaran` VALUES (4,'SMA','Bayar Listrik','501','111',1,'Sekedar contoh. Menu ini mengatur setiap jenis pengeluaran yang mungkin dikeluarkan sekolah. Anda harus menentukan rekening Kas dan Beban untuk setiap transaksi pengeluaran.','0',NULL,NULL,NULL,'2010-03-02 03:06:52',17792,0);
+INSERT INTO `datapengeluaran` VALUES (4,'SMA','Bayar Listrik','501','111',1,'Sekedar contoh. Menu ini mengatur setiap jenis pengeluaran yang mungkin dikeluarkan sekolah. Anda harus menentukan rekening Kas dan Beban untuk setiap transaksi pengeluaran.',0,NULL,NULL,NULL,'2010-03-02 03:06:52',17792,0);
 /*!40000 ALTER TABLE `datapengeluaran` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -6349,7 +6432,7 @@ CREATE TABLE `jurnal` (
   KEY `IX_jurnal_idtahunbuku` (`idtahunbuku`),
   KEY `IX_jurnal_ts` (`ts`,`issync`),
   CONSTRAINT `FK_jurnal_tahunbuku` FOREIGN KEY (`idtahunbuku`) REFERENCES `tahunbuku` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6385,7 +6468,7 @@ CREATE TABLE `jurnaldetail` (
   KEY `IX_jurnaldetail_koderek` (`koderek`),
   KEY `IX_jurnaldetail_ts` (`ts`,`issync`),
   CONSTRAINT `FK_jurnaldetail_jurnal` FOREIGN KEY (`idjurnal`) REFERENCES `jurnal` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -6685,7 +6768,7 @@ CREATE TABLE `penerimaaniuran` (
   CONSTRAINT `FK_pembayaraniuran_datapenerimaan` FOREIGN KEY (`idpenerimaan`) REFERENCES `datapenerimaan` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pembayaraniuran_jurnal` FOREIGN KEY (`idjurnal`) REFERENCES `jurnal` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pembayaraniuran_siswa` FOREIGN KEY (`nis`) REFERENCES `jbsakad`.`siswa` (`nis`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7068,7 +7151,7 @@ CREATE TABLE `penerimaanjtt` (
   KEY `IX_penerimaanjtt_ts` (`ts`,`issync`),
   CONSTRAINT `FK_pembayaranjtt_besatjtt` FOREIGN KEY (`idbesarjtt`) REFERENCES `besarjtt` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pembayaranjtt_jurnal` FOREIGN KEY (`idjurnal`) REFERENCES `jurnal` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7157,13 +7240,14 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `trupd_penerimaanjtt_101` AFTER UPDATE ON `penerimaanjtt` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER trupd_penerimaanjtt_102 AFTER UPDATE ON jbsfina.penerimaanjtt
+FOR EACH ROW BEGIN 
     declare xinfo varchar(255);
     declare xnokas varchar(100);
     declare xidtahunbuku int;
@@ -7194,10 +7278,10 @@ DELIMITER ;;
 		select last_insert_id() into xidaudit;
 		
 		insert into auditpenerimaanjtt set statusdata=0, idaudit=xidaudit, replid=old.replid, idbesarjtt=old.idbesarjtt, 
-			idjurnal=old.idjurnal, tanggal=old.tanggal, jumlah=old.jumlah, keterangan=old.keterangan, petugas=old.petugas;
+			idjurnal=old.idjurnal, tanggal=old.tanggal, jumlah=old.jumlah, keterangan=old.keterangan, petugas=old.petugas, info1=old.info1, info2=old.info2, info3=old.info3;
 			
 		insert into auditpenerimaanjtt set statusdata=1, idaudit=xidaudit, replid=new.replid, idbesarjtt=new.idbesarjtt, 
-			idjurnal=new.idjurnal, tanggal=new.tanggal, jumlah=new.jumlah, keterangan=new.keterangan, petugas=new.petugas;
+			idjurnal=new.idjurnal, tanggal=new.tanggal, jumlah=new.jumlah, keterangan=new.keterangan, petugas=new.petugas, info1=new.info1, info2=new.info2, info3=new.info3;
 		
 	END IF;		
 END */;;
@@ -7255,7 +7339,7 @@ CREATE TABLE `penerimaanjttcalon` (
   KEY `IX_penerimaanjttcalon_ts` (`ts`,`issync`),
   CONSTRAINT `FK_penerimaanjttcalon_besarjttcalon` FOREIGN KEY (`idbesarjttcalon`) REFERENCES `besarjttcalon` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_penerimaanjttcalon_jurnal` FOREIGN KEY (`idjurnal`) REFERENCES `jurnal` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7344,13 +7428,14 @@ DELIMITER ;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8 */ ;
-/*!50003 SET character_set_results = utf8 */ ;
-/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'NO_AUTO_VALUE_ON_ZERO' */ ;
+/*!50003 SET sql_mode              = '' */ ;
 DELIMITER ;;
-/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER `trupd_penerimaanjttcalon_101` AFTER UPDATE ON `penerimaanjttcalon` FOR EACH ROW BEGIN
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER trupd_penerimaanjttcalon_102 AFTER UPDATE ON jbsfina.penerimaanjttcalon
+FOR EACH ROW BEGIN 
     declare xinfo varchar(255);
     declare xnokas varchar(100);
     declare xidtahunbuku int;
@@ -7380,9 +7465,9 @@ DELIMITER ;;
 		
 		select last_insert_id() into xidaudit;
 		
-		insert into auditpenerimaanjttcalon set statusdata=0, idaudit=xidaudit, replid=old.replid, idbesarjttcalon=old.idbesarjttcalon, idjurnal=old.idjurnal, tanggal=old.tanggal, jumlah=old.jumlah, keterangan=old.keterangan, petugas=old.petugas;
+		insert into auditpenerimaanjttcalon set statusdata=0, idaudit=xidaudit, replid=old.replid, idbesarjttcalon=old.idbesarjttcalon, idjurnal=old.idjurnal, tanggal=old.tanggal, jumlah=old.jumlah, keterangan=old.keterangan, petugas=old.petugas, info1=old.info1, info2=old.info2, info3=old.info3;
 		
-		insert into auditpenerimaanjttcalon set statusdata=1, idaudit=xidaudit, replid=new.replid, idbesarjttcalon=new.idbesarjttcalon, idjurnal=new.idjurnal, tanggal=new.tanggal, jumlah=new.jumlah, keterangan=new.keterangan, petugas=new.petugas;
+		insert into auditpenerimaanjttcalon set statusdata=1, idaudit=xidaudit, replid=new.replid, idbesarjttcalon=new.idbesarjttcalon, idjurnal=new.idjurnal, tanggal=new.tanggal, jumlah=new.jumlah, keterangan=new.keterangan, petugas=new.petugas, info1=new.info1, info2=new.info2, info3=new.info3;
 
 	END IF;
 END */;;
@@ -7441,7 +7526,7 @@ CREATE TABLE `penerimaanlain` (
   KEY `IX_penerimaanlain_ts` (`ts`,`issync`),
   CONSTRAINT `FK_pembayaranlain_datapenerimaan` FOREIGN KEY (`idpenerimaan`) REFERENCES `datapenerimaan` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pembayaranlain_jurnal` FOREIGN KEY (`idjurnal`) REFERENCES `jurnal` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7580,7 +7665,7 @@ CREATE TABLE `pengeluaran` (
   CONSTRAINT `FK_pengeluaran_nip` FOREIGN KEY (`nip`) REFERENCES `jbssdm`.`pegawai` (`nip`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pengeluaran_nis` FOREIGN KEY (`nis`) REFERENCES `jbsakad`.`siswa` (`nis`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pengeluaran_pemohonlain` FOREIGN KEY (`pemohonlain`) REFERENCES `pemohonlain` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7739,7 +7824,7 @@ CREATE TABLE `rekakun` (
   KEY `FK_rekakun_katerekakun` (`kategori`),
   KEY `IX_rekakun_ts` (`ts`,`issync`),
   CONSTRAINT `FK_rekakun_katerekakun` FOREIGN KEY (`kategori`) REFERENCES `katerekakun` (`kategori`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7748,7 +7833,7 @@ CREATE TABLE `rekakun` (
 
 LOCK TABLES `rekakun` WRITE;
 /*!40000 ALTER TABLE `rekakun` DISABLE KEYS */;
-INSERT INTO `rekakun` VALUES (1,'111','HARTA','Kas','Kas yang ada disekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',18600,0),(2,'112','HARTA','Kas Bank','Kas yang ada di bank yang digunakan sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',20390,0),(3,'113','HARTA','Kas BOS','Kas yang diterima dari sumbangan Bantuan Operasional Sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',46147,0),(4,'150','PIUTANG','Piutang Siswa','Piutang siswa kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',38508,0),(5,'151','PIUTANG','Piutang Karyawan','Piutang karyawan kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',54096,0),(6,'152','PIUTANG','Piutang Usaha','Piutang yang lain kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',23895,0),(7,'411','PENDAPATAN','Pendapatan SPP','Pendapatan dari pembayaran SPP siswa',NULL,NULL,NULL,'2010-03-02 03:06:53',22719,0),(8,'412','PENDAPATAN','Pendapatan DSP','Pendapatan dari pembayaran DSP siswa',NULL,NULL,NULL,'2010-03-02 03:06:53',41907,0),(9,'413','PENDAPATAN','Pendapatan Sukarela','Pendapatan dari perolehan dana sukarela',NULL,NULL,NULL,'2010-03-02 03:06:53',10317,0),(10,'414','PENDAPATAN','Pendapatan BOS','Pendaptan dari penerimaan sumbangan Bantuan Operasional Sekolah (BOS)',NULL,NULL,NULL,'2010-03-02 03:06:53',56924,0),(11,'500','BIAYA','Beban Transportasi','Beban yang dikeluarkan untuk pembiayaan transportasi',NULL,NULL,NULL,'2010-03-02 03:06:53',57077,0),(12,'501','BIAYA','Beban Listrik','Beban yang dikeluarkan untuk melunasi tagihan PLN',NULL,NULL,NULL,'2010-03-02 03:06:53',49084,0),(13,'502','BIAYA','Beban Telpon','Beban yang dikeluarkan untuk pembiayaan tagihan telpon',NULL,NULL,NULL,'2010-03-02 03:06:53',8658,0),(14,'503','BIAYA','Beban Internet','Beban yang dikeluarkan untuk pembiayaan taghan Internet',NULL,NULL,NULL,'2010-03-02 03:06:53',27097,0),(15,'504','BIAYA','Beban ATK','Beban yang dikeluarkan untuk pembelian rutin ATK',NULL,NULL,NULL,'2010-03-02 03:06:53',43981,0),(16,'611','INVENTARIS','Peralatan Mengajar','Inventaris alat-alat kegiatan belajar mengajar',NULL,NULL,NULL,'2010-03-02 03:06:53',7554,0),(17,'612','INVENTARIS','Kendaraan','Inventaris kendaraan sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',36888,0),(18,'700','MODAL','Modal Usaha','Modal yang ditanamkan oleh pemodal kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',30715,0),(19,'900','UTANG','Utang Usaha','Utang sekolah kepada kreditur',NULL,NULL,NULL,'2010-03-02 03:06:53',42913,0);
+INSERT INTO `rekakun` VALUES (1,'111','HARTA','Kas','Kas yang ada disekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',18600,0),(2,'112','HARTA','Kas Bank','Kas yang ada di bank yang digunakan sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',20390,0),(3,'113','HARTA','Kas BOS','Kas yang diterima dari sumbangan Bantuan Operasional Sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',46147,0),(4,'150','PIUTANG','Piutang Siswa','Piutang siswa kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',38508,0),(5,'151','PIUTANG','Piutang Karyawan','Piutang karyawan kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',54096,0),(6,'152','PIUTANG','Piutang Usaha','Piutang yang lain kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',23895,0),(24,'153','PIUTANG','Piutang Calon Siswa','',NULL,NULL,NULL,'2012-01-02 00:58:13',0,0),(27,'154','PIUTANG','Piutang BOS','',NULL,NULL,NULL,'2012-01-02 01:00:51',0,0),(7,'411','PENDAPATAN','Pendapatan SPP','Pendapatan dari pembayaran SPP siswa',NULL,NULL,NULL,'2010-03-02 03:06:53',22719,0),(8,'412','PENDAPATAN','Pendapatan DSP','Pendapatan dari pembayaran DSP siswa',NULL,NULL,NULL,'2010-03-02 03:06:53',41907,0),(9,'413','PENDAPATAN','Pendapatan Sukarela Siswa','Pendapatan dari perolehan dana sukarela',NULL,NULL,NULL,'2010-03-02 03:06:53',10317,0),(10,'414','PENDAPATAN','Pendapatan BOS','Pendaptan dari penerimaan sumbangan Bantuan Operasional Sekolah (BOS)',NULL,NULL,NULL,'2010-03-02 03:06:53',56924,0),(25,'415','PENDAPATAN','Pendapatan Sukarela Calon Siswa','',NULL,NULL,NULL,'2012-01-02 00:58:41',0,0),(20,'421','PENDAPATAN','Diskon SPP','',NULL,NULL,NULL,'2012-01-02 00:14:27',0,0),(21,'422','PENDAPATAN','Diskon DSP','',NULL,NULL,NULL,'2012-01-02 00:56:29',0,0),(22,'423','PENDAPATAN','Diskon Sukarela Siswa','',NULL,NULL,NULL,'2012-01-02 00:56:43',0,0),(23,'424','PENDAPATAN','Diskon BOS','',NULL,NULL,NULL,'2012-01-02 00:56:53',0,0),(26,'425','PENDAPATAN','Diskon Sukarela Calon Siswa','',NULL,NULL,NULL,'2012-01-02 00:59:15',0,0),(11,'500','BIAYA','Beban Transportasi','Beban yang dikeluarkan untuk pembiayaan transportasi',NULL,NULL,NULL,'2010-03-02 03:06:53',57077,0),(12,'501','BIAYA','Beban Listrik','Beban yang dikeluarkan untuk melunasi tagihan PLN',NULL,NULL,NULL,'2010-03-02 03:06:53',49084,0),(13,'502','BIAYA','Beban Telpon','Beban yang dikeluarkan untuk pembiayaan tagihan telpon',NULL,NULL,NULL,'2010-03-02 03:06:53',8658,0),(14,'503','BIAYA','Beban Internet','Beban yang dikeluarkan untuk pembiayaan taghan Internet',NULL,NULL,NULL,'2010-03-02 03:06:53',27097,0),(15,'504','BIAYA','Beban ATK','Beban yang dikeluarkan untuk pembelian rutin ATK',NULL,NULL,NULL,'2010-03-02 03:06:53',43981,0),(16,'611','INVENTARIS','Peralatan Mengajar','Inventaris alat-alat kegiatan belajar mengajar',NULL,NULL,NULL,'2010-03-02 03:06:53',7554,0),(17,'612','INVENTARIS','Kendaraan','Inventaris kendaraan sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',36888,0),(18,'700','MODAL','Modal Usaha','Modal yang ditanamkan oleh pemodal kepada sekolah',NULL,NULL,NULL,'2010-03-02 03:06:53',30715,0),(19,'900','UTANG','Utang Usaha','Utang sekolah kepada kreditur',NULL,NULL,NULL,'2010-03-02 03:06:53',42913,0);
 /*!40000 ALTER TABLE `rekakun` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -7778,7 +7863,7 @@ CREATE TABLE `tahunbuku` (
   KEY `FK_tahunbuku_departemen` (`departemen`),
   KEY `IX_tahunbuku_ts` (`ts`,`issync`),
   CONSTRAINT `FK_tahunbuku_departemen` FOREIGN KEY (`departemen`) REFERENCES `jbsakad`.`departemen` (`departemen`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7882,7 +7967,7 @@ CREATE TABLE `transaksilog` (
   KEY `FK_transaksilog_departemen` (`departemen`),
   KEY `IX_transaksilog_ts` (`ts`,`issync`),
   CONSTRAINT `FK_transaksilog_departemen` FOREIGN KEY (`departemen`) REFERENCES `jbsakad`.`departemen` (`departemen`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -7965,7 +8050,7 @@ CREATE TABLE `anggota` (
   PRIMARY KEY (`replid`),
   UNIQUE KEY `Index_nopen` (`noregistrasi`),
   KEY `IX_anggota_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 2020352 kB; InnoDB free: 2020352 kB; (`NoRegist';
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC COMMENT='InnoDB free: 2020352 kB; InnoDB free: 2020352 kB; (`NoRegist';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8003,7 +8088,7 @@ CREATE TABLE `daftarpustaka` (
   KEY `IX_daftarpustaka_ts` (`ts`,`issync`),
   CONSTRAINT `FK_daftarpustaka_perpus` FOREIGN KEY (`perpustakaan`) REFERENCES `perpustakaan` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_daftarpustaka_pustaka` FOREIGN KEY (`pustaka`) REFERENCES `pustaka` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8307,7 +8392,7 @@ CREATE TABLE `penerbit` (
   PRIMARY KEY (`replid`),
   UNIQUE KEY `REPL_ID` (`kode`),
   KEY `IX_penerbit_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8406,7 +8491,7 @@ CREATE TABLE `penulis` (
   PRIMARY KEY (`replid`),
   UNIQUE KEY `REPL_ID` (`kode`),
   KEY `IX_penulis_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8539,7 +8624,7 @@ CREATE TABLE `pinjam` (
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`replid`,`tglkembali`),
   KEY `IX_pinjam_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8650,7 +8735,7 @@ CREATE TABLE `pustaka` (
   CONSTRAINT `FK_pustaka_katalog` FOREIGN KEY (`katalog`) REFERENCES `katalog` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pustaka_penerbit` FOREIGN KEY (`penerbit`) REFERENCES `penerbit` (`replid`) ON UPDATE CASCADE,
   CONSTRAINT `FK_pustaka_penulis` FOREIGN KEY (`penulis`) REFERENCES `penulis` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -8861,6 +8946,570 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Table structure for table `diklat`
+--
+
+DROP TABLE IF EXISTS `diklat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `diklat` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rootid` int(10) unsigned NOT NULL,
+  `allowselect` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `diklat` varchar(45) NOT NULL,
+  `tingkat` tinyint(3) unsigned NOT NULL,
+  `jenis` varchar(1) NOT NULL,
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `IX_diklat_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `diklat`
+--
+
+LOCK TABLES `diklat` WRITE;
+/*!40000 ALTER TABLE `diklat` DISABLE KEYS */;
+INSERT INTO `diklat` VALUES (11,0,1,'DIKLAT STRUKTURAL',0,'S',NULL,NULL,NULL,'2012-06-19 00:00:00',23097,0),(12,0,0,'DIKLAT FUNGSIONAL',0,'F',NULL,NULL,NULL,'2012-06-19 00:00:00',29220,0),(26,11,1,'Diklat Kepemimpinan',2,'',NULL,NULL,NULL,'2012-06-19 00:00:00',11276,0),(28,12,1,'Diklat Pengajaran',2,'',NULL,NULL,NULL,'2012-06-19 00:00:00',34253,0);
+/*!40000 ALTER TABLE `diklat` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_diklat BEFORE INSERT ON diklatFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_diklat BEFORE UPDATE ON diklatFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_diklat AFTER DELETE ON diklatFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'diklat', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `eselon`
+--
+
+DROP TABLE IF EXISTS `eselon`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `eselon` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `eselon` varchar(15) NOT NULL,
+  `urutan` tinyint(1) unsigned NOT NULL,
+  `isdefault` tinyint(1) DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`eselon`),
+  UNIQUE KEY `UX_eselon` (`replid`),
+  KEY `IX_eselon_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `eselon`
+--
+
+LOCK TABLES `eselon` WRITE;
+/*!40000 ALTER TABLE `eselon` DISABLE KEYS */;
+INSERT INTO `eselon` VALUES (5,'(Tidak Ada)',1,1,NULL,NULL,NULL,'2012-06-19 00:00:00',6374,0),(1,'Eselon I',2,0,NULL,NULL,NULL,'2012-06-19 00:00:00',60172,0),(2,'Eselon II',3,0,NULL,NULL,NULL,'2012-06-19 00:00:00',19617,0),(3,'Eselon III',4,0,NULL,NULL,NULL,'2012-06-19 00:00:00',48627,0),(4,'Eselon IV',5,0,NULL,NULL,NULL,'2012-06-19 00:00:00',53226,0);
+/*!40000 ALTER TABLE `eselon` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_eselon BEFORE INSERT ON eselonFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_eselon BEFORE UPDATE ON eselon  FOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_eselon AFTER DELETE ON eselonFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'eselon', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `golongan`
+--
+
+DROP TABLE IF EXISTS `golongan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `golongan` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `golongan` varchar(14) NOT NULL,
+  `tingkat` tinyint(1) unsigned NOT NULL,
+  `urutan` tinyint(1) unsigned NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`golongan`),
+  UNIQUE KEY `UX_golongan` (`replid`),
+  KEY `IX_golongan_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `golongan`
+--
+
+LOCK TABLES `golongan` WRITE;
+/*!40000 ALTER TABLE `golongan` DISABLE KEYS */;
+INSERT INTO `golongan` VALUES (18,'(Tidak Ada)',1,1,'Tidak Ada Golongan',NULL,NULL,NULL,'2012-06-19 00:00:00',54715,0),(1,'IA',1,2,'Juru Muda',NULL,NULL,NULL,'2012-06-19 00:00:00',48370,0),(2,'IB',1,3,'Juru Muda Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',12175,0),(3,'IC',1,4,'Juru',NULL,NULL,NULL,'2012-06-19 00:00:00',46822,0),(4,'ID',1,5,'Juru Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',997,0),(5,'IIA',2,6,'Pengatur Muda',NULL,NULL,NULL,'2012-06-19 00:00:00',61109,0),(6,'IIB',2,7,'Pengatur Muda Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',40431,0),(7,'IIC',2,8,'Pengatur',NULL,NULL,NULL,'2012-06-19 00:00:00',18827,0),(8,'IID',2,9,'Pengatur Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',38373,0),(9,'IIIA',3,10,'Penata Muda',NULL,NULL,NULL,'2012-06-19 00:00:00',4324,0),(10,'IIIB',3,11,'Penata muda Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',37558,0),(11,'IIIC',3,12,'Penata',NULL,NULL,NULL,'2012-06-19 00:00:00',43759,0),(12,'IIID',3,13,'Penata Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',40589,0),(13,'IVA',4,14,'Pembina',NULL,NULL,NULL,'2012-06-19 00:00:00',6140,0),(14,'IVB',4,15,'Pembina Tingkat 1',NULL,NULL,NULL,'2012-06-19 00:00:00',39991,0),(15,'IVC',4,16,'Pembina Utama Muda',NULL,NULL,NULL,'2012-06-19 00:00:00',50477,0),(16,'IVD',4,17,'Pembina Utama Madya',NULL,NULL,NULL,'2012-06-19 00:00:00',1348,0),(17,'IVE',4,18,'Pembuna Utama',NULL,NULL,NULL,'2012-06-19 00:00:00',51900,0);
+/*!40000 ALTER TABLE `golongan` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_golongan BEFORE INSERT ON golonganFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_golongan BEFORE UPDATE ON golonganFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_golongan AFTER DELETE ON golonganFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'golongan', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `jabatan`
+--
+
+DROP TABLE IF EXISTS `jabatan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jabatan` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `rootid` int(10) unsigned NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `singkatan` varchar(255) NOT NULL,
+  `satker` varchar(255) DEFAULT NULL,
+  `eselon` varchar(15) DEFAULT NULL,
+  `isdefault` tinyint(1) DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `IX_jabatan_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jabatan`
+--
+
+LOCK TABLES `jabatan` WRITE;
+/*!40000 ALTER TABLE `jabatan` DISABLE KEYS */;
+INSERT INTO `jabatan` VALUES (8,0,'NA','STRUKTUR ORGANISASI SEKOLAH',NULL,'(Tidak Ada)',1,NULL,NULL,NULL,'2012-06-19 00:00:00',58865,0),(27,8,'PENGURUS SEKOLAH','SEKOLAH','(Tidak Ada)','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',7566,0),(28,27,'Kepala Sekolah','KEPSEK','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',57825,0),(29,28,'Kepala TU','KEPTU','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',4305,0),(30,27,'Ketua Komite Sekolah','K.KOMITE','(Tidak Ada)','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',44641,0),(31,28,'Wakil Kepala Sekolah Bidang Kurikulum','WK.KURIKULUM','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',13697,0),(32,28,'Wakil Kepala Sekolah Bidang Kesiswaan','WK.KESISWAAN','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',95,0),(33,28,'Wakil Kepala Sekolah Bidang Humas','WK.HUMAS','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',24911,0),(34,32,'Pembina OSIS','PB.OSIS','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',58740,0),(35,32,'Pembina Ekstrakulikuler','PB.EKSTRA','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',22378,0),(36,28,'Wakil Kepala Sekolah Bidang Sarana Prasaran','WK.SARANA','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',1198,0),(37,33,'Kordinator Rumah Tangga','KO.RT','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',4384,0),(38,28,'Koordinator BP','KO.BP','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',18328,0),(39,28,'Koordinator IT','KO.IT','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',12955,0),(40,28,'Koordinator Guru','KO.GURU','GURU','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',9791,0),(41,40,'Guru','GURU','GURU','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:00:00',10089,0),(42,8,'Komite Sekolah','KOMSEK','MANAJEMEN','(Tidak Ada)',0,NULL,NULL,NULL,'2012-06-19 00:09:52',45480,0);
+/*!40000 ALTER TABLE `jabatan` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_jabatan BEFORE INSERT ON jabatanFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_jabatan BEFORE UPDATE ON jabatanFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_jabatan AFTER DELETE ON jabatanFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'jabatan', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `jadwal`
+--
+
+DROP TABLE IF EXISTS `jadwal`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jadwal` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `jenis` varchar(45) NOT NULL,
+  `tanggal` date NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `aktif` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `exec` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_jadwal_pegawai` (`nip`),
+  KEY `FK_jadwal_jenisagenda` (`jenis`),
+  KEY `IX_jadwal_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_jadwal_jenisagenda` FOREIGN KEY (`jenis`) REFERENCES `jenisagenda` (`agenda`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_jadwal_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jadwal`
+--
+
+LOCK TABLES `jadwal` WRITE;
+/*!40000 ALTER TABLE `jadwal` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jadwal` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_jadwal BEFORE INSERT ON jadwalFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_jadwal BEFORE UPDATE ON jadwalFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_jadwal AFTER DELETE ON jadwalFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'jadwal', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `jenisagenda`
+--
+
+DROP TABLE IF EXISTS `jenisagenda`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jenisagenda` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `agenda` varchar(45) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `urutan` tinyint(1) NOT NULL DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`agenda`),
+  UNIQUE KEY `UX_agenda` (`replid`),
+  KEY `IX_jenisagenda_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jenisagenda`
+--
+
+LOCK TABLES `jenisagenda` WRITE;
+/*!40000 ALTER TABLE `jenisagenda` DISABLE KEYS */;
+INSERT INTO `jenisagenda` VALUES (5,'cpns','Pengangkatan CPNS',6,NULL,NULL,NULL,'2012-06-19 00:00:00',17386,0),(8,'gaji','Penyesuaian Gaji',4,NULL,NULL,NULL,'2012-06-19 00:00:00',6748,0),(2,'golongan','Kenaikan Golongan',2,NULL,NULL,NULL,'2012-06-19 00:00:00',47111,0),(3,'jabatan','Kenaikan Jabatan',1,NULL,NULL,NULL,'2012-06-19 00:00:00',18723,0),(7,'lainnya','Lainnya',9,NULL,NULL,NULL,'2012-06-19 00:00:00',17810,0),(1,'pangkat','Kenaikan Pangkat',3,NULL,NULL,NULL,'2012-06-19 00:00:00',32879,0),(4,'pensiun','Pensiun',8,NULL,NULL,NULL,'2012-06-19 00:00:00',45437,0),(6,'pns','Pengangkatan PNS',7,NULL,NULL,NULL,'2012-06-19 00:00:00',63018,0);
+/*!40000 ALTER TABLE `jenisagenda` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_jenisagenda BEFORE INSERT ON jenisagendaFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_jenisagenda BEFORE UPDATE ON jenisagendaFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_jenisagenda AFTER DELETE ON jenisagendaFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'jenisagenda', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `jenisjabatan`
+--
+
+DROP TABLE IF EXISTS `jenisjabatan`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jenisjabatan` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `jenis` varchar(50) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `urutan` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `jabatan` varchar(2) NOT NULL DEFAULT 'F',
+  `isdefault` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`jenis`),
+  UNIQUE KEY `Index_replid` (`replid`),
+  KEY `IX_jenisjabatan_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jenisjabatan`
+--
+
+LOCK TABLES `jenisjabatan` WRITE;
+/*!40000 ALTER TABLE `jenisjabatan` DISABLE KEYS */;
+INSERT INTO `jenisjabatan` VALUES (8,'KEPALA','',2,'F',0,NULL,NULL,NULL,'2012-06-19 00:00:00',47718,0),(16,'KOORDINATOR','',4,'F',0,NULL,NULL,NULL,'2012-06-19 00:00:00',49537,0),(17,'STAF','',5,'F',0,NULL,NULL,NULL,'2012-06-19 00:00:00',38997,0),(11,'WAKIL KEPALA','',3,'F',0,NULL,NULL,NULL,'2012-06-19 00:00:00',46376,0);
+/*!40000 ALTER TABLE `jenisjabatan` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_jenisjabatan BEFORE INSERT ON jenisjabatanFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_jenisjabatan BEFORE UPDATE ON jenisjabatanFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_jenisjabatan AFTER DELETE ON jenisjabatan FOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'jenisjabatan', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
 -- Table structure for table `pegawai`
 --
 
@@ -8870,8 +9519,12 @@ DROP TABLE IF EXISTS `pegawai`;
 CREATE TABLE `pegawai` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nip` varchar(30) NOT NULL,
+  `nrp` varchar(30) DEFAULT NULL,
+  `nuptk` varchar(30) DEFAULT NULL,
   `nama` varchar(100) NOT NULL,
   `panggilan` varchar(50) DEFAULT NULL,
+  `gelarawal` varchar(45) DEFAULT NULL,
+  `gelarakhir` varchar(45) DEFAULT NULL,
   `gelar` varchar(50) DEFAULT NULL,
   `tmplahir` varchar(50) DEFAULT NULL,
   `tgllahir` date DEFAULT NULL,
@@ -8882,16 +9535,24 @@ CREATE TABLE `pegawai` (
   `telpon` varchar(20) DEFAULT NULL,
   `handphone` varchar(20) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
+  `facebook` varchar(200) DEFAULT NULL,
+  `twitter` varchar(200) DEFAULT NULL,
+  `website` varchar(200) DEFAULT NULL,
   `foto` blob,
   `bagian` varchar(50) NOT NULL,
   `nikah` varchar(10) NOT NULL,
-  `keterangan` varchar(255) DEFAULT NULL,
+  `keterangan` varchar(200) DEFAULT NULL,
   `aktif` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `kelamin` varchar(1) NOT NULL,
   `pinpegawai` varchar(25) DEFAULT NULL,
-  `info1` varchar(255) DEFAULT NULL,
-  `info2` varchar(255) DEFAULT NULL,
-  `info3` varchar(255) DEFAULT NULL,
+  `mulaikerja` date DEFAULT NULL,
+  `status` varchar(45) DEFAULT NULL,
+  `ketnonaktif` varchar(45) DEFAULT NULL,
+  `pensiun` date DEFAULT NULL,
+  `doaudit` tinyint(1) DEFAULT '0',
+  `info1` varchar(20) DEFAULT NULL,
+  `info2` varchar(20) DEFAULT NULL,
+  `info3` varchar(20) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `token` smallint(5) unsigned NOT NULL DEFAULT '0',
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -8913,7 +9574,7 @@ CREATE TABLE `pegawai` (
 
 LOCK TABLES `pegawai` WRITE;
 /*!40000 ALTER TABLE `pegawai` DISABLE KEYS */;
-INSERT INTO `pegawai` VALUES (23,'101','Pegawai','','','Bandung','1987-11-01','Islam','Jawa','','                                ','','','','ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ˛\0;CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 70\nˇ€\0C\0\n\n\n\n\r\r#%$\"\"!&+7/&)4)!\"0A149;>>>%.DIC<H7=>;ˇ€\0C\n\r;(\"(;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;ˇ¿\0\0P\0:\"\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0\0}\0!1AQa\"q2Åë°#B±¡R—$3brÇ	\n\Z%&\'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄·‚„‰ÂÊÁËÈÍÒÚÛÙıˆ˜¯˘˙ˇƒ\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0w\0!1AQaq\"2ÅBë°±¡	#3Rbr—\n$4·%Ò\Z&\'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÇÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄‚„‰ÂÊÁËÈÍÚÛÙıˆ˜¯˘˙ˇ⁄\0\0\0?\0ﬁ’µ]J=bÚ8ÔÓQw\n´#\0MT:Œ´ˇ\0AØ˚˙ﬂ„N÷˛\'W«˛õø˛Ñk+S∫˚ü-∆›Ã£Â§(kÔ]ÿ\0&’ÓÉä%bOÎXr¸KøV!no∞	i»?Œ¥ÙØ\0…≠ÈÎu\"…?Œ;Ÿ©Ê¯ecÂmYûIº¸*\0Øa„KΩLm´›Ó%\ZV~µeµ›c∂©wˇ\0€¸k\'S¯~˙nûo¨Ât∏Än*ﬁﬁÙ∫UÃóv!ÊΩCµœ©ı†\r◊µ†8’o?Ô˚çzÓúÏ˙e´ªfÖ	$‰ìÅ^0Èöˆm7˛Avüı¡?Ù@{´ÄuõŒ?Âªˇ\03\\˜â„-§ez	ü¶q˝k§’◊˛\'áÚ›ˇ\0ô®\"∂KµxdåIÆ÷R~3ÌéºzPÙzå\Z>ôrE4Å›.jE‘m%±7Ë≤¿…˘pEOs£È⁄ùí≠‘H‡`ÂÜqéjy4´3•<Eãbªp=(!Óc’Ù…√,k\"ëó«Ù&º˜√ñœù¿ì?Î»@z}¶ëe•ÈÊ+h÷$\0Ù{◊7i\rµºQ≈åGï¿˛>áw˛Ñ(–tØ_”∏”-ÎäË\"ºïîuØZ”ˇ\0‰kˇ\0\\S˘\n\0‡5_˘ﬁsˇ\0-ﬂ˘öÜ	dÇM—πV∆2=*∆©ˇ\0!{œ˙Ïˇ\0Ã’7ë\"]“:¢˙±≈\0t…tãßG)FîeíMPäÒ√H∫u‚)ìÃ√F¯›úÁ≠V“Ô<€v6Ó	W£84˚[´≈‘Xù+\0üºè≠\0l\\›+iœ6√¬∞¡πY•ñl\\πQÅì[zƒ≤≈¶; T<í\"*ú∞œ„å◊?ƒ7+ò§SÌ‹P.9ÊΩZ√˛A÷ﬂı≈?êØ-uˆØR∞ˇ\0ê}∑˝r_‰(Àı˚ÈõT‘ñ —\"O\"y∏œÕì“≥/Dñ÷ëâ∆˘\'ªå‡c∞Ì[ö∑ênuÂàÚrz≠‚≠æ…oê‰Ö„vÄ3€Q{ã;ÿQöﬁXƒ2™éx‡7«Å≠˚}jﬁ	Hö˘=π(Áü¬∏_ﬁIkf4hQö·ÂŒ·¸ éG„≈eÈ–À!Ú∞V‚\"cq˘[Í;}(πóYìVø{©ê«eh§¬áÆ„¿cÔÌÿf≥-Ã/Ã\\B—0ƒ® Ò»™ZN†⁄ç®“ö7éÓ9	îÌ¿q–ÛÎVmai◊Ø—„råé˛‚Ä#\ZΩÃ!¶ò	l+Ñ}?˝UÌ˙câ4´G≈¸tWÖÍ∂í.ôl©∑í†aÅ\r{éê\0—¨@9gè˛(Õı…#Û5Ñ3∫Í3yÅGNò˛µ®≥Mˆl√ \0t*}´µ◊¨ıC}ç.¬éHóh¢ Kµ∞[w-ŒœNßØjå<Q0ïéìk	!E\"6*Y?vbUÜ$gw|P\rÆ≈ÂÎÎ;BA¿Àˇ\0fπ˝7˛Cën˘íñ~∏˝k⁄R€Sñ∆.4˚Av∑%_-X4cpRß<Úûy¡Ê≥V√YM?JêÈ6ÊÛÕcw∂A⁄mœoπûÑs˘Pûi\0	Ó¶ o%Ao^M&›v_‚ïº5z€xë\"åˇ\0cÿá-âÇ$gÜe9è∫•îé¯ŒO_≥kãa4qÈ(Ú8_%•Ü\0AKo\0„üú√>¥Ê∫…ˇ\0âE∫éˆ*˝[#˙◊πi`\r&Ã/Ac˛˘Õ√e¨5Ù+w§Z¥)2Æcé-ÖGÁ9aÍ†s……8\0ı °T*Ä\0\0v†ˇŸ','Akademik','tak_ada','',1,'l','12637',NULL,NULL,NULL,'2010-03-02 03:08:32',4536,0);
+INSERT INTO `pegawai` VALUES (23,'101',NULL,NULL,'Pegawai','','',NULL,'','Bandung','1987-11-01','Islam','Jawa','','                                ','','','',NULL,NULL,NULL,'ˇÿˇ‡\0JFIF\0\0\0\0\0\0ˇ˛\0;CREATOR: gd-jpeg v1.0 (using IJG JPEG v62), quality = 70\nˇ€\0C\0\n\n\n\n\r\r#%$\"\"!&+7/&)4)!\"0A149;>>>%.DIC<H7=>;ˇ€\0C\n\r;(\"(;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;ˇ¿\0\0P\0:\"\0ˇƒ\0\0\0\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0\0}\0!1AQa\"q2Åë°#B±¡R—$3brÇ	\n\Z%&\'()*456789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄·‚„‰ÂÊÁËÈÍÒÚÛÙıˆ˜¯˘˙ˇƒ\0\0\0\0\0\0\0\0	\nˇƒ\0µ\0\0w\0!1AQaq\"2ÅBë°±¡	#3Rbr—\n$4·%Ò\Z&\'()*56789:CDEFGHIJSTUVWXYZcdefghijstuvwxyzÇÉÑÖÜáàâäíìîïñóòôö¢£§•¶ß®©™≤≥¥µ∂∑∏π∫¬√ƒ≈∆«»… “”‘’÷◊ÿŸ⁄‚„‰ÂÊÁËÈÍÚÛÙıˆ˜¯˘˙ˇ⁄\0\0\0?\0ﬁ’µ]J=bÚ8ÔÓQw\n´#\0MT:Œ´ˇ\0AØ˚˙ﬂ„N÷˛\'W«˛õø˛Ñk+S∫˚ü-∆›Ã£Â§(kÔ]ÿ\0&’ÓÉä%bOÎXr¸KøV!no∞	i»?Œ¥ÙØ\0…≠ÈÎu\"…?Œ;Ÿ©Ê¯ecÂmYûIº¸*\0Øa„KΩLm´›Ó%\ZV~µeµ›c∂©wˇ\0€¸k\'S¯~˙nûo¨Ât∏Än*ﬁﬁÙ∫UÃóv!ÊΩCµœ©ı†\r◊µ†8’o?Ô˚çzÓúÏ˙e´ªfÖ	$‰ìÅ^0Èöˆm7˛Avüı¡?Ù@{´ÄuõŒ?Âªˇ\03\\˜â„-§ez	ü¶q˝k§’◊˛\'áÚ›ˇ\0ô®\"∂KµxdåIÆ÷R~3ÌéºzPÙzå\Z>ôrE4Å›.jE‘m%±7Ë≤¿…˘pEOs£È⁄ùí≠‘H‡`ÂÜqéjy4´3•<Eãbªp=(!Óc’Ù…√,k\"ëó«Ù&º˜√ñœù¿ì?Î»@z}¶ëe•ÈÊ+h÷$\0Ù{◊7i\rµºQ≈åGï¿˛>áw˛Ñ(–tØ_”∏”-ÎäË\"ºïîuØZ”ˇ\0‰kˇ\0\\S˘\n\0‡5_˘ﬁsˇ\0-ﬂ˘öÜ	dÇM—πV∆2=*∆©ˇ\0!{œ˙Ïˇ\0Ã’7ë\"]“:¢˙±≈\0t…tãßG)FîeíMPäÒ√H∫u‚)ìÃ√F¯›úÁ≠V“Ô<€v6Ó	W£84˚[´≈‘Xù+\0üºè≠\0l\\›+iœ6√¬∞¡πY•ñl\\πQÅì[zƒ≤≈¶; T<í\"*ú∞œ„å◊?ƒ7+ò§SÌ‹P.9ÊΩZ√˛A÷ﬂı≈?êØ-uˆØR∞ˇ\0ê}∑˝r_‰(Àı˚ÈõT‘ñ —\"O\"y∏œÕì“≥/Dñ÷ëâ∆˘\'ªå‡c∞Ì[ö∑ênuÂàÚrz≠‚≠æ…oê‰Ö„vÄ3€Q{ã;ÿQöﬁXƒ2™éx‡7«Å≠˚}jﬁ	Hö˘=π(Áü¬∏_ﬁIkf4hQö·ÂŒ·¸ éG„≈eÈ–À!Ú∞V‚\"cq˘[Í;}(πóYìVø{©ê«eh§¬áÆ„¿cÔÌÿf≥-Ã/Ã\\B—0ƒ® Ò»™ZN†⁄ç®“ö7éÓ9	îÌ¿q–ÛÎVmai◊Ø—„råé˛‚Ä#\ZΩÃ!¶ò	l+Ñ}?˝UÌ˙câ4´G≈¸tWÖÍ∂í.ôl©∑í†aÅ\r{éê\0—¨@9gè˛(Õı…#Û5Ñ3∫Í3yÅGNò˛µ®≥Mˆl√ \0t*}´µ◊¨ıC}ç.¬éHóh¢ Kµ∞[w-ŒœNßØjå<Q0ïéìk	!E\"6*Y?vbUÜ$gw|P\rÆ≈ÂÎÎ;BA¿Àˇ\0fπ˝7˛Cën˘íñ~∏˝k⁄R€Sñ∆.4˚Av∑%_-X4cpRß<Úûy¡Ê≥V√YM?JêÈ6ÊÛÕcw∂A⁄mœoπûÑs˘Pûi\0	Ó¶ o%Ao^M&›v_‚ïº5z€xë\"åˇ\0cÿá-âÇ$gÜe9è∫•îé¯ŒO_≥kãa4qÈ(Ú8_%•Ü\0AKo\0„üú√>¥Ê∫…ˇ\0âE∫éˆ*˝[#˙◊πi`\r&Ã/Ac˛˘Õ√e¨5Ù+w§Z¥)2Æcé-ÖGÁ9aÍ†s……8\0ı °T*Ä\0\0v†ˇŸ','Akademik','tak_ada','',1,'l','12637',NULL,NULL,NULL,NULL,0,NULL,NULL,NULL,'2012-06-23 04:04:49',4536,0);
 /*!40000 ALTER TABLE `pegawai` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -8973,6 +9634,866 @@ FOR EACH ROW BEGIN
      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegawai', dataid = OLD.replid, datatoken = OLD.token;
   END IF;
 END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegdiklat`
+--
+
+DROP TABLE IF EXISTS `pegdiklat`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegdiklat` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `iddiklat` int(10) unsigned NOT NULL,
+  `tahun` int(10) unsigned NOT NULL,
+  `sk` varchar(45) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `doaudit` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_pegdiklat_pegawai` (`nip`),
+  KEY `FK_pegdiklat_diklat` (`iddiklat`),
+  KEY `IX_pegdiklat_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_pegdiklat_diklat` FOREIGN KEY (`iddiklat`) REFERENCES `diklat` (`replid`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_pegdiklat_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegdiklat`
+--
+
+LOCK TABLES `pegdiklat` WRITE;
+/*!40000 ALTER TABLE `pegdiklat` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pegdiklat` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegdiklat BEFORE INSERT ON pegdiklatFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegdiklat BEFORE UPDATE ON pegdiklatFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegdiklat AFTER DELETE ON pegdiklatFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegdiklat', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `peggaji`
+--
+
+DROP TABLE IF EXISTS `peggaji`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `peggaji` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `tanggal` date NOT NULL,
+  `gaji` varchar(15) NOT NULL,
+  `sk` varchar(45) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `judulsk` varchar(255) DEFAULT NULL,
+  `tanggalsk` varchar(255) DEFAULT NULL,
+  `dok` text,
+  `doaudit` tinyint(1) DEFAULT '1',
+  `terakhir` tinyint(1) DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_peggaji_pegawai` (`nip`),
+  KEY `IX_peggaji_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_peggaji_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `peggaji`
+--
+
+LOCK TABLES `peggaji` WRITE;
+/*!40000 ALTER TABLE `peggaji` DISABLE KEYS */;
+/*!40000 ALTER TABLE `peggaji` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_peggaji BEFORE INSERT ON peggajiFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_peggaji BEFORE UPDATE ON peggajiFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_peggaji AFTER DELETE ON peggajiFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'peggaji', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `peggol`
+--
+
+DROP TABLE IF EXISTS `peggol`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `peggol` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `golongan` varchar(14) NOT NULL,
+  `tmt` date NOT NULL,
+  `sk` varchar(100) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `judulsk` varchar(255) DEFAULT NULL,
+  `tanggalsk` varchar(45) DEFAULT NULL,
+  `dok` text,
+  `petugas` varchar(45) DEFAULT NULL,
+  `doaudit` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_peggol_pegawai` (`nip`),
+  KEY `FK_peggol_golongan` (`golongan`),
+  KEY `IX_peggol_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_peggol_golongan` FOREIGN KEY (`golongan`) REFERENCES `golongan` (`golongan`) ON UPDATE CASCADE,
+  CONSTRAINT `FK_peggol_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `peggol`
+--
+
+LOCK TABLES `peggol` WRITE;
+/*!40000 ALTER TABLE `peggol` DISABLE KEYS */;
+/*!40000 ALTER TABLE `peggol` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_peggol BEFORE INSERT ON peggolFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_peggol BEFORE UPDATE ON peggolFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_peggol AFTER DELETE ON peggolFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'peggol', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegjab`
+--
+
+DROP TABLE IF EXISTS `pegjab`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegjab` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `idjabatan` int(10) unsigned DEFAULT NULL,
+  `tmt` date NOT NULL,
+  `sk` varchar(45) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `jenis` varchar(50) NOT NULL,
+  `namajab` varchar(255) DEFAULT NULL,
+  `doaudit` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `fk_pegjab_jabatan` (`idjabatan`),
+  KEY `fk_pegjab_pegawai` (`nip`),
+  KEY `IX_pegjab_ts` (`ts`,`issync`),
+  CONSTRAINT `fk_pegjab_jabatan` FOREIGN KEY (`idjabatan`) REFERENCES `jabatan` (`replid`) ON UPDATE CASCADE,
+  CONSTRAINT `fk_pegjab_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegjab`
+--
+
+LOCK TABLES `pegjab` WRITE;
+/*!40000 ALTER TABLE `pegjab` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pegjab` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegjab BEFORE INSERT ON pegjabFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegjab BEFORE UPDATE ON pegjabFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegjab AFTER DELETE ON pegjabFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegjab', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegkeluarga`
+--
+
+DROP TABLE IF EXISTS `pegkeluarga`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegkeluarga` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `nama` varchar(100) DEFAULT NULL,
+  `alm` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `hubungan` varchar(50) DEFAULT NULL,
+  `tgllahir` varchar(50) DEFAULT NULL,
+  `hp` varchar(20) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_pegkeluarga_pegawai` (`nip`),
+  KEY `IX_pegkeluarga_ts` (`ts`,`issync`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegkeluarga`
+--
+
+LOCK TABLES `pegkeluarga` WRITE;
+/*!40000 ALTER TABLE `pegkeluarga` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pegkeluarga` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegkeluarga BEFORE INSERT ON pegkeluarga
+FOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegkeluarga BEFORE UPDATE ON pegkeluarga
+FOR EACH ROW BEGIN 
+  IF @DISABLE_TRIGER IS NULL THEN
+      IF OLD.issync = 1 THEN 
+          SET NEW.issync = 0; 
+          SET NEW.ts = CURRENT_TIMESTAMP; 
+      END IF; 
+      IF OLD.issync = 0 AND NEW.issync = 0 THEN 
+          SET NEW.ts = CURRENT_TIMESTAMP; 
+      END IF; 
+  END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = cp850 */ ;
+/*!50003 SET character_set_results = cp850 */ ;
+/*!50003 SET collation_connection  = cp850_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegkeluarga AFTER DELETE ON pegkeluarga
+FOR EACH ROW BEGIN
+   IF @DISABLE_TRIGER IS NULL THEN
+      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegkeluarga', dataid = OLD.replid, datatoken = OLD.token;
+   END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegkerja`
+--
+
+DROP TABLE IF EXISTS `pegkerja`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegkerja` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `tempat` varchar(255) NOT NULL,
+  `thnawal` varchar(4) NOT NULL,
+  `thnakhir` varchar(4) NOT NULL,
+  `jabatan` varchar(255) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(1) NOT NULL DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `fk_pegkerja_pegawai` (`nip`),
+  KEY `IX_pegkerja_ts` (`ts`,`issync`),
+  CONSTRAINT `fk_pegkerja_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegkerja`
+--
+
+LOCK TABLES `pegkerja` WRITE;
+/*!40000 ALTER TABLE `pegkerja` DISABLE KEYS */;
+INSERT INTO `pegkerja` VALUES (1,'132 456 001','Pikiran Rakyan','1996','1999','Wartawan','',1,NULL,NULL,NULL,'2012-06-19 00:00:01',52383,0),(2,'131 924 825','SMA Negeri 3 Durian','1992','1995','Guru','',1,NULL,NULL,NULL,'2012-06-19 00:00:01',43673,0);
+/*!40000 ALTER TABLE `pegkerja` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegkerja BEFORE INSERT ON pegkerjaFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegkerja BEFORE UPDATE ON pegkerjaFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegkerja AFTER DELETE ON pegkerjaFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegkerja', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `peglastdata`
+--
+
+DROP TABLE IF EXISTS `peglastdata`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `peglastdata` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `idpeggol` int(10) unsigned DEFAULT NULL,
+  `idpegjab` int(10) unsigned DEFAULT NULL,
+  `idpegdiklat` int(10) unsigned DEFAULT NULL,
+  `idpegsekolah` int(10) unsigned DEFAULT NULL,
+  `idpeggaji` int(10) unsigned DEFAULT NULL,
+  `idpegserti` int(10) unsigned DEFAULT NULL,
+  `idpegkerja` int(10) unsigned DEFAULT NULL,
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_peglastdata_pegawai` (`nip`),
+  KEY `IX_peglastdata_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_peglastdata_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `peglastdata`
+--
+
+LOCK TABLES `peglastdata` WRITE;
+/*!40000 ALTER TABLE `peglastdata` DISABLE KEYS */;
+/*!40000 ALTER TABLE `peglastdata` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_peglastdata BEFORE INSERT ON peglastdataFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_peglastdata BEFORE UPDATE ON peglastdataFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_peglastdata AFTER DELETE ON peglastdataFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'peglastdata', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegsekolah`
+--
+
+DROP TABLE IF EXISTS `pegsekolah`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegsekolah` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `tingkat` varchar(20) NOT NULL,
+  `sekolah` varchar(255) NOT NULL,
+  `lulus` int(10) unsigned NOT NULL,
+  `sk` varchar(45) DEFAULT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `doaudit` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `FK_pegsekolah_pegawai` (`nip`),
+  KEY `IX_pegsekolah_ts` (`ts`,`issync`),
+  CONSTRAINT `FK_pegsekolah_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegsekolah`
+--
+
+LOCK TABLES `pegsekolah` WRITE;
+/*!40000 ALTER TABLE `pegsekolah` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pegsekolah` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegsekolah BEFORE INSERT ON pegsekolahFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegsekolah BEFORE UPDATE ON pegsekolahFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegsekolah AFTER DELETE ON pegsekolahFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegsekolah', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `pegserti`
+--
+
+DROP TABLE IF EXISTS `pegserti`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `pegserti` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `nip` varchar(30) NOT NULL,
+  `sertifikat` varchar(255) NOT NULL,
+  `lembaga` varchar(255) NOT NULL,
+  `tahun` smallint(6) NOT NULL,
+  `keterangan` varchar(255) DEFAULT NULL,
+  `terakhir` tinyint(1) NOT NULL DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`replid`),
+  KEY `fk_pegserti_pegawai` (`nip`),
+  KEY `IX_pegserti_ts` (`ts`,`issync`),
+  CONSTRAINT `fk_pegserti_pegawai` FOREIGN KEY (`nip`) REFERENCES `pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pegserti`
+--
+
+LOCK TABLES `pegserti` WRITE;
+/*!40000 ALTER TABLE `pegserti` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pegserti` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_pegserti BEFORE INSERT ON pegsertiFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_pegserti BEFORE UPDATE ON pegsertiFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_pegserti AFTER DELETE ON pegsertiFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'pegserti', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Table structure for table `satker`
+--
+
+DROP TABLE IF EXISTS `satker`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `satker` (
+  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `satker` varchar(255) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `isdefault` tinyint(1) DEFAULT '0',
+  `info1` varchar(255) DEFAULT NULL,
+  `info2` varchar(255) DEFAULT NULL,
+  `info3` varchar(255) DEFAULT NULL,
+  `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `token` smallint(5) unsigned NOT NULL DEFAULT '0',
+  `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`satker`),
+  UNIQUE KEY `UX_satker` (`replid`),
+  KEY `IX_satker_ts` (`ts`,`issync`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `satker`
+--
+
+LOCK TABLES `satker` WRITE;
+/*!40000 ALTER TABLE `satker` DISABLE KEYS */;
+INSERT INTO `satker` VALUES (19,'(Tidak Ada)','Tidak Ada Satuan Kerja',1,NULL,NULL,NULL,'2012-06-19 00:00:01',17795,0),(21,'GURU','Pengajar',0,NULL,NULL,NULL,'2012-06-19 00:00:01',51312,0),(23,'KOPERASI','Koperasi',0,NULL,NULL,NULL,'2012-06-19 00:00:01',6583,0),(24,'MANAJEMEN','Manajemen Sekolah',0,NULL,NULL,NULL,'2012-06-19 00:00:01',10040,0),(22,'TATA USAHA','Tata Usaha Sekolah',0,NULL,NULL,NULL,'2012-06-19 00:00:01',30450,0),(20,'YAYASAN','Pengurus Yayasan',0,NULL,NULL,NULL,'2012-06-19 00:00:01',56600,0);
+/*!40000 ALTER TABLE `satker` ENABLE KEYS */;
+UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trins_20_satker BEFORE INSERT ON satkerFOR EACH ROW SET NEW.token = FLOOR(1 + (RAND() * 65530)) */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trupd_20_satker BEFORE UPDATE ON satkerFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      IF OLD.issync = 1 THEN           SET NEW.issync = 0;           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;       IF OLD.issync = 0 AND NEW.issync = 0 THEN           SET NEW.ts = CURRENT_TIMESTAMP;       END IF;   END IF;END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = latin1 */ ;
+/*!50003 SET character_set_results = latin1 */ ;
+/*!50003 SET collation_connection  = latin1_swedish_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = '' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 DEFINER=`root`@`%`*/ /*!50003 TRIGGER fsync_trdel_20_satker AFTER DELETE ON satkerFOR EACH ROW BEGIN   IF @DISABLE_TRIGER IS NULL THEN      INSERT INTO jbsclient.deleteddata SET token = FLOOR(1 + (RAND() * 65530)), dbname = 'jbssdm', tablename = 'satker', dataid = OLD.replid, datatoken = OLD.token;   END IF;END */;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
@@ -9078,7 +10599,7 @@ CREATE TABLE `inbox` (
   `Processed` enum('false','true') NOT NULL DEFAULT 'false',
   `Status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 belum dibaca, 1 sudah dibaca',
   UNIQUE KEY `ID` (`ID`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9100,13 +10621,13 @@ DROP TABLE IF EXISTS `kritiksaran`;
 CREATE TABLE `kritiksaran` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `sender` text NOT NULL,
-  `senddate` DATETIME DEFAULT NULL,
+  `senddate` datetime DEFAULT NULL,
   `message` text,
   `from` text,
   `Status` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `type` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -9312,10 +10833,14 @@ LOCK TABLES `pesanpenerima` WRITE;
 /*!40000 ALTER TABLE `pesanpenerima` ENABLE KEYS */;
 UNLOCK TABLES;
 
+--
+-- Table structure for table `phonebook`
+--
+
 DROP TABLE IF EXISTS `phonebook`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE  `phonebook` (
+CREATE TABLE `phonebook` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nohp` varchar(20) NOT NULL,
   `nama` varchar(100) NOT NULL,
@@ -9326,6 +10851,15 @@ CREATE TABLE  `phonebook` (
   KEY `IX` (`nohp`,`nama`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `phonebook`
+--
+
+LOCK TABLES `phonebook` WRITE;
+/*!40000 ALTER TABLE `phonebook` DISABLE KEYS */;
+/*!40000 ALTER TABLE `phonebook` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `phones`
@@ -9552,9 +11086,9 @@ CREATE TABLE `identitas` (
   `departemen` varchar(50) DEFAULT NULL,
   `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `perpustakaan` varchar(45) DEFAULT NULL,
-  `info1` varchar(255) DEFAULT NULL,
-  `info2` varchar(255) DEFAULT NULL,
-  `info3` varchar(255) DEFAULT NULL,
+  `info1` varchar(20) DEFAULT NULL,
+  `info2` varchar(20) DEFAULT NULL,
+  `info3` varchar(20) DEFAULT NULL,
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `token` smallint(5) unsigned NOT NULL DEFAULT '0',
   `issync` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -9832,7 +11366,7 @@ CREATE TABLE `suku` (
 
 LOCK TABLES `suku` WRITE;
 /*!40000 ALTER TABLE `suku` DISABLE KEYS */;
-INSERT INTO `suku` VALUES (32,'Jawa',0,NULL,NULL,NULL,'2010-03-02 03:07:22',36536,0),(34,'Padang',0,NULL,NULL,NULL,'2010-03-02 03:07:22',23157,0),(33,'Sunda',0,NULL,NULL,NULL,'2010-03-02 03:07:22',6177,0);
+INSERT INTO `suku` VALUES (32,'Jawa',0,NULL,NULL,NULL,'2010-03-02 03:07:22',36536,0),(34,'Minang',0,NULL,NULL,NULL,'2012-07-19 07:27:05',23157,0),(33,'Sunda',0,NULL,NULL,NULL,'2010-03-02 03:07:22',6177,0);
 /*!40000 ALTER TABLE `suku` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -10153,7 +11687,7 @@ CREATE TABLE `hakakses` (
   `region` varchar(5) DEFAULT NULL,
   `location` varchar(5) DEFAULT NULL,
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `login` varchar(20) NOT NULL,
+  `login` varchar(30) NOT NULL,
   `modul` varchar(100) NOT NULL,
   `tingkat` tinyint(1) unsigned NOT NULL,
   `departemen` varchar(50) DEFAULT NULL,
@@ -10167,7 +11701,7 @@ CREATE TABLE `hakakses` (
   PRIMARY KEY (`replid`),
   KEY `FK_hakakses_login` (`login`),
   CONSTRAINT `FK_hakakses_login` FOREIGN KEY (`login`) REFERENCES `login` (`login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10311,7 +11845,7 @@ CREATE TABLE `landlord` (
 
 LOCK TABLES `landlord` WRITE;
 /*!40000 ALTER TABLE `landlord` DISABLE KEYS */;
-INSERT INTO `landlord` VALUES ('GMS2','BD','AT',1,'1','0','5f4dcc3b5aa765d61d8327deb882cf99','2010-12-01 14:00:25',NULL,NULL,NULL);
+INSERT INTO `landlord` VALUES ('GMS2','BD','AT',1,'1','0','5f4dcc3b5aa765d61d8327deb882cf99','2012-09-21 19:49:25',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `landlord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -10545,7 +12079,7 @@ CREATE TABLE `beritaguru` (
   `info3` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`replid`),
   KEY `IX_beritaguru_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10582,7 +12116,7 @@ CREATE TABLE `beritasekolah` (
   PRIMARY KEY (`replid`),
   KEY `FK_beritasiswa_nip` (`idpengirim`),
   KEY `IX_beritasekolah_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10617,7 +12151,7 @@ CREATE TABLE `beritasiswa` (
   PRIMARY KEY (`replid`),
   KEY `FK_beritasiswa_nip` (`idpengirim`),
   KEY `IX_beritasiswa_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -10903,7 +12437,7 @@ CREATE TABLE `draft` (
   `info3` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`replid`),
   KEY `IX_draft_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11315,7 +12849,7 @@ CREATE TABLE `lampiranberitasiswa` (
   KEY `FK_lampiranberitasiswa_1` (`idberita`),
   KEY `IX_lampiranberitasiswa_ts` (`ts`,`issync`),
   CONSTRAINT `FK_lampiranberitasiswa_1` FOREIGN KEY (`idberita`) REFERENCES `beritasiswa` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11519,7 +13053,7 @@ CREATE TABLE `pesan` (
   `info3` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`replid`),
   KEY `IX_pesan_ts` (`ts`,`issync`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11552,7 +13086,7 @@ CREATE TABLE `pesanterkirim` (
   KEY `FK_pesanterkirim_1` (`idpesan`),
   KEY `IX_pesanterkirim_ts` (`ts`,`issync`),
   CONSTRAINT `FK_pesanterkirim_1` FOREIGN KEY (`idpesan`) REFERENCES `pesan` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11695,7 +13229,7 @@ CREATE TABLE `tujuanpesan` (
   KEY `FK_tujuanpesan_1` (`idpesan`),
   KEY `IX_tujuanpesan_ts` (`ts`,`issync`),
   CONSTRAINT `FK_tujuanpesan_1` FOREIGN KEY (`idpesan`) REFERENCES `pesan` (`replid`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -11716,4 +13250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2011-09-22  7:52:10
+-- Dump completed on 2013-01-03 22:28:57

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,66 +25,69 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-$sender=$_REQUEST['sender'];
-if ($sender=="tambah"){
-OpenDb();
-$dir_bln=date(m);
-$dir_thn=date(Y);
-$dir = $updir . $dir_thn . $dir_bln;
+require_once('../../include/sessionchecker.php');
 
-$jam=date(H).":".date(i).":00";
-$judul=$_REQUEST['judul'];
-$tgl=explode("-",$_REQUEST['tanggal']);
-$tanggal=$tgl[2]."-".$tgl[1]."-".$tgl[0];
-$jenis=$_REQUEST['jenisberita'];
-$abstrak=$_REQUEST['abstrak'];
-$isi=$_REQUEST['isi'];
-$idpengirim=SI_USER_ID();
-$sql1="INSERT INTO jbsvcr.beritasekolah SET judul='$judul', tanggal='".$tanggal." ".$jam."', jenisberita='$jenis',abstrak='$abstrak', isi='$isi', idpengirim='$idpengirim'";
-//echo
-$result1=QueryDb($sql1);
-?>
-<script language="javascript">
-parent.beritasekolah_header.lihat();
-</script>
-<?
-} elseif ($sender=="ubah"){
+$sender = $_REQUEST['sender'];
+if ($sender == "tambah")
+{
 	OpenDb();
-	$page=(int)$_REQUEST['page'];
-	$bulan=$_REQUEST['bulan'];
-	$tahun=$_REQUEST['tahun'];
-	$updir = $UPLOAD_DIR."lampiranbg".GetOSSlash();
-	$dir_bln=date(m);
-	$dir_thn=date(Y);
+	$dir_bln = date(m);
+	$dir_thn = date(Y);
 	$dir = $updir . $dir_thn . $dir_bln;
 
-	//KAlo dari ubah berita guru================================================================================================================================
-	$judul=$_REQUEST['judul'];
-	$d1=$_REQUEST['d1'];
-	$d2=$_REQUEST['d2'];
-	$d3=$_REQUEST['d3'];
-	$repd1=$_REQUEST['repd1'];
-	$repd2=$_REQUEST['repd2'];
-	$repd3=$_REQUEST['repd3'];
-	$tgl=explode("-",$_REQUEST['tanggal']);
-	$tanggal=$tgl[2]."-".$tgl[1]."-".$tgl[0];
-	$jenisberita=$_REQUEST['jenisberita'];
-	$abstrak=$_REQUEST['abstrak'];
-	$isi=$_REQUEST['isi'];
-	$idpengirim=SI_USER_ID();
-	$replid=$_REQUEST['replid'];
-	?>
-		<script language="javascript">
-		//alert ('Mau ngupdate beritanya');
-		</script>
-	<?
-	$sql18="UPDATE jbsvcr.beritasekolah SET judul='$judul', tanggal='$tanggal', jenisberita='$jenisberita', abstrak='$abstrak', isi='$isi', idpengirim='$idpengirim' WHERE replid='$replid'";
-	//echo $sql18;
-	//exit;
-	$result18=QueryDb($sql18);
-?>
+	$jam = date(H).":".date(i).":00";
+	$judul = CQ($_REQUEST['judul']);
+	$tgl = explode("-",$_REQUEST['tanggal']);
+	$tanggal = $tgl[2]."-".$tgl[1]."-".$tgl[0];
+	$jenis = $_REQUEST['jenisberita'];
+	
+	$abstrak = CQ($_REQUEST['abstrak']);
+		
+	$isi = $_REQUEST['isi'];
+	$isi = str_replace("'", "#sq;", $isi);
+	
+	$idpengirim = SI_USER_ID();
+	$sql1 = "INSERT INTO jbsvcr.beritasekolah
+	            SET judul='".$judul."', tanggal='".$tanggal." ".$jam."',
+				       jenisberita='$jenis', abstrak='".$abstrak."', isi='".$isi."',
+					    idpengirim='$idpengirim'";
+	$result1 = QueryDb($sql1);
+	CloseDb(); ?>
+	<script language="javascript">
+		parent.beritasekolah_header.lihat();
+	</script>
+<?
+}
+elseif ($sender == "ubah")
+{
+	OpenDb();
+	$page = (int)$_REQUEST['page'];
+	$bulan = $_REQUEST['bulan'];
+	$tahun = $_REQUEST['tahun'];
+	$dir_bln = date(m);
+	$dir_thn = date(Y);
+	$dir = $updir . $dir_thn . $dir_bln;
+
+	$judul = CQ($_REQUEST['judul']);
+	$tgl = explode("-",$_REQUEST['tanggal']);
+	$tanggal = $tgl[2]."-".$tgl[1]."-".$tgl[0];
+	$jenisberita = $_REQUEST['jenisberita'];
+	
+	$abstrak = CQ($_REQUEST['abstrak']);
+	
+	$isi = $_REQUEST['isi'];
+	$isi = str_replace("'", "#sq;", $isi);
+	
+	$idpengirim = SI_USER_ID();
+	$replid = $_REQUEST['replid'];
+	$sql18 = "UPDATE jbsvcr.beritasekolah
+		          SET judul='$judul', tanggal='$tanggal', jenisberita='$jenisberita',
+				      abstrak='$abstrak', isi='$isi', idpengirim='$idpengirim'
+				  WHERE replid='$replid'";
+	$result18 = QueryDb($sql18);
+	CloseDb(); ?>
 <script language="javascript">
-document.location.href="beritasekolah_footer.php?page=<?=$page?>&tahun=<?=$tahun?>&bulan=<?=$bulan?>";
+	document.location.href="beritasekolah_footer.php?page=<?=$page?>&tahun=<?=$tahun?>&bulan=<?=$bulan?>";
 </script>
 <?
 }

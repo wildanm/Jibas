@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,23 +25,8 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
+require_once('../../include/sessionchecker.php');
+
 $op="";
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
@@ -58,40 +43,17 @@ if ($op=="bzux834hx8x7x934983xihxf084"){
 	$res_cek_tujuan=QueryDb($sql_cek_tujuan);
 	$tujuanexist=@mysql_num_rows($res_cek_tujuan);
 	if ($tujuanexist==0){ //Kalo gak ada, lsg hapus aja semuanya...
-		//Ambil dulu idpesan
 		$sql_get_idpesan="SELECT idpesan FROM jbsvcr.pesanterkirim WHERE replid='$_REQUEST[replid]'";
-		//echo "sql_get_idpesan = ".$sql_get_idpesan."<br>";
 		$res_get_idpesan=QueryDb($sql_get_idpesan);
 		$row_get_idpesan=@mysql_fetch_array($res_get_idpesan);
 		$idpesan=$row_get_idpesan[idpesan];
-		//Hapus di tujuanpesan
+		
 		$sql_del_tujuan="DELETE FROM jbsvcr.tujuanpesan WHERE idpesan='$idpesan'";
-		//echo "sql_del_tujuan = ".$sql_del_tujuan."<br>";
 		QueryDb($sql_del_tujuan);
-		//Ambil direktori+namafile buat dihapus filenya..
-		$sql_getfname="SELECT direktori, namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
-		$result_getfname=QueryDb($sql_getfname);
-		$file="file";
-		$cntdel=0;
-		while ($row_fname=@mysql_fetch_array($result_getfname)){
-			$mydirs[$cntdel]=$UPLOAD_DIR."pesan\\".$row_fname['direktori'].$row_fname['namafile'];
-			$mydir[$cntdel]=str_replace("/","\\",$mydirs[$cntdel]);
-			$cntdel++;	
-		}
-		//echo $mydir[0]."<br>";
-		//echo $mydir[1]."<br>";
-		//echo $mydir[2]."<br>";
-		//exit;
-		delete($mydir[0]);
-		delete($mydir[1]);
-		delete($mydir[2]);
-		//Kalo filenya uda dihapus, hapus alamatnya di tabel lampiran pesan
-		$sql_del_attch="DELETE FROM jbsvcr.lampiranpesan WHERE idpesan='$idpesan'";
-		QueryDb($sql_del_attch);
-		//Hapus dari tabel pesanterkirim
+		
 		$sql_del_terkirim="DELETE FROM jbsvcr.pesanterkirim WHERE replid='$_REQUEST[replid]'";
 		QueryDb($sql_del_terkirim);
-		//Finally, hapus dari tabel pesan
+		
 		$sql_del_terkirim="DELETE FROM jbsvcr.pesan WHERE replid='$idpesan'";
 		QueryDb($sql_del_terkirim);
 
@@ -265,7 +227,6 @@ function delpesan(){
     <td width="69" height="30" class="header"><div align="center">Tanggal</div></td>
     <td width="184" height="30" class="header"><div align="center">Penerima</div></td>
     <td width="428" height="30" class="header"><div align="center">Judul</div></td>
-    <td width="150" height="30" class="header"><div align="center">Lampiran</div></td>
     <td width="70" height="30" class="header">&nbsp;</td>
   </tr>
   <?
@@ -322,25 +283,11 @@ function delpesan(){
 	</td>
     <td><? if ($row1['baru']==1) { ?><img src="../../images/ico/unread.gif" /><? } ?><a href="#" onClick="bacapesan('<?=$row1['replid']?>')">
 	<? 
-	$judul=substr($row1['judul'],0,20);
-	if (strlen($row1['judul'])>20){
-	echo $judul." ...";
-	} else {
-	echo $judul;
-	}
+	echo $row1['judul'];
 	?></a>
     </td>
-    <td>
-    <?
-	$sql2="SELECT direktori,namafile FROM jbsvcr.lampiranpesan WHERE idpesan='$row1[replid]'";
-	$result2=QueryDb($sql2);
-	while ($row2=@mysql_fetch_array($result2)){
-		echo "<a title='Buka lampiran ini!' href='".$WEB_UPLOAD_DIR."pesan/".$row2[direktori].$row2[namafile]."' target='_blank'><img border='0' src='../../images/ico/titik.png' width='5' heiht='5'/> ".$row2['namafile']."</a><br>";
-	}
-	?>
-    </td>
     <td><div align="center">
-    <!--<img src="../../images/ico/ubah.png" border="0" onClick="ubah('<?=$row1[replid]?>')" style="cursor:pointer;" title="Ubah Berita ini !" />&nbsp;--><img src="../../images/ico/hapus.png" border="0" onClick="hapus('<?=$row1[replid_tkrm]?>')" style="cursor:pointer;" title="Hapus Pesan ini !" />
+    <img src="../../images/ico/hapus.png" border="0" onClick="hapus('<?=$row1[replid_tkrm]?>')" style="cursor:pointer;" title="Hapus Pesan ini !" />
    </div></td>
   </tr>
   <? 
@@ -353,11 +300,6 @@ function delpesan(){
   <? } ?>
 </table>
 <input type="hidden" name="numpesan" id="numpesan" value="<?=$numpesan?>">
-
-		<script language='JavaScript'>
-			//Tables('table', 1, 0);
-		</script>
-
 	</td>
   </tr>
 </table>

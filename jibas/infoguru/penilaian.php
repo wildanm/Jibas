@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,164 +89,174 @@ function scrollMiddle() {
 	<table id="Table_01" width="601" height="601" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="12">
-			<img src="images_slice/penilaian_01.jpg" width="600" height="39" alt=""></td>
+			<img src="images/penilaian_01.jpg" width="600" height="39" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="16">
-			<img src="images_slice/penilaian_02.jpg" width="29" height="561" alt=""></td>
+			<img src="images/penilaian_02.jpg" width="29" height="561" alt=""></td>
 		<td rowspan="6">
-			<a href="penilaian/formpenilaian.php" onMouseOver="showhint('Cetak Form-form Penilaian', this, event, '100px')"><img src="images_slice/penilaian_03.jpg" alt="" width="66" height="99" border="0"></a></td>
+			<a href="penilaian/formpenilaian.php" onMouseOver="showhint('Cetak Form-form Penilaian', this, event, '100px')"><img src="images/penilaian_03.jpg" alt="" width="66" height="99" border="0"></a></td>
   <td colspan="10">
-			<img src="images_slice/penilaian_04.jpg" width="505" height="6" alt=""></td>
+			<img src="images/penilaian_04.jpg" width="505" height="6" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="6" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4" rowspan="6">
-			<img src="images_slice/penilaian_05.jpg" width="249" height="102" alt=""></td>
+			<img src="images/penilaian_05.jpg" width="249" height="102" alt=""></td>
 		<td colspan="5">
-			<a href="penilaian/ujian_rpp_kelas.php" onMouseOver="showhint('Daftar Nilai RPP Setiap Kelas', this, event, '100px')"><img src="images_slice/penilaian_06.jpg" alt="" width="110" height="39" border="0"></a></td>
-  <td rowspan="15">
-			<img src="images_slice/penilaian_07.jpg" width="146" height="555" alt=""></td>
+			<a href="penilaian/ujian_rpp_kelas.php" onMouseOver="showhint('Daftar Nilai RPP Setiap Kelas', this, event, '100px')"><img src="images/penilaian_06.jpg" alt="" width="110" height="39" border="0"></a></td>
+		<td rowspan="15" valign="top" align="right">
+			<table border="0" cellpadding="0" width="95%">
+			<tr>
+				<td width="10%">
+				<img src="images/table_small.png" border="0" width="40">	
+				</td>
+				<td>
+				<a href="penilaian/lap_legger.php">Laporan Legger Nilai</a>
+				</td>
+			</tr>	
+			</table>
+		</td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="5">
-			<img src="images_slice/penilaian_08.jpg" width="110" height="6" alt=""></td>
+			<img src="images/penilaian_08.jpg" width="110" height="6" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="6" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="6" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="5">
-			<a href="penilaian/ujian_rpp_siswa.php" onMouseOver="showhint('Daftar Nilai RPP Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_09.jpg" alt="" width="110" height="39" border="0"></a></td>
+			<a href="penilaian/ujian_rpp_siswa.php" onMouseOver="showhint('Daftar Nilai RPP Setiap Siswa', this, event, '100px')"><img src="images/penilaian_09.jpg" alt="" width="110" height="39" border="0"></a></td>
   <td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="5">
-			<img src="images_slice/penilaian_10.jpg" width="110" height="8" alt=""></td>
+			<img src="images/penilaian_10.jpg" width="110" height="8" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="8" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4" rowspan="3">
-			<a href="penilaian/lap_pelajaran_main.php" onMouseOver="showhint('Laporan Nilai Pelajaran Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_11.jpg" alt="" width="107" height="38" border="0"></a></td>
+			<a href="penilaian/lap_pelajaran_main.php" onMouseOver="showhint('Laporan Nilai Pelajaran Setiap Siswa', this, event, '100px')"><img src="images/penilaian_11.jpg" alt="" width="107" height="38" border="0"></a></td>
   <td rowspan="6">
-			<img src="images_slice/penilaian_12.jpg" width="3" height="145" alt=""></td>
+			<img src="images/penilaian_12.jpg" width="3" height="145" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="10">
-			<img src="images_slice/penilaian_13.jpg" width="66" height="462" alt=""></td>
+			<img src="images/penilaian_13.jpg" width="66" height="462" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="9" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="9" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="9">
-			<img src="images_slice/penilaian_14.jpg" width="7" height="453" alt=""></td>
+			<img src="images/penilaian_14.jpg" width="7" height="453" alt=""></td>
 		<td rowspan="3">
-			<a href="penilaian/lihat_nilai_pelajaran.php" onMouseOver="showhint('Pendataan Nilai Pelajaran Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_15.jpg" alt="" width="113" height="107" border="0"></a></td>
+			<a href="penilaian/lihat_nilai_pelajaran.php" onMouseOver="showhint('Pendataan Nilai Pelajaran Setiap Siswa', this, event, '100px')"><img src="images/penilaian_15.jpg" alt="" width="113" height="107" border="0"></a></td>
   <td colspan="2" rowspan="2">
-			<img src="images_slice/penilaian_16.jpg" width="129" height="84" alt=""></td>
+			<img src="images/penilaian_16.jpg" width="129" height="84" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="28" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="28" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4">
-			<a href="penilaian/rataus.main.php"><img src="images_slice/penilaian_17.jpg" alt="" width="107" height="56" border="0"></a></td>
+			<a href="penilaian/rataus.main.php"><img src="images/penilaian_17.jpg" alt="" width="107" height="56" border="0"></a></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="56" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="56" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="7">
-			<img src="images_slice/penilaian_18.jpg" width="13" height="369" alt=""></td>
+			<img src="images/penilaian_18.jpg" width="13" height="369" alt=""></td>
 		<td colspan="2" rowspan="3">
-			<a href="penilaian/lihat_penentuan.php" onMouseOver="showhint('Pendataan Nilai Rapor Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_19.jpg" alt="" width="117" height="90" border="0"></a></td>
+			<a href="penilaian/lihat_penentuan.php" onMouseOver="showhint('Pendataan Nilai Rapor Setiap Siswa', this, event, '100px')"><img src="images/penilaian_19.jpg" alt="" width="117" height="90" border="0"></a></td>
   <td colspan="3" rowspan="2">
-			<img src="images_slice/penilaian_20.jpg" width="106" height="51" alt=""></td>
+			<img src="images/penilaian_20.jpg" width="106" height="51" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="23" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="23" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="6">
-			<img src="images_slice/penilaian_21.jpg" width="113" height="346" alt=""></td>
+			<img src="images/penilaian_21.jpg" width="113" height="346" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="28" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="28" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="5">
-			<img src="images_slice/penilaian_22.jpg" width="17" height="318" alt=""></td>
+			<img src="images/penilaian_22.jpg" width="17" height="318" alt=""></td>
 		<td colspan="3" rowspan="2">
-			<a href="penilaian/komentar_main.php" onMouseOver="showhint('Pendataan Komentar Rapor Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_23.jpg" alt="" width="92" height="99" border="0"></a></td>
+			<a href="penilaian/komentar_main.php" onMouseOver="showhint('Pendataan Komentar Rapor Setiap Siswa', this, event, '100px')"><img src="images/penilaian_23.jpg" alt="" width="92" height="99" border="0"></a></td>
   <td>
-			<img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="39" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="4">
-			<img src="images_slice/penilaian_24.jpg" width="117" height="279" alt=""></td>
+			<img src="images/penilaian_24.jpg" width="117" height="279" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="60" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="60" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
-			<img src="images_slice/penilaian_25.jpg" width="92" height="32" alt=""></td>
+			<img src="images/penilaian_25.jpg" width="92" height="32" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="32" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="32" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="2">
-			<img src="images_slice/penilaian_26.jpg" width="22" height="187" alt=""></td>
+			<img src="images/penilaian_26.jpg" width="22" height="187" alt=""></td>
 		<td>
-			<a href="penilaian/lap_rapor_main.php" onMouseOver="showhint('Laporan Akhir Hasil Belajar Setiap Siswa', this, event, '100px')"><img src="images_slice/penilaian_27.jpg" alt="" width="67" height="116" border="0"></a></td>
+			<a href="penilaian/lap_rapor_main.php" onMouseOver="showhint('Laporan Akhir Hasil Belajar Setiap Siswa', this, event, '100px')"><img src="images/penilaian_27.jpg" alt="" width="67" height="116" border="0"></a></td>
   <td rowspan="2">
-			<img src="images_slice/penilaian_28.jpg" width="3" height="187" alt=""></td>
+			<img src="images/penilaian_28.jpg" width="3" height="187" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="116" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="116" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/penilaian_29.jpg" width="67" height="71" alt=""></td>
+			<img src="images/penilaian_29.jpg" width="67" height="71" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="71" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="71" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/spacer.gif" width="29" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="29" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="66" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="66" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="7" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="7" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="113" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="113" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="13" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="13" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="116" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="116" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="17" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="17" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="22" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="22" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="67" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="67" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="3" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="3" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="146" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="146" height="1" alt=""></td>
 		<td></td>
 	</tr>
 </table>
 <? } else { ?>
 <table width="256" border="0" cellpadding="5" cellspacing="20">
   <tr>
-    <td width="47%" align="center"><a href="penilaian/lap_pelajaran_main.php"><img src="images_slice/penilaian_11a.jpg" width="67" height="88" border="0"><br>
+    <td width="47%" align="center"><a href="penilaian/lap_pelajaran_main.php"><img src="images/penilaian_11a.jpg" width="67" height="88" border="0"><br>
       Laporan&nbsp;Nilai Setiap&nbsp;Siswa</a></td>
-    <td width="53%" align="center"><a href="penilaian/lap_rapor_main.php"><img src="images_slice/penilaian_27a.jpg" width="67" height="88" border="0"><br>
+    <td width="53%" align="center"><a href="penilaian/lap_rapor_main.php"><img src="images/penilaian_27a.jpg" width="67" height="88" border="0"><br>
       Nilai&nbsp;Rapor Siswa</a></td>
   </tr>
 </table>

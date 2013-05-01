@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,8 +30,8 @@ require_once('include/theme.php');
 require_once('include/sessioninfo.php');
 
 $kategori = "";
-if (isset($_GET['kategori']))
-	$kategori = $_GET['kategori'];
+if (isset($_REQUEST['kategori']))
+	$kategori = $_REQUEST['kategori'];
 
 $flag = $_REQUEST['flag'];
 
@@ -53,7 +53,13 @@ if (isset($_REQUEST['urut']))
 
 $urutan = "ASC";	
 if (isset($_REQUEST['urutan']))
-	$urutan = $_REQUEST['urutan'];	
+	$urutan = $_REQUEST['urutan'];
+	
+$option = "";
+if (isset($_REQUEST['option']))
+	$option = $_REQUEST['option'];
+	
+OpenDb();	
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -67,39 +73,40 @@ if (isset($_REQUEST['urutan']))
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript">
-function change_kategori() {
+function change_kategori()
+{
 	var kate = document.getElementById('kategori').value;
-	document.location.href = "carirek.php?kategori="+kate+"&flag=<?=$flag?>";
+	document.location.href = "carirek.php?option=<?=$option?>&kategori="+kate+"&flag=<?=$flag?>";
 }
 
-function pilih(kode, nama) {
+function pilih(kode, nama)
+{
 	opener.accept_rekening(kode, nama, <?=$flag ?>);
 	window.close();
 }
 
-function focusNext(elemName, evt) {
+function focusNext(elemName, evt)
+{
     evt = (evt) ? evt : event;
-    var charCode = (evt.charCode) ? evt.charCode :
-        ((evt.which) ? evt.which : evt.keyCode);
-    if (charCode == 13) {
+    var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
+    if (charCode == 13)
+	{
 		document.getElementById(elemName).focus();
         return false;
     }
     return true;
 }
 
-function change_urut(urut,urutan) {			
+function change_urut(urut,urutan)
+{			
 	var kate = document.getElementById('kategori').value;
-	//var varbaris=document.getElementById("varbaris").value;
-	
-	if (urutan =="ASC"){
-		urutan="DESC"
-	} else {
-		urutan="ASC"
-	}
-	
-	document.location.href = "carirek.php?kategori="+kate+"&flag=<?=$flag?>&urutan="+urutan+"&urut="+urut+"&page=<?=$page?>&hal=<?=$hal?>&varbaris=<?=$varbaris?>";
 
+	if (urutan =="ASC")
+		urutan="DESC"
+	else 
+		urutan="ASC"
+	
+	document.location.href = "carirek.php?option=<?=$option?>&kategori="+kate+"&flag=<?=$flag?>&urutan="+urutan+"&urut="+urut+"&page=<?=$page?>&hal=<?=$hal?>&varbaris=<?=$varbaris?>";
 }
 </script>
 </head>
@@ -129,20 +136,30 @@ function change_urut(urut,urutan) {
     <!-- TABLE LINK -->
     <tr>
     	<td align="left" width="50%"><strong>Kategori&nbsp;</strong>
-        <select name="kategori" id="kategori" onChange="change_kategori()" onKeyPress="return focusNext('pilih1', event)">
-        <?
-		$sql = "SELECT * FROM katerekakun ORDER BY urutan";
-		OpenDb();
-		$result = QueryDb($sql);
-		while ($row = mysql_fetch_array($result)) {
-			if ($kategori == "")
-				$kategori = $row['kategori'];
-		?>
-        	<option value="<?=$row['kategori']?>" <?=StringIsSelected($kategori, $row['kategori'])?> ><?=$row['kategori']?></option>
-        <?
-		}
-		?>
-		</select>
+<? 		if ($option == "ro") { ?>
+
+			<input type="text" name="kategori" id="kategori" readonly="readonly" style="background-color:#DDD" value="<?= strtoupper($kategori) ?>">
+
+<?		} else { ?>
+
+			<select name="kategori" id="kategori" onChange="change_kategori()" onKeyPress="return focusNext('pilih1', event)">
+			<?
+			OpenDb();
+			$sql = "SELECT * FROM katerekakun ORDER BY urutan";
+			$result = QueryDb($sql);
+			while ($row = mysql_fetch_array($result))
+			{
+				if ($kategori == "")
+					$kategori = $row['kategori']; ?>
+				<option value="<?=$row['kategori']?>" <?=StringIsSelected($kategori, $row['kategori'])?> ><?=$row['kategori']?></option>
+			<?
+			}
+			CloseDb();
+			?>
+			</select>
+		
+<? 		} ?>
+        
         </td>
         <!--<td align="right" width="50%">
         <input type="button" class="but" value="Tutup" onclick="window.close()" />
@@ -153,125 +170,89 @@ function change_urut(urut,urutan) {
 </tr>
 <tr>
 	<td>
-<?	$sql_tot = "SELECT * FROM rekakun WHERE kategori = '$kategori' ORDER BY kode";
+<?	OpenDb();
+	$sql_tot = "SELECT * FROM rekakun WHERE kategori='$kategori' ORDER BY kode";
 	$result_tot = QueryDb($sql_tot);
 	$total = ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql = "SELECT * FROM rekakun WHERE kategori = '$kategori' ORDER BY $urut $urutan "; 
-		
+	$sql = "SELECT * FROM rekakun WHERE kategori='$kategori' ORDER BY $urut $urutan "; 	
 	$result = QueryDb($sql);
-	if (mysql_num_rows($result) > 0) {
-		$tot = mysql_num_rows($result);
-?>
-	<br />
-    
-	<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
-	<tr height="30" align="center" class="header">
-        <td width="8%" >No</td>
-        <td width="15%" onMouseOver="background='style/formbg2agreen.gif';height=30;" onMouseOut="background='style/formbg2.gif';height=30;" background="style/formbg2.gif" onClick="change_urut('kode','<?=$urutan?>')" style="cursor:pointer;">Kode <?=change_urut('kode',$urut,$urutan)?></td>
-        <td width="30%"  onMouseOver="background='style/formbg2agreen.gif';height=30;" onMouseOut="background='style/formbg2.gif';height=30;" background="style/formbg2.gif" onClick="change_urut('nama','<?=$urutan?>')" style="cursor:pointer;">Nama <?=change_urut('nama',$urut,$urutan)?></td>
-        <td>Keterangan</td>
-        <td width="6%">&nbsp;</td>
-	</tr>
-    <? 
-	if ($page==0)
-		$no = 0;
-	else 
-		$no = (int)$page*(int)$varbaris;
+	if (mysql_num_rows($result) > 0)
+	{
+		$tot = mysql_num_rows($result); ?>
+		<br />
+		<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
+		<tr height="30" align="center" class="header">
+			<td width="8%" >No</td>
+			<td width="15%" onMouseOver="background='style/formbg2agreen.gif';height=30;" onMouseOut="background='style/formbg2.gif';height=30;" background="style/formbg2.gif" onClick="change_urut('kode','<?=$urutan?>')" style="cursor:pointer;">Kode <?=change_urut('kode',$urut,$urutan)?></td>
+			<td width="30%"  onMouseOver="background='style/formbg2agreen.gif';height=30;" onMouseOut="background='style/formbg2.gif';height=30;" background="style/formbg2.gif" onClick="change_urut('nama','<?=$urutan?>')" style="cursor:pointer;">Nama <?=change_urut('nama',$urut,$urutan)?></td>
+			<td>Keterangan</td>
+			<td width="6%">&nbsp;</td>
+		</tr>
+<? 		if ($page==0)
+			$no = 0;
+		else 
+			$no = (int)$page*(int)$varbaris;
 		
-	while ($row = mysql_fetch_array($result)) {
-	?>
-    <tr onclick="pilih('<?=$row['kode'] ?>','<?=$row['nama'] ?>')">
-    	<td align="center"><?=++$no ?></td>
-        <td align="center"><?=$row['kode'] ?></td>
-        <td><?=$row['nama'] ?></td>
-        <td><?=$row['keterangan'] ?></td>
-        <td align="center">
-        <input type="button" class="but" value="pilih" name="pilih<?=$no ?>" id="pilih<?=$no ?>" onclick="pilih('<?=$row['kode'] ?>','<?=$row['nama'] ?>')"  />
-        </td>
-    </tr>
-    <? 
-	}
-	?>
-    </table>
-     <script language='JavaScript'>
-	    Tables('table', 1, 0);
-    </script>
-     <?	if ($page==0){ 
-		$disback="style='visibility:hidden;'";
-		$disnext="style='visibility:visible;'";
+		while ($row = mysql_fetch_array($result))
+		{ ?>
+			<tr onclick="pilih('<?=$row['kode'] ?>','<?=$row['nama'] ?>')">
+				<td align="center"><?=++$no ?></td>
+				<td align="center"><?=$row['kode'] ?></td>
+				<td><?=$row['nama'] ?></td>
+				<td><?=$row['keterangan'] ?></td>
+				<td align="center">
+				<input type="button" class="but" value="pilih" name="pilih<?=$no ?>" id="pilih<?=$no ?>" onclick="pilih('<?=$row['kode'] ?>','<?=$row['nama'] ?>')"  />
+				</td>
+			</tr>
+<? 		} ?>
+		</table>
+		<script language='JavaScript'>
+			Tables('table', 1, 0);
+		</script>
+<?		if ($page==0)
+		{ 
+			$disback="style='visibility:hidden;'";
+			$disnext="style='visibility:visible;'";
 		}
-		if ($page<$total && $page>0){
-		$disback="style='visibility:visible;'";
-		$disnext="style='visibility:visible;'";
+		if ($page<$total && $page>0)
+		{
+			$disback="style='visibility:visible;'";
+			$disnext="style='visibility:visible;'";
 		}
-		if ($page==$total-1 && $page>0){
-		$disback="style='visibility:visible;'";
-		$disnext="style='visibility:hidden;'";
+		if ($page==$total-1 && $page>0)
+		{
+			$disback="style='visibility:visible;'";
+			$disnext="style='visibility:hidden;'";
 		}
-		if ($page==$total-1 && $page==0){
-		$disback="style='visibility:hidden;'";
-		$disnext="style='visibility:hidden;'";
-		}
-	?>
-     </td>
+		if ($page==$total-1 && $page==0)
+		{
+			$disback="style='visibility:hidden;'";
+			$disnext="style='visibility:hidden;'";
+		}	?>
+    </td>
 </tr> 
 <tr>
     <td>
-    <!--
-	<table border="0"width="100%" align="center" cellpadding="0" cellspacing="0">	
-    <tr>
-       	<td width="30%" align="left">Hal
-        <select name="hal" id="hal" onChange="change_hal()">
-        <?	for ($m=0; $m<$total; $m++) {?>
-             <option value="<?=$m ?>" <?=IntIsSelected($hal,$m) ?>><?=$m+1 ?></option>
-        <? } ?>
-     	</select>
-	  	dari <?=$total?> hal
-		
-		<? 
-     // Navigasi halaman berikutnya dan sebelumnya
-        ?>
-        </td>
-    	<td align="center">
-    <input <?=$disback?> type="button" class="but" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">
-		<?
-		for($a=0;$a<$total;$a++){
-			if ($page==$a){
-				echo  "<font face='verdana' color='red'><strong>".($a+1)."</strong></font> "; 
-			} else { 
-				echo  "<a href='#' onClick=\"change_page('".$a."')\">".($a+1)."</a> "; 
-			}
-				 
-	    }
-		?>
-	     <input <?=$disnext?> type="button" class="but" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">
- 		</td>
-        <td width="30%" align="right">Jml baris per hal
-      	<select name="varbaris" id="varbaris" onChange="change_baris()">
-        <? 	for ($m=5; $m <= $akhir; $m=$m+5) { ?>
-        	<option value="<?=$m ?>" <?=IntIsSelected($varbaris,$m) ?>><?=$m ?></option>
-        <? 	} ?>
-       
-      	</select></td>
-    </tr>
-    </table>-->
-<?	} else { ?>	
-<table width="100%" border="0" align="center">
-<tr><td><hr style="border-style:dotted" /></td></tr>          
-<tr>
-	<td align="center" valign="middle" height="200">    
-    	<font size = "2" color ="red"><b>Tidak ditemukan adanya data.         
-        <br />Tambah data kode rekening pada kategori <?=$kategori?> di menu Kode Rekening Perkiraan pada bagian Penerimaan. 
-        
-        </b></font>
+<?	}
+	else
+	{	?>	
+		<table width="100%" border="0" align="center">
+		<tr><td><hr style="border-style:dotted" /></td></tr>          
+		<tr>
+			<td align="center" valign="middle" height="200">    
+				<font size = "2" color ="red"><b>Tidak ditemukan adanya data.         
+				<br />Tambah data kode rekening pada kategori <?=$kategori?> di menu Kode Rekening Perkiraan pada bagian Penerimaan.        
+				</b></font>
+			</td>
+		</tr>
+		</table>  
+<?
+}
+?>    
 	</td>
-</tr>
-</table>  
-<? } ?>    
-    </td>
 </tr>
 <tr height="35">
 	<td align="center">
@@ -295,3 +276,6 @@ function change_urut(urut,urutan) {
 <script language="javascript">
 	var spryselect1 = new Spry.Widget.ValidationSelect("kategori");
 </script>
+<?
+CloseDb();
+?>

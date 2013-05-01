@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,84 +21,78 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-//require_once('../include/errorhandler.php');
+require_once('../include/errorhandler.php');
 require_once('../include/sessioninfo.php');
 require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../library/departemen.php');
-//require_once('../cek.php');
+require_once('../include/sessionchecker.php');
 
 $kelompokJam = NULL;
 $jam = NULL;
 $jadwal = NULL;
 $keg = NULL;
 $op = $_REQUEST['op'];
-if ($op == "xm8r389xemx23xb2378e23") {	
-	OpenDb();
-	$sql = "DELETE FROM aktivitaskalender WHERE replid = '$_REQUEST[replid]'";	
-	QueryDb($sql);
-	CloseDb();
-}
 
 OpenDb();
 
-	$kalender = $_REQUEST['kalender'];
-	$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), t.tglakhir FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t where k.replid='$kalender' AND k.idtahunajaran = t.replid";
-	$result = QueryDb($sql_kalender);
-	//echo "sql ".$sql_kalender;
-	//if (mysql_num_rows($result) > 0) {
+$kalender = $_REQUEST['kalender'];
+
+$sql_kalender = "SELECT MONTH(t.tglmulai), YEAR(t.tglmulai), MONTH(t.tglakhir), YEAR(t.tglakhir), t.tglakhir
+						 FROM jbsakad.kalenderakademik k, jbsakad.tahunajaran t
+						WHERE k.replid='$kalender' AND k.idtahunajaran = t.replid";
+$result = QueryDb($sql_kalender);
+$row = mysql_fetch_row($result);
+		
+$bulan1 = $row[0];
+$tahun1 = $row[1];
+$bulan2 = $row[2];
+$tahun2 = $row[3];
+		
+$bln = $bulan1;
+if (isset($_REQUEST['bln']))
+	$bln = $_REQUEST['bln'];
+
+$thn = $tahun1;
+if (isset($_REQUEST['thn']))
+	$thn = $_REQUEST['thn'];
 	
-		$row = mysql_fetch_row($result);
+$prevbln = $bulan1;
+if (isset($_REQUEST['prevbln']))
+	$prevbln = $_REQUEST['prevbln'];
+	
+$prevthn = $tahun1;
+if (isset($_REQUEST['prevthn']))
+	$prevthn = $_REQUEST['prevthn'];
+	
+$next = 0;
+if (isset($_REQUEST['next']))
+	$next = $_REQUEST['next'];	
 		
-		$bulan1 = $row[0];
-		$tahun1 = $row[1];
-		$bulan2 = $row[2];
-		$tahun2 = $row[3];
+$last = 0;
+$tahun = $thn;
+$bul = $bln+5;
+if ($bln > 6)
+{
+	$bul = ($bln+5)-12;
+	$tahun = $thn+1;
+}
 		
-		$bln = $bulan1;
-		if (isset($_REQUEST['bln']))
-			$bln = $_REQUEST['bln'];
+if ($bul >= $bulan2 && $tahun >= $tahun2)
+{	
+	$last = 1;
+}
 		
-		$thn = $tahun1;
-		if (isset($_REQUEST['thn']))
-			$thn = $_REQUEST['thn'];
-		$prevbln = $bulan1;
-		if (isset($_REQUEST['prevbln']))
-			$prevbln = $_REQUEST['prevbln'];
-		$prevthn = $tahun1;
-		if (isset($_REQUEST['prevthn']))
-			$prevthn = $_REQUEST['prevthn'];
-		$next = 0;
-		if (isset($_REQUEST['next']))
-			$next = $_REQUEST['next'];	
-		
-		$last = 0;
-		$tahun = $thn;
-		$bul = $bln+5;
-		if ($bln > 6) {
-			$bul = ($bln+5)-12;
-			$tahun = $thn+1;
-		}
-		
-		//echo "Masuk bln ".$bln." bul ".$bul." bulan2 ".$bulan2." tahun ".$tahun." tahun2 ".$tahun2;
-		
-		if ($bul >= $bulan2 && $tahun >= $tahun2) {	
-			$last = 1;
-			//echo "Masuk bul >= bulan2 & tahun >= tahun2";
-		}
-		
-		if ($bln == $bulan1 && $thn == $tahun1) {
-			$next = 0;
-			//Masuk bln == bulan1 & thn == tahun1
-		}
-		
+if ($bln == $bulan1 && $thn == $tahun1)
+{
+	$next = 0;
+}
 
 $color = array(array("#FD0000","#FFCCCC"),array("#339900","#DFEFDF"),array("#5E5CB5","#C7C6EA"),array("#FF7200","#FCCAA0"),array("#F100C1","#f2ade4"),array("#009F79","#9DD7CB"),array("#8900FE","#DDC1F4"),array("#0080B0","#9CC2D1"),array("#FF9933","#FFFF99"),array("#007F00","#C1E6AC"),array("#990000","#FF8e8e"),array("#0057B9","#8aaed6"));
 
-
-OpenDb();
-function loadKalender1($kalender) {
+function loadKalender1($kalender)
+{
 	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' ORDER BY tanggalawal"; 
 	
 	$result = QueryDb($sql);
@@ -116,7 +110,8 @@ function loadKalender1($kalender) {
 	return true;
 }	
 
-function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
+function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2)
+{
 	global $keg;
 	$batastgl1 = $tahun1."-".$bulan1."-1";
 	$batastgl2 = $tahun2."-".$bulan2."-31";
@@ -218,35 +213,39 @@ function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
 	return true;
 }
 
-function getCell1($r, $c, $id) {
-	global $mask, $jadwal, $color;	
-	if($mask[$c] == 0) {
-		if(isset($jadwal[row][$id][$r][$c])) {	
+function getCell1($r, $c, $id, $m)
+{
+	global $mask, $jadwal, $color;
+	
+	if($mask[$c] == 0)
+	{
+		if(isset($jadwal[row][$id][$r][$c]))
+		{				
 			$mask[$c+1] = $jadwal[row][$id][$r][$c][njam] - 1;
-				
-			$m = $r;
-			if ($r > count($color)-1) 
-				$m = $r - ((count($color)-1)*(int)substr($r,0,1)+1);
+			
+			$dt=split("-",$jadwal[row][$id][$r][$c][awal]);
+			$dt1=split("/",$dt[0]);
+			$dt2=split("/",$dt[1]);
 								
 			$s = "<td align='center' valign='middle' style='background-color: {$color[$m][1]}' colspan='{$jadwal[row][$id][$r][$c][njam]}'>";
-			$s.= "<font class='thismonth'>{$jadwal[row][$id][$r][$c][awal]}</font>";						
+			$s.= "<font class='thismonth'>$dt1[0] - $dt2[0]</font>";
 			$s.= "<br><img src='../images/ico/lihat.png' style='cursor:pointer'";
 			$s.= " onclick='lihat($id)'> &nbsp;";			
-			//$s.= "<img src='../images/ico/ubah.png' style='cursor:pointer'";
-			//$s.= " onclick='edit($id)'> &nbsp;";
-			//$s.= "<img src='../images/ico/hapus.png' style='cursor:pointer'";
-			//$s.= " onclick='hapus($id)'>";
 			$s.= "</td>";
 			
 			return $s;
-		} else {			
+		}
+		else
+		{			
 			$mask[$c+1] = 0;			
 			$s = "<td align='center' valign='middle' style='background-color: #DFEFFF'>";
 			$s.= "</td>";
 			return $s;
 		}
-	} else {
-		$mask[$c+1] = $mask[$c]-1;
+	}
+	else
+	{
+		$mask[$c+1] = $mask[$c]-1;	
 	}
 }
 
@@ -268,30 +267,6 @@ function getCell1($r, $c, $id) {
 <script type="text/javascript" language="javascript" src="../javascript/common.js"></script>
 <script type="text/javascript" language="javascript">
 
-function tambah() {
-	var kalender = document.getElementById('kalender').value;
-	
-	newWindow('kegiatan_add.php?kalender='+kalender, 'TambahKegiatanAkademik', '650','655', 'resizable=1,scrollbars=1,status=0,toolbar=0');
-}
-
-function hapus(replid) {
-	var kalender = document.getElementById('kalender').value;
-	var bln = document.getElementById('nowbln').value;
-	var thn = document.getElementById('nowthn').value;
-	var next = document.getElementById('next').value;
-	var last = document.getElementById('last').value;
-	var prevbln = document.getElementById('prevbln').value;
-	var prevthn = document.getElementById('prevthn').value;
-	
-	if (confirm("Apakah anda yakin akan menghapus jadwal kelas ini?"))
-		document.location.href = "kalender_footer.php?op=xm8r389xemx23xb2378e23&replid="+replid+"&kalender="+kalender+"&bln="+bln+"&thn="+thn+"&next="+next+"&last="+last+"&prevbln="+prevbln+"&prevthn="+prevthn;
-}
-
-function edit(replid) {	
-	newWindow('kegiatan_edit.php?replid='+replid, 'UbahKegiatanAkademik','650','650','resizable=1,scrollbars=0,status=0,toolbar=0')
-		
-}
-
 function lihat(replid) {	
 	newWindow('kalender_detail.php?replid='+replid, 'KalenderAkademikDetail','750','700','resizable=1,scrollbars=1,status=0,toolbar=0')
 		
@@ -303,12 +278,12 @@ function cetak1() {
 	var thn = document.getElementById('nowthn').value;
 	var last = document.getElementById('last').value;	
 	var next = document.getElementById('next').value;
-	newWindow('kalender_cetak.php?kalender='+kalender+'&bln='+bln+'&thn='+thn+'&next=0&last='+last, 'CetakKalenderAkademik', '800', '650', 'resizable=1,scrollbars=0,status=0,toolbar=0');
+	newWindow('kalender_cetak.php?kalender='+kalender+'&bln='+bln+'&thn='+thn+'&next=0&last='+last, 'CetakKalenderAkademik', '800', '650', 'resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 function cetak2() {
 	var kalender = document.getElementById('kalender').value;
 	
-	newWindow('kalender_cetak.php?kalender='+kalender, 'CetakKalenderAkademik', '800', '650', 'resizable=0,scrollbars=1,status=0,toolbar=0');
+	newWindow('kalender_cetak.php?kalender='+kalender, 'CetakKalenderAkademik', '800', '650', 'resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
 function GoToNextMonth() {	
@@ -346,7 +321,7 @@ function refresh() {
 <!-- TABLE CENTER -->
 <tr>
 	<td>
-    <? 	OpenDb();
+    <? 	
 		$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = '$kalender'";
 		$result = QueryDb($sql);
 		
@@ -359,15 +334,10 @@ function refresh() {
         <td width="*" align="right">
             <a href="#" onClick="document.location.reload()"><img src="../images/ico/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;&nbsp;
             <? if (!isset($_REQUEST[bln])){ ?>
-			<a href="JavaScript:cetak2()"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')" />&nbsp;Cetak</a>&nbsp;&nbsp;
+			<a href="JavaScript:cetak1()"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')" />&nbsp;Cetak</a>&nbsp;&nbsp;
 			<? } else { ?>
 			<a href="JavaScript:cetak1()"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')" />&nbsp;Cetak</a>&nbsp;&nbsp;
-			<? } ?>    
-        <?	//if (SI_USER_LEVEL() == $SI_USER_STAFF) { ?>
-                <!--<a href="JavaScript:tambah()"><img src="../images/ico/tambah.png" border="0" onMouseOver="showhint('Tambah!', this, event, '50px')" />&nbsp;Tambah Kegiatan</a>-->
-        <?	//} ?>   
-            
-            
+			<? } ?>
         </td>
         <td align="right" width="320">
         	<? 	if ($next == 1) {?>
@@ -459,12 +429,18 @@ function refresh() {
     ?> <input type="hidden" name="kegiatan" id="kegiatan" value="<?=$keg[row]?>"> <?
     loadKalender2($kalender,$bln,$thn,$n,$batasthn);
     if (isset($keg[row])) {
+		$m = -1;
         for ($i = 0; $i < count($keg[row]); $i++ ){
             $id = $keg[row][$i][id];
-            $m = $i;
-            if ($i > count($color)-1) 
-                $m = $i - ((count($color)-1)*(int)substr($i,0,1)+1);		
-    
+            //$m = $i;			
+            //if ($i > count($color)-1) 
+			//	$m = $i - ((count($color)-1)*(int)substr($i,0,1)+1);
+                //$m = $i - ((count($color)-1)*(int)substr($i,0,1)+1);	
+			
+			$m = $m+1;
+			if ($m >= count($color)) 
+				$m = 0; 
+    		//echo "<br>".$i." m ".$m." ".$i."-".$tot."*".$set." = ".$ma;
     ?>
     <tr>
         <td style="background-color:<?=$color[$m][0]?> ; color:#FFFFFF" align="center" width="5%"><b><?=($i+1).'. '?></b></td>
@@ -477,7 +453,7 @@ function refresh() {
         </b></td>
             <?		
             for($j = 1; $j <=24 ; $j++) {	
-                echo getCell1($i, $j, $id); 
+                echo getCell1($i, $j, $id, $m); 
             }
             ?>
         
@@ -491,12 +467,8 @@ function refresh() {
     <table width="100%" border="0" align="center">          
 	<tr>
 		<td align="center" valign="middle" height="200">
-    	<font size = "2" color ="red"><b>Tidak ditemukan adanya data. 
-        <? if (SI_USER_LEVEL() != $SI_USER_STAFF) { ?>
-        <br />Klik &nbsp;<a href="JavaScript:tambah()" ><font size = "2" color ="green">di sini</font></a>&nbsp;untuk mengisi data baru. 
-        <? } ?>
-        </b></font>
-        </td>
+			<font size = "2" color ="red"><b>Tidak ditemukan adanya data. </b></font>
+      </td>
 	</tr>
 	</table> 
     <? } ?>

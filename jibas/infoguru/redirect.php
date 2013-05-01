@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -120,10 +120,20 @@ else
 		$query_root = "SELECT replid, dirfullpath FROM jbsvcr.dirshare WHERE idroot=0";
 		$result_root = QueryDb($query_root);
 		$row_root = @mysql_fetch_array($result_root);
-		$newdir = $UPLOAD_DIR . "fileshare/" . $_SESSION['login'];
+		$newdir = $FILESHARE_UPLOAD_DIR . "/fileshare/" . $_SESSION['login'];
 	
 		if (!@file_exists($newdir) && !@is_dir($newdir))
-			@mkdir($newdir, 0755);
+		{
+			@mkdir($newdir, 0750, true);
+			
+			$fhtaccess = "$newdir/.htaccess";
+			$fhtaccess = str_replace("//", "/", $fhtaccess);
+			if ($fp = @fopen($fhtaccess, "w"))
+			{
+				@fwrite($fp, "Options -Indexes\r\n");
+				@fclose($fp);
+			}
+		}
 			
 		$query = "SELECT * FROM jbsvcr.dirshare 
 				   WHERE idroot = $row_root[replid] AND idguru='$_SESSION[login]' AND dirname='$_SESSION[login]'";

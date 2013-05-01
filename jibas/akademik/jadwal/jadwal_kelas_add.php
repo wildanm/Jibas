@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -174,8 +174,10 @@ if (isset($_REQUEST['Simpan']))
 }
 
 OpenDb();	
-$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, k.kelas FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, kelas k WHERE i.replid = '$info' AND t.replid = i.idtahunajaran AND k.replid = '$kelas' AND k.idtahunajaran = t.replid ";
-
+$sql1 = "SELECT t.replid, t.tahunajaran, t.departemen, k.kelas
+		   FROM jbsakad.infojadwal i, jbsakad.tahunajaran t, kelas k
+		  WHERE i.replid = '$info' AND t.replid = i.idtahunajaran
+		    AND k.replid = '$kelas' AND k.idtahunajaran = t.replid ";
 $result1 = QueryDb($sql1);
 $row1 = mysql_fetch_array($result1); 
 $departemen = $row1['departemen'];
@@ -210,7 +212,7 @@ function acceptPegawai(nip, nama, flag, dep, pel) {
 	document.getElementById('nipguru').value = nip;
 	document.getElementById('nama').value = nama;
 	document.getElementById('namaguru').value = nama;
-	document.getElementById('pelajaran').value = pel;
+	//document.getElementById('pelajaran').value = pel;
 }
 
 function showPelajaran(x) {
@@ -222,7 +224,8 @@ function validate() {
 	var jam2 = document.getElementById('jam2').value; 
 	var jam1 = document.getElementById('jam1').value; 
 	var maxJam = document.getElementById('maxJam').value; 
-	var ket = document.getElementById('keterangan').value; 
+	var ket = document.getElementById('keterangan').value;
+	var pel = document.getElementById('pelajaran').value;
 	
 	if (nip.length == 0) {
 		alert("NIP guru harus dimasukkan");
@@ -247,7 +250,12 @@ function validate() {
 		alert ('Jam akhir tidak boleh lebih dari jumlah jam jadwal kelas');
 		document.getElementById('jam2').focus();
 		return false;
+	} else if (pel.length == 0) {
+		alert ('Pelajaran tidak boleh kosong. Atur kembali data guru & pelajaran yang diajarnya.');
+		document.getElementById('pelajaran').focus();
+		return false;	
 	}
+	
 	return true;
 	
 }
@@ -325,16 +333,14 @@ function changepel()
 	<td align="left"><strong>Pelajaran</strong></td>
  	<td><div id ="InfoPelajaran">
       	<select name="pelajaran" id="pelajaran" onChange="changepel()" onKeyPress="return focusNext('nip', event)" onFocus="panggil('pelajaran')" >
-   	<?	OpenDb();
-		$sql = "SELECT replid,nama FROM pelajaran WHERE departemen = '$departemen' AND aktif=1 ORDER BY nama";
+<?		$sql = "SELECT replid,nama FROM pelajaran WHERE departemen = '$departemen' AND aktif=1 ORDER BY nama";
 		$result = QueryDb($sql);
-		CloseDb();
-		while ($row = @mysql_fetch_array($result)) {
-		?>
-        
-    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>
-                  
-    <?	} ?>
+		$npel = 0;
+		while ($row = @mysql_fetch_array($result))
+		{
+			$npel += 1;	?>
+	    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>
+<?		} ?>
     	</select></div></td>  
 </tr>
 <tr>
@@ -375,7 +381,11 @@ function changepel()
 </tr>
 <tr>
 	<td colspan="2" align="center">
-    <input type="submit" name="Simpan" id="Simpan" value="Simpan" class="but" onFocus="panggil('Simpan')"/>&nbsp;
+<?	if ($npel == 0) { ?>
+	[Belum ada data pelajaran]
+<?	} else { ?>
+	<input type="submit" name="Simpan" id="Simpan" value="Simpan" class="but" onFocus="panggil('Simpan')"/>&nbsp;
+<?	} ?>
     <input type="button" name="Tutup" id="Tutup" value="Tutup" class="but" onClick="window.close()" />
     </td>
 </tr>
@@ -391,6 +401,9 @@ function changepel()
     <td width="28" background="../<?=GetThemeDir() ?>bgpop_09.jpg">&nbsp;</td>
 </tr>
 </table>
+<?
+CloseDb();
+?>
 
 <!-- Tamplikan error jika ada -->
 <? if (strlen($ERROR_MSG) > 0) { ?>

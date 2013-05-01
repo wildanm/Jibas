@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,65 +26,9 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/common.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
-require_once('../../include/theme.php'); 
-if (isset($_REQUEST['iddir']))
-	$iddir = $_REQUEST['iddir'];
-OpenDb();
-$sql = "SELECT dirfullpath FROM jbsvcr.dirshare WHERE idroot=0";
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$rootname = $row[0];
-CloseDb();
-OpenDb();
-$sql="SELECT * FROM jbsvcr.dirshare WHERE replid='$iddir'";
-$result=QueryDb($sql);
-$row=@mysql_fetch_array($result);
-$dirfullpath=$row[dirfullpath];
-CloseDb();
-$fullpath = str_replace($rootname, "", $dirfullpath);
-$cek = 0;
-$ERROR_MSG = "";
-if (isset($_REQUEST['Simpan'])) {
-	//echo "Masuk";
-			$bln=date(m);
-			if (strLen($bln)<2){
-			$bln="0".$bln;
-			}
-			$thn=date(Y);
-			$tgl=date(j);
-			if (strLen($tgl)<2){
-			$tgl="0".$tgl;
-			}
-			$jam=date(H).":".date(i).":00";
-
-	$foto=$_FILES["file"];
-  	$uploadedfile = $foto['tmp_name'];
-	$uploadedtypefile = $foto['type'];
-  	$uploadedsizefile = $foto['size'];
-	$dir = $_REQUEST['dir'];//dirfullpath ada httpnya
-	$iddir = $_REQUEST['iddir'];//fullpath
-	$dest = str_replace($WEB_UPLOAD_DIR, $UPLOAD_DIR."fileshare".GetOSSlash(), $dir);
-	$destinationdir = str_replace("/", GetOSSlash(), $dest);
-	//echo $UPLOAD_DIR."fileshare\\".$destinationdir;
-	$destinationdir = str_replace("root\\", $UPLOAD_DIR."fileshare".GetOSSlash(), $destinationdir);
-	$destinationdir = str_replace("root/", $UPLOAD_DIR."fileshare".GetOSSlash(), $destinationdir);
-	//echo $destinationdir.$foto['name'];
-	//exit;
-	//echo $uploadedfile."<br>".$destinationdir.$foto['name'];
-	move_uploaded_file($uploadedfile, $destinationdir.$foto['name']);
-	//exit;
-	//echo $WEB_UPLOAD_DIR."fileshare/".$destinationdir.$foto['name'];exit;
-	OpenDb();
-	$sql = "INSERT INTO jbsvcr.fileshare SET iddir='$iddir',filename='".$foto['name']."', filetime='".$thn."-".$bln."-".$tgl." ".$jam."',filesize='$uploadedsizefile'";
-	$result = QueryDb($sql);
-	if ($result) { ?>
-		<script language="javascript">				
-			opener.get_fresh();
-			window.close();
-		</script> 
-<?	}
-	CloseDb();
-}
+require_once('../../include/theme.php');
+require_once('../../include/sessionchecker.php');
+require_once('addfile.function.php');
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -99,13 +43,24 @@ if (isset($_REQUEST['Simpan'])) {
 <script language="javascript" src="../../script/tools.js"></script>
 <script language="javascript" src="../../script/validasi.js"></script>
 <script language="javascript">
-function validate(){
-var f = document.getElementById("file").value;
-if (f.length==0){
-	alert ("Anda harus mengisikan file yang hendak di Upload !");
-	return false;
-}
-return true;
+function validate()
+{
+	var nfill = 0;
+	for(i = 1; i <= 7; i++)
+	{
+		var name = "file" + i;
+		var value = document.getElementById(name).value;
+		
+		if (value.length != 0)
+			nfill += 1;
+	}
+	
+	if (nfill == 0)
+	{
+		alert ("Anda harus mengisikan file yang hendak di Upload!");
+		return false;	
+	}
+	return true;
 }
 </script>
 <style type="text/css">
@@ -117,34 +72,49 @@ return true;
 
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" style="background-color:#FFFFFF" >
 <form name="main" method="POST" enctype="multipart/form-data" onSubmit="return validate()">
+<input type="hidden" name="fullpath" readonly value="<?=$fullpath?>" >
+<input type="hidden" name="dir" readonly value="<?=$dirfullpath?>" >
+<input type="hidden" name="iddir" readonly value="<?=$iddir?>" >
 <table border="0" width="95%" cellpadding="2" cellspacing="2" align="center">
 <!-- TABLE CONTENT -->
 <tr height="25">
-<td colspan="2" align="center" class="header">Tambah File</td>
+<td colspan="2" align="center" class="header">Unggah Berkas</td>
 </tr>
 <tr>
   <td width="12%" align="left" bgcolor="#CCCCCC"><strong>Folder&nbsp;Tujuan&nbsp;:&nbsp;</strong></td>
-  <td width="88%" align="center" bgcolor="#CCCCCC">
-    <div align="left">&nbsp;<strong>(root)/<?=$fullpath?></strong></div></td>
+  <td width="88%" align="center" bgcolor="#CCCCCC">&nbsp;<strong>(root)/<?=$fullpath?></strong></td>
 </tr>
 <tr>
-  <td align="left"><strong>File&nbsp;:&nbsp;</strong></td>
-  <td align="center">
-    <div align="left">&nbsp;
-      <input name="file" id="file" type="file" />
-      <input type="hidden" name="fullpath" readonly value="<?=$fullpath?>" >
-      <input type="hidden" name="dir" readonly value="<?=$dirfullpath?>" >
-      <input type="hidden" name="iddir" readonly value="<?=$iddir?>" >
-    </div></td>
+  <td align="right"><strong>File #1&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file1" id="file1" size="60" type="file" /></td>
 </tr>
 <tr>
-  <td colspan="2" align="left" bgcolor="#CCCCCC"><div align="center"><span class="style1">Ukuran file maksimal yang dapat di-Upload adalah 
-    <?=$max_uploaded_file_size?>
-  </span></div></td>
-  </tr>
+  <td align="right"><strong>File #2&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file2" id="file2" size="60" type="file" /></td>
+</tr>
+<tr>
+  <td align="right"><strong>File #3&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file3" id="file3" size="60" type="file" /></td>
+</tr>
+<tr>
+  <td align="right"><strong>File #4&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file4" id="file4" size="60" type="file" /></td>
+</tr>
+<tr>
+  <td align="right"><strong>File #5&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file5" id="file5" size="60" type="file" /></td>
+</tr>
+<tr>
+  <td align="right"><strong>File #6&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file6" id="file6" size="60" type="file" /></td>
+</tr>
+<tr>
+  <td align="right"><strong>File #7&nbsp;:&nbsp;</strong></td>
+  <td align="left"><input name="file7" id="file7" size="60" type="file" /></td>
+</tr>
 <tr>
 	<td colspan="2" align="center">
-    <input type="submit" name="Simpan" id="Simpan" value="Simpan" class="but" />&nbsp;
+    <input type="submit" name="Simpan" id="Simpan" value="Unggah" class="but" />&nbsp;
     <input type="button" name="Tutup" id="Tutup" value="Tutup" class="but" onClick="window.close()" />    </td>
 </tr>
 <!-- END OF TABLE CONTENT -->

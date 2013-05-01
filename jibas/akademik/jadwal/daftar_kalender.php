@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,20 +50,52 @@ if (isset($_REQUEST['urutan']))
 
 $op = $_REQUEST['op'];
 
-if ($op == "dw8dxn8w9ms8zs22") {	
-	OpenDb();
-	$sql = "UPDATE kalenderakademik SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
+OpenDb();
+
+if ($op == "dw8dxn8w9ms8zs22")
+{	
+	$sql = "UPDATE jbsakad.kalenderakademik SET aktif = '$_REQUEST[newaktif]' WHERE replid = '$_REQUEST[replid]' ";
 	QueryDb($sql);
-	CloseDb();
 	$kalender = $_REQUEST['replid'];
-} else if ($op == "xm8r389xemx23xb2378e23") {
-	OpenDb();
-	$sql = "DELETE FROM kalenderakademik WHERE replid = '$_REQUEST[replid]'";	
+}
+else if ($op == "xm8r389xemx23xb2378e23")
+{
+	$sql = "DELETE FROM jbsakad.kalenderakademik WHERE replid = '$_REQUEST[replid]'";	
 	QueryDb($sql);		
-	CloseDb();	
+	$kalender = $_REQUEST['replid'];
+}
+else if ($op == "c234907nxdhnqhwflqf23f3f33")
+{
+	$sql = "UPDATE jbsakad.kalenderakademik
+				  SET aktif = 0
+				WHERE replid <> '$_REQUEST[replid]'
+				  AND departemen = '$_REQUEST[departemen]'";	
+	QueryDb($sql);
+	
+	$sql = "UPDATE jbsakad.kalenderakademik
+				  SET aktif = 1
+				WHERE replid = '$_REQUEST[replid]'";	
+	QueryDb($sql);
+	
+	$kalender = $_REQUEST['replid'];
+}
+else if ($op == "vmt489tukd9fcmf92kd2309scm2323rc3")
+{
+	$sql = "SELECT COUNT(replid)
+				 FROM jbsakad.kalenderakademik
+				WHERE departemen = '$_REQUEST[departemen]'";
+	$res = QueryDb($sql);
+	$row = mysql_fetch_row($res);
+	$ncal = (int)$row[0];
+	
+	if ($ncal > 1)
+	{
+		$sql = "UPDATE jbsakad.kalenderakademik SET aktif = 0 WHERE replid = '$_REQUEST[replid]'";	
+		QueryDb($sql);
+	}
+	
 	$kalender = $_REQUEST['replid'];
 }	
-OpenDb();
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -101,6 +133,20 @@ function hapus(replid) {
 	if (confirm("Apakah anda yakin akan menghapus kalender akademik ini?"))
 		document.location.href = "daftar_kalender.php?op=xm8r389xemx23xb2378e23&replid="+replid+"&departemen="+departemen+"&urut=<?=$urut?>&urutan=<?=$urutan?>";
 		
+}
+
+function aktif(replid)
+{
+	var departemen = document.getElementById('departemen').value;		
+	if (confirm("Apakah anda akan mengaktifkan kalender akademik ini?"))
+		document.location.href = "daftar_kalender.php?op=c234907nxdhnqhwflqf23f3f33&replid="+replid+"&departemen="+departemen+"&urut=<?=$urut?>&urutan=<?=$urutan?>";		
+}
+
+function nonaktif(replid)
+{
+	var departemen = document.getElementById('departemen').value;		
+	if (confirm("Apakah anda akan menonaktifkan kalender akademik ini?"))
+		document.location.href = "daftar_kalender.php?op=vmt489tukd9fcmf92kd2309scm2323rc3&replid="+replid+"&departemen="+departemen+"&urut=<?=$urut?>&urutan=<?=$urutan?>";		
 }
 
 function tutup() {	
@@ -184,8 +230,7 @@ windowIMA=parent.opener.refresh_change(0,0);
 			//echo 'ada row '.$row[0];
 		 ?> 
          	<a href="#" onClick="document.location.reload()"><img src="../images/ico/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '80px')">&nbsp;Refresh</a>&nbsp;&nbsp;  
-            <? //if (mysql_num_rows($result) == 0  ) { ?>
-			<a href="JavaScript:tambah()"><img src="../images/ico/tambah.png" border="0" onMouseOver="showhint('Tambah Info Jadwal!', this, event, '80px')">&nbsp;Tambah Kalender Akademik</a>
+				<a href="JavaScript:tambah()"><img src="../images/ico/tambah.png" border="0" onMouseOver="showhint('Tambah Info Jadwal!', this, event, '80px')">&nbsp;Tambah Kalender Akademik</a>
          <? //} 
 		} 
 		?>   
@@ -224,6 +269,11 @@ if ($departemen <> "") {
         <td><?=$row['kalender']?></td>
         <td><?=LongDateFormat($row['tglmulai']).' s/d '.LongDateFormat($row['tglakhir'])?></td>
         <td align="center">
+<?			if ($row['aktif'] == 1) { ?>
+			<a href="JavaScript:nonaktif(<?=$row['replid']?>)" ><img src="../images/ico/aktif.png" border="0" onMouseOver="showhint('Set Aktif Kalender Akademik!', this, event, '80px')"></a>
+<?			} else { ?>
+			<a href="JavaScript:aktif(<?=$row['replid']?>)" ><img src="../images/ico/nonaktif.png" border="0" onMouseOver="showhint('Set Non Aktif Kalender Akademik!', this, event, '80px')"></a>
+<?			} ?>
         	<a href="#" onClick="newWindow('kalender_edit.php?replid=<?=$row['replid']?>',     'UbahKalender','440','280','resizable=1,scrollbars=1,status=0,toolbar=0')"><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Kalender Akademik!', this, event, '80px')"></a>&nbsp;
         	<a href="JavaScript:hapus(<?=$row['replid']?>)" ><img src="../images/ico/hapus.png" border="0" onMouseOver="showhint('Hapus Kalender Akademik!', this, event, '80px')"></a>        </td>
         

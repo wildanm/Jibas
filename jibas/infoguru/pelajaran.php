@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,75 +43,75 @@ $middle="0";
 	<tr>
 		<td colspan="6" height="1"></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="19" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="19" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="5">
-			<img src="images_slice/pelajaran_02.jpg" width="143" height="272" alt=""></td>
+			<img src="images/pelajaran_02.jpg" width="143" height="272" alt=""></td>
 		<td colspan="2">
-			<a href="pelajaran/rpp.php" title="Rencana Program Pembelajaran"><img src="images_slice/pelajaran_03.jpg" width="94" height="95" alt="" border="0"></a></td>
+			<a href="pelajaran/rpp.php" title="Rencana Program Pembelajaran"><img src="images/pelajaran_03.jpg" width="94" height="95" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="4">
-			<img src="images_slice/pelajaran_04.jpg" width="162" height="265" alt=""></td>
+			<img src="images/pelajaran_04.jpg" width="162" height="265" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="95" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="95" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<img src="images_slice/pelajaran_05.jpg" width="94" height="26" alt=""></td>
+			<img src="images/pelajaran_05.jpg" width="94" height="26" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="26" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="26" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<a href="pelajaran/jenis_pengujian.php" title="Jenis Pengujian"><img src="images_slice/pelajaran_06.jpg" alt="" width="94" height="83" border="0"></a></td>
+			<a href="pelajaran/jenis_pengujian.php" title="Jenis Pengujian"><img src="images/pelajaran_06.jpg" alt="" width="94" height="83" border="0"></a></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="83" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="83" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="2">
-			<img src="images_slice/pelajaran_07.jpg" width="94" height="68" alt=""></td>
+			<img src="images/pelajaran_07.jpg" width="94" height="68" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="61" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="61" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="2">
-			<a href="pelajaran/perhitungan_rapor.php" title="Aturan Perhitungan Nilai Rapor"><img src="images_slice/pelajaran_08.jpg" alt="" width="125" height="98" border="0"></a></td>
+			<a href="pelajaran/perhitungan_rapor.php" title="Aturan Perhitungan Nilai Rapor"><img src="images/pelajaran_08.jpg" alt="" width="125" height="98" border="0"></a></td>
 		<td rowspan="3">
-			<img src="images_slice/pelajaran_09.jpg" width="37" height="146" alt=""></td>
+			<img src="images/pelajaran_09.jpg" width="37" height="146" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="7" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="7" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="2">
-			<img src="images_slice/pelajaran_10.jpg" width="24" height="139" alt=""></td>
+			<img src="images/pelajaran_10.jpg" width="24" height="139" alt=""></td>
 		<td colspan="2">
-			<a href="pelajaran/aturannilai_main.php" title="Aturan Perhitungan Grading Nilai"><img src="images_slice/pelajaran_11.jpg" alt="" width="130" height="91" border="0"></a></td>
+			<a href="pelajaran/aturannilai_main.php" title="Aturan Perhitungan Grading Nilai"><img src="images/pelajaran_11.jpg" alt="" width="130" height="91" border="0"></a></td>
 		<td rowspan="2">
-			<img src="images_slice/pelajaran_12.jpg" width="83" height="139" alt=""></td>
+			<img src="images/pelajaran_12.jpg" width="83" height="139" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="91" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="91" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2">
-			<img src="images_slice/pelajaran_13.jpg" width="130" height="48" alt=""></td>
+			<img src="images/pelajaran_13.jpg" width="130" height="48" alt=""></td>
 		<td>
-			<img src="images_slice/pelajaran_14.jpg" width="125" height="48" alt=""></td>
+			<img src="images/pelajaran_14.jpg" width="125" height="48" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="48" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="48" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/spacer.gif" width="24" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="24" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="119" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="119" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="11" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="11" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="83" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="83" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="125" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="125" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="37" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="37" height="1" alt=""></td>
 		<td></td>
 	</tr>
 </table>

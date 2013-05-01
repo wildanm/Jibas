@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -157,7 +157,7 @@ function LogError($sql, $errno, $error)
 	$logPath = @realpath(@dirname(__FILE__)) . "/../../log";
 	$logExists = @file_exists($logPath) && @is_dir($logPath);
 	if (!$logExists)
-		@mkdir($logPath, 0755);
+		@mkdir($logPath, 0740, true);
 	
 	$logFile = @realpath(@dirname(__FILE__)) . "/../../log/infoguru-error.log";
 	$modeFile = (@file_exists($logFile) && @filesize($logFile) > 1024 * 1024) ? "w" : "a";
@@ -203,5 +203,23 @@ function GetValue($tablename, $column, $where)
 	$row_get_value = mysql_fetch_row($result_get_value);
 	
 	return $row_get_value[0];
+}
+
+function FetchSingle($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDb($sql);
+	$row = @mysql_fetch_row($res);
+	return $row[0];
+}
+
+function FetchRow($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDb($sql);
+	$row = @mysql_fetch_row($res);
+	return $row;
 }
 ?>

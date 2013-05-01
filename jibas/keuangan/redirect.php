@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,16 +90,20 @@ else
 				$result3 = QueryDb($query3) or die(mysql_error());
 				$row3 = mysql_fetch_array($result3);
 				$num3 = mysql_num_rows($result3);
-				$_SESSION['login'] = $username;
-				$_SESSION['namakeuangan'] = $row3[nama];
-				$_SESSION['tingkatkeuangan'] = $row3[tingkat];
-				$_SESSION['temakeuangan'] = $row3[tema];
-				if ($row3[tingkat]==2)
-					$_SESSION['departemenkeuangan'] = $row3[departemen];
-				else 
-					$_SESSION['departemenkeuangan'] = "ALL";
-							
-				$user_exists = true;
+				
+				if ($num3 > 0)
+				{
+					$_SESSION['login'] = $username;
+					$_SESSION['namakeuangan'] = $row3[nama];
+					$_SESSION['tingkatkeuangan'] = $row3[tingkat];
+					$_SESSION['temakeuangan'] = $row3[tema];
+					if ($row3[tingkat]==2)
+						$_SESSION['departemenkeuangan'] = $row3[departemen];
+					else 
+						$_SESSION['departemenkeuangan'] = "ALL";
+								
+					$user_exists = true;
+				}
 			}
 		} 
 	}

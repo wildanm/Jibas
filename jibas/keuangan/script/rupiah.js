@@ -3,21 +3,21 @@
 
 function rptrim(inputString) 
 {
-	var returnString = inputString;
+	var returnString = inputString + "";
 	var removeChar = ' ';
 
 	if (removeChar.length) 
 	{
-	   while('' + returnString.charAt(0) == removeChar) 
+		while('' + returnString.charAt(0) == removeChar) 
 		{
-		   returnString = returnString.substring(1, returnString.length);
-   	}
-		
-   	while('' + returnString.charAt(returnString.length - 1) == removeChar) 
+			returnString = returnString.substring(1, returnString.length);
+		}
+		while('' + returnString.charAt(returnString.length - 1) == removeChar) 
 		{
-  	       returnString = returnString.substring(0, returnString.length - 1);
-      }
+			returnString = returnString.substring(0, returnString.length - 1);
+		}
 	}
+	
 	return returnString;
 }
 

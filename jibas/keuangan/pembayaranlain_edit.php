@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -247,10 +247,10 @@ function angka(){
    <tr>
         <td align="left"><strong>Tanggal</strong></td>
         <td>
-        <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" onClick="Calendar.setup()" style="background-color:#CCCC99"> </td>
+        <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" style="background-color:#CCCC99"> </td>
         <td width="60%">
-        <img src="images/calendar.jpg" name="tabel" border="0" id="btntanggal" onMouseOver="showhint('Buka kalendar!', this, event, '100px')"/>
-	    </td> 
+        &nbsp;
+	     </td> 
     </tr>
     <tr>
         <td valign="top"><strong>Alasan Perubahan</strong></td>
@@ -294,20 +294,3 @@ function angka(){
 
 </body>
 </html>
-<script language="javascript">
-  Calendar.setup(
-    {
-      //inputField  : "tanggalshow","tanggal"
-	  inputField  : "tcicilan",         // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format
-      button      : "btntanggal"       // ID of the button
-    }
-   );
-    Calendar.setup(
-    {
-      inputField  : "tcicilan",        // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format	  
-	  button      : "tcicilan"       // ID of the button
-    }
-  );
-</script>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -67,16 +67,7 @@ elseif (file_exists('../../../include/mainconfig.php'))
 // ------------------------------------------------------------
 
 $db_name = "jbsakad";
-$maxfoto = 20;
-$max_uploaded_file_size="50 MB";
-$UPLOAD_DIR = $FS_UPLOAD_DIR;
-$WEB_UPLOAD_DIR = "http://$G_SERVER_ADDR/filesharing/";
-$GALLERY_DIR = $IS_GALLERY_DIR;
-$WEB_GALLERY_DIR = "http://$G_SERVER_ADDR/jibas/infosiswa/buletin/galerifoto/";
-$WEB_GALLERY_DIR_IG = "http://$G_SERVER_ADDR/jibas/infoguru/buletin/galerifoto/";
-$SITE_FINAL_ADDR = "http://$G_SERVER_ADDR/jibas/infosiswa/index.php";
-$G_WEB_ADDR = "http://$G_SERVER_ADDR/jibas/infosiswa/";
-
+$G_WEB_ADDR = "http://$G_SERVER_ADDR/infosiswa/";
 $G_ENABLE_QUERY_ERROR_LOG = false;
-$full_url = "http://$G_SERVER_ADDR/jibas/infosiswa/";
+$full_url = "http://$G_SERVER_ADDR/infosiswa/";
 ?>

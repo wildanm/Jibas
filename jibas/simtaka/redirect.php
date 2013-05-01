@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -83,7 +83,7 @@ else
 			$num = mysql_num_rows($result);
 			if ($num != 0)
 			{
-				$q = "SELECT aktif,tingkat,departemen FROM $db_name_user.hakakses WHERE login = '$username'  ".
+				$q = "SELECT aktif,tingkat,departemen,info1 FROM $db_name_user.hakakses WHERE login = '$username'  ".
 					 "AND modul='SIMTAKA'";
 				$res = QueryDb($q) or die(mysql_error());
 				$r = mysql_fetch_array($res);
@@ -100,6 +100,7 @@ else
 					$_SESSION['login'] = $row[login];
 					$_SESSION['tingkat'] = $r[tingkat];
 					$_SESSION['perpustakaan'] = $r[departemen];
+					$_SESSION['idperpustakaan'] = $r[info1];
 					$_SESSION['nama'] = $row[nama];
 					$user_exists = true;
 				}

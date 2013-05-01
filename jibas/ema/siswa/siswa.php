@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ require_once('../inc/common.php');
 require_once('../inc/sessionchecker.php');
 require_once('../inc/db_functions.php');
 require_once('siswa.class.php');
+
 OpenDb();
 $S = new CSiswa();
 $S->OnStart();
@@ -36,8 +37,14 @@ $S->OnStart();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
-<?=$S->ShowInfoSiswa_js();?>
+<script src="../script/ajax.js" type="text/javascript"></script>
+<script src="siswaui.js" type="text/javascript"></script>
+<script src="infosiswa.js" type="text/javascript"></script>
+<script src="../script/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
+<link href="../script/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css" />
+<script language="javascript" src="../script/cal2.js"></script>
+<script language="javascript" src="../script/cal_conf3.js"></script>
 </head> 
 <body>
 <div id="waitBox" style="position:absolute; visibility:hidden;">
@@ -46,20 +53,11 @@ $S->OnStart();
 <table width="100%" border="0" cellspacing="5" cellpadding="5">
   <tr>
     <td width="250" align="left" valign="top"><div id="list" style=" width:350px">
-    <?
-	$S->ShowStudentList();
-	?>
-    </div></td>
+<?		$S->ShowStudentList();	?>
+	</td>
     <td width="*" align="left" valign="top">
-    <script src="../script/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
-	<link href="../script/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
-    <div id="content">
-    <?
-	//if (isset($_REQUEST[nis]))
-		//$S->ShowInfoSiswa_php();
-		
-	?>
-    </div></td>
+		<div id="content"></div>
+	</td>
   </tr>
 </table>
 </body>

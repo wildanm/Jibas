@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,8 +34,10 @@ require_once('include/config.php');
 <script src="script/SpryAssets/SpryValidationTextField.js" type="text/javascript"></script>
 <link href="script/SpryAssets/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS INFOSISWA [Validasi Pengguna]</title>
+<title>JIBAS InfoSiswa [Validasi Pengguna]</title>
 <link href="style/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="../script/bgstretcher.css" />
+<script language="javascript" src="../script/bgstretcher.js"></script>
 <script language="JavaScript">
 function cek_form() 
 {
@@ -138,42 +140,14 @@ function InputHover(txt,id,state){
 		}
 	}
 }
-var first = 1;
-function getNewsTicker(id,type){
-	if (first==1){
-		$.ajax({
-			url:'../include/getnewsticker.php?id='+id+'&type='+type,
-			type:'get',
-			dataType:'json',
-			success:function(msg){
-				var i;
-				var t;
-				if (msg!=null){
-					if (msg.news!=""){
-						$("#jibasnewsticker").fadeOut(function(){
-							$("#jibasnewsticker #nc").html(msg.news);
-							$("#jibasnewsticker").fadeIn();
-						});
-					}
-					i = (msg.id=="")?'-1':msg.id;
-					t = (msg.type=="")?'0':msg.type;
-				} else {
-					i = '-1';
-					t = '0';
-				}
-				setTimeout(function(){
-					getNewsTicker(i,t);
-				},5000)
-			}
-		})
-	}
-}
-setTimeout(function(){
-	getNewsTicker('-1','0');
-},2000)
+
+$(document).ready(function () {
+    $(document).bgStretcher({
+        images: ['../images/background07.jpg'], imageWidth: 1680, imageHeight: 1050
+    });
+});
 </script>
 <style type="text/css">
-<!--
 #Main {
 	position:absolute;
 	width:200px;
@@ -187,61 +161,65 @@ setTimeout(function(){
 	bottom:20px;
 	right:20px;
 }
-html, body{overflow:hidden}
--->
+#Partner {
+	position:fixed;
+	bottom:20px;
+	left:20px;
+}
 </style>
 </head>
-<body onload="alertSize(); document.getElementById('username').focus()" onresize="alertSize()" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="padding:0px; margin:0px; background-color:#bcbdb9; background-image:url(../images/BG.jpg);background-position:center; background-repeat:no-repeat;background-attachment:fixed; ">
+<body onload="alertSize(); document.getElementById('username').focus()" onresize="alertSize()" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" style="padding:0px; margin:0px;">
+<div style="position:relative; z-index:2;">
+	
 <form name="form" id="LoginForm" method="post" action="redirect.php" onsubmit="return cek_form()">
-<div style="overflow-x:hidden;">
 <table width="100%" border="0">
   <tr>
     <td width="100%">
     <div id="Main" align="center" style="width:511px; height:234px">
         <table id="Table_01" width="510" height="206" border="0" cellpadding="0" cellspacing="0">
             <tr>
-                <td rowspan="4">
-                    <img src="../images/LOGIN_INFOSISWA_01.png" width="147" height="206" alt=""></td>
-                <td>
-                    <img src="../images/LOGIN_INFOSISWA_02.png" width="363" height="89" alt=""></td>
+                <td rowspan="4"><img src="../images/imfront_infosiswa.png"></td>
+                <td height="70" valign="bottom" align="left">
+				<font style="font-family:helvetica; font-size:16px; color:#fff; font-weight:bold;">
+					INFO <font style="color:#000">SISWA</font>
+				</font></td>
             </tr>
             <tr>
-                <td background="../images/LOGIN_INFOSISWA_03.png" width="363" height="24">
+                <td width="363" height="24" valign="top" align="left">
                 <table border="0" cellspacing="0" cellpadding="0">
                   <tr>
                     <td style="padding-right:4px"><input type="text" name="username" id="username" class="InputTxt" onfocus="InputHover('Username','username','1')" onblur="InputHover('Username','username','0')" style="color:#636363;width:80px; border:1px #666666 solid" value="Username"  /></td>
                     <td style="padding-right:4px"><input name="passwordfake" id="passwordsfake" style="color:#636363; display:block;width:80px; border:1px #666666 solid" value="Password" onfocus="ChgInputPass('passwordsfake','passwords','1')" type="text"    />
                 <input name="password" id="passwords" style="color:#000000; display:none;width:80px; border:1px #666666 solid" value="" onblur="ChgInputPass('passwordsfake','passwords','0')"  type="password"    /></td>
                     <td style="padding-right:4px"><input type="submit" style=" background-color:#c9c9c9;font-weight:bold; border:#666666 1px solid;" value="Login" /></td>
-                    <td><a title="Kembali ke Menu Utama" href="../" style="color:#0047bd; text-decoration:underline">Menu Utama</a></td>
+                    <td><a title="Kembali ke Menu Utama" href="../" style="color:#2fcced; font-weight:bold; font-family:Arial;  font-size:12px; text-decoration:underline">Menu Utama</a></td>
                   </tr>
                 </table>                
                 </td>
             </tr>
             <tr>
-                <td background="../images/LOGIN_INFOSISWA_04.png" width="363" height="18">
-                <span style="color:#666666; font-family:Calibri; font-size:11px">Versi <?=$G_VERSION?> - <?=$G_BUILDDATE?></span>
-                </td>
+                <td width="363" height="18">&nbsp;</td>
             </tr>
             <tr>
-                <td>
-                    <img src="../images/LOGIN_INFOSISWA_05.png" width="363" height="75" alt=""></td>
+                <td>&nbsp;</td>
             </tr>
         </table>
-    </div> <!-- Main -->
-	<div id="jibasnewsticker" style="border:1px solid #d4d0c8; background-color:#ffffe1; font-family:Calibri; font-size:11px; color:#515151; text-align:left; display:none; position:fixed; padding:3px; padding-top:0px; right:23px; min-height:30px; bottom:80px; width:200px">
-		<div><img src="../images/ico/close.png" title="Tutup" align="right" style="cursor:pointer; margin-left:3px; margin-top:3px" onclick="$('#jibasnewsticker').fadeOut();first=0;" /></div>
-		<div id="nc" style="padding-top:5px">
-	   
-		</div> 
-	</div>
+    </div>
+	<div id="Partner">
+    <?
+		$_REQUEST = array();
+		$_REQUEST['relpath'] = "..";
+		include('../partner.php');
+	?>
+    </div>    
     <div id="Footer">
     <? include('../footer.php'); ?>
     </div>    
     </td>
   </tr>
 </table>
-</div>        
 </form>
+
+</div>        
 </body>
 </html>

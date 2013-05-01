@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,12 +25,16 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
+	
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $idguru=SI_USER_ID();	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -49,26 +53,22 @@ $idguru=SI_USER_ID();
 <script language="javascript" type="text/javascript" src="../../script/tinymce2/jscripts/tiny_mce/tiny_mce.js"></script>
 <script language="javascript" type="text/javascript">
 tinyMCE.init({
-		mode : "textareas",
+		mode : "exact",
 		theme : "advanced",
+        elements : "pesan", 
 		skin : "o2k7",
 		skin_variant : "silver",
 		plugins : "safari,pagebreak,style,layer,table,save,advhr,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",		
-		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect",
-		theme_advanced_buttons2 : "forecolor,backcolor,fullscreen,print,|,cut,copy,paste,pastetext,|,search,replace,|,bullist,numlist,|,hr,removeformat,|,sub,sup,|,charmap,image",
-		theme_advanced_buttons3 : "tablecontrols",
+		theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,formatselect,fontselect,fontsizeselect,forecolor,backcolor,fullscreen,print",
+		theme_advanced_buttons2 : "cut,copy,paste,pastetext,|,search,replace,|,bullist,numlist,|,hr,removeformat,|,sub,sup,|,charmap,image,|,tablecontrols",
 		theme_advanced_toolbar_location : "top",
 		theme_advanced_toolbar_align : "left",
 		theme_advanced_statusbar_location : "bottom",
 		theme_advanced_resizing : false,
 		content_css : "../../style/content.css"
-	});
+	});	
 	
 	
-	function OpenUploader() {
-	    var addr = "UploaderMain.aspx";
-	    newWindow(addr, 'Uploader','720','630','resizable=1,scrollbars=1,status=0,toolbar=0');
-    }
 function validate(){
 	var judul=document.getElementById('judul').value;
 	var pesan=tinyMCE.get('pesan').getContent();
@@ -127,12 +127,6 @@ function simpan(){
 <input type="hidden" name="tanggal" id="tanggal" value="<?=date(d)."-".date(m)."-".date(Y); ?>" />
 <fieldset><legend style="background-color:#FF6600; color:#FFFFFF; font-size:14px; padding:3px 0px 3px 0px">&nbsp;Tulis pesan untuk Guru&nbsp;</legend>
 <table width="100%" border="0" cellspacing="0" align="center">
-  <!--
-  <tr>
-    <td scope="row" align="left"><span class="style1" style="background-color:#CCCCCC"><strong><font size="2">Tulis pesan untuk Guru</font></strong><br />
-    </span><br /></td>
-  </tr>
-  -->
   <tr>
     <td scope="row" align="left">
     <table width="100%" border="0" cellspacing="2" cellpadding="2"  >
@@ -140,33 +134,10 @@ function simpan(){
     <th width="75" align="left" scope="row">Judul</th>
     <td><input type="text" maxlength="254" name="judul" id="judul" size="50" /></td>
   </tr>
-  <!--<tr>
-    <th scope="row"><div align="left">Tanggal Tampil</div></th>
-    <td colspan="2"><input title="Klik untuk membuka kalender !" type="text" name="tanggal" id="tanggal" size="25" readonly="readonly" class="disabled" value="<?=date(d)."-".date(m)."-".date(Y); ?>"/><img title="Klik untuk membuka kalender !" src="../../images/ico/calendar_1.png" name="btntanggal" width="16" height="16" border="0" id="btntanggal"/></td>
-  </tr>-->
   <tr>
-    <th colspan="2" valign="top" align="left" scope="row"  ><div align="left">Pesan<br />
+		<th colspan="2" valign="top" align="left" scope="row"  ><div align="left">Pesan<br />
         <textarea name="pesan" rows="25" id="pesan" style="width:100%"></textarea>
     </div></th>
-    </tr>
-  <tr>
-    <th align="left" scope="row">Lampiran</th>
-    <td scope="row">
-    	<table  align="left" border="0" cellspacing="0">
-            <tr>
-              <td><div align="center">#1</div></td>
-                <td><input size="25" type="file" id="file1" name="file1"/><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-              </tr>
-            <tr>
-              <td><div align="center">#2</div></td>
-                <td><input size="25" type="file" name="file2" id="file2" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-              </tr>
-            <tr>
-              <td><div align="center">#3</div></td>
-                <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-              </tr>
-        </table>
-    </td>
     </tr>
   <tr>
     <th colspan="2" scope="row">      </th>
@@ -181,24 +152,6 @@ function simpan(){
 </fieldset>
 </form>
 </body>
-<script type="text/javascript">
-  /*
-  Calendar.setup(
-    {
-	  inputField  : "tanggal",         
-      ifFormat    : "%d-%m-%Y",  
-      button      : "btntanggal"    
-    }
-   );
-   Calendar.setup(
-    {
-	  inputField  : "tanggal",      
-      ifFormat    : "%d-%m-%Y",   
-      button      : "tanggal"     
-    }
-   );
-  */
-</script>
 </html>
 <script language="javascript">
 var sprytextfield1 = new Spry.Widget.ValidationTextField("judul");

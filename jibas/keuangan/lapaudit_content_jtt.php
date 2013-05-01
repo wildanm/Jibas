@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,7 +85,8 @@ function excel()
 	<td valign="top" background="" style="background-repeat:no-repeat; background-attachment:fixed">
   	<table width="100%" border="0" height="100%" cellspacing="0" cellpadding="0">
    	<tr>
-		<td><font size="2" color="#990000">
+		<td>
+			<font size="2" color="#990000">
         	<strong>Perubahan Data Iuran Wajib <?=$judul?>Siswa </strong></font>
         </td>
         <td align="right">
@@ -102,13 +103,14 @@ function excel()
         <td class="header" width="17%">Status Data</td>
         <td class="header" width="10%">Tanggal</td>
         <td class="header" width="15%">Jumlah</td>
+		<td class="header" width="15%">Diskon</td>
         <td class="header" width="*">Keterangan</td>
         <td class="header" width="15%">Petugas</td>
     </tr>
 <?  OpenDb();
     $sql = "SELECT DISTINCT ai.petugas as petugasubah, j.transaksi, date_format(ai.tanggal, '%d-%b-%Y %H:%i:%s') as tanggalubah, 
 	                ap.replid AS id, ap.idaudit, ap.statusdata, j.nokas, date_format(ap.tanggal, '%d-%b-%Y') AS tanggal, ap.petugas, 
-						 ap.keterangan, ap.jumlah, ap.petugas, ai.alasan 
+						 ap.keterangan, ap.jumlah, ap.petugas, ai.alasan, ap.info1 AS diskon 
 				  FROM auditpenerimaanjtt$calon ap, auditinfo ai, jurnal j 
 				 WHERE j.replid = ap.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND ap.idaudit = ai.replid AND ai.departemen = '$departemen'
 				   AND ai.sumber='penerimaanjtt$calon' AND ai.tanggal BETWEEN '$tanggal1 00:00:00' AND '$tanggal2 23:59:59' 
@@ -131,10 +133,10 @@ function excel()
 		  { ?>
         <tr>
             <td rowspan="4" align="center" bgcolor="#CCCC66"><strong><?=++$no ?></strong></td>
-            <td colspan="6" align="left" bgcolor="#CCCC66"><font size="2"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></font></td>
+            <td colspan="7" align="left" bgcolor="#CCCC66"><font size="2"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></font></td>
         </tr>
         <tr>
-            <td colspan="6" bgcolor="#E5E5E5" ><strong>No. Jurnal :</strong> <?=$row['nokas'] ?>   
+            <td colspan="7" bgcolor="#E5E5E5" ><strong>No. Jurnal :</strong> <?=$row['nokas'] ?>   
             &nbsp;&nbsp;<strong>Alasan : </strong><?=$row['alasan'];?>
             <br /><strong>Transaksi :</strong> <?=$row['transaksi'] ?></td>
         </tr>
@@ -144,6 +146,7 @@ function excel()
             <td><?=$statusdata ?></td>
             <td align="center"><?=$row['tanggal'] ?></td>
             <td align="right"><?=FormatRupiah($row['jumlah']) ?></td>
+			<td align="right"><?=FormatRupiah($row['diskon']) ?></td>
             <td><?=$row['keterangan'] ?></td>
             <td align="center"><?=$row['petugas']; ?></td>
         </tr>

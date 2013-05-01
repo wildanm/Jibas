@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,52 +25,17 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+require_once('../../include/fileutil.php');
 
-function delete($file) {
- if (file_exists($file)) {
-   chmod($file,0777);
-   if (is_dir($file)) {
-     $handle = opendir($file); 
-     while($filename = readdir($handle)) {
-       if ($filename != "." && $filename != "..") {
-         delete($file."/".$filename);
-       }
-     }
-     closedir($handle);
-     rmdir($file);
-   } else {
-     unlink($file);
-   }
- }
-}
-
-$op="";
+$op = "";
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
 
-if ($op=="bzux834hx8x7x934983xihxf084")
+if ($op == "bzux834hx8x7x934983xihxf084")
 {
-	//Hapus dulu file attachnya
 	OpenDb();
 	
-	$sql = "SELECT direktori, namafile FROM jbsvcr.lampiranberitaguru WHERE idberita='$_REQUEST[replid]'";
-	$result = QueryDb($sql);
-	$file = "file";
-	$cntdel = 0;
-	while ($row = @mysql_fetch_array($result))
-	{
-		$mydir[$cntdel]=$row['direktori'].$row['namafile'];
-		$cntdel++;	
-	}
-	delete($mydir[0]);
-	delete($mydir[1]);
-	delete($mydir[2]);
-	
-	//Hapus tabel lampiranberitaguru
-	$sql = "DELETE FROM jbsvcr.lampiranberitaguru WHERE idberita='$_REQUEST[replid]'";
-	$result = QueryDb($sql);
-	
-	//Hapus tabel beritaguru
 	$sql = "DELETE FROM jbsvcr.beritasekolah WHERE replid='$_REQUEST[replid]'";
 	$result = QueryDb($sql);
 	
@@ -199,7 +164,7 @@ function chg_title_color(id,stat){
 	</select>   
     <input <?=$disnext?> type="button" class="but" name="next" title="Selanjutnya" value=">" onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">&nbsp;dari&nbsp;<?=$total?> 
 	<? } ?><br><br>
-	<table width="100%" border="0" cellspacing="5" cellpadding="5">
+	<table width="80%" border="0" cellspacing="5" cellpadding="5">
       <tr>
         <td align='center' valign='top'>
           <?
@@ -217,7 +182,7 @@ function chg_title_color(id,stat){
 		  $cnt=(int)$page*(int)$varbaris+1;
 		  }
 		  while ($row1=@mysql_fetch_array($result1)){
-		  if ($i==1 || $i%2==1){
+		  if ($i==1 || $i%3==1){
 		  	?>
             <tr>
           	<?
@@ -229,13 +194,14 @@ function chg_title_color(id,stat){
 			<? if (@mysql_num_rows($result1)==1) { ?>
             <div style="margin-left:100px" align="left">
 			<? } ?>
-            <table width="300" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" >
+            <table width="300" border="0" cellspacing="0" cellpadding="0" style="cursor:pointer;" align="left" >
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
                 <td align="left"><img src="../../images/ico/arr1.gif" />&nbsp;<em><span style="font-size: 9px; color:#990000"><?=$row1['tanggal']?>&nbsp;<?=$row1['waktu']?></span></em></td>
                 <td align="right"></td>
               </tr>
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
-                <td colspan="2" align="left"><span id="title<?=$row1['replid']?>" class="style1"><?=$row1['judul']?></span>
+                <td colspan="2" align="left">
+				<span id="title<?=$row1['replid']?>" class="style1"><?=$row1['judul']?></span>
                 <br />
                 <em>
 					<?
@@ -261,10 +227,7 @@ function chg_title_color(id,stat){
               </tr>
               <tr onclick="bacaberita('<?=$row1['replid']?>')" onmouseover="chg_title_color('title<?=$row1['replid']?>','1')" onmouseout="chg_title_color('title<?=$row1['replid']?>','0')">
                 <td colspan="2" align="left">
-					<?=$row1[abstrak];	
-					//$is=$row1['isi'];
-                    //echo removetag($is,250);
-                    ?>
+					<?=$row1[abstrak];?>
                 </td>
               </tr>
               <tr>
@@ -273,16 +236,13 @@ function chg_title_color(id,stat){
                         <img src="../../images/ico/ubah.png" border="0" onclick="ubah('<?=$row1[replid]?>','<?=$page?>')" style="cursor:pointer;" title="Ubah Berita ini !" />&nbsp;<img src="../../images/ico/hapus.png" border="0" onclick="hapus('<?=$row1[replid]?>')" style="cursor:pointer;" title="Hapus Berita ini !" />
 	                <? } ?>              	</td>
               </tr>
-              <tr>
-              <td colspan="2" style="background-image:url(../../images/box_hr1.gif); background-repeat:repeat-x">&nbsp;</td>
-              </tr>
             </table>
 			<? if (@mysql_num_rows($result1)==1) { ?>
             </div>
 			<? } ?>
 			<br />
 		<?="</td>";
-		if ($i%2==0)
+		if ($i%3==0)
 			echo "</tr>";
 		$i++;
 		}

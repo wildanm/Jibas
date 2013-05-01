@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,15 +30,14 @@ require_once('include/rupiah.php');
 require_once('include/sessioninfo.php');
 require_once('include/db_functions.php');
 require_once('include/getheader.php');
-//$id = 7; //idpembayaran
-$id = $_REQUEST['id'];
-
-$sql = "SELECT p.replid AS id, j.nokas, p.sumber, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') AS tanggal, p.keterangan, p.jumlah, p.petugas, j.idtahunbuku FROM penerimaanlain p, jurnal j WHERE j.replid = p.idjurnal AND p.replid = '$id'";
 
 OpenDb();
-$result = QueryDb($sql);
-$row = mysql_fetch_array($result);
-
+$id = $_REQUEST['id'];
+$sql = "SELECT p.replid AS id, j.nokas, p.sumber, j.transaksi, date_format(p.tanggal, '%d-%b-%Y') AS tanggal,
+			   p.keterangan, p.jumlah, p.petugas, j.idtahunbuku
+		  FROM penerimaanlain p, jurnal j
+		 WHERE j.replid = p.idjurnal AND p.replid = '$id'";
+$row = FetchSingleArray($sql);
 $nokas = $row['nokas'];
 $transaksi = $row['transaksi'];
 $tanggal = $row['tanggal'];
@@ -47,16 +46,17 @@ $petugas = $row['petugas'];
 $sumber = $row['sumber'];
 $idtahunbuku = $row['idtahunbuku'];
 
-$sql = "SELECT date_format(now(), '%d %M %Y') as tanggal";
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$tglcetak = $row[0];
-
 $sql = "SELECT departemen FROM tahunbuku WHERE replid='$idtahunbuku'";
-//echo ($sql);exit;
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
 $departemen=$row[departemen];
+
+$sql = "SELECT replid, nama, alamat1 FROM jbsumum.identitas WHERE departemen='$departemen'";
+$result = QueryDb($sql); 
+$row = @mysql_fetch_array($result);
+$idHeader = $row[replid];
+$namaHeader = $row[nama];
+$alamatHeader = $row[alamat1];
 
 CloseDb();
 ?>
@@ -70,81 +70,91 @@ CloseDb();
 
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
-<table border="0" cellpadding="5" cellspacing="0" width="740" align="center">
-<tr><td>
-<?=getHeader($departemen)?>
+<table border="0" cellpadding="0" cellspacing="0" width="340" align="center">
 <? for($i = 0; $i < 2; $i++) { ?>
 <tr>
 <td colspan="2" align="center" valign="top">
-	<table border="0" cellpadding="2" cellspacing="0" width="90%" align="center">
-    
+	<table border="0" cellpadding="0" cellspacing="3" width="330" align="center">
+    <? if ($i == 0) { ?>		
+	<tr>
+		<td align="center" width='15%'>
+			<img src='<?= $full_url."library/gambar.php?replid=$idHeader&table=jbsumum.identitas" ?>' height='30' />
+		</td>
+		<td align="left">
+			<font style='font-size:14px'><strong><?=$namaHeader?></strong></font><br>
+			<font style='font-size:10px'><?=$alamatHeader?></font>
+		</td>
+	</tr>
+	<? } else { ?>
+	<tr height="1">
+		<td align="center" width='15%'>&nbsp;</td>
+		<td align="left">&nbsp;</td>
+	</tr>
+	<? } ?>	
     <tr>
-    	<td align="right"><font size="2"><strong>No. <?=$nokas ?></strong></font></td>
-    </tr>
-    <tr><td align="center">
-    	<br />
-        <font size="3"><strong>KUITANSI PENERIMAAN KAS</strong></font>
-    </td></tr>
-    <tr><td align="left">
+		<td align="left" colspan='2'>
+			
     	<br />Telah terima dari:<br />
-        <table cellpadding="3">
+        <table cellpadding="2" cellspacing="0" width="100%">
         <tr>
         	<td width="20">&nbsp;</td>
         	<td width="80">Nama</td>
             <td>:&nbsp;<strong><?=$sumber ?></strong></td>
-        </tr><p>
-        <tr>
-        	<td width="15%" colspan="2">Uang sejumlah</td>
-            <td background="images/bkmoney.png">
-            <font size="2"><strong><em>
-            <?=FormatRupiah($jumlah) ?>
-            </em></strong></font>
-            </td>
+        </tr>
+		<tr>
+        	<td>&nbsp;</td>
+        	<td>Tanggal</td>
+            <td>:&nbsp;<strong><?= $tanggal ?></strong></td>
         </tr>
         <tr>
-        	<td colspan="2">&nbsp;</td>
-        	<td background="images/bkmoney.png">
-            (<font size="2"><strong><em>
-            <?=KalimatUang($jumlah) ?>
-            </em></strong></font>)
+        	<td colspan="3">uang sejumlah: 
+            <font style="font-size:11px; font-weight:bold; font-style:italic;">
+			<?= FormatRupiah($jumlah) ?> (<?= KalimatUang($jumlah) ?>)
+            </font>
+			untuk <?=$transaksi ?>
             </td>
-        </tr>
-        <tr>
-        	<td colspan="3">Untuk <?=$transaksi ?></td>
         </tr>
         </table>
         
         <table border="0" width="100%" cellpadding="2" cellspacing="2">
-        <tr height="160">
+        <tr>
         	<td width="65%">
-            <fieldset>
-            <legend><em><strong>Keterangan</strong></em></legend>
-            <table border="0" width="100%">
-            <tr height="80"><td valign="top">&nbsp;
             
-            </td></tr>
-            </table>
-            </fieldset>
+            <table border="1" cellpadding="2" cellspacing="0" style="border-width:1px" width="100%">
+			<tr height='90'>
+				<td valign="top">
+				<strong>Keterangan:</strong><br>					
+				&#149;&nbsp;<em>Tgl cetak: <?= date('d/m/Y H:i:s') ?></em><br>
+				&#149;&nbsp;<em>Petugas: <?= $petugas ?></em><br>
+				</td>
+			</tr>
+			</table>
+            
             </td>
             <td align="center">
-            <?=$G_LOKASI . ", " . $tglcetak ?><br />
-            Penerima<br /><br /><br /><br /><br /><br />
-            ( <?=getUserName() ?> )
+            <? if ($i == 0) { ?>	
+				Yang menerima<br /><br /><br /><br />
+				( <?=getUserName() ?> )
+			<? } else { ?>
+				Yang menyerahkan<br /><br /><br /><br />
+				( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )
+			<? } ?>
             </td>
         </tr>
         </table>
     </td></tr>
     </table>
 </td></tr>
-</table>
-
-</td></tr>
-</table>
+<tr>
+	<td align='right'>
 <? if ($i == 0) { ?>
-<hr width="750" style="border-style:dashed; line-height:1px; color:#999999;" />
-<? } ?>
+	<hr width="350" style="border-style:dashed; line-height:1px; color:#666;" />
+<?	} ?>	
+	</td>
+</tr>
 
 <? } //for ?>
+</table>
 </body>
 <script language="javascript">
 window.print();

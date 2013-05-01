@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,42 +25,45 @@ require_once('../include/common.php');
 require_once('deleteimage.php');
 require_once('../include/sessioninfo.php');
 require_once('../include/config.php');
-require_once('../include/getheader.php');
 require_once('../include/db_functions.php');
-$op="";
+
+$op = "";
 if (isset($_REQUEST['op']))
-	$op=$_REQUEST['op'];
-$tahun="";
+	$op = $_REQUEST['op'];
+$tahun = "";
 if (isset($_REQUEST['tahun']))
-	$tahun=$_REQUEST['tahun'];
-$bulan="";
+	$tahun = $_REQUEST['tahun'];
+$bulan = "";
 if (isset($_REQUEST['bulan']))
-	$bulan=$_REQUEST['bulan'];	
-$namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");	
+	$bulan = $_REQUEST['bulan'];
+	
+$namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");
+
 OpenDb();
-$sql="SELECT bulan FROM jbsvcr.gambartiny WHERE nis='".SI_USER_ID()."' GROUP BY bulan";
-$result=QueryDb($sql);
-$num=@mysql_num_rows($result);
-$b=0;
-while ($row=@mysql_fetch_array($result)){
+
+$sql = "SELECT bulan FROM jbsvcr.gambartiny WHERE idguru='".SI_USER_ID()."' GROUP BY bulan";
+$result = QueryDb($sql);
+$num = @mysql_num_rows($result);
+$b = 0;
+while ($row = @mysql_fetch_array($result))
+{
 	$bln[$b]=$row['bulan'];
-$b++;
+	$b++;
 }
-CloseDb();
-OpenDb();
-$sql="SELECT tahun FROM jbsvcr.gambartiny WHERE nis='".SI_USER_ID()."' GROUP BY tahun";
-$result=QueryDb($sql);
-$t=0;
-while ($row=@mysql_fetch_array($result)){
+
+$sql = "SELECT tahun FROM jbsvcr.gambartiny WHERE idguru='".SI_USER_ID()."' GROUP BY tahun";
+$result = QueryDb($sql);
+$t = 0;
+while ($row = @mysql_fetch_array($result))
+{
 	$thn[$t]=$row['tahun'];
-$t++;
+	$t++;
 }
-CloseDb();
-if ($op=="09vn4230984cn2048723n98423"){
-	OpenDb();
-	$sql_del="DELETE FROM jbsvcr.gambartiny WHERE replid='$_REQUEST[replid]'";
-	$result_del=QueryDb($sql_del);
-	CloseDb();
+
+if ($op == "09vn4230984cn2048723n98423")
+{
+	$sql_del = "DELETE FROM jbsvcr.gambartiny WHERE replid='$_REQUEST[replid]'";
+	$result_del = QueryDb($sql_del);
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -70,8 +73,8 @@ if ($op=="09vn4230984cn2048723n98423"){
     <title>Untitled Page</title>
     <script language="javascript" src="../script/tools.js"></script>
     <script language="javascript">
-    function OpenGambar(replid) {
-        var addr = "gambar.php.php?replid=" + replid + "&table=" + jbsvcr.gambartiny;
+    function OpenGambar(addr) {
+        //var addr = "gambar.php.php?replid=" + replid + "&table=" + jbsvcr.gambartiny;
 	    newWindow(addr, 'Gambar','720','630','resizable=1,scrollbars=1,status=0,toolbar=0');
     }
     
@@ -102,7 +105,7 @@ if ($op=="09vn4230984cn2048723n98423"){
 		if ($bulan=="")
 			$bulan=$bln[$bi];
 		?>
-        <option value="<?=$bln[$bi]?>" <?=StringIsSelected($bulan,$bln[$bi])?>><?=$namabulan[$bln[$bi]]?></option>
+        <option value="<?=$bln[$bi]?>" <?=StringIsSelected($bulan,$bln[$bi])?>><?=$namabulan[(int)$bln[$bi]-1]?></option>
         <?
 		}
 		?>
@@ -118,32 +121,43 @@ if ($op=="09vn4230984cn2048723n98423"){
 		?>
     </select>
     <br /><br />
-    <?
-	OpenDb();
-	if ($num>0){
-	$sql="SELECT * FROM jbsvcr.gambartiny WHERE nis='".SI_USER_ID()."' AND tahun='".$tahun."' AND bulan='$bulan'";
-	$result=QueryDb($sql);
-	?>
-    <table width="75%" border="0" cellspacing="0">
-  <?
-  while ($row=@mysql_fetch_array($result)){
-  ?>
-  <tr>
-    <td align="center">
-    <img onclick="PilihGambar('<?=$row[replid]?>')" src="gambar.php?replid=<?=$row[replid]?>&table=jbsvcr.gambartiny" width="80" height="80"/><br /><br />
-	<input class="but" type="button" name="pilih" id="pilih" value="Pilih" onclick="PilihGambar('<?=$row[replid]?>')" />&nbsp;<img style="cursor:pointer;" src="../images/ico/lihat.png" onclick="OpenGambar('<?=$row[replid]?>')" title="Lihat Gambar Ini" />&nbsp;
-    <img style="cursor:pointer;" src="../images/ico/hapus.png" onclick="DelGambar('<?=$row[replid]?>')" title="Hapus Gambar Ini" />
-    </td>  
-  </tr>
-  <tr>
-    <td>Nama Gambar : <?=$row[namagambar]?><br />Keterangan Gambar : <?=$row[keterangan]?></td>  
-  </tr>
-  <tr>
-    <td><hr /></td>  
-  </tr>
-  <? } ?>
+<?
+	if ($num>0)
+	{
+		$sql = "SELECT * FROM jbsvcr.gambartiny WHERE idguru='".SI_USER_ID()."' AND tahun=".$tahun." AND bulan=".$bulan;
+		$result = QueryDb($sql); ?>
+		<table width="75%" border="0" cellspacing="0">
+<?		while ($row = @mysql_fetch_array($result))
+		{
+			$bln = $row['bulan'];
+			$thn = $row['tahun'];
+			$fn = $row['info1'];
+			
+			$imgAddr = "$FILESHARE_ADDR/media/$thn$bln/$fn";
+			?>
+			<tr>
+				<td align="center">
+					<img onclick="PilihGambar('<?=$imgAddr?>')"
+						  src="<?=$imgAddr?>" width="80" height="80"/><br /><br />
+					<input class="but" type="button" name="pilih" id="pilih" value="Pilih"
+							 onclick="PilihGambar('<?=$imgAddr?>')" />
+					<img style="cursor:pointer;" src="../images/ico/lihat.png"
+						  onclick="OpenGambar('<?=$imgAddr?>')" title="Lihat Gambar Ini" />&nbsp;
+					<img style="cursor:pointer;" src="../images/ico/hapus.png"
+						  onclick="DelGambar('<?=$row[replid]?>')" title="Hapus Gambar Ini" />
+				</td>  
+			</tr>
+			<tr>
+				<td>Nama Gambar : <?=$row[namagambar]?><br />Keterangan Gambar : <?=$row[keterangan]?></td>  
+			</tr>
+			<tr>
+				<td><hr /></td>  
+			</tr>
+<? 	} ?>
 </table>
-<? } CloseDb(); ?>
+<? }
+	CloseDb();
+?>
 
 	</div>
     </form>

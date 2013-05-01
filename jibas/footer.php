@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,22 @@
  * 
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
-<table border="0" cellspacing="2" cellpadding="2">
+<div id="dvCopy" style="color:#ddd; z-index:5; width:310px; font-size:10px; font-family:Tahoma; background-image:url(../images/bgdiv_black.png)">
+<table border="0" cellpadding="2" cellspacing="0">
 <tr>
-<td align="right">
-<span style="color:#505050; font-size:10px; font-family:Arial">
-<strong>JIBAS</strong>: Jaringan Informasi Bersama Antar Sekolah<br>
-	<div id='cp'>
-	Hak Cipta &copy; 2009  <a href="http://www.galileoms.com" target="_blank" style="color:#0047bd; text-decoration:underline;font-size:10px;font-family:Arial">PT. Galileo Mitra Solusitama</a><br>
-	Komunitas <strong>JIBAS</strong> dikelola oleh <a href="http://www.indonesiamembaca.net" target="_blank" style="color:#0047bd; text-decoration:underline;font-size:10px;font-family:Arial">Yayasan Indonesia Membaca</a> 
-	</div>
-	</span></td>
-<td align="center"><img src="../images/LogoJibas.png" /></td>
-</tr>
+<td align="right" valign="middle">
+<font style="font-weight:11px; font-family:Tahoma">	
+	versi <?=$G_VERSION." - ".$G_BUILDDATE?><br />
+	<a href="http://www.jibas.net" target="_blank" style="color:#ddd; text-decoration:none; font-family:Tahoma; font-size:11px; font-weight:normal;">
+	&nbsp;&nbsp;&nbsp;&nbsp;<strong>JIBAS</strong>: Jaringan Informasi Bersama Antar Sekolah</a><br />
+	&nbsp;&nbsp;Hak cipta &copy; 2009 <a href="http://www.indonesiamembaca.net" target="_blank" style="color:#00f6f3; font-weight:normal; font-family:Tahoma; font-size:11px; text-decoration:underline;">Yayasan Indonesia Membaca</a><br>
+</font>	
+</td>
+<td>
+	<a href="http://www.jibas.net" target="_blank">
+	<img src="../images/jibas.png" border="0" title="JIBAS">
+	</a>	
+</td>	
+</tr>	
 </table>
+</div>

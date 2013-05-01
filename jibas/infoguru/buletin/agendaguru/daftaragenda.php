@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
 $bulan = "";
 if (isset($_REQUEST['bulan']))
 	$bulan = $_REQUEST['bulan'];
@@ -36,18 +37,18 @@ if (isset($_REQUEST['tahun']))
 if (isset($_REQUEST['op']))
 	$op=$_REQUEST['op'];
 
-if ($op=="gj83cs065mnsg4y9fnby37d"){
+if ($op == "gj83cs065mnsg4y9fnby37d")
+{
 	OpenDb();
-	$sql="DELETE FROM jbsvcr.agenda WHERE replid='$_REQUEST[replid]'";
+	$sql = "DELETE FROM jbsvcr.agenda WHERE replid='$_REQUEST[replid]'";
 	QueryDb($sql);
-	CloseDb();
-	?>
+	CloseDb(); ?>
 	<script language="javascript">
 		parent.kiriatas.refresh();	
-	//get_fresh(<?=$bulan?>,<?=$tahun?>);
 	</script>
 	<?
 }
+
 if ($bulan == 4 || $bulan == 6|| $bulan == 9 || $bulan == 11) 
 	$n = 30;
 else if ($bulan == 2 && $tahun % 4 <> 0) 
@@ -67,7 +68,7 @@ $namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agu
 <script language="JavaScript" src="../../script/tools.js"></script>
 <script language="javascript">
 function tambah(tanggal){
-	newWindow('tambahagenda.php?tanggal='+tanggal,'TambahAgenda',519,480,'resizable=0,scrollbars=0,status=0,toolbar=0');
+	newWindow('tambahagenda.php?tanggal='+tanggal,'TambahAgenda',660, 480,'resizable=0,scrollbars=0,status=0,toolbar=0');
 }
 function cetak(){
 	newWindow('cetakagenda.php?bulan=<?=$bulan?>&tahun=<?=$tahun?>','CetakAgenda','798','529','resizable=1,scrollbars=0,status=0,toolbar=0');
@@ -81,7 +82,7 @@ function hapus(replid){
 	}
 }
 function ubah(replid){
-	newWindow('ubahagenda.php?replid='+replid,'UbahAgenda',514,478,'resizable=0,scrollbars=0,status=0,toolbar=0');
+	newWindow('ubahagenda.php?replid='+replid,'UbahAgenda',660, 480,'resizable=0,scrollbars=0,status=0,toolbar=0');
 }
 </script>
 </head>

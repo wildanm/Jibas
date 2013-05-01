@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class CPustaka{
 	function GetPerpus(){
 		$this->perpustakaan = $_REQUEST[perpustakaan];
 		if (SI_USER_LEVEL()==2){
-			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
+			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_IDPERPUS()."' ORDER BY nama";
 		} else {
 			$sql = "SELECT replid,nama FROM perpustakaan ORDER BY nama";
 		}

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -112,10 +112,17 @@ if (isset($_REQUEST['departemen']))
 		$sql = "SELECT nama FROM rekakun WHERE kode = '$row[rekpiutang]'";
 		$result = QueryDb($sql);
 		$row2 = mysql_fetch_row($result);
-		$namarekpiutang = $row2[0]; ?>
+		$namarekpiutang = $row2[0];
+		
+		$sql = "SELECT nama FROM rekakun WHERE kode = '$row[info1]'";
+		$result = QueryDb($sql);
+		$row2 = mysql_fetch_row($result);
+		$namarekdiskon = $row2[0];
+		?>
 		<strong>Kas:</strong> <?=$row[rekkas] . " " . $namarekkas ?><br />
         <strong>Pendapatan:</strong> <?=$row[rekpendapatan] . " " . $namarekpendapatan ?><br />
         <strong>Piutang:</strong> <?=$row[rekpiutang] . " " . $namarekpiutang ?><br />
+		<strong>Diskon:</strong> <?=$row[info1] . " " . $namarekdiskon ?><br />
         </td>
         <td><?=$row['keterangan'] ?></td>
     </tr>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,27 +33,26 @@ $id = $_REQUEST['id'];
 $idkategori = $_REQUEST['idkategori'];
 $departemen = $_REQUEST['departemen'];
 
-if (isset($_REQUEST['simpan'])) {
+if (isset($_REQUEST['simpan']))
+{
 	OpenDb();
 	$sql = "SELECT replid FROM datapenerimaan WHERE nama = '$_REQUEST[nama]' AND replid <> '$id'";
 	$result = QueryDb($sql);
 	
-	if (mysql_num_rows($result) > 0) {
+	if (mysql_num_rows($result) > 0)
+	{
 		$MYSQL_ERROR_MSG = "Nama $_REQUEST[nama] sudah digunakan!";
-	} else {
+	}
+	else
+	{
 		$besar = $_REQUEST['besar'];
 		$besar = UnformatRupiah($besar);
-		$norekpiutang = $_REQUEST['norekpiutang'];
-		$norekpiutang = trim($norekpiutang);
-		if (strlen($norekpiutang) == 0) 
-			$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid= $id";
-		else
-			$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid= $id";
-			
+		$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', info1='$_REQUEST[norekdiskon]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid=$id";
 		$result = QueryDb($sql);
 		CloseDb();
 	
-		if ($result) { ?>
+		if ($result)
+		{ ?>
 			<script language="javascript">
 				opener.refresh();
 				window.close();
@@ -63,6 +62,7 @@ if (isset($_REQUEST['simpan'])) {
 } 
 
 OpenDb();
+
 $sql = "SELECT kategori FROM kategoripenerimaan WHERE kode='$idkategori'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
@@ -76,10 +76,12 @@ $besar = FormatRupiah($row['besar']);
 $rekkas = $row['rekkas'];
 $rekpendapatan = $row['rekpendapatan'];
 $rekpiutang = $row['rekpiutang'];
+$rekdiskon = $row['info1'];
 $keterangan = $row['keterangan'];
 
 if (isset($_REQUEST['nama']))
 	$nama = $_REQUEST['nama'];
+	
 if (isset($_REQUEST['keterangan']))
 	$keterangan = $_REQUEST['keterangan'];	
 
@@ -97,7 +99,12 @@ $sql = "SELECT nama FROM rekakun WHERE kode = '$rekpiutang'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namarekpiutang = $row[0];
-	
+
+$sql = "SELECT nama FROM rekakun WHERE kode = '$rekdiskon'";
+$result = QueryDb($sql);
+$row = mysql_fetch_row($result);
+$namarekdiskon = $row[0];
+
 CloseDb();
 
 ?>
@@ -113,49 +120,69 @@ CloseDb();
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript" src="script/rupiah.js"></script>
 <script language="javascript">
-function validasi() {
+function validasi()
+{
 	return validateEmptyText('nama', 'Nama Jenis Penerimaan') 
 		&& validateEmptyText('rekkas', 'Rekening Kas')
 		&& validateEmptyText('rekpendapatan', 'Rekening Pendapatan')
 		&& validateEmptyText('rekpiutang', 'Rekening Piutang')
+		&& validateEmptyText('rekdiskon', 'Rekening Diskon')
 		&& validateMaxText('keterangan', 255, 'Keterangan Jenis Penerimaan');
 }
 
-function accept_rekening(kode, nama, flag) {
-	if (flag == 1) {
+function accept_rekening(kode, nama, flag)
+{
+	if (flag == 1)
+	{
 		document.getElementById('rekkas').value = kode + " " + nama;
 		document.getElementById('norekkas').value = kode;
-	} else if (flag == 2) {
+	}
+	else if (flag == 2)
+	{
 		document.getElementById('rekpendapatan').value = kode + " " + nama;
 		document.getElementById('norekpendapatan').value = kode;
-	} else if (flag == 3) {
+	}
+	else if (flag == 3)
+	{
 		document.getElementById('rekpiutang').value = kode + " " + nama;
 		document.getElementById('norekpiutang').value = kode;
 	}
+	else if (flag == 4)
+	{
+		document.getElementById('rekdiskon').value = kode + " " + nama;
+		document.getElementById('norekdiskon').value = kode;
+	}
 }
 
-function cari_rek(flag, kategori) {
-	newWindow('carirek.php?flag='+flag+'&kategori='+kategori, 'CariRekening','550','438','resizable=1,scrollbars=1,status=0,toolbar=0')
+function cari_rek(flag, kategori)
+{
+	newWindow('carirek.php?option=ro&flag='+flag+'&kategori='+kategori, 'CariRekening','550','438','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
 
-function focusNext(elemName, evt) {
+function focusNext(elemName, evt)
+{
     evt = (evt) ? evt : event;
-    var charCode = (evt.charCode) ? evt.charCode :
-        ((evt.which) ? evt.which : evt.keyCode);
-    if (charCode == 13) {
+    var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
+    if (charCode == 13)
+	{
 		document.getElementById(elemName).focus();
         return false;
     }
     return true;
 }
 
-function panggil(elem){
+function panggil(elem)
+{
 	var lain = new Array('nama','keterangan');
-	for (i=0;i<lain.length;i++) {
-		if (lain[i] == elem) {
+	for (i=0;i<lain.length;i++)
+	{
+		if (lain[i] == elem)
+		{
 			document.getElementById(elem).style.background='#FFFF99';
-		} else {
+		}
+		else
+		{
 			document.getElementById(lain[i]).style.background='#FFFFFF';
 		}
 	}
@@ -199,20 +226,34 @@ function panggil(elem){
     </tr>
     <tr>
         <td align="left"><strong>Rek. Kas</strong></td>
-        <td align="left"><input type="text" name="rekkas" id="rekkas" value="<?=$rekkas . " " . $namarekkas ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(1,'HARTA');return focusNext('rekpendapatan', event)" onClick="cari_rek(1,'HARTA')" onFocus="panggil('rekkas')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
-        <input type="hidden" name="norekkas" id="norekkas"  value="<?=$rekkas ?>" />
+        <td align="left">
+			<input type="text" name="rekkas" id="rekkas" value="<?=$rekkas . " " . $namarekkas ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(1,'HARTA');return focusNext('rekpendapatan', event)" onClick="cari_rek(1,'HARTA')" onFocus="panggil('rekkas')">&nbsp;
+			<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekkas" id="norekkas"  value="<?=$rekkas ?>" />
         </td>
     </tr>
     <tr>
         <td align="left"><strong>Rek. Pendapatan</strong></td>
-        <td align="left"><input type="text" name="rekpendapatan" id="rekpendapatan" value="<?=$rekpendapatan  . " " . $namarekpendapatan ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onKeyPress="cari_rek(2,'PENDAPATAN');return focusNext('rekpiutang', event)" onClick="cari_rek(2,'PENDAPATAN')" onFocus="panggil('rekpendapatan')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(2,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
-        <input type="hidden" name="norekpendapatan" id="norekpendapatan" value="<?=$rekpendapatan ?>" />
+        <td align="left">
+			<input type="text" name="rekpendapatan" id="rekpendapatan" value="<?=$rekpendapatan  . " " . $namarekpendapatan ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onKeyPress="cari_rek(2,'PENDAPATAN');return focusNext('rekpiutang', event)" onClick="cari_rek(2,'PENDAPATAN')" onFocus="panggil('rekpendapatan')">&nbsp;
+			<a href="#" onClick="JavaScript:cari_rek(2,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekpendapatan" id="norekpendapatan" value="<?=$rekpendapatan ?>" />
         </td>
     </tr>
     <tr>
         <td align="left"><strong>Rek. Piutang</strong></td>
-        <td align="left"><input type="text" name="rekpiutang" id="rekpiutang" value="<?=$rekpiutang . " " . $namarekpiutang ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(3,'PIUTANG');return focusNext('keterangan', event)" onClick="cari_rek(3,'PIUTANG')" onFocus="panggil('rekpiutang')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(3,'PIUTANG')"><img src="images/ico/lihat.png" border="0" /></a>
-        <input type="hidden" name="norekpiutang" id="norekpiutang" value="<?=$rekpiutang ?>" />
+        <td align="left">
+			<input type="text" name="rekpiutang" id="rekpiutang" value="<?=$rekpiutang . " " . $namarekpiutang ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(3,'PIUTANG');return focusNext('rekdiskon', event)" onClick="cari_rek(3,'PIUTANG')" onFocus="panggil('rekpiutang')">&nbsp;
+			<a href="#" onClick="JavaScript:cari_rek(3,'PIUTANG')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekpiutang" id="norekpiutang" value="<?=$rekpiutang ?>" />
+        </td>
+    </tr>
+	<tr>
+        <td align="left"><strong>Rek. Diskon</strong></td>
+        <td align="left">
+			<input type="text" name="rekdiskon" id="rekdiskon" value="<?=$rekdiskon  . " " . $namarekdiskon ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onKeyPress="cari_rek(4,'PENDAPATAN');return focusNext('keterangan', event)" onClick="cari_rek(4,'PENDAPATAN')" onFocus="panggil('rekdiskon')">&nbsp;
+			<a href="#" onClick="JavaScript:cari_rek(4,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekdiskon" id="norekdiskon" value="<?=$rekdiskon ?>" />
         </td>
     </tr>
     <tr>
@@ -227,7 +268,6 @@ function panggil(elem){
     </tr>
     </table>
     </form>
-	<!-- END OF CONTENT //--->
     </td>
     <td width="28" background="<?=GetThemeDir() ?>bgpop_06a.jpg">&nbsp;</td>
 </tr>

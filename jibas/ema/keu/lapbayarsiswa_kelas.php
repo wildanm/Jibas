@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,8 +100,10 @@ OpenDb();
 <title>Untitled Document</title>
 <script language="javascript" src="../script/tools.js"></script>
 <script language="javascript" src="../script/tables.js"></script>
+<script language="javascript" src="../script/ajax.js"></script>
 <script language="javascript">
-function change_kate() {
+function change_kate()
+{
 	var idkategori = document.getElementById('idkategori').value;
 	var dep = document.getElementById('departemen').value;
 	var idang = document.getElementById('idangkatan').value;
@@ -110,8 +112,6 @@ function change_kate() {
 	var lunas = document.getElementById('lunas').value;
 	
 	document.location.href = "lapbayarsiswa_kelas.php?idkategori="+idkategori+"&departemen="+dep+"&idangkatan="+idang+"&idkelas="+idkel+"&lunas="+lunas+"&idtingkat="+idtingkat;
-	
-	//parent.content.location.href = "lapbayarsiswa_kelas_blank.php";
 }
 
 function change_dep() {
@@ -151,7 +151,8 @@ function change_status() {
 	//parent.content.location.href = "lapbayarsiswa_kelas_blank.php";
 }
 
-function show_pembayaran() {
+function show_pembayaran()
+{
 	var dep = document.getElementById('departemen').value;
 	var idkategori = document.getElementById('idkategori').value;
 	var idpenerimaan = document.getElementById('idpenerimaan').value;
@@ -160,30 +161,40 @@ function show_pembayaran() {
 	var idkelas = document.getElementById('idkelas').value;
 	var lunas = document.getElementById('lunas').value;
 	
-	if (idangkatan.length == 0) {	
+	if (idangkatan.length == 0)
+    {	
 		alert ('Pastikan angkatan sudah ada!');	
 		document.getElementById('idangkatan').focus();
 		return false;		
-	} else if (idkategori.length == 0) {
+	}
+    else if (idkategori.length == 0)
+    {
 		alert ('Pastikan kategori pembayaran sudah ada!');
 		document.getElementById('idkategori').focus();
 		return false;	
-	} else if (idpenerimaan.length == 0) {
+	}
+    else if (idpenerimaan.length == 0)
+    {
 		alert ('Pastikan penerimaan pembayaran sudah ada!');
 		document.getElementById('idpenerimaan').focus();
 		return false;	
 	}
 		
 	if (idkategori == 'JTT')
-		document.location.href = "lapbayarsiswa_kelas.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=jtt&departemen="+dep;
-		//parent.content.location.href = "lapbayarsiswa_kelas_jtt.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idtingkat="+idtingkat;
-	else 
-		//parent.content.location.href = "lapbayarsiswa_kelas_skr.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&idtingkat="+idtingkat;
-		document.location.href = "lapbayarsiswa_kelas.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=skr&departemen="+dep;
-	
-		
+        sendRequestText("lapbayarsiswa_kelas_jtt.ajax.php", showContent, "idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=jtt&departemen="+dep);
+		//document.location.href = "lapbayarsiswa_kelas.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=jtt&departemen="+dep;
+	else
+        sendRequestText("lapbayarsiswa_kelas_skr.ajax.php", showContent, "idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=skr&departemen="+dep);
+		//document.location.href = "lapbayarsiswa_kelas.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&showpembayaran=true&kat=skr&departemen="+dep;
 }
-function change_page(page) {
+
+function showContent(html)
+{
+    document.getElementById('contentarea').innerHTML = html;
+}
+
+function change_page(page)
+{
 	var dep = document.getElementById('departemen').value;
 	var idkategori = document.getElementById('idkategori').value;
 	var idpenerimaan = document.getElementById('idpenerimaan').value;
@@ -197,10 +208,11 @@ function change_page(page) {
 		var kat = "jtt";
 	else  	
 		var kat = "skr";
-	//alert (kat);
 	document.location.href="lapbayarsiswa_kelas.php?idkelas="+idkelas+"&idangkatan="+idangkatan+"&idpenerimaan="+idpenerimaan+"&lunas="+lunas+"&idtingkat="+idtingkat+"&page="+page+"&showpembayaran=true&kat="+kat+"&departemen="+dep+"&idkategori="+idkategori;
 }
-function refresh(){
+
+function refresh()
+{
 	var dep = document.getElementById('departemen').value;
 	var idkategori = document.getElementById('idkategori').value;
 	var idpenerimaan = document.getElementById('idpenerimaan').value;
@@ -210,26 +222,35 @@ function refresh(){
 	var lunas = document.getElementById('lunas').value;
 	var page = document.getElementById("page").value;
 	var kat;
+    
 	if (idkategori == 'JTT')
 		kat = "jtt";
 	else  	
 		kat = "skr";
+        
 	document.location.href="lapbayarsiswa_kelas.php?idkelas="+idkelas+"&idangkatan="+idangkatan+"&idpenerimaan="+idpenerimaan+"&lunas="+lunas+"&idtingkat="+idtingkat+"&page="+page+"&showpembayaran=true&kat="+kat+"&departemen="+dep+"&idkategori="+idkategori;
 }
-function focusNext(elemName, evt) {
+
+function focusNext(elemName, evt)
+{
 	evt = (evt) ? evt : event;
-	var charCode = (evt.charCode) ? evt.charCode :
-		((evt.which) ? evt.which : evt.keyCode);
-	if (charCode == 13) {
+	var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
+    
+	if (charCode == 13)
+    {
 		if (elemName == "tampil") 
 			show_pembayaran();
 		else 
 			document.getElementById(elemName).focus();
+            
 		return false;
 	}
+    
 	return true;
 }
-function cetak(){
+
+function cetak()
+{
 	var dep = document.getElementById('departemen').value;
 	var idkategori = document.getElementById('idkategori').value;
 	var idpenerimaan = document.getElementById('idpenerimaan').value;
@@ -240,13 +261,10 @@ function cetak(){
 
 	if (idkategori == 'JTT')
 		var addr = "lapbayarsiswa_kelas_jtt_cetak.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&departemen="+dep;
-		//parent.content.location.href = "lapbayarsiswa_kelas_jtt.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idtingkat="+idtingkat;
 	else 
-		//parent.content.location.href = "lapbayarsiswa_kelas_skr.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&idtingkat="+idtingkat;
-		var addr = "lapbayarsiswa_kelas_skr_cetak.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&departemen="+dep;
+    	var addr = "lapbayarsiswa_kelas_skr_cetak.php?idpenerimaan="+idpenerimaan+"&idkelas="+idkelas+"&idangkatan="+idangkatan+"&lunas="+lunas+"&idkategori="+idkategori+"&idtingkat="+idtingkat+"&departemen="+dep;
 	
-	newWindow(addr, 'CetakLapBayarSiswaKelas','800','650','resizable=1,scrollbars=1,status=0,toolbar=0');	
-	
+	newWindow(addr, 'CetakLapBayarSiswaKelas','800','650','resizable=1,scrollbars=1,status=0,toolbar=0');		
 }
 </script>
 </head>
@@ -358,727 +376,7 @@ function cetak(){
    	</td>
 </tr>
 </table>
-<div id="contentarea">
-<? 
-if (isset($_REQUEST[showpembayaran]))
-{ 
 
-if ($_REQUEST[kat]=="jtt")
-{
-	OpenDb();
-	
-	$sql = "SELECT replid FROM jbsfina.tahunbuku WHERE departemen='$departemen' AND aktif=1";
-	$idtahunbuku = FetchSingle($sql);
-	
-	// Dapatkan banyaknya pembayaran yang telah terjadi untuk pembayaran terpilih di kelas terpilih
-	if ($statuslunas == -1) 
-	{
-		// status belum lunas
-		if ($idtingkat == -1) 
-		{		
-			// semua tingkat & kelas
-			$sql = "SELECT MAX(jumlah), COUNT(nis) 
-					FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-						     FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
-						    WHERE b.info2 = '$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan' AND b.nis = s.nis AND s.idangkatan = '$idangkatan' 
-							  AND s.idkelas = k.replid GROUP BY s.nis) AS x)";							
-		} 
-		else 
-		{ 
-			if ($idkelas == -1) 
-			{			
-				// semua kelas di tingkat terpilih
-				$sql = "SELECT MAX(jumlah), COUNT(nis) 
-						FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-							     FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
-								WHERE b.info2 = '$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan' AND b.nis = s.nis AND s.idangkatan = '$idangkatan' 
-								  AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' GROUP BY s.nis) AS x)";
-			} 
-			else 
-			{
-				// tingkat & kelas terpilih
-				$sql = "SELECT MAX(jumlah), COUNT(nis) 
-						FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-							     FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s 
-								WHERE b.info2 = '$idtahunbuku' AND b.idpenerimaan = '$idpenerimaan' AND b.nis = s.nis AND s.idkelas = '$idkelas' 
-								  AND s.idangkatan = '$idangkatan' GROUP BY s.nis) AS x)";
-			}
-		}
-	} 
-	else 
-	{
-		if ($idtingkat == -1) 
-		{
-			// semua tingkat & kelas 
-			$sql = "SELECT MAX(jumlah), COUNT(nis) 
-					FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-						     FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
-						    WHERE b.nis = s.nis AND s.idangkatan = '$idangkatan' AND b.idpenerimaan = '$idpenerimaan' 
-							  AND b.lunas = '$statuslunas' AND s.idkelas = k.replid  GROUP BY s.nis) AS x)";					
-		} 
-		else 
-		{
-			if ($idkelas == -1) 
-			{
-				// semua kelas di tingkat terpilih						
-				$sql = "SELECT MAX(jumlah), COUNT(nis) 
-						  FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-							 	   FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
-								  WHERE b.nis = s.nis AND s.idangkatan = '$idangkatan' AND b.idpenerimaan = '$idpenerimaan' 
-								    AND b.lunas = '$statuslunas' AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' GROUP BY s.nis) AS x)";					
-			} 
-			else 
-			{
-				// tingkat & kelas terpilih
-				$sql = "SELECT MAX(jumlah), COUNT(nis) 
-						  FROM ((SELECT b.nis AS nis, COUNT(p.replid) AS jumlah 
-						 	 	   FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s 
-								  WHERE b.nis = s.nis AND s.idangkatan = '$idangkatan' AND b.idpenerimaan = '$idpenerimaan' 
-									AND b.lunas = '$statuslunas' AND s.idkelas = '$idkelas' GROUP BY s.nis) AS x)";												
-			}
-		}
-	}
-	
-	$result = QueryDb($sql);
-	$row = mysql_fetch_row($result);
-	$max_n_cicilan = $row[0];
-	$ndata = $row[1];
-	
-	$siswajtt = $row[1];
-	$table_width = 810 + $max_n_cicilan * 90;
-	
-	//Dapatkan namapenerimaan
-	$sql = "SELECT d.nama, d.departemen FROM jbsfina.datapenerimaan d WHERE d.replid='$idpenerimaan'";
-	$result = QueryDb($sql);
-	$row = mysql_fetch_row($result);
-	$namapenerimaan = $row[0];
-	$departemen = $row[1];
-	
-	if ($idkelas <> -1 && $idtingkat <> -1) {
-		$sql = "SELECT kelas FROM kelas WHERE replid='$idkelas'";
-		$result = QueryDb($sql);
-		$row = mysql_fetch_row($result);
-		$namakelas = $row[0];
-	} else {
-		$sql = "SELECT tingkat FROM tingkat WHERE replid='$idtingkat'";
-		$result = QueryDb($sql);
-		$row = mysql_fetch_row($result);
-		$namatingkat = $row[0];
-	} 
-	
-	
-	?>
-	
-	<table border="0" width="100%" align="center" background="" style="background-repeat:no-repeat; background-attachment:fixed">
-	<!-- TABLE CENTER -->
-	<tr>
-		<td>
-	<? if ($max_n_cicilan > 0 || $siswajtt > 0) { ?>
-		<input type="hidden" name="total" id="total" value="<?=$total?>"/>
-		<table width="100%" border="0" align="center">
-		<tr>
-			<td align="right" valign="bottom">
-		<!--<a href="#" onClick="refresh()"><img src="../img/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;&nbsp;-->
-		<a href="JavaScript:cetak()"><img src="../img/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')"/>&nbsp;Cetak</a>&nbsp;			</td>
-		</tr>
-		</table>
-		<br />
-		<table class="tab" id="table" border="1" cellpadding="5" style="border-collapse:collapse" cellspacing="0" width="<?=$table_width?>" align="left" bordercolor="#000000">
-			<tr height="30" align="center" class="header">
-			<td width="30">No</td>
-			<td width="80">N I S </td>
-			<td width="140">Nama </td>
-			<td width="75">Kls </td>
-			<? 	for($i = 0; $i < $max_n_cicilan; $i++) { 
-					$n = $i + 1; ?>
-					<td class="header" width="120" align="center"><?="Bayaran-$n" ?></td>	
-			<?  } ?>
-			<td width="90">Status  </td>
-			<td width="125"><?=$namapenerimaan ?> </td>
-			<td width="125">Total Pembayaran</td>
-			<td width="125">Total Tunggakan</td>
-			<td class="header" width="200">Keterangan</td>
-		</tr>
-	
-	<?
-	if ($statuslunas == -1) 
-	{
-		if ($idtingkat == -1) 
-		{
-			// semua tingkat & kelas
-			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
-							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' 
-							   AND s.idangkatan = '$idangkatan' AND s.idkelas = k.replid AND k.idtingkat = t.replid"; 
-			
-			$sql = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-					  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-						WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' 
-						  AND s.idangkatan = '$idangkatan' AND s.idkelas = k.replid AND k.idtingkat = t.replid 
-				   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-		} 
-		else 
-		{
-			if ($idkelas == -1) 
-			{
-				// semua kelas di tingkat terpilih
-				$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-							  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-								 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
-								   AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND k.idtingkat = t.replid"; 
-				
-				$sql = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-							WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
-							  AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND k.idtingkat = t.replid 
-					  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-			} 
-			else 
-			{
-				// tingkat & kelas terpilih			
-				$sql_tot = "SELECT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
-							  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
-								 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
-								   AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan'"; 
-				
-				$sql = "SELECT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
-							WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
-							  AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan' 
-					   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-			}
-		} 
-	} 
-	else 
-	{
-		if ($idtingkat == -1) 
-		{
-			// semua tingkat & kelas
-			$sql_tot = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
-							 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan'
-							   AND s.idkelas = k.replid AND k.idtingkat = t.replid AND b.lunas = '$statuslunas'"; 
-			
-			$sql = "SELECT DISTINCT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas
-					  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-					   WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
-						  AND s.idkelas = k.replid AND k.idtingkat = t.replid AND b.lunas = '$statuslunas' 
-					ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-		} 
-		else 
-		{
-			if ($idkelas == -1) 
-			{ 
-				$sql_tot = "SELECT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-							  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-								 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
-								   AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND k.idtingkat = t.replid AND b.lunas = '$statuslunas'";
-				
-				$sql = "SELECT b.nis, s.nama, k.kelas, t.tingkat, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-							WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idangkatan = '$idangkatan' 
-							  AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND k.idtingkat = t.replid 
-							  AND b.lunas = '$statuslunas' 
-					   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-			} 
-			else 
-			{
-				$sql_tot = "SELECT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
-							  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
-								 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
-								   AND s.idkelas = k.replid AND b.lunas = '$statuslunas' AND s.idangkatan = '$idangkatan'"; 
-										
-				$sql = "SELECT b.nis, s.nama, k.kelas, b.replid AS id, b.besar, b.keterangan, b.lunas 
-						  FROM jbsfina.penerimaanjtt p RIGHT JOIN jbsfina.besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
-							WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = '$idpenerimaan' AND s.idkelas = '$idkelas' 
-							  AND s.idkelas = k.replid AND b.lunas = '$statuslunas' AND s.idangkatan = '$idangkatan' 
-					   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-			}
-		}
-	}
-	
-	$result_tot = QueryDb($sql_tot);
-	$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
-	$jumlah = mysql_num_rows($result_tot);
-	$akhir = ceil($jumlah/5)*5;
-	
-	//$TotalBayarAll=0;
-	while ($x=@mysql_fetch_row($result_tot)){
-		$sql5 = "SELECT jumlah FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = '$x[4]' ORDER BY tanggal";
-		$result5 = QueryDb($sql5);
-		while ($row5 = @mysql_fetch_row($result5)) {
-			$TotalBayarSemua+=$row5[0];
-		}
-		//echo "<br>".$TotalBayarAll;
-		$TotalBesarJTT+=$x[5];
-	}
-	
-	$result = QueryDb($sql);
-	if ($page==0)
-		$cnt = 0;
-	else 
-		$cnt = (int)$page*(int)$varbaris;
-	
-	//$totalbiayaall = 0;
-	$totalbayarall = 0;
-	while ($row = mysql_fetch_array($result)) {
-		$idbesarjtt = $row['id'];
-		$besarjtt = $row['besar'];
-		$ketjtt = $row['keterangan'];
-		$lunasjtt = $row['lunas'];
-		
-		if ($lunasjtt == 1)
-			$infojtt = "<font color=blue><strong>Lunas</strong></font>";
-		elseif ($lunasjtt == 2)
-			$infojtt = "<font color=green><strong>Gratis</strong></font>";
-		else	
-			$infojtt = "<font color=red><strong>Belum Lunas</strong></font>";
-			
-	?>
-		<tr height="40">
-			<td align="center"><?=++$cnt ?></td>
-			<td align="center" ><?=$row['nis'] ?></td>
-			<td><?=$row['nama'] ?></td>
-			<td align="center"><? if ($idkelas == -1) echo $row['tingkat']." - "; ?><?=$row['kelas'] ?> </td>
-		<?
-		$sql = "SELECT count(*) FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
-		$result2 = QueryDb($sql);
-		$row2 = mysql_fetch_row($result2);
-		$nbayar = $row2[0];
-		$nblank = $max_n_cicilan - $nbayar;
-		$totalbayar = 0;
-		
-		if ($nbayar > 0) {
-			$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt' ORDER BY tanggal";
-			$result2 = QueryDb($sql);
-			while ($row2 = mysql_fetch_row($result2)) {
-				$totalbayar = $totalbayar + $row2[1]; ?>
-				<td>
-					<table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse " bordercolor="#000000">
-					<tr height="20"><td align="center"><?=FormatRupiah($row2[1]) ?></td></tr>
-					<tr height="20"><td align="center"><?=$row2[0] ?></td></tr>
-					</table>
-				</td>
-	 <?		}
-			$totalbayarall += $totalbayar;
-			//echo "totalbayarall=".$totalbayarall;
-		}	
-		for ($i = 0; $i < $nblank; $i++) { ?>
-			<td>
-				<table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse" bordercolor="#000000">
-				<tr height="20"><td align="center">&nbsp;</td></tr>
-				<tr height="20"><td align="center">&nbsp;</td></tr>
-				</table>
-			</td>
-		<? }?>
-			<td align="center"><?=$infojtt ?></td>
-			<td align="right"><?=FormatRupiah($besarjtt) ?></td>
-			<td align="right"><?=FormatRupiah($totalbayar) ?></td>
-			<td align="right"><?=FormatRupiah($besarjtt - $totalbayar) ?></td>
-			<td align="right"><?=$ketjtt ?></td>
-		</tr>
-	<?
-		
-	}
-	while ($row_tot = mysql_fetch_array($result_tot)) {
-			$jum = $row_tot['jumlah'];
-			if ($row_tot == NULL) $jum = 0;
-			$totbiayaall += $row_tot['besar'];
-			//$totalbayarall += $jum;
-			//$sql4 = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM $db_name_fina.penerimaanjtt WHERE idbesarjtt = //$row_tot[id]";
-			//echo $sql4;
-			//$result4 = QueryDb($sql4);
-			//$row4 = @mysql_fetch_array($result4);
-			//$totalbayarall += $row4[jumlah];
-	}
-	if ($total-1 == $page) {
-		//$totbiayaall = 0;
-		//$totbayarall = 0;
-		
-		
-	
-	?>    
-		<tr height="40">
-			<td align="center" colspan="<?=5 + $max_n_cicilan ?>" bgcolor="#999900"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
-			<td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($TotalBesarJTT) ?></strong></font></td>
-			<td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($TotalBayarSemua) ?></strong></font></td>
-			<td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($TotalBesarJTT - $TotalBayarSemua) ?></strong></font></td>
-			<td bgcolor="#999900">&nbsp;</td>
-		</tr>
-	<? } ?>
-		<input type="hidden" name="tes" id="tes" value="<?=$total?>"/>
-		</table>
-		<script language='JavaScript'>
-			Tables('table', 1, 0);
-		</script>
-		<? CloseDb() ?>
-		 <?	if ($page==0){ 
-			$disback="style='visibility:hidden;'";
-			$disnext="style='visibility:visible;'";
-			}
-			if ($page<$total && $page>0){
-			$disback="style='visibility:visible;'";
-			$disnext="style='visibility:visible;'";
-			}
-			if ($page==$total-1 && $page>0){
-			$disback="style='visibility:visible;'";
-			$disnext="style='visibility:hidden;'";
-			}
-			if ($page==$total-1 && $page==0){
-			$disback="style='visibility:hidden;'";
-			$disnext="style='visibility:hidden;'";
-			}
-		?>
-		</td>
-	</tr> 
-	<tr>
-		<td>
-		<table border="0"width="100%" align="center"cellpadding="0" cellspacing="0">	
-		<tr>
-			<td width="30%" align="left"><span class="news_content1">Halaman</span>
-			<select name="page" class="cmbfrm" id="page" onChange="change_page('XX')">
-			<?	for ($m=0; $m<$total; $m++) {?>
-				 <option value="<?=$m ?>" <?=IntIsSelected($page,$m) ?>><?=$m+1 ?></option>
-			<? } ?>
-			</select>
-			<span class="news_content1">dari 
-			<?=$total?> 
-			halaman
-			
-			<? 
-		 // Navigasi halaman berikutnya dan sebelumnya
-			?>
-			</span> </td>
-			<td align="center">
-		<!--input <?=$disback?> type="button" class="cmbfrm2" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">
-			<?
-			for($a=0;$a<$total;$a++){
-                if ($page==$a){
-                    echo "<font face='verdana' color='red' size='4'><strong>".($a+1)."</strong></font> "; 
-                } else { 
-                    echo "<a href='#' onClick=\"change_page('".$a."')\"><font face='verdana' color='green'>".($a+1)."</font></a> "; 
-                }
-                     
-            }
-			?>
-			 <input <?=$disnext?> type="button" class="cmbfrm2" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')"-->
-			</td>
-			<td width="30%" align="right" class="news_content1"><!--Jumlah baris per halaman
-			<select name="varbaris" class="cmbfrm" id="varbaris" onChange="change_baris()">
-			<? 	for ($m=5; $m <= $akhir; $m=$m+5) { ?>
-				<option value="<?=$m ?>" <?=IntIsSelected($varbaris,$m) ?>><?=$m ?></option>
-			<? 	} ?>
-			</select>--></td>
-		</tr>
-		</table>
-	<? } else { ?>
-	<table width="100%" border="0" align="center">          
-	<tr>
-		<td align="center" valign="middle" height="250">
-			<font color ="red" size = "2" class="err"><b>Tidak ditemukan adanya data.
-			<br />
-			Tambah data pembayaran pada 
-			<? 	if ($idtingkat <> -1) {	
-					if ($idkelas <> -1) 
-						echo "kelas ".$namakelas; 
-					else 
-							echo "tingkat ".$namatingkat;
-				} else {
-					echo "departemen ".$departemen;
-				}	
-			?> dan kategori <?=$namapenerimaan?> di menu Penerimaan Pembayaran pada bagian Penerimaan.
-			
-			</b></font>		</td>
-	</tr>
-	</table>  
-	
-	<? } ?>
-		</td>
-	</tr>
-	</table>
-	
-	</form>
-<?	} 
-	elseif ($_REQUEST[kat]=="skr")
-	{
-		// DISINI BUAT SKR++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-		OpenDb();
-		
-		$sql = "SELECT replid FROM jbsfina.tahunbuku WHERE departemen='$departemen' AND aktif=1";
-		$idtahunbuku = FetchSingle($sql);
-		
-		if ($idtingkat == -1) 
-		{
-			$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
-											 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s
-											WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku'
-											  AND p.nis = s.nis AND s.idangkatan = '$idangkatan'
-											  AND p.idpenerimaan = '$idpenerimaan' GROUP BY p.nis) as X)";
-		} 
-		else 
-		{
-			if ($idkelas == -1)
-				$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
-												 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-												WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-												  AND p.nis = s.nis AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' 
-												  AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' GROUP BY p.nis) as X)";
-			else
-				$sql = "SELECT MAX(jml) FROM ((SELECT p.nis, COUNT(p.replid) as jml 
-												 FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s 
-												WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-												  AND p.nis = s.nis AND s.idkelas = '$idkelas' AND s.idangkatan = '$idangkatan' 
-												  AND p.idpenerimaan = '$idpenerimaan' GROUP BY p.nis) as X)";
-		}
-		
-		$result = QueryDb($sql);
-		$row = mysql_fetch_row($result);
-		$max_n_bayar = $row[0];
-		$table_width = 520 + $max_n_bayar * 100;
-		
-		$sql = "SELECT nama FROM jbsfina.datapenerimaan WHERE replid = '$idpenerimaan'";
-		$result = QueryDb($sql);
-		$row = mysql_fetch_row($result);
-		$namapenerimaan = $row[0];	?>
-	
-	<table border="0" width="100%" align="center" background="" style="background-repeat:no-repeat; background-attachment:fixed">
-	<!-- TABLE CENTER -->
-	<tr>
-		<td>
-	<? if ($max_n_bayar > 0) { ?>
-		<table width="100%" border="0" align="center">
-		<tr>
-			<td align="right">
-			<!--<a href="#" onClick="refresh()"><img src="../img/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;-->
-			<a href="JavaScript:cetak()"><img src="../img/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')"/>&nbsp;Cetak</a>&nbsp;			</td>
-		</tr>
-		</table>
-		<br />
-		<table class="tab" id="table" border="1" cellpadding="5" style="border-collapse:collapse" cellspacing="0" width="<?=$table_width ?>" align="left" bordercolor="#000000">
-		<tr height="30" align="center" class="header">
-			<td width="30" >No</td>
-			<td width="90">N I S </td>
-			<td width="160">Nama </td>
-			<td width="50">Kelas</td>
-		<?	for($i = 0; $i < $max_n_bayar; $i++) { ?>
-			<td width="100">Bayaran-<?=$i + 1 ?></td>
-		<?  } ?>
-			<td width="100">Total Pembayaran</td>
-			<!--<td width="200">Keterangan</td>-->
-		</tr>
-	<?
-	
-	if ($idtingkat == -1) 
-	{
-		$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
-					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan' 
-					   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY s.nama";
-		
-		$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
-				  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-				 WHERE p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = '$idangkatan' 
-				   AND p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-				   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid 
-			  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-	} 
-	else 
-	{
-		if ($idkelas == -1)
-		{
-			$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
-						  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-						   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' 
-						   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY s.nama";
-			
-			$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas, t.tingkat 
-					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = '$idtingkat' AND s.idangkatan = '$idangkatan' 
-					   AND p.idpenerimaan = '$idpenerimaan' AND k.idtingkat = t.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-		} 
-		else 
-		{
-			$sql_tot = "SELECT DISTINCT p.nis, s.nama, k.kelas 
-						  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-						 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-						   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = '$idkelas' 
-						   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' ORDER BY s.nama";
-			
-			$sql = "SELECT DISTINCT p.nis, s.nama, k.kelas 
-					  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsakad.siswa s, jbsakad.kelas k 
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-					   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = '$idkelas' 
-					   AND s.idangkatan = '$idangkatan' AND p.idpenerimaan = '$idpenerimaan' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-		}
-	}
-	
-	$result_tot = QueryDb($sql_tot);
-	$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
-	$jumlah = mysql_num_rows($result_tot);
-	$akhir = ceil($jumlah/5)*5;
-	
-	$totalall = 0;
-	while ($rowall = @mysql_fetch_array($result_tot)) 
-	{
-		$sqlall2 = "SELECT jumlah 
-	          		  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j
-			         WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-			          AND nis = '$rowall[nis]' AND idpenerimaan = '$idpenerimaan'";
-			$resall2 = QueryDb($sqlall2);
-			while ($rowall2 = @mysql_fetch_row($resall2)) 
-			{
-				$totalall += $rowall2[0];
-			}
-	}
-	
-	$result = QueryDb($sql);
-	if ($page==0)
-		$cnt = 0;
-	else 
-		$cnt = (int)$page*(int)$varbaris;
-	
-	while ($row = mysql_fetch_array($result)) { 
-		$nis = $row['nis'];
-	?>
-		
-		<tr height="40">
-			<td align="center"><?=++$cnt ?></td>
-			<td align="center"><?=$row['nis'] ?></td>
-			<td align="left"><?=$row['nama'] ?></td>
-			<td align="center"><? if ($idkelas == -1) echo $row['tingkat']." - "; ?><?=$row['kelas'] ?></td>
-	<?		$sql = "SELECT date_format(p.tanggal, '%d-%b-%y') as tanggal, jumlah 
-	                  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j
-					 WHERE p.idjurnal = j.replid AND j.idtahunbuku = '$idtahunbuku' 
-					   AND nis = '$nis' AND idpenerimaan = '$idpenerimaan'";
-			$result2 = QueryDb($sql);
-			$nbayar = mysql_num_rows($result2);
-			$nblank = $max_n_bayar - $nbayar;
-			
-			$totalbayar = 0;
-			while ($row2 = mysql_fetch_array($result2)) {
-				$totalbayar += $row2['jumlah']; ?>
-				<td>
-					<table border="1" width="100%" style="border-collapse:collapse" cellpadding="0" cellspacing="0" bordercolor="#000000">
-					<tr height="20"><td align="center"><?=FormatRupiah($row2['jumlah']) ?></td></tr>
-					<tr height="20"><td align="center"><?=$row2['tanggal'] ?></td></tr>
-					</table>
-				</td>
-	<?		} //end for 
-			//$totalall += $totalbayar;
-	
-			for ($i = 0; $i < $nblank; $i++) { ?>        
-				<td>
-					<table border="1" width="100%" style="border-collapse:collapse" cellpadding="0" cellspacing="0" bordercolor="#000000">
-					<tr height="20"><td align="center">&nbsp;</td></tr>
-					<tr height="20"><td align="center">&nbsp;</td></tr>
-					</table>
-				</td>
-	<?		} //end for ?>        
-			<td align="right"><?=FormatRupiah($totalbayar) ?></td>
-			<!--<td align="right"><?=$row['keterangan'] ?></td>-->
-		</tr>
-	<? } //end for ?>
-		<input type="hidden" name="tes" id="tes" value="<?=$total?>"/>
-		<? if ($page==$total-1){ ?>
-		<tr height="30">
-			<td bgcolor="#999900" align="center" colspan="<?=4 + $max_n_bayar ?>"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
-			<td bgcolor="#999900" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($totalall) ?></strong></font></td>
-			<!--<td bgcolor="#999900">&nbsp;</td>-->
-		</tr>
-		<? } ?>
-		</table>
-		<?
-		CloseDb();
-		?>
-		<script language='JavaScript'>
-			Tables('table', 1, 0);
-		</script>
-		<?	if ($page==0){ 
-			$disback="style='visibility:hidden;'";
-			$disnext="style='visibility:visible;'";
-			}
-			if ($page<$total && $page>0){
-			$disback="style='visibility:visible;'";
-			$disnext="style='visibility:visible;'";
-			}
-			if ($page==$total-1 && $page>0){
-			$disback="style='visibility:visible;'";
-			$disnext="style='visibility:hidden;'";
-			}
-			if ($page==$total-1 && $page==0){
-			$disback="style='visibility:hidden;'";
-			$disnext="style='visibility:hidden;'";
-			}
-		?>
-		</td>
-	</tr> 
-	<tr>
-		<td>
-		<table border="0"width="100%" align="center"cellpadding="0" cellspacing="0">	
-		<tr>
-			<td width="30%" align="left"><span class="news_content1">Halaman</span>
-			<select name="page" class="cmbfrm" id="page" onChange="change_page('XX')">
-			<?	for ($m=0; $m<$total; $m++) {?>
-				 <option value="<?=$m ?>" <?=IntIsSelected($page,$m) ?>><?=$m+1 ?></option>
-			<? } ?>
-			</select>
-			<span class="news_content1">dari 
-			<?=$total?> 
-			halaman
-			
-			<? 
-		 // Navigasi halaman berikutnya dan sebelumnya
-			?>
-			</span> </td>
-			<td align="center">
-		<!--input <?=$disback?> type="button" class="cmbfrm2" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">
-			<?
-			for($a=0;$a<$total;$a++){
-				if ($page==$a){
-					echo "<font face='verdana' color='red'><strong>".($a+1)."</strong></font> "; 
-				} else { 
-					echo "<a href='#' onClick=\"change_page('".$a."')\">".($a+1)."</a> "; 
-				}
-					 
-			}
-			?>
-			 <input <?=$disnext?> type="button" class="cmbfrm2" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')"-->
-			</td>
-			<td width="30%" align="right"><!--Jumlah baris per halaman
-			<select name="varbaris" id="varbaris" onChange="change_baris()">
-			<? 	for ($m=5; $m <= $akhir; $m=$m+5) { ?>
-				<option value="<?=$m ?>" <?=IntIsSelected($varbaris,$m) ?>><?=$m ?></option>
-			<? 	} ?>
-		   
-			</select>--></td>
-		</tr>
-		</table>
-	<? } else { ?>
-	<table width="100%" border="0" align="center">          
-	<tr>
-		<td align="center" valign="middle" height="250">
-			<font color ="red" size = "2" class="err"><b>Tidak ditemukan adanya data.
-			<br />
-			Tambah data pembayaran pada departemen <?=$departemen?> <? if ($namakelas) echo ", kelas ".$namakelas ?> dan kategori <?=$namapenerimaan?> di menu Penerimaan Pembayaran pada bagian Penerimaan.
-			
-			</b></font>		</td>
-	</tr>
-	</table>  
-	
-	<? } ?>
-		</td>
-	</tr>
-	</table>
-	<?
-	//
-
-} 
-
-} ?>
-</div>
-<? CloseDb() ?>
+<div id="contentarea"></div>
 </body>
 </html>

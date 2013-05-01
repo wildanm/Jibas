@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
@@ -144,24 +145,6 @@ function simpan(){
     </tr>
   <tr>
     <th colspan="3" scope="row"></th>
-    </tr>
-  <tr>
-    <th colspan="3" scope="row">
-      <table width="100%" align="left" border="0" cellspacing="0">
-        <tr>
-          <th rowspan="3" scope="row"><div align="left">Lampiran</div></th>
-            <td><div align="center">#1</div></td>
-            <td><input size="25" type="file" id="file1" name="file1"/><img src="../../images/ico/hapus.png" onclick="hapusfile('file1')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-          </tr>
-        <tr>
-          <td><div align="center">#2</div></td>
-            <td><input size="25" type="file" name="file2" id="file2" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file2')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-          </tr>
-        <tr>
-          <td><div align="center">#3</div></td>
-            <td><input size="25" type="file" name="file3" id="file3" /><img src="../../images/ico/hapus.png" onclick="hapusfile('file3')" title="Hapus file ini !" style="cursor:pointer" />&nbsp;</td>
-          </tr>
-      </table></th>
     </tr>
   <tr>
     <th colspan="3" scope="row"></th>

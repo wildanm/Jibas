@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -93,43 +93,43 @@ function show(id){
             <table id="Table_01" width="568" height="448" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td rowspan="2">
-                    <a href="presensi/formpresensi_pelajaran.php" onMouseOver="showhint('Cetak Form Presensi Pelajaran', this, event, '100px')"><img src="images_slice/pres_pelajaran_01.jpg" alt="" width="112" height="116" border="0"></a></td>
+                    <a href="presensi/formpresensi_pelajaran.php" onMouseOver="showhint('Cetak Form Presensi Pelajaran', this, event, '100px')"><img src="images/pres_pelajaran_01.jpg" alt="" width="112" height="116" border="0"></a></td>
           <td>
-                    <img src="images_slice/pres_pelajaran_02.jpg" width="30" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_02.jpg" width="30" height="87" alt=""></td>
                 <td>
-                    <img src="images_slice/pres_pelajaran_03.jpg" width="130" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_03.jpg" width="130" height="87" alt=""></td>
                 <td>
-                    <img src="images_slice/pres_pelajaran_04.jpg" width="53" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_04.jpg" width="53" height="87" alt=""></td>
                 <td>
-                    <img src="images_slice/pres_pelajaran_05.jpg" width="79" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_05.jpg" width="79" height="87" alt=""></td>
                 <td>
-                    <img src="images_slice/pres_pelajaran_06.jpg" width="269" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_06.jpg" width="269" height="87" alt=""></td>
         <td>
-                    <img src="images_slice/spacer.gif" width="1" height="87" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="87" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="3">
-                    <img src="images_slice/pres_pelajaran_07.jpg" width="30" height="126" alt=""></td>
+                    <img src="images/pres_pelajaran_07.jpg" width="30" height="126" alt=""></td>
                 <td rowspan="3">
-                    <a href="presensi/presensi_main.php" onMouseOver="showhint('Pengisian Data Presensi Setiap Pelajaran', this, event, '100px')"><img src="images_slice/pres_pelajaran_08.jpg" alt="" width="130" height="126" border="0"></a></td>
+                    <a href="presensi/presensi_main.php" onMouseOver="showhint('Pengisian Data Presensi Setiap Pelajaran', this, event, '100px')"><img src="images/pres_pelajaran_08.jpg" alt="" width="130" height="126" border="0"></a></td>
           <td rowspan="3">
-                    <img src="images_slice/pres_pelajaran_09.jpg" width="53" height="126" alt=""></td>
+                    <img src="images/pres_pelajaran_09.jpg" width="53" height="126" alt=""></td>
                 <td rowspan="2">
-                    <img src="images_slice/pres_pelajaran_10.jpg" width="79" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_10.jpg" width="79" height="87" alt=""></td>
                 <td rowspan="2">
-                    <img src="images_slice/pres_pelajaran_11.jpg" width="269" height="87" alt=""></td>
+                    <img src="images/pres_pelajaran_11.jpg" width="269" height="87" alt=""></td>
         <td>
-                    <img src="images_slice/spacer.gif" width="1" height="29" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="29" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="2">
-                    <img src="images_slice/pres_pelajaran_12.jpg" width="112" height="97" alt=""></td>
+                    <img src="images/pres_pelajaran_12.jpg" width="112" height="97" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="58" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="58" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="2" valign="top">
-                    <img src="images_slice/pres_pelajaran_13.jpg" width="79" height="72" alt=""></td>
+                    <img src="images/pres_pelajaran_13.jpg" width="79" height="72" alt=""></td>
                 <td rowspan="2">
                 <a href="presensi/lap_siswa_main.php" onMouseOver="showhint('Laporan Presensi Setiap Siswa', this, event, '100px')">Laporan Presensi Siswa</a><br>
                      <a href="presensi/lap_kelas_main.php" onMouseOver="showhint('Laporan Presensi Siswa Setiap Kelas', this, event, '100px')">Laporan Presensi Siswa per Kelas</a><br>
@@ -137,35 +137,35 @@ function show(id){
                      <a href="presensi/lap_absen_main.php" onMouseOver="showhint('Laporan Presensi Siswa Yang Tidak Hadir', this, event, '100px')" >Laporan Data Siswa yang Tidak Hadir</a><br>
                      <a href="presensi/lap_refleksi_main.php" onMouseOver="showhint('Laporan Refleksi Mengajar', this, event, '100px')">Laporan Refleksi Mengajar</a></td>
           <td>
-                    <img src="images_slice/spacer.gif" width="1" height="39" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="39" alt=""></td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <img src="images_slice/pres_pelajaran_15.jpg" width="325" height="33" alt=""></td>
+                    <img src="images/pres_pelajaran_15.jpg" width="325" height="33" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="33" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="33" alt=""></td>
             </tr>
             <tr>
                 <td colspan="6">&nbsp;</td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="11" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="11" alt=""></td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <img src="images_slice/pres_pelajaran_17.jpg" width="325" height="83" alt=""></td>
+                    <img src="images/pres_pelajaran_17.jpg" width="325" height="83" alt=""></td>
                 <td valign="top">
-                    <img src="images_slice/pres_pelajaran_18.jpg" width="79" height="83" alt=""></td>
+                    <img src="images/pres_pelajaran_18.jpg" width="79" height="83" alt=""></td>
                 <td valign="middle">
                  <a href="presensi/statistik_siswa_main.php" onMouseOver="showhint('Statistik Kehadiran Setiap Siswa', this, event, '100px')">Statistik Kehadiran Siswa</a><br>
                      <a href="presensi/statistik_kelas_main.php" onMouseOver="showhint('Statistik Kehadiran Setiap Kelas', this, event, '100px')">Statistik Kehadiran Setiap Kelas</a>        </td>
           <td>
-                    <img src="images_slice/spacer.gif" width="1" height="83" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="83" alt=""></td>
             </tr>
             <tr>
                 <td colspan="6">
-                    <img src="images_slice/pres_pelajaran_20.jpg" width="567" height="108" alt=""></td>
+                    <img src="images/pres_pelajaran_20.jpg" width="567" height="108" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="108" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="108" alt=""></td>
             </tr>
         </table>
             </td>
@@ -181,45 +181,45 @@ function show(id){
             <table id="Table_01" width="563" height="364" border="0" cellpadding="0" cellspacing="0">
             <tr>
                 <td rowspan="2"><a href="presensi/formpresensi_harian.php" onMouseOver="showhint('Cetak Form Presensi Harian', this, event, '100px')">
-                    <img src="images_slice/harian_01.jpg" alt="" width="80" height="106" border="0"></a></td>
+                    <img src="images/harian_01.jpg" alt="" width="80" height="106" border="0"></a></td>
           <td colspan="2">
-                    <img src="images_slice/harian_02.jpg" width="68" height="83" alt=""></td>
+                    <img src="images/harian_02.jpg" width="68" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/harian_03.jpg" width="44" height="83" alt=""></td>
+                    <img src="images/harian_03.jpg" width="44" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/harian_04.jpg" width="43" height="83" alt=""></td>
+                    <img src="images/harian_04.jpg" width="43" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/harian_05.jpg" width="60" height="83" alt=""></td>
+                    <img src="images/harian_05.jpg" width="60" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/harian_06.jpg" width="78" height="83" alt=""></td>
+                    <img src="images/harian_06.jpg" width="78" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/harian_07.jpg" width="325" height="83" alt=""></td>
+                    <img src="images/harian_07.jpg" width="325" height="83" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="83" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="83" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="3">
-                    <img src="images_slice/harian_08.jpg" width="54" height="129" alt=""></td>
+                    <img src="images/harian_08.jpg" width="54" height="129" alt=""></td>
                 <td colspan="3" rowspan="3">
-                    <a href="presensi/input_presensi_main.php" onMouseOver="showhint('Pengisian Presensi Harian Setiap Pelajaran', this, event, '100px')"><img src="images_slice/harian_09.jpg" alt="" width="101" height="129" border="0"></a></td>
+                    <a href="presensi/input_presensi_main.php" onMouseOver="showhint('Pengisian Presensi Harian Setiap Pelajaran', this, event, '100px')"><img src="images/harian_09.jpg" alt="" width="101" height="129" border="0"></a></td>
           <td rowspan="3">
-                    <img src="images_slice/harian_10.jpg" width="60" height="129" alt=""></td>
+                    <img src="images/harian_10.jpg" width="60" height="129" alt=""></td>
                 <td rowspan="2">
-                    <img src="images_slice/harian_11.jpg" width="78" height="79" alt=""></td>
+                    <img src="images/harian_11.jpg" width="78" height="79" alt=""></td>
                 <td rowspan="2">
-                    <img src="images_slice/harian_12.jpg" width="189" height="79" alt=""></td>
+                    <img src="images/harian_12.jpg" width="189" height="79" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="23" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="23" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="2">
-                    <img src="images_slice/harian_13.jpg" width="80" height="106" alt=""></td>
+                    <img src="images/harian_13.jpg" width="80" height="106" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="56" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="56" alt=""></td>
             </tr>
             <tr>
                 <td rowspan="2" valign="top">
-                    <img src="images_slice/harian_14.jpg" width="78" height="88" alt=""></td>
+                    <img src="images/harian_14.jpg" width="78" height="88" alt=""></td>
                 <td rowspan="2" valign="middle"><a href="presensi/lap_hariansiswa_main.php" onMouseOver="showhint('Pengisian Presensi Harian Setiap Siswa', this, event, '100px')">Laporan
                     Presensi Harian Siswa</a><br>
                   <a href="presensi/lap_hariankelas_main.php" onMouseOver="showhint('Laporan Presensi Harian Setiap Kelas', this, event, '100px')">Laporan
@@ -227,53 +227,53 @@ function show(id){
                   <a href="presensi/lap_harianabsen_main.php" onMouseOver="showhint('Laporan Presensi Harian Siswa Yang Tidak Hadir', this, event, '100px')">Laporan
                   Harian Data Siswa yang Tidak Hadir</a></td>
           <td>
-                    <img src="images_slice/spacer.gif" width="1" height="50" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="50" alt=""></td>
             </tr>
             <tr>
                 <td colspan="6">
-                    <img src="images_slice/harian_16.jpg" width="295" height="38" alt=""></td>
+                    <img src="images/harian_16.jpg" width="295" height="38" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="38" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="38" alt=""></td>
             </tr>
             <tr>
                 <td colspan="8">
-                    <img src="images_slice/harian_17.jpg" width="562" height="7" alt=""></td>
+                    <img src="images/harian_17.jpg" width="562" height="7" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="7" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="7" alt=""></td>
             </tr>
             <tr>
                 <td colspan="6">
-                    <img src="images_slice/harian_18.jpg" width="295" height="85" alt=""></td>
+                    <img src="images/harian_18.jpg" width="295" height="85" alt=""></td>
                 <td valign="top">
-                    <img src="images_slice/harian_19.jpg" width="78" height="85" alt=""></td>
+                    <img src="images/harian_19.jpg" width="78" height="85" alt=""></td>
                 <td valign="middle"><a href="presensi/statistik_hariansiswa_main.php" onMouseOver="showhint('Statistik Kehadiran Siswa', this, event, '100px')">Statistik Kehadiran Siswa</a><br>
                   <a href="presensi/statistik_hariankelas_main.php" onMouseOver="showhint('Statistik Kehadiran Siswa Setiap Kelas', this, event, '100px')">Statistik
                   Kehadiran per Kelas</a></td>
           <td>
-                    <img src="images_slice/spacer.gif" width="1" height="85" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="85" alt=""></td>
             </tr>
             <tr>
-                <td colspan="8"><img src="images_slice/harian_21.jpg" width="562" height="21" alt="" /></td>
+                <td colspan="8"><img src="images/harian_21.jpg" width="562" height="21" alt="" /></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="1" height="21" alt=""></td>
+                    <img src="images/spacer.gif" width="1" height="21" alt=""></td>
             </tr>
             <tr>
                 <td>
-                    <img src="images_slice/spacer.gif" width="80" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="80" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="54" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="54" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="14" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="14" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="44" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="44" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="43" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="43" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="60" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="60" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="78" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="78" height="1" alt=""></td>
                 <td>
-                    <img src="images_slice/spacer.gif" width="189" height="1" alt=""></td>
+                    <img src="images/spacer.gif" width="189" height="1" alt=""></td>
                 <td></td>
             </tr>
         </table>

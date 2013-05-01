@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -311,12 +311,15 @@ function change_urut($a, $b, $c) {
 	} 	
 	return $s;
 }
-function removetag($input){
-//$enter=&para;;
-$output="";
-$ambil=0;
-$charlength=strLen($input);
-	for ($i=0;$i<=1000;$i++){
+
+function removetag($input)
+{
+
+	$output="";
+	$ambil=0;
+	$charlength=strLen($input);
+	for ($i=0;$i<=1000;$i++)
+	{
 		$karakter=substr($input,$i,1);
 		if ($ambil==1)
 			$ambil=2;
@@ -329,36 +332,42 @@ $charlength=strLen($input);
 	}
 	return $output;
 }
-function chg_p_to_div($string){
+
+function chg_p_to_div($string)
+{
 	$content = str_replace('<p','<div',$string);
 	$content = str_replace('</p>','</div>',$content);
 	return $content;
 }
-function GetOSSlash(){
+
+function GetOSSlash()
+{
 	global $G_OS;
 	if ($G_OS=="win")
 		return "\\";
 	elseif ($G_OS=="lin")
 		return "/";
 }
-/*
-function emailcheck($intext) {
-	$ERROR_MSG = "Lagi masuk!";
-	$thereresult = ereg ("^[^@ ]+@[^@ ]+\.[^@ \.]+$", $intext, $trashed);
-	if ($thereresult) { 		
-		//$ERROR_MSG = "NIP ".$nip." sudah digunakan!";
-		//$isamatch = "Yes"; 
-		return true;
-	} else {
-		$ERROR_MSG = "Penulisan email salah!";
-		return $ERROR_MSG;
-	}
 
-}*/	
-function CQ($string){
+function CQ($string)
+{
 	$string = trim($string);
 	$string = str_replace("'","`",$string);
 	$string = str_replace('"','`',$string);
 	return $string;
+}
+
+function RandomString($length)
+{
+    $set = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789";
+    
+    $result = "";
+    for($i = 0; $i < $length; $i++)
+    {
+        $ix = rand(0, strlen($set) - 1);
+        $result .= substr($set, $ix, 1);
+    }
+    
+    return $result;
 }
 ?>

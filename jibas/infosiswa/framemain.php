@@ -1,12 +1,12 @@
 <?php
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
  * @version: 2.3.0 (September 24, 2010)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
-<title>JIBAS Infosiswa</title>
+<title>JIBAS InfoSiswa</title>
 <link rel="SHORTCUT ICON" href="images/jibas.ico">
 <frameset rows="87,*,27" border="0" frameborder="0" framespacing="0">
 	<frame name="frametop" src="frametop.php" noresize="noresize" scrolling="no" />

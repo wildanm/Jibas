@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,35 +21,5 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?php
-	require_once('httprequest.php');
-
-	$content = http_request("GET", "jibas.net", 80, "/content/newsticker/newsticker.php?id=$_REQUEST[id]&type=$_REQUEST[type]");
-    //echo $content;
-    $pos1 = strpos($content, "[", 0);
-    if ($pos1 !== FALSE)
-    {
-        $pos2 = strpos($content, "]", $pos1);
-        if ($pos2 !== FALSE)
-        {
-            $response = substr($content, $pos1 + 1, $pos2 - $pos1 - 1);
-            $header = substr($response, 0, 3);
-            
-            if ($header == "400")
-            {
-				$n	= substr($response, 3);
-				$n = explode("|",$n);
-				$content = '{"status":"1","id":"'.trim($n[1]).'","type":"'.trim($n[2]).'","news":"'.str_replace("\r\n"," ",trim($n[0])).'"}';
-            }
-            else
-            {
-				$content = '{"status":"0","id":"-1","type":"0","news":"Tidak terhubung dengan JIBAS News"}';
-            }
-        }
-    }
-    else
-    {
-		$content = '{"status":"0","id":"-1","type":"0","news":"Tidak  terhubung dengan JIBAS News"}';
-    }
-   
-    echo $content;
+echo "";
 ?>

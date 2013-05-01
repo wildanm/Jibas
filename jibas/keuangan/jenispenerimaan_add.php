@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,25 +32,26 @@ require_once('include/sessioninfo.php');
 $idkategori = $_REQUEST['idkategori'];
 $departemen = $_REQUEST['departemen'];
 
-if (isset($_REQUEST['simpan'])) {
+if (isset($_REQUEST['simpan']))
+{
 	OpenDb();
 	$sql = "SELECT replid FROM datapenerimaan WHERE nama = '$_REQUEST[nama]'";
 	$result = QueryDb($sql);
 	
-	if (mysql_num_rows($result) > 0) {
+	if (mysql_num_rows($result) > 0)
+	{
 		$MYSQL_ERROR_MSG = "Nama $_REQUEST[nama] sudah digunakan";
-	} else {
+	}
+	else
+	{
 		$besar = $_REQUEST['besar'];
 		$besar = UnformatRupiah($besar);
-		$norekpiutang = $_REQUEST['norekpiutang'];
-		if (trim($norekpiutang) == "")
-			$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
-		else
-			$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$norekpiutang', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
+		$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', info1='$_REQUEST[norekdiskon]', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
 		$result = QueryDb($sql);
 		CloseDb();
 	
-		if ($result) { ?>
+		if ($result)
+		{ ?>
 			<script language="javascript">
 				opener.refresh();
 				window.close();
@@ -74,58 +75,74 @@ CloseDb();
 <link rel="stylesheet" type="text/css" href="style/tooltips.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>JIBAS KEU [Tambah Jenis Penerimaan]</title>
-<!--<script src="script/SpryValidationTextField.js" type="text/javascript"></script>
-<link href="script/SpryValidationTextField.css" rel="stylesheet" type="text/css" />
-<script src="script/SpryValidationTextarea.js" type="text/javascript"></script>
-<link href="script/SpryValidationTextarea.css" rel="stylesheet" type="text/css" />-->
 <script language="JavaScript" src="script/tooltips.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript" src="script/rupiah.js"></script>
 <script language="javascript">
 
-function validasi() {
+function validasi()
+{
 	return validateEmptyText('nama', 'Nama Jenis Penerimaan') 
 		&& validateEmptyText('rekkas', 'Rekening Kas')
 		&& validateEmptyText('rekpendapatan', 'Rekening Pendapatan')
 		&& validateEmptyText('rekpiutang', 'Rekening Piutang')
+		&& validateEmptyText('rekdiskon', 'Rekening Diskon')
 		&& validateMaxText('keterangan', 255, 'Keterangan Jenis Penerimaan');
 }
 
-function accept_rekening(kode, nama, flag) {
-	if (flag == 1) {
+function accept_rekening(kode, nama, flag)
+{
+	if (flag == 1)
+	{
 		document.getElementById('rekkas').value = kode + " " + nama;
 		document.getElementById('norekkas').value = kode;
-	} else if (flag == 2) {
+	}
+	else if (flag == 2)
+	{
 		document.getElementById('rekpendapatan').value = kode + " " + nama;
 		document.getElementById('norekpendapatan').value = kode;
-	} else if (flag == 3) {
+	}
+	else if (flag == 3)
+	{
 		document.getElementById('rekpiutang').value = kode + " " + nama;
 		document.getElementById('norekpiutang').value = kode;
 	}
+	else if (flag == 4)
+	{
+		document.getElementById('rekdiskon').value = kode + " " + nama;
+		document.getElementById('norekdiskon').value = kode;
+	}
 }
 
-function cari_rek(flag, kategori) {
-	newWindow('carirek.php?flag='+flag+'&kategori='+kategori, 'CariRekening','550','438','resizable=1,scrollbars=1,status=0,toolbar=0')
+function cari_rek(flag, kategori)
+{
+	newWindow('carirek.php?option=ro&flag='+flag+'&kategori='+kategori, 'CariRekening','550','438','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
-function focusNext(elemName, evt) {
+function focusNext(elemName, evt)
+{
     evt = (evt) ? evt : event;
-    var charCode = (evt.charCode) ? evt.charCode :
-        ((evt.which) ? evt.which : evt.keyCode);
-    if (charCode == 13) {
+    var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
+    if (charCode == 13)
+	{
 		document.getElementById(elemName).focus();
         return false;
     }
     return true;
 }
 
-function panggil(elem){
+function panggil(elem)
+{
 	var lain = new Array('nama','keterangan');
-	for (i=0;i<lain.length;i++) {
-		if (lain[i] == elem) {
+	for (i=0;i<lain.length;i++)
+	{
+		if (lain[i] == elem)
+		{
 			document.getElementById(elem).style.background='#FFFF99';
-		} else {
+		}
+		else
+		{
 			document.getElementById(lain[i]).style.background='#FFFFFF';
 		}
 	}
@@ -186,6 +203,14 @@ function panggil(elem){
         <td align="left"><strong>Rek. Piutang</strong></td>
         <td align="left"><input onClick="cari_rek(3,'PIUTANG')" type="text" name="rekpiutang" id="rekpiutang" value="<?=$_REQUEST['rekpiutang']?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(3,'PIUTANG');return focusNext('keterangan', event)"  onfocus="panggil('rekpiutang')">&nbsp;<a href="#" onClick="JavaScript:cari_rek(3,'PIUTANG')"><img src="images/ico/lihat.png" border="0" /></a>
         <input type="hidden" name="norekpiutang" id="norekpiutang" value="<?=$_REQUEST['norekpiutang']?>"/>
+        </td>
+    </tr>
+	<tr>
+        <td align="left"><strong>Rek. Diskon</strong></td>
+        <td align="left">
+			<input onClick="cari_rek(4,'PENDAPATAN')" type="text" name="rekdiskon" id="rekdiskon" value="<?=$_REQUEST['rekdiskon']?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(4,'PENDAPATAN');return focusNext('keterangan', event)"  onfocus="panggil('rekdiskon')">&nbsp;
+			<a href="#" onClick="JavaScript:cari_rek(4,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="hidden" name="norekdiskon" id="norekdiskon" value="<?=$_REQUEST['norekdiskon']?>"/>
         </td>
     </tr>
     <tr>

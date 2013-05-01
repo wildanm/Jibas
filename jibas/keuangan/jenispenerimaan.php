@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,7 +30,8 @@ require_once('include/sessioninfo.php');
 require_once('library/departemen.php');
 require_once('include/errorhandler.php');
 
-if (getLevel() == 2) { ?>
+if (getLevel() == 2)
+{ ?>
 	<script language="javascript">
         alert('Maaf, anda tidak berhak mengakses halaman ini!');
         document.location.href = "penerimaan.php";
@@ -59,16 +60,17 @@ if (isset($_REQUEST['departemen']))
 	$departemen = $_REQUEST['departemen'];
 	
 $op = $_REQUEST['op'];
-if ($op == "12134892y428442323x423") {
+if ($op == "12134892y428442323x423")
+{
 	$sql = "DELETE FROM datapenerimaan WHERE replid = '$_REQUEST[id]'";
 	OpenDb();
 	QueryDb($sql);
 	CloseDb();
-	
 	//header("Location: jenispenerimaan.php?idkategori=$idkategori&departemen=$departemen");
 }
 
-if ($op == "d28xen32hxbd32dn239dx") {
+if ($op == "d28xen32hxbd32dn239dx")
+{
 	$sql = "UPDATE datapenerimaan SET aktif = '$_REQUEST[newaktif]' WHERE replid= '$_REQUEST[id]'";
 	
 	OpenDb();
@@ -302,10 +304,17 @@ function change_baris() {
 		$sql = "SELECT nama FROM rekakun WHERE kode = '$row[rekpiutang]'";
 		$result = QueryDb($sql);
 		$row2 = mysql_fetch_row($result);
-		$namarekpiutang = $row2[0]; ?>
+		$namarekpiutang = $row2[0];
+		
+		$sql = "SELECT nama FROM rekakun WHERE kode = '$row[info1]'";
+		$result = QueryDb($sql);
+		$row2 = mysql_fetch_row($result);
+		$namarekdiskon = $row2[0];
+		?>
 		<strong>Kas:</strong> <?=$row[rekkas] . " " . $namarekkas ?><br />
         <strong>Pendapatan:</strong> <?=$row[rekpendapatan] . " " . $namarekpendapatan ?><br />
         <strong>Piutang:</strong> <?=$row[rekpiutang] . " " . $namarekpiutang ?><br />
+		<strong>Diskon:</strong> <?=$row[info1] . " " . $namarekdiskon ?><br />
         </td>
         <td><?=$row['keterangan'] ?></td>
         <td align="center">

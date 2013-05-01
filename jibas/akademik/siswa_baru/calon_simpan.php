@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,28 +38,37 @@ $res = QueryDb($sql);
 $row = mysql_fetch_row($res);	
 $kode_no = $row[0];
 $kodelen = strlen($kode_no);
-//echo "kode_no = $kode_no<br>"; LPAD(nopendaftaran,15, '*')
-$sql = "SELECT MAX(LPAD(nopendaftaran,".($kodelen+9).",'*')) FROM jbsakad.calonsiswa WHERE idproses = '$proses'";
+//echo "$kode_no<br>";
+
+$sql = "SELECT MAX(LPAD(nopendaftaran, " . ($kodelen + 20) . ",'*')) FROM jbsakad.calonsiswa WHERE idproses = '$proses'";
 $res = QueryDb($sql);	
 $row = mysql_fetch_row($res);
 $nom = $row[0];
-//echo "Nom1 = $nom<br>";
+//echo "$nom<br>";
+
 $nom = str_replace("*", "", $nom);
-$nom = str_replace($kode_no, "", $nom);
-$tmp = strlen($nom-2);
-$nom = substr($nom, 2, $tmp);
-//echo "Nom2 = $nom<br>";
-$nom = (float)$nom;
-//echo "Nom3 = $nom<br>";
-$thn_no = substr(date("Y"), 2, 2);
-$nom  = $nom+1; 
-//echo "Nom4 = $nom<br>";
-$nomor = sprintf("%04d", $nom);
-//echo "Nom5 = $nomor<br>";
-$no = sprintf("%s%02d%04d", $kode_no, $thn_no, $nomor);
-//$no = $kode_no.$thn_no.$nomor;
-//echo "Nom6 = $no<br>";
-//exit;
+//echo "$nom<br>";
+
+$counter = (int)substr($nom, $kodelen + 2);
+//echo "$counter<br>";
+
+$thn_no = substr(date('Y'), 2);
+//echo "$thn_no<br>";
+do
+{
+    $counter += 1;
+    $no = $kode_no . $thn_no . sprintf("%04d", $counter);
+    
+    $sql = "SELECT COUNT(replid) FROM jbsakad.calonsiswa WHERE nopendaftaran='$no'";
+    //echo "$sql<br>";
+    $res = QueryDb($sql);
+    $row = mysql_fetch_row($res);
+    $ndata = (int)$row[0];
+}
+while($ndata > 0);
+
+//echo "$no is Unique<br>";
+//exit();
 
 $nisn = CQ($_REQUEST['nisn']);
 $tahunmasuk = $_REQUEST['tahunmasuk'];

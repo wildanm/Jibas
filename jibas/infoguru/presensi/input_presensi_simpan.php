@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -134,7 +134,7 @@ for ($i=1;$i<=$jum;$i++) {
 	
 	$total = $hadir+$ijin+$sakit+$cuti+$alpa;
 	if ($total > 0) 
-		$sql2 = "INSERT INTO phsiswa SET idpresensi=$id, nis='$nis', hadir=$hadir, ijin = $ijin, sakit = $sakit, cuti = $cuti, alpa = $alpa, keterangan='$keterangan' ";
+		$sql2 = "INSERT INTO phsiswa SET idpresensi=$id, nis='$nis', hadir=$hadir, ijin = $ijin, sakit = $sakit, cuti = $cuti, alpa = $alpa, keterangan='".CQ($keterangan)."' ";
 	//echo '<br>'.$i.' '.$sql2.' '.$success;
 	if ($success)
 		QueryDbTrans($sql2,$success);	

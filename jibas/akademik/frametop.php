@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -170,15 +170,6 @@ function hide_info(){
                 
                 <td style="padding-right:5px" valign="top"> <div align="center"> <a style="text-decoration:none" href="javascript:logout();"  onMouseOver="MM_nbGroup('over','logout','images/ico/Icon Header/logout2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/logout.png" alt="Logout" name="logout" width="60" height="35" border="0" onLoad="" /><br />
 	            <span class="style7">Keluar</span></a></div></td>
-				
-				<?php
-				if ($_SESSION['maintenance']){
-				?>
-				<td style="padding-right:5px"  valign="top"> <a style="text-decoration:none" href="chgquote.php" target="content" onClick="MM_nbGroup('down','group1','maintenanceoff','images/ico/Icon Header/referensi2.png',1)" onMouseOver="MM_nbGroup('over','maintenanceoff','images/ico/Icon Header/referensi2.png','',1)" onMouseOut="MM_nbGroup('out')"><div align="center"> <img src="images/ico/Icon Header/referensi.png" alt="MAINTENANCE" name="maintenanceoff" width="60" height="35" border="0" id="maintenanceoff" onload="" /><br />
-		        <span class="style7">Maintenance</span></div></a></td>
-				<?php
-				}
-				?>
 		  </tr>
 		  </table>		</td>
 		<td>

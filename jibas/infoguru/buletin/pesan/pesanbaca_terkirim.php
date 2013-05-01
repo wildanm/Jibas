@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,6 +25,8 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
@@ -77,58 +79,51 @@ CloseDb();
    </tr>
     <tr>
 		<td>
-			<img src="../../images_slice/BGNews_01.png" width="12" height="11" alt=""></td>
-		<td background="../../images_slice/BGNews_02.png" width="*" height="11">
+			<img src="../../images/BGNews_01.png" width="12" height="11" alt=""></td>
+		<td background="../../images/BGNews_02.png" width="*" height="11">
 			</td>
 		<td>
-			<img src="../../images_slice/BGNews_03.png" width="18" height="11" alt=""></td>
+			<img src="../../images/BGNews_03.png" width="18" height="11" alt=""></td>
 	</tr>
 	<tr>
-		<td background="../../images_slice/BGNews_04.png" width="12">
+		<td background="../../images/BGNews_04.png" width="12">
 			</td>
-		<td width="*" background="../../images_slice/BGNews_05.png">
+		<td width="*" background="../../images/BGNews_05.png">
             <div align="left" style="padding-bottom:10px"><span style="color:#339900; font-size:20px; font-weight:bold">.:</span><span style="color:#FF6600; font-family:Calibri; font-size:16px; font-weight:bold; ">Pesan Terkirim</span></div>
-            <table width="100%" border="0" cellspacing="3">
-      <tr>
-        <td width="11%" valign="top"><span class="style1"><span class="style5">Dari</span></span></td>
-        <td width="1%" valign="top"><span class="style1"><span class="style5">:</span></span></td>
-        <td width="88%"><span class="style1">
-          <?=$row2[nama]?>
-        </span></td>
-      </tr>
-      <tr>
-        <td valign="top"><span class="style6">Judul</span></td>
-        <td valign="top"><span class="style6">:</span></td>
-        <td><?=$row2[judul]?></td>
-      </tr>
-      <tr>
-        <td valign="top"><span class="style5">Pesan</span></td>
-        <td valign="top"><span class="style6">:</span></td>
-        <td><?=$row2[pesan]?></td>
-      </tr>
-      <tr>
-        <td valign="top"><span class="style5">Lampiran</span></td>
-        <td valign="top"><span class="style6">:</span></td>
-        <td><? if (@mysql_num_rows($result3)>0) { ?>
-          <?
-          while ($row3=@mysql_fetch_array($result3)){
-         echo "<a title='Buka lampiran ini!' href='".$WEB_UPLOAD_DIR."pesan/".$row3[direktori].$row3[namafile]."' target='_blank' ><img border='0' src='../../images/ico/titik.png' width='5' heiht='5'/> ".$row3['namafile']."</a><br>";
-          }
-          }
-          ?></td>
-      </tr>
-    </table>
+            <table width="95%" border="0" cellspacing="2" cellpadding="2" align="center">
+              <tr>
+                <td width="11%" valign="top"><span class="style1"><span class="style5">Dari</span></span></td>
+                <td width="2%" valign="top"><span class="style5">:</span></td>
+                <td width="87%"><span class="style1">
+                  <?=$row2[nama]?>
+                </span></td>
+              </tr>
+              <tr>
+                <td valign="top"><span class="style6">Judul</span></td>
+                <td valign="top"><span class="style5">:</span></td>
+                <td><span class="style1">
+                  <?=$row2[judul]?>
+                </span></td>
+              </tr>
+              <tr>
+                <td valign="top"><span class="style5">Pesan</span></td>
+                <td valign="top"><span class="style5">:</span></td>
+                <td><font style="font-size: 11px; line-height: 18px">
+                  <?=$row2[pesan]?>
+                </span></td>
+              </tr>
+            </table>
 		</td>
-		<td background="../../images_slice/BGNews_06.png" width="18">
+		<td background="../../images/BGNews_06.png" width="18">
 			</td>
 	</tr>
   <tr>
 	  <td>
-		  <img src="../../images_slice/BGNews_07.png" width="12" height="20" alt=""></td>
-	<td background="../../images_slice/BGNews_08.png" width="*" height="17">
+		  <img src="../../images/BGNews_07.png" width="12" height="20" alt=""></td>
+	<td background="../../images/BGNews_08.png" width="*" height="17">
 	</td>
 		<td>
-	<img src="../../images_slice/BGNews_09.png" width="18" height="20" alt=""></td>
+	<img src="../../images/BGNews_09.png" width="18" height="20" alt=""></td>
   </tr>
 </table>
 </body>

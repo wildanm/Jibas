@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,7 +24,8 @@
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/common.php');
-require_once('../../akademik/include/imageresizer.php');
+require_once('../include/rupiah.php');
+require_once('../library/imageresizer.php');
 
 OpenDb();
 $sql = "SELECT * FROM jbsfina.barang WHERE replid='$_REQUEST[idbarang]'";
@@ -32,11 +33,14 @@ $result = QueryDb($sql);
 $row = mysql_fetch_array($result);
 $kode = $row[kode];
 $nama = $row[nama];
-$jumlah = $row[jumlah];
+$jumlah = (int)$row[jumlah];
 $kondisi = $row[kondisi];
 $keterangan = $row[keterangan];
 $satuan = $row[satuan];
 $tgl = substr($row[tglperolehan],8,2)."-".substr($row[tglperolehan],5,2)."-".substr($row[tglperolehan],0,4);
+$harga = (int)$row[info1];
+$total = $harga * $jumlah;
+
 if (isset($_REQUEST[Simpan])){
 	$sql = "SELECT kode FROM jbsfina.barang WHERE kode='$_REQUEST[kode]' AND replid<>'$_REQUEST[idbarang]'";
 	$result = QueryDb($sql);
@@ -73,8 +77,12 @@ if (isset($_REQUEST[Simpan])){
 		
 		$tgl = MySqlDateFormat($_REQUEST[tgl]);
 		
-		$sql = "UPDATE jbsfina.barang SET kode='".trim($_REQUEST[kode])."', nama='".trim($_REQUEST[nama])."', jumlah='".trim($_REQUEST[jumlah])."',kondisi='".addslashes(trim($_REQUEST[kondisi]))."',tglperolehan='$tgl',keterangan='".addslashes(trim($_REQUEST[keterangan]))."',idkelompok='$_REQUEST[idkelompok]',satuan='$_REQUEST[satuan]' $isifoto WHERE replid='$_REQUEST[idbarang]'";
-		//echo  $sql; exit;
+		$sql = "UPDATE jbsfina.barang
+				   SET kode='".trim($_REQUEST[kode])."', nama='".trim($_REQUEST[nama])."',
+					   jumlah='".trim($_REQUEST[jumlah])."',kondisi='".addslashes(trim($_REQUEST[kondisi]))."',tglperolehan='$tgl',
+					   keterangan='".addslashes(trim($_REQUEST[keterangan]))."',idkelompok='$_REQUEST[idkelompok]',
+					   satuan='$_REQUEST[satuan]', info1='$_REQUEST[angkaharga]' $isifoto
+				 WHERE replid='$_REQUEST[idbarang]'";
 		$result = QueryDb($sql);
 		if ($result){
 			?>
@@ -94,6 +102,8 @@ if (isset($_REQUEST[Simpan])){
 <title>Ubah Barang</title>
 <link href="../style/style.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../script/tools.js"></script>
+<script language="javascript" src="../script/string.js"></script>
+<script language="javascript" src="../script/rupiah.js"></script>
 <script language="javascript">
 function TakeDate(elementid){
 	var addr = "../library/cals.php?elementid="+elementid;
@@ -178,6 +188,29 @@ function validate(){
 		} 
 	}
 }
+
+IsNumber = function(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+function CalculatePrice()
+{
+	var jumlah = trim(document.getElementById("jumlah").value);
+	var harga = trim(document.getElementById("harga").value);
+	harga = rupiahToNumber(harga);
+	
+	jumlah = IsNumber(jumlah) ? jumlah : 0;
+	harga = IsNumber(harga) ? harga : 0;
+	
+	var total = jumlah * harga;
+	document.getElementById("total").value = numberToRupiah(total);
+}
+
+function salinharga()
+{	
+	var harga = document.getElementById("harga").value;
+	document.getElementById("angkaharga").value = harga;
+}
 </script>
 </head>
 <body onLoad="document.getElementById('kode').focus()">
@@ -200,8 +233,18 @@ function validate(){
     <td align="right"><strong>Jumlah</strong></td>
     <td><input type="text" id="jumlah" name="jumlah" size="5" maxlength="10" value="<?=stripslashes($jumlah)?>" />
     &nbsp;Satuan&nbsp;<input type="text" id="satuan" name="satuan" size="10" maxlength="20" value="<?=stripslashes($satuan)?>" /></td>
-    </tr>
-  
+  </tr>
+  <tr>
+    <td align="right">Harga Satuan</td>
+    <td>
+		<input type="text" id="harga" name="harga" size="15" maxlength="14" value="<?=FormatRupiah($harga) ?>" onblur="CalculatePrice(); formatRupiah('harga');" onfocus="unformatRupiah('harga')" onkeyup="salinharga();" />
+		<input type="hidden" id="angkaharga" name="angkaharga" size="15" maxlength="14" value="<?=$harga?>" />
+	</td>
+  </tr>
+  <tr>
+    <td align="right">Total Harga</td>
+    <td><input type="text" id="total" name="total" readonly value="<?=FormatRupiah($total) ?>" style="background-color: #DDD" size="15" maxlength="14" /></td>
+  </tr>
   <tr>
     <td align="right"><strong>Tanggal Perolehan</strong></td>
     <td><input type="text" id="tgl" name="tgl" maxlength="10" size="11" value="<?=$tgl?>" />&nbsp;<a href="javascript:TakeDate('tgl')"><img src="../images/ico/calendar.png" border="0" /></a>&nbsp;<em>mm-dd-yyyy</em></td>

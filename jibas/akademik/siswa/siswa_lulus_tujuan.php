@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -270,79 +270,67 @@ if ($op=="x2378e23dkofh73n25ki9234"){
 					RollbackTrans();
 			
 				CloseDb();	
-			} else { //KALO TERNYATA NISNYA BERUBAH....
+			}
+			else
+			{
+				//KALO TERNYATA NISNYA BERUBAH....
 				OpenDb();
-				$sql_siswa_get = "SELECT * FROM siswa WHERE nis = '$nis'";
-				$result=QueryDb($sql_siswa_get);
-				$row_siswa_get=mysql_fetch_array($result);
-				
-				$sekolah=$row_siswa_get['asalsekolah'];
-				$sekolah_sql = "asalsekolah = '$sekolah'";
-				if ($sekolah == NULL)
-					$sekolah_sql = "asalsekolah = NULL";		
-				$pendidikanayah=$row_siswa_get['pendidikanayah'];
-				$pendidikanayah_sql = "pendidikanayah = '$pendidikanayah'";
-				if ($pendidikanayah == "")
-					$pendidikanayah_sql = "pendidikanayah = NULL";
-				$pendidikanibu=$row_siswa_get['pendidikanibu'];
-				$pendidikanibu_sql = "pendidikanibu = '$pendidikanibu'";
-				if ($pendidikanibu == "")
-					$pendidikanibu_sql = "pendidikanibu = NULL";
-				$pekerjaanayah=$row_siswa_get['pekerjaanayah'];
-				$pekerjaanayah_sql = "pekerjaanayah = '$pekerjaanayah'";
-				if ($pekerjaanayah == "")
-					$pekerjaanayah_sql = "pekerjaanayah = NULL";
-				$pekerjaanibu=$row_siswa_get['pekerjaanibu'];
-				$pekerjaanibu_sql = "pekerjaanibu = '$pekerjaanibu'";
-				if ($pekerjaanibu == "")
-					$pekerjaanibu_sql = "pekerjaanibu = NULL";
 						
 				BeginTrans();
 				$success=0;				
 				
-				$pinsiswa = random(5);
-				$pinortu = random(5);
 				$sql_lulus_insert_siswa="INSERT INTO jbsakad.siswa
-				(nis,nama,panggilan,aktif,tahunmasuk,idangkatan,idkelas,suku,agama,`status`,kondisi,kelamin,tmplahir,tgllahir,warga,anakke,jsaudara,bahasa,berat,tinggi,darah,
+				(nis,nisn,nama,panggilan,aktif,tahunmasuk,idangkatan,idkelas,suku,agama,`status`,kondisi,kelamin,tmplahir,tgllahir,warga,anakke,jsaudara,bahasa,berat,tinggi,darah,
 				alamatsiswa,kodepossiswa,telponsiswa,hpsiswa,emailsiswa,kesehatan,ketsekolah,namaayah,namaibu,almayah,almibu,wali,penghasilanayah,penghasilanibu,alamatortu,telponortu,
-				hportu,emailayah,emailibu,alamatsurat,keterangan,pinsiswa,pinortu,asalsekolah,pendidikanayah,pendidikanibu,pekerjaanayah,pekerjaanibu,foto) 
+				hportu,emailayah,emailibu,alamatsurat,keterangan,pinsiswa,pinortu,pinortuibu,asalsekolah,pendidikanayah,pendidikanibu,pekerjaanayah,pekerjaanibu,foto,info1,info2,info3) 
 
-				(SELECT '$nisbaru',nama,panggilan,1,'$tahunsekarang','$angkatan','$kelas',suku,agama,`status`,kondisi,kelamin,tmplahir,tgllahir,warga,anakke,jsaudara,bahasa,berat,tinggi,darah,
+				(SELECT '$nisbaru',nisn,nama,panggilan,1,'$tahunsekarang','$angkatan','$kelas',suku,agama,`status`,kondisi,kelamin,tmplahir,tgllahir,warga,anakke,jsaudara,bahasa,berat,tinggi,darah,
 				alamatsiswa,kodepossiswa,telponsiswa,hpsiswa,emailsiswa,kesehatan,ketsekolah,namaayah,namaibu,almayah,almibu,wali,penghasilanayah,penghasilanibu,alamatortu,telponortu,
-				hportu,emailayah,emailibu,alamatsurat,keterangan,pinsiswa,pinortu,asalsekolah,pendidikanayah,pendidikanibu,pekerjaanayah,pekerjaanibu,foto FROM siswa WHERE nis='$nis')";
+				hportu,emailayah,emailibu,alamatsurat,keterangan,pinsiswa,pinortu,pinortuibu,asalsekolah,pendidikanayah,pendidikanibu,pekerjaanayah,pekerjaanibu,foto,info1,info2,info3
+				FROM siswa WHERE nis='$nis')";
 
 				QueryDbTrans($sql_lulus_insert_siswa, $success);
-									
-
-				if ($success){					
+				
+				if ($success)
+				{					
 					$sql_siswa_update="UPDATE jbsakad.siswa SET aktif=0, alumni=1 WHERE nis='$nis'"; 
 					QueryDbTrans($sql_siswa_update, $success);
-				}				
-				if ($success){
+				}
+				
+				if ($success)
+				{
 					$sql_lulus_update_kelas="UPDATE jbsakad.riwayatkelassiswa SET aktif=0 WHERE nis='$nis' AND idkelas='$kelasawal' AND aktif = 1";
 					QueryDbTrans($sql_lulus_update_kelas, $success);
 				}
-				if ($success){
+				
+				if ($success)
+				{
 					$sql_lulus_insert_kelas="INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nisbaru', aktif=1, status=1, idkelas='$kelas', keterangan='$ket', mulai='$sekarang'";
 					QueryDbTrans($sql_lulus_insert_kelas, $success);
-				}			
-				if ($success){
+				}
+				
+				if ($success)
+				{
 					$sql_lulus_update_dept="UPDATE jbsakad.riwayatdeptsiswa SET aktif=0 WHERE nis='$nis' AND departemen='$departemenawal' AND aktif = 1";
 					QueryDbTrans($sql_lulus_update_dept, $success);
-				}	
-				if ($success){
+				}
+				
+				if ($success)
+				{
 					$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$sekarang', tktakhir='$tingkatawal', klsakhir='$kelasawal', departemen = '$departemenawal'";
 					QueryDbTrans($sql_alumni,$success);
-				}			
-				if ($success){
+				}
+				
+				if ($success)
+				{
 					$sql_lulus_insert_dept="INSERT INTO jbsakad.riwayatdeptsiswa SET nis='$nisbaru', departemen='$departemen', mulai='$sekarang', aktif=1, nislama='$nis', status=1";
 					QueryDbTrans($sql_lulus_insert_dept, $success);
-				}				
+				}
+				
 				if ($success)
 					CommitTrans(); 
 				else
 					RollbackTrans();
-				
 				CloseDb();
 				?>
 				<script language="javascript">

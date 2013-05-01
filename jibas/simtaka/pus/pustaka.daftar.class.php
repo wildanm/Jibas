@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,10 +21,13 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CPustaka{
-	function OnStart(){
-		$op=$_REQUEST[op];
-		if ($op=="Gtytc6yt665476d6"){
+class CPustaka
+{
+	function OnStart()
+	{
+		$op = $_REQUEST[op];
+		if ($op == "Gtytc6yt665476d6")
+		{
 			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
 			$res = QueryDb($sql);
 			$numdel = @mysql_num_rows($res);
@@ -53,41 +56,49 @@ class CPustaka{
 
 			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan<>'$_REQUEST[perpustakaan]'";
 			$res = QueryDb($sql);
-			if (@mysql_num_rows($res)==0) {
+			if (@mysql_num_rows($res)==0)
+			{
 				$sql = "DELETE FROM pustaka WHERE replid='$_REQUEST[replid]'";
 				QueryDb($sql);	
 			}
 		}
+		
 		$this->numlines = 15;
 		$this->page = 0;
-		if (isset($_REQUEST[page])) {
+		if (isset($_REQUEST[page]))
+		{
 			$this->page = $_REQUEST[page];
 		}
+		
 		$this->perpustakaan = '-1';
 		if (isset($_REQUEST[perpustakaan]))
 			$this->perpustakaan = $_REQUEST[perpustakaan];
 	}
-	function reload_page(){
+	
+	function reload_page()
+	{
 		?>
 		<script language='JavaScript'>
 			document.location.href="pustaka.baru.php";
         </script>
 		<?
 	}
-	function OnFinish(){
+	
+	function OnFinish()
+	{
 		?>
 		<script language='JavaScript'>
 			Tables('table', 1, 0);
 		</script>
 		<?
     }
-	function GetPerpus(){
-		
-		if (SI_USER_LEVEL()==2){
-			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_DEPT()."' ORDER BY nama";
-		} else {
+	
+	function GetPerpus()
+	{
+		if (SI_USER_LEVEL()==2)
+			$sql = "SELECT replid,nama FROM perpustakaan WHERE replid='".SI_USER_IDPERPUS()."' ORDER BY nama";
+		else 
 			$sql = "SELECT replid,nama FROM perpustakaan ORDER BY nama";
-		}
 		$result = QueryDb($sql);
 		?>
 		<link href="../sty/style.css" rel="stylesheet" type="text/css" />

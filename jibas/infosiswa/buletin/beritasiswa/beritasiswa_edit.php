@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
@@ -173,95 +175,40 @@ function hapusfile3(){
 <input type="hidden" name="bulan" id="bulan" value="<?=$_REQUEST[bulan]?>" />
 <input type="hidden" name="tahun" id="tahun" value="<?=$_REQUEST[tahun]?>" />
 <table width="100%" border="0" cellspacing="0">
-  <tr>
-    <td scope="row" align="center"><strong>Ubah Berita</strong></td>
-  </tr>
-  <tr>
-    <td scope="row" align="left">
-    <table width="100%" border="0" cellpadding="3" cellspacing="3"  id="table">
+<tr>
+  <td scope="row" align="center"><strong>Ubah Berita</strong></td>
+</tr>
+<tr>
+  <td scope="row" align="left">
+	 
+  <table width="100%" border="0" cellpadding="3" cellspacing="3"  id="table">
   <tr style="background-color:#e7e7cf;">
-    <th width="6%" bgcolor="#FFFFFF" scope="row">Judul</th>
-    <td colspan="2" bgcolor="#FFFFFF"><input type="text" name="judul" id="judul" size="50" value="<?=$row['judul']?>"/></td>
+		<th width="6%" bgcolor="#FFFFFF" scope="row">Judul</th>
+		<td colspan="2" bgcolor="#FFFFFF"><input type="text" name="judul" id="judul" size="50" value="<?=$row['judul']?>"/></td>
   </tr>
   <tr>
-    <th bgcolor="#FFFFFF" scope="row">Tanggal</th>
-    <td colspan="2" bgcolor="#FFFFFF"><input title="Klik untuk membuka kalender !" type="text" name="tanggal" id="tanggal" size="25" readonly="readonly" class="disabled" value="<?=$row['tanggal']?>"/><img title="Klik untuk membuka kalender !" src="../../images/ico/calendar_1.png" name="btntanggal" width="16" height="16" border="0" id="btntanggal"/></td>
-  </tr>
-  <tr style="background-color:#e7e7cf;">
-    <th valign="top" bgcolor="#FFFFFF" scope="row">Abstrak</th>
-    <td colspan="2" bgcolor="#FFFFFF"><textarea name="abstrak" id="abstrak" cols="100"><?=$row['abstrak']?></textarea></td>
-  </tr>
-  <tr>
-    <th valign="top" bgcolor="#FFFFFF" scope="row">Isi</th>
-    <td colspan="2" bgcolor="#FFFFFF"><textarea name="isi" id="isi" cols="100"><?=$row['isi']?></textarea></td>
-  </tr>
-  <tr style="background-color:#ffffff;">
-    <th colspan="3" scope="row" align="left" height="30"><fieldset><legend>Lampiran</legend>
-    <table width="100%" border="0" cellspacing="0">
-  <tr id="tr1" >
-    <th width="2%" scope="row">#1</th>
-    <th width="36%" scope="row"><?=$row1['namafile']?></th>
-    <th width="62%" scope="row">
-	<div align="left">
-	<? if ($row1['namafile']!=""){ ?>
-	<img src="../../images/ico/hapus.png" onclick="hapusfile1()" title="Hapus file ini !" style="cursor:pointer" /><? } ?>
-	<input type="hidden" size="1" name="d1" id="d1" value="0"/>
-	<input type="hidden" name="repd1" id="repd1" value="<?=$row1[replid]?>" />
-	</div></th>
-  </tr>
-  <tr id="tr2" >
-    <th scope="row">#2</th>
-    <th scope="row"><?=$row2['namafile']?></th>
-    <th scope="row"><? if ($row2['namafile']!=""){ ?><div align="left"><img src="../../images/ico/hapus.png" onclick="hapusfile2()" title="Hapus file ini !" style="cursor:pointer" /><? } ?><input type="hidden" name="d2" id="d2" size="1" value="0" />
-	<input type="hidden" name="repd2" id="repd2" value="<?=$row2[replid]?>" />
-	</div></th>
-  </tr>
-  <tr id="tr3" >
-    <th scope="row">#3</th>
-    <th scope="row"><?=$row3['namafile']?></th>
-    <th scope="row"><div align="left"><? if ($row3['namafile']!=""){ ?><img src="../../images/ico/hapus.png" onclick="hapusfile3()" title="Hapus file ini !" style="cursor:pointer" />
-	<? } ?>
-<input type="hidden" name="d3" size="1" id="d3" value="0" />
-<input type="hidden" name="repd3" id="repd3" value="<?=$row3[replid]?>" />
-</div></th>
-  </tr>
-</table>
- </fieldset></th>
+		<th bgcolor="#FFFFFF" scope="row">Tanggal</th>
+		<td colspan="2" bgcolor="#FFFFFF"><input title="Klik untuk membuka kalender !" type="text" name="tanggal" id="tanggal" size="25" readonly="readonly" class="disabled" value="<?=$row['tanggal']?>"/><img title="Klik untuk membuka kalender !" src="../../images/ico/calendar_1.png" name="btntanggal" width="16" height="16" border="0" id="btntanggal"/></td>
   </tr>
   <tr style="background-color:#e7e7cf;">
-    <th colspan="3" scope="row" align="left" bgcolor="#FFFFFF">
-  	Lampiran Baru :   </th>
-    </tr>
-  <tr style="background-color:#e7e7cf;">
-    <th colspan="2" scope="row" align="center" bgcolor="#FFFFFF"><div align="right">#1</div></th>
-    <th width="89%" align="center" bgcolor="#FFFFFF" scope="row">
-      <div align="left">
-        <input size="25" type="file" name="file1" />
-      </div></th>
+		<th valign="top" bgcolor="#FFFFFF" scope="row">Abstrak</th>
+		<td colspan="2" bgcolor="#FFFFFF"><textarea name="abstrak" id="abstrak" cols="100"><?=$row['abstrak']?></textarea></td>
   </tr>
   <tr>
-    <th colspan="2" align="center" bgcolor="#FFFFFF" scope="row"><div align="right">#2</div></th>
-    <th scope="row" align="center" bgcolor="#FFFFFF">
-      <div align="left">
-        <input size="25" type="file" name="file2" />
-      </div></th>
-  </tr>
-  <tr style="background-color:#e7e7cf;">
-    <th colspan="2" align="center" bgcolor="#FFFFFF" scope="row"><div align="right">#3</div></th>
-    <th scope="row" align="center" bgcolor="#FFFFFF">
-      <div align="left">
-        <input size="25" type="file" name="file3" />
-      </div></th>
+		<th valign="top" bgcolor="#FFFFFF" scope="row">Isi</th>
+		<td colspan="2" bgcolor="#FFFFFF"><textarea name="isi" id="isi" cols="100"><?=$row['isi']?></textarea></td>
   </tr>
   <tr>
-    <th colspan="3" scope="row" align="center" bgcolor="#FFFFFF" height="30">
-      <input class="but" type="submit" name="simpan" id="simpan" value="Simpan" title="Simpan berita ini !"/>
-    &nbsp;<input class="but" type="button" name="batal" id="batal" value="Batal" onclick="window.self.history.back();" title="Batalkan dan kembali ke Halaman Berita"/></th>
-    </tr>
-</table>
-    </td>
+		<th colspan="3" scope="row" align="center" bgcolor="#FFFFFF" height="30">
+		<input class="but" type="submit" name="simpan" id="simpan" value="Simpan" title="Simpan berita ini !"/>&nbsp;
+		<input class="but" type="button" name="batal" id="batal" value="Batal" onclick="window.self.history.back();" title="Batalkan dan kembali ke Halaman Berita"/>
+		</th>
   </tr>
-</table>
+  </table>
+  
+  </td>
+</tr>
+</table>  
 </form>
 </body>
 <script type="text/javascript">

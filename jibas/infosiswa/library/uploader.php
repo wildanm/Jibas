@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,62 +24,68 @@
 require_once('../include/common.php');
 require_once('../include/sessioninfo.php');
 require_once('../include/config.php');
-require_once('../include/getheader.php');
 require_once('../include/db_functions.php');
+require_once('../include/fileinfo.php');
+require_once('../include/imageresizer.php');
 
-if (isset($_REQUEST['simpan'])){
-//$updir = "../upload/imagetiny/";
-$dir_bln=date(m);
-$dir_thn=date(Y);
-//$dir = $updir . $dir_thn . $dir_bln;
-//if (!is_dir($dir)) 
-//	mkdir($dir, 0777);
-//$newdir=$dir."/";
-		$idsiswa=SI_USER_ID();
-		$foto=$_FILES["foto"];
-		$uploadedfile = $foto['tmp_name'];
-		$uploadedtypefile = $foto['type'];
-		$uploadedsizefile = $foto['size'];
-		if (strlen($uploadedfile)!=0){
-			//$gantifoto=", foto='$foto_data'";
-		if($uploadedtypefile=='image/jpeg')
-		$src = imagecreatefromjpeg($uploadedfile);
-		$filename = "x.jpg";
-		list($width,$height)=getimagesize($uploadedfile);
-		if ($width<$height){
-		$newheight=640;
-		$newwidth=480;
-		} else if ($width>$height){
-		$newwidth=640;
-		$newheight=480;
+if (isset($_REQUEST['simpan']) && isset($_FILES[foto]))
+{
+		$nama = $_REQUEST['nama'];
+		$keterangan = $_REQUEST['keterangan'];
+		$pengguna = SI_USER_ID();
+		$bln = date('m');
+		$thn = date('Y');
+		
+		// create filename
+		$salt = RandomString(7);
+		$foto = $_FILES["foto"];
+		$origfile = $foto['name'];
+		$ext = GetFileExt($origfile);
+		$fn = GetFileName($origfile);
+		$fn = str_replace(" ", "", $fn);
+		$fn = date('ymdHis') . "-" . $pengguna . "-" . $salt . "-" . $fn;
+		$fn = md5($fn) . $ext;
+		
+		// Check and create directory if it doesnt exists
+		$updir = $FILESHARE_UPLOAD_DIR . "/media/" . $thn . $bln . "/";
+		if (!is_dir($updir))
+		{
+			mkdir($updir, 0750, true);
+			
+			$fhtaccess = "$updir/.htaccess";
+			$fhtaccess = str_replace("//", "/", $fhtaccess);
+			if ($fp = @fopen($fhtaccess, "w"))
+			{
+				@fwrite($fp, "Options -Indexes\r\n");
+				@fclose($fp);
+			}
 		}
-		$tmp=imagecreatetruecolor($newwidth,$newheight);
-		imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
-		imagejpeg($tmp,$filename,30);
-		imagedestroy($src);
-		imagedestroy($tmp); // NOTE: menghapus file di temp
-		$foto_data=addslashes(fread(fopen($filename,"r"),filesize($filename)));
-			$gantifoto=",foto='$foto_data'";
-		} else {
-			$gantifoto="";
-		}
+		$output = $updir . $fn;
+		
+		$w = 320; $h = 240;
+		ResizeImage($foto, $w, $h, 70, $output);
+		$foto_data = addslashes(fread(fopen($output,"r"), filesize($output)));
+		if ($foto_data != "")
+			$gantifoto = ", foto='$foto_data'";
+		else
+			$gantifoto = "";
+		$relpath = $thn . $bln . "/";
+		
 		OpenDb();
-		//$sql_client="SELECT * FROM jbsclient.localinfo ORDER BY region,location,clientid";
-		//$result_client=QueryDb($sql_client);
-		//$row_client=@mysql_fetch_array($result_client);
-		$sql= "INSERT INTO jbsvcr.gambartiny SET nis='$idsiswa', namagambar='".$_REQUEST[nama]."',bulan=".$dir_bln.",tahun=".$dir_thn.",keterangan='$_REQUEST[keterangan]' $gantifoto";
-		/*"INSERT INTO jbsvcr.gambartiny SET region='$row_client[region]',location='$row_client[location]',clientid='$row_client[clientid]',nis='$idguru', namagambar='".$_REQUEST[nama]."',bulan=".$dir_bln.",tahun=".$dir_thn.",keterangan='$_REQUEST[keterangan]' $gantifoto";*/
-		//echo $sql;
-		$result=QueryDb($sql);
+		$sql = "INSERT INTO jbsvcr.gambartiny
+					  SET info1='$fn', idguru='$pengguna', namagambar='$nama',bulan='$bln',tahun='$thn', keterangan='$keterangan' $gantifoto";
+		$result = QueryDb($sql);
 		CloseDb();
-	if ($result){
+		
+		if ($result)
+		{
 		?>
-		<script language="javascript">
-			alert ('Berhasil upload gambar !\nSilakan pilih gambar dengan menekan tombol Pilih Gambar');
-			document.location.href="blank_uploader.php";
-		</script>
-	<?
-	}
+				<script language="javascript">
+					alert ('Berhasil upload gambar !\nSilakan pilih gambar dengan menekan tombol Pilih Gambar');
+					document.location.href="blank_uploader.php";
+				</script>
+<?		}
+	
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

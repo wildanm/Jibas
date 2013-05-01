@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -57,10 +57,10 @@ if (isset($_REQUEST['Simpan']))
 {
 	$petugas = getUserName();
 	$idbesarjtt = (int)$_REQUEST['idbesarjtt'];
-	$tcicilan = $_REQUEST['tcicilan'];
-	$tcicilan = MySqlDateFormat($tcicilan);
-	$jcicilan = $_REQUEST['jcicilan'];
-	$jcicilan = UnformatRupiah($jcicilan);
+	$tcicilan = MySqlDateFormat($_REQUEST['tcicilan']);
+	$jcicilan = UnformatRupiah($_REQUEST['jcicilan']);
+	$jdiskon = UnformatRupiah($_REQUEST['jdiskon']);
+	$jbayar = $jcicilan - $jdiskon;
 	$kcicilan = CQ($_REQUEST['kcicilan']);
 		
 	//Ambil nama penerimaan
@@ -80,91 +80,91 @@ if (isset($_REQUEST['Simpan']))
 	$sql = "SELECT b.replid AS id, b.besar
   		   	 FROM besarjtt b
    	   	WHERE b.nis = '$nis' AND b.idpenerimaan = '$idpenerimaan' AND b.info2 = '$idtahunbuku'";
-	$res = QueryDb($sql);
-	$row = mysql_fetch_row($res);
+	$row = FetchSingleRow($sql);
 	$idbesarjtt = $row[0];
 	$besarjtt = $row[1];
 	
 	//Cari tahu jumlah pembayaran cicilan yang sudah terjadi
-	$cicilan = 1;
-	$jml = 0;
-	$sql = "SELECT jumlah FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
-	$result = QueryDb($sql);
-	while ($row = mysql_fetch_row($result)) 
-	{
-		$jml += $row[0];  // jumlah pembayaran sebelumnya
-		$cicilan++;
-	}
+	$sql = "SELECT SUM(jumlah), SUM(info1) FROM penerimaanjtt WHERE idbesarjtt='$idbesarjtt'";
+	$row = FetchSingleRow($sql);
+	$totalcicilan = $row[0];
+	$totaldiskon = $row[1];
 
 	//Cek jumlah cicilan dengan besar pembayaran yang mesti dilunasi
-	$ketjurnal = "";
-	if ($jml + $jcicilan > $besarjtt) 
+	if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon > $besarjtt) 
 	{		
-		$errmsg = "Maaf, pembayaran tidak dapat dilakukan! Jumlah bayaran cicilan lebih besar daripada pembayaran yang harus dilunasi!";		
-	} 
-	else if ($jml + $jcicilan == $besarjtt) 
-	{		
-		$ketjurnal = "Pelunasan $namapenerimaan siswa $namasiswa ($nis)";
-		$lunas = 1; //udah lunas
+		$errmsg = "Maaf, pembayaran tidak dapat dilakukan! Jumlah bayaran cicilan lebih besar daripada pembayaran yang harus dilunasi!";
+		CloseDb();
 	} 
 	else 
 	{
-		$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
-		$lunas = 0; //blum lunas
-	}
-		
-	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
-	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
-	$row = FetchSingleRow($sql);
-	$awalan = $row[0];
-	$cacah = $row[1];
-	
-	$cacah += 1; //increment cacah
-	$nokas = $awalan . rpad($cacah, "0", 6); //form nokas
-	
-	//Begin Database Transaction
-	BeginTrans();
-	$success = true;
-
-	//Simpan ke jurnal
-	$idjurnal = 0;
-	$success = SimpanJurnal($idtahunbuku_aktif, $tcicilan, $ketjurnal, $nokas, "", $petugas, "penerimaanjtt", $idjurnal);
-	
-	//Simpan ke jurnaldetail
-	if ($success) 
-		$success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jcicilan);
-	if ($success) 
-		$success = SimpanDetailJurnal($idjurnal, "K", $rekpiutang, $jcicilan);
-	
-	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
-	if ($success) 
-		QueryDbTrans($sql, $success);
-	
-	//simpan data cicilan di penerimaanjtt
-	$sql = "INSERT INTO penerimaanjtt SET idbesarjtt='$idbesarjtt', idjurnal='$idjurnal', tanggal='$tcicilan', 
-	        jumlah='$jcicilan', keterangan='$kcicilan', petugas='$petugas'";
-	if ($success) 
-		QueryDbTrans($sql, $success);
-	
-	//jika lunas ubah statusnya di besarjtt
-	if ($lunas) 
-	{
-		if ($success) 
+		$lunas = 0;
+		$ketjurnal = "";
+		if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon == $besarjtt)
 		{
-			$sql = "SET @DISABLE_TRIGGERS = 1;";
-			QueryDb($sql);
-			
-			$sql = "UPDATE besarjtt SET lunas=1 WHERE replid='$idbesarjtt'";
-			QueryDbTrans($sql, $success);
-			
-			$sql = "SET @DISABLE_TRIGGERS = NULL;";
-			QueryDb($sql);
+			$ketjurnal = "Pelunasan $namapenerimaan siswa $namasiswa ($nis)";
+			$lunas = 1; //udah lunas
 		}
-	}
+		else
+		{
+			$sql = "SELECT COUNT(replid) + 1 FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
+			$cicilan = FetchSingle($sql);
+			
+			$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
+			$lunas = 0;
+		}
+		
+		//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
+		$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku_aktif'";
+		$row = FetchSingleRow($sql);
+		$awalan = $row[0];
+		$cacah = $row[1];
+		$cacah += 1; //increment cacah
+		$nokas = $awalan . rpad($cacah, "0", 6); //form nokas
 	
-	if (strlen($errmsg) == 0) 
-	{
+		//Begin Database Transaction
+		BeginTrans();
+		$success = true;
+
+		//Simpan ke jurnal
+		$idjurnal = 0;
+		$success = SimpanJurnal($idtahunbuku_aktif, $tcicilan, $ketjurnal, $nokas, "", $petugas, "penerimaanjtt", $idjurnal);
+		
+		//-- Simpan ke jurnaldetail ------------------------------------------
+		if ($success) 
+			$success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jbayar);
+		if ($success) 
+			$success = SimpanDetailJurnal($idjurnal, "K", $rekpiutang, $jcicilan);
+		if ($jdiskon > 0 && $success)
+			$success = SimpanDetailJurnal($idjurnal, "D", $rekdiskon, $jdiskon);	
+	
+		//increment cacah di tahunbuku
+		$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku_aktif'";
+		if ($success) 
+			QueryDbTrans($sql, $success);
+	
+		//simpan data cicilan di penerimaanjtt
+		$sql = "INSERT INTO penerimaanjtt SET idbesarjtt='$idbesarjtt', idjurnal='$idjurnal', tanggal='$tcicilan', 
+		        jumlah='$jbayar', keterangan='$kcicilan', petugas='$petugas', info1='$jdiskon'";
+		if ($success) 
+			QueryDbTrans($sql, $success);
+	
+		//jika lunas ubah statusnya di besarjtt
+		if ($lunas) 
+		{
+			if ($success) 
+			{
+				$sql = "SET @DISABLE_TRIGGERS = 1;";
+				QueryDb($sql);
+				
+				$sql = "UPDATE besarjtt SET lunas=1 WHERE replid='$idbesarjtt'";
+				QueryDbTrans($sql, $success);
+				
+				$sql = "SET @DISABLE_TRIGGERS = NULL;";
+				QueryDb($sql);
+			}
+		}
+	
 		if ($success) 
 		{			
 			CommitTrans();
@@ -242,6 +242,21 @@ function validasiAngka()
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
+	
+	diskon = document.getElementById('angkadiskon').value;
+	if(isNaN(diskon)) 
+	{
+		alert ('Besar diskon harus berupa bilangan!');
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+	else if(diskon < 0)
+	{
+		alert ('Besar diskon harus positif!');
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+	
 	return true;
 }
 
@@ -251,16 +266,32 @@ function salinangka()
 	document.getElementById("angkacicilan").value = angka;
 }
 
+function salindiskon()
+{	
+	var angka = document.getElementById("jdiskon").value;
+	document.getElementById("angkadiskon").value = angka;
+}
+
 function focusNext(elemName, evt) 
 {
     evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
     if (charCode == 13) 
-	 {
+	{
 	 	document.getElementById(elemName).focus();
       return false;
     }
     return true;
+}
+
+function CalculatePay()
+{
+	var cicilan = document.getElementById("jcicilan").value;
+	var diskon = document.getElementById("jdiskon").value;
+	cicilan = rupiahToNumber(cicilan);
+	diskon = rupiahToNumber(diskon);
+	var bayar = cicilan - diskon;
+	document.getElementById("jbayar").value = numberToRupiah(bayar);
 }
 
 </script>
@@ -298,10 +329,22 @@ function focusNext(elemName, evt)
         <td colspan="2"><input type="text" size="30" value="<?=$nis . " - " . $nama ?>" readonly style="background-color:#CCCC99"/></td>
     </tr>
     <tr>
-        <td><strong>Jumlah Cicilan</strong></td>
-        <td colspan="2"><input type="text" name="jcicilan" id="jcicilan" value="<?=FormatRupiah($jbayar) ?>" onblur="formatRupiah('jcicilan')" onfocus="unformatRupiah('jcicilan')" onKeyPress="return focusNext('kcicilan', event)" onkeyup="salinangka()"/>
+        <td><strong>Cicilan</strong></td>
+        <td colspan="2"><input type="text" name="jcicilan" id="jcicilan" value="<?=FormatRupiah($jbayar) ?>" onblur="CalculatePay(); formatRupiah('jcicilan')" onfocus="unformatRupiah('jcicilan')" onKeyPress="return focusNext('jdiskon', event)" onkeyup="salinangka()"/>
         <input type="hidden" name="angkacicilan" id="angkacicilan" value="<?=$jcicilan?>" />
-        
+        </td>
+    </tr>
+	<tr>
+        <td>Diskon</td>
+        <td colspan="2">
+			<input type="text" name="jdiskon" id="jdiskon" value="<?=FormatRupiah($jdiskon) ?>" onblur="CalculatePay(); formatRupiah('jdiskon')" onfocus="unformatRupiah('jdiskon')" onKeyPress="return focusNext('kcicilan', event);" onkeyup="salindiskon()"/>
+			<input type="hidden" name="angkadiskon" id="angkadiskon" value="<?=$jdiskon?>" />
+        </td>
+    </tr>
+	<tr>
+        <td>Bayar</td>
+        <td colspan="2">
+			<input type="text" name="jbayar" id="jbayar" readonly="readonly" style="background-color: #CCCCCC"/>
         </td>
     </tr>
     <tr>

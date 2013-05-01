@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/getheader.php');
+require_once("../include/sessionchecker.php");
+
 OpenDb();
 
 $kelompokJam = NULL;
@@ -60,11 +62,11 @@ function loadJadwal() {
 	       "l.nama AS pelajaran, k.kelas, ".
 	       "CASE j.status WHEN 0 THEN 'Mengajar' WHEN 1 THEN 'Asistensi' WHEN 2 THEN 'Tambahan' END AS status ".
 	       "FROM jadwal j, pelajaran l, kelas k ".
-	       "WHERE j.nipguru = '".$_REQUEST['nip'].
-	       "' AND j.departemen = '".$_REQUEST['departemen'].
-	       "' AND j.infojadwal = '".$_REQUEST['info']."'".
+	       "WHERE j.nipguru = '".$_REQUEST['nip']."'".
+	       " AND j.departemen = '".$_REQUEST['departemen']."'".
+	       " AND j.infojadwal = '".$_REQUEST['info']."'".
 	       " AND j.idkelas = k.replid ".
-	       "AND j.idpelajaran = l.replid";
+	       " AND j.idpelajaran = l.replid";
 	
 	$result = QueryDb($sql);
 	

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -110,16 +110,18 @@ while ($row = mysql_fetch_array($result)) {
 	$lunas = $row['lunas'];
 	$keterangan = $row['keterangan'];
 	
-	$sql = "SELECT SUM(jumlah) FROM jbsfina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
+	$sql = "SELECT SUM(jumlah), SUM(info1) FROM jbsfina.penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 	$result2 = QueryDb($sql);
 	$pembayaran = 0;
+	$diskon = 0;
 	if (mysql_num_rows($result2)) {
 		$row2 = mysql_fetch_row($result2);
-		$pembayaran = $row2[0];
+		$pembayaran = $row2[0] + $row2[1];
+		$diskon = $row2[1];
 	};
 	$sisa = $besar - $pembayaran;
 	
-	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM jbsfina.penerimaanjtt WHERE idbesarjtt='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
+	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM jbsfina.penerimaanjtt WHERE idbesarjtt='$idbesarjtt' ORDER BY tanggal DESC, replid DESC LIMIT 1";
 	
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
@@ -140,10 +142,14 @@ while ($row = mysql_fetch_array($result)) {
         <td width="43%" bgcolor="#CCFF66" align="center"><strong>Keterangan</strong></td>
     </tr>
     <tr height="25">
-        <td bgcolor="#CCFF66"><strong>Jumlah Pembayaran</strong> </td>
+        <td bgcolor="#CCFF66"><strong>Jumlah Besar Pembayaran</strong> </td>
         <td bgcolor="#FFFFFF" align="right"><?=FormatRupiah($pembayaran) ?></td>
         <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="2"><?=FormatRupiah($byrakhir) . "<br><i>" . $tglakhir . "</i>" ?> </td>
         <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="2"><?=$keterangan ?></td>
+    </tr>
+	<tr height="25">
+        <td bgcolor="#CCFF66"><strong>Jumlah Diskon</strong> </td>
+        <td bgcolor="#FFFFFF" align="right"><?=FormatRupiah($diskon) ?></td>
     </tr>
     <tr height="25">
         <td bgcolor="#CCFF66"><strong>Sisa Bayaran</strong> </td>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -125,7 +125,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 		RollbackTrans();
 	CloseDb();
 ?>	<script language="javascript">
-		document.location.href="pembayaran_iuran.php?idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&nis=<?=$nis?>&idtahunbuku=<?=$idtahunbuku?>";
+		document.location.href="pembayaran_iuran.php?r=<?=rand(10000, 99999)?>&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&nis=<?=$nis?>&idtahunbuku=<?=$idtahunbuku?>";
 	</script>
 <?	
 }
@@ -228,7 +228,7 @@ function validasiAngka() {
 }
 
 function cetakkuitansi(id) {
-	newWindow('kuitansiiuran.php?id='+id, 'CetakKuitansi','750','850','resizable=1,scrollbars=1,status=0,toolbar=0');
+	newWindow('kuitansiiuran.php?id='+id, 'CetakKuitansi','360','650','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
 function editpembayaran(id) {
@@ -301,9 +301,9 @@ function focusNext(elemName, evt) {
             <tr>
                 <td><strong>Tanggal</strong></td>
                 <td>
-                <input type="text" name="tbayar" id="tbayar" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('keterangan', event)" onClick="Calendar.setup()" style="background-color:#CCCC99"> </td>
+                <input type="text" name="tbayar" id="tbayar" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('keterangan', event)" style="background-color:#CCCC99"> </td>
                 <td width="60%">
-                <img src="images/calendar.jpg" name="tabel" border="0" id="btntanggal" onMouseOver="showhint('Buka kalendar!', this, event, '100px')"/>
+                &nbsp;
                 </td>        
             </tr>
             <tr>
@@ -449,21 +449,6 @@ function focusNext(elemName, evt) {
 </body>
 </html>
 <script language="javascript">
-	 Calendar.setup(
-    {
-      //inputField  : "tanggalshow","tanggal"
-	  inputField  : "tbayar",         // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format
-      button      : "btntanggal"       // ID of the button
-    }
-   );
-    Calendar.setup(
-    {
-      inputField  : "tbayar",        // ID of the input field
-      ifFormat    : "%d-%m-%Y",    // the date format	  
-	  button      : "tbayar"       // ID of the button
-    }
-  );
 	var sprytextfield2 = new Spry.Widget.ValidationTextField("besar");
 	var sprytextarea1 = new Spry.Widget.ValidationTextarea("keterangan");
 </script>

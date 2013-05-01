@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -44,22 +44,19 @@ if (isset($_REQUEST['tahunajaran']))
 	$tahunajaran = $_REQUEST['tahunajaran'];	
 
 $op = $_REQUEST['op'];
-if ($op == "xm8r389xemx23xb2378e23") {
+if ($op == "xm8r389xemx23xb2378e23")
+{
 	if ($_REQUEST['field']) 
 		$filter = 'nipguru';
 	else 
 		$filter = 'replid';
 	
-	OpenDb();
 	$sql = "DELETE FROM jadwal WHERE $filter = '$_REQUEST[replid]' ";
 	QueryDb($sql);
-	CloseDb();
 }	
 
-OpenDb();	
-
-
-function loadJam($id) {	
+function loadJam($id)
+{	
 	$sql = "SELECT jamke, TIME_FORMAT(jam1, '%H:%i'), TIME_FORMAT(jam2, '%H:%i') ".
 	       "FROM jam WHERE departemen = '$id' ORDER BY jamke";
 	
@@ -73,7 +70,8 @@ function loadJam($id) {
 	return true;
 }
 
-function loadJadwal() {		
+function loadJadwal()
+{		
 	$sql = "SELECT j.replid AS id, j.hari AS hari, j.jamke AS jam, j.njam AS njam, j.keterangan AS ket, ".
 	       "l.nama AS pelajaran, k.kelas, ".
 	       "CASE j.status WHEN 0 THEN 'Mengajar' WHEN 1 THEN 'Asistensi' WHEN 2 THEN 'Tambahan' END AS status ".
@@ -86,7 +84,8 @@ function loadJadwal() {
 	
 	$result = QueryDb($sql);
 	
-	while($row = mysql_fetch_assoc($result)) {
+	while($row = mysql_fetch_assoc($result))
+	{
 		$GLOBALS[jadwal][row][$row[hari]][$row[jam]][id] = $row[id];
 		$GLOBALS[jadwal][row][$row[hari]][$row[jam]][njam] = $row[njam];
 		$GLOBALS[jadwal][row][$row[hari]][$row[jam]][pelajaran] = $row[pelajaran];
@@ -97,10 +96,14 @@ function loadJadwal() {
 	return true;
 }
 
-function getCell($r, $c) {
+function getCell($r, $c)
+{
 	global $mask, $jadwal;
-	if($mask[$c] == 0) {
-		if(isset($jadwal[row][$c][$r])) {
+	
+	if($mask[$c] == 0)
+	{
+		if(isset($jadwal[row][$c][$r]))
+		{
 			$mask[$c] = $jadwal[row][$c][$r][njam] - 1;
 			
 			$s = "<td class='jadwal' rowspan='{$jadwal[row][$c][$r][njam]}' width='110px'>";
@@ -114,7 +117,9 @@ function getCell($r, $c) {
 			$s.= "</td>";
 			
 			return $s;
-		} else {
+		}
+		else
+		{
 			$s = "<td class='jadwal' width='110px'>";			
 			$s.= "<img src='../images/ico/tambah.png' style='cursor:pointer' onclick='tambah($r, $c)' ";
 			$s.= "onMouseOver='showhint(\"Tambah Jadwal!\", this, event, \"100px\")'>";
@@ -122,13 +127,16 @@ function getCell($r, $c) {
 
 			return $s;
 		}
-	} else {
+	}
+	else
+	{
 		--$mask[$c];
 	}
 }
 
 $mask = NULL;
-for($i = 1; $i <= 7; $i++) {
+for($i = 1; $i <= 7; $i++)
+{
 	$mask[i] = 0;
 }
 

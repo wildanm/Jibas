@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -89,30 +89,31 @@ $sql = "SELECT DISTINCT b.replid AS id, b.besar, b.lunas, b.keterangan, d.nama
 		   WHERE p.idbesarjtt = b.replid AND b.idpenerimaan = d.replid AND b.nis='$nis' AND b.info2='$idtahunbuku'
 			  AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
 $result = QueryDb($sql);
-while ($row = mysql_fetch_array($result)) {
+while ($row = mysql_fetch_array($result))
+{
 	$idbesarjtt = $row['id'];
 	$namapenerimaan = $row['nama']; 
 	$besar = $row['besar'];
 	$lunas = $row['lunas'];
 	$keterangan = $row['keterangan'];
 	
-	$sql = "SELECT SUM(jumlah) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
-	$result2 = QueryDb($sql);
-	$pembayaran = 0;
-	if (mysql_num_rows($result2)) {
-		$row2 = mysql_fetch_row($result2);
-		$pembayaran = $row2[0];
-	};
+	$sql = "SELECT SUM(jumlah), SUM(info1) FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
+	$row = FetchSingleRow($sql);
+	$pembayaran = $row[0] + $row[1];
+	$diskon = $row[1];
 	$sisa = $besar - $pembayaran;
 	
 	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaanjtt WHERE idbesarjtt='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
+	$dknakhir = 0;
 	$tglakhir = "";
-	if (mysql_num_rows($result2)) {
+	if (mysql_num_rows($result2))
+	{
 		$row2 = mysql_fetch_row($result2);
 		$byrakhir = $row2[0];
 		$tglakhir = $row2[1];
+		$dknakhir = $row2[2];
 	};	?>
     <tr height="35">
         <td colspan="4" bgcolor="#99CC00"><font size="2" face="Arial"><strong><em><?=$namapenerimaan?></em></strong></font></td>
@@ -126,15 +127,21 @@ while ($row = mysql_fetch_array($result)) {
       <td width="43%" bgcolor="#CCFF66" align="center"><font size="2" face="Arial"><strong>Keterangan</strong></font></td>
   </tr>
     <tr height="25">
-        <td bgcolor="#CCFF66"><font size="2" face="Arial"><strong>Jumlah Pembayaran</strong> </font></td>
+        <td bgcolor="#CCFF66"><font size="2" face="Arial"><strong>Jumlah Besar Pembayaran</strong> </font></td>
       <td bgcolor="#FFFFFF" align="right"><font size="2" face="Arial">
       <?=$pembayaran ?>
       </font></td>
-      <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="2"><font size="2" face="Arial">
-      <?=$byrakhir . "<br><i>" . $tglakhir . "</i>" ?> 
+      <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="3"><font size="2" face="Arial">
+      <?=$byrakhir . "<br><i>" . $tglakhir . "</i><br>" . $dknakhir ?> 
       </font></td>
-      <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="2"><font size="2" face="Arial">
+      <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="3"><font size="2" face="Arial">
       <?=$keterangan ?>
+      </font></td>
+  </tr>
+	<tr height="25">
+        <td bgcolor="#CCFF66"><font size="2" face="Arial"><strong>Jumlah Diskon</strong> </font></td>
+      <td bgcolor="#FFFFFF" align="right"><font size="2" face="Arial">
+      <?=$diskon ?>
       </font></td>
   </tr>
     <tr height="25">
@@ -159,12 +166,7 @@ while ($row = mysql_fetch_array($result)) {
 	$namapenerimaan = $row['nama'];
 	
 	$sql = "SELECT SUM(jumlah) FROM penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis'";
-	$result2 = QueryDb($sql);
-	$pembayaran = 0;
-	if (mysql_num_rows($result2)) {
-		$row2 = mysql_fetch_row($result2);
-		$pembayaran = $row2[0];
-	};
+	$pembayaran = FetchSingle($sql);
 
 	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);

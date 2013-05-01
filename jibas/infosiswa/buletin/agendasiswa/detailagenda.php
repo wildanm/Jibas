@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,23 +58,23 @@ $row=@mysql_fetch_array($result);
 </div>
 <table width="350" align="center"  border="0" cellpadding="0" cellspacing="0">
   <tr>
-    <td width="40" height="69" style="background-image:url(../../images_slice/agenda_01.jpg); background-repeat:no-repeat;">&nbsp;</td>
-    <td width="236" height="69" valign="bottom" style="background-image:url(../../images_slice/agenda_03.jpg); background-repeat:repeat-x;"><div align="right"><span class="style1"><?=ShortDateFormat($row[tanggal])?></span><br>
+    <td width="40" height="69" style="background-image:url(../../images/agenda_01.jpg); background-repeat:no-repeat;">&nbsp;</td>
+    <td width="236" height="69" valign="bottom" style="background-image:url(../../images/agenda_03.jpg); background-repeat:repeat-x;"><div align="right"><span class="style1"><?=ShortDateFormat($row[tanggal])?></span><br>
         </div></td>
-    <td width="42" height="69" style="background-image:url(../../images_slice/agenda_04.jpg); background-repeat:no-repeat">&nbsp;</td>
-    <td width="32" height="69" style="background-image:url(../../images_slice/agenda_05.jpg); background-repeat:no-repeat">&nbsp;</td>
+    <td width="42" height="69" style="background-image:url(../../images/agenda_04.jpg); background-repeat:no-repeat">&nbsp;</td>
+    <td width="32" height="69" style="background-image:url(../../images/agenda_05.jpg); background-repeat:no-repeat">&nbsp;</td>
   </tr>
   <tr>
-    <td width="40" height="13" style="background-image:url(../../images_slice/agenda_06.jpg); background-repeat:repeat-y">&nbsp;</td>
-    <td width="236" height="13" style="background-image:url(../../images_slice/agenda_09.jpg);"><span class="style2"><?=$row['judul']?></span><br /><br /><?=$row['komentar']?></td>
-    <td width="42" height="13" style="background-image:url(../../images_slice/agenda_09.jpg);">&nbsp;</td>
-    <td width="32" height="13" style="background-image:url(../../images_slice/agenda_10.jpg); background-repeat:repeat-y">&nbsp;</td>
+    <td width="40" height="13" style="background-image:url(../../images/agenda_06.jpg); background-repeat:repeat-y">&nbsp;</td>
+    <td width="236" height="13" style="background-image:url(../../images/agenda_09.jpg);"><span class="style2"><?=$row['judul']?></span><br /><br /><?=$row['komentar']?></td>
+    <td width="42" height="13" style="background-image:url(../../images/agenda_09.jpg);">&nbsp;</td>
+    <td width="32" height="13" style="background-image:url(../../images/agenda_10.jpg); background-repeat:repeat-y">&nbsp;</td>
   </tr>
   <tr>
-    <td width="40" height="39" style="background-image:url(../../images_slice/agenda_16.jpg); background-repeat:no-repeat">&nbsp;</td>
-    <td width="236" height="39" style="background-image:url(../../images_slice/agenda_18.jpg); background-repeat:repeat-x">&nbsp;</td>
-    <td width="42" height="39" style="background-image:url(../../images_slice/agenda_18.jpg); background-repeat:repeat-x">&nbsp;</td>
-    <td width="32" height="39" style="background-image:url(../../images_slice/agenda_20.jpg); background-repeat:no-repeat">&nbsp;</td>
+    <td width="40" height="39" style="background-image:url(../../images/agenda_16.jpg); background-repeat:no-repeat">&nbsp;</td>
+    <td width="236" height="39" style="background-image:url(../../images/agenda_18.jpg); background-repeat:repeat-x">&nbsp;</td>
+    <td width="42" height="39" style="background-image:url(../../images/agenda_18.jpg); background-repeat:repeat-x">&nbsp;</td>
+    <td width="32" height="39" style="background-image:url(../../images/agenda_20.jpg); background-repeat:no-repeat">&nbsp;</td>
   </tr>
 </table>
 </body>

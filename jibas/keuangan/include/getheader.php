@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -102,5 +102,36 @@ function getHeader($dep)
 	$head .="	<br />";
 
 	echo  $head;
+}
+
+function getSmallHeader($dep)
+{
+	global $full_url;
+	
+	OpenDb();
+	
+	$sql = "SELECT replid, nama FROM jbsumum.identitas WHERE departemen='$dep'";
+	$result = QueryDb($sql); 
+	$row = @mysql_fetch_array($result);
+	$replid = $row[replid];
+	$nama = $row[nama];
+		
+	$head  ="<table border='1' cellpadding='0' cellspacing='0' width='100%'>";
+	$head .="<tr>";
+	$head .="	<td width='20%' align='center'>";
+	$head .="		<img src=\"".$full_url."library/gambar.php?replid=$replid&table=jbsumum.identitas\" height='30' />";
+	$head .="	</td>";
+	$head .="	<td valign='top'>";
+	$head .="		<font size='2'><strong>$nama</strong></font>".
+	$head .="	</td>";
+	$head .="</tr>";
+	$head .="<tr>";
+	$head .="	<td colspan='2'><hr width='90%'/></td>";
+	$head .="</tr>";
+	$head .="</table>";
+	
+	CloseDb();
+	
+	return $head;
 }
 ?>

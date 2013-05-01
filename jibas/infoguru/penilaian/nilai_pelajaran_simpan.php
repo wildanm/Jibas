@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -50,7 +50,7 @@ if ($_REQUEST[idrpp] != '')
 	$rpp = " ,idrpp=$_REQUEST[idrpp]";
 
 $sql1 = "INSERT INTO ujian SET idpelajaran = '$_REQUEST[pelajaran]', idkelas = '$_REQUEST[kelas]', 
-			idsemester = '$_REQUEST[semester]', idjenis = '$_REQUEST[jenis]', deskripsi = '$_REQUEST[deskripsi]', 
+			idsemester = '$_REQUEST[semester]', idjenis = '$_REQUEST[jenis]', deskripsi = '".CQ($_REQUEST[deskripsi])."', 
 			tanggal = '$tanggal', idaturan = '$_REQUEST[idaturan]', kode = '$_REQUEST[kode]' $rpp";
 QueryDbTrans($sql1,$success);
 
@@ -64,7 +64,7 @@ foreach($a as $key => $value)
 {	
 	if ($success)
 	{
-		$sql = "INSERT INTO nilaiujian SET nilaiujian=$value[0], nis='$key',idujian = $id, keterangan='$value[1]'";
+		$sql = "INSERT INTO nilaiujian SET nilaiujian=$value[0], nis='$key',idujian = $id, keterangan='".CQ($value[1])."'";
 		QueryDbTrans($sql, $success);
 	}
 

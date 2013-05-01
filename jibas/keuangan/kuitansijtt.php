@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,13 +33,11 @@ require_once('include/getheader.php');
 
 $id = $_REQUEST["id"];
 $status = $_REQUEST["status"];
-
-OpenDb();
 if ($status == "calon") 
 {	
 	$sql = "SELECT p.replid AS id, p.idbesarjttcalon, b.besar, c.nopendaftaran, c.nama, j.nokas, 
 				   j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, 
-				   p.petugas, j.idtahunbuku 
+				   p.petugas, j.idtahunbuku, p.info1 AS diskon 
 			  FROM penerimaanjttcalon p, besarjttcalon b, jurnal j, jbsakad.calonsiswa c 
 			 WHERE p.idbesarjttcalon = b.replid AND j.replid = p.idjurnal AND b.idcalon = c.replid AND p.replid = '$id'
 		  ORDER BY p.tanggal, p.replid";
@@ -48,39 +46,65 @@ else
 {
 	$sql = "SELECT p.replid AS id, p.idbesarjtt, b.besar, b.nis, s.nama, j.nokas, 
 				   j.transaksi, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, 
-				   p.petugas, j.idtahunbuku 
+				   p.petugas, j.idtahunbuku, p.info1 AS diskon 
 			  FROM penerimaanjtt p, besarjtt b, jurnal j, jbsakad.siswa s 
 			 WHERE p.idbesarjtt = b.replid AND j.replid = p.idjurnal AND b.nis = s.nis AND p.replid = '$id' 
 		  ORDER BY p.tanggal, p.replid";
 } 
 
+OpenDb();
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
-
 $nokas = $row[5];
 $transaksi = $row[6];
 $tanggal = $row[7];
 $jumlah = $row[9];
 $petugas = $row[10];
+$diskon = $row[12];
 $nis = $row[3];
 $nama = $row[4];
 $total = $row[2];
 $idbesarjtt = $row[1];
 $idtahunbuku = $row[11];
-$sql = "SELECT date_format(now(), '%d %M %Y') as tanggal";
-$result = QueryDb($sql);
-$row = mysql_fetch_row($result);
-$tglcetak = $row[0];
 
-$sql = "SELECT sum(jumlah) FROM penerimaanjtt$status WHERE idbesarjtt$status = '$idbesarjtt'";
+if ($status == "calon")
+{
+	$kname = "Kelompok";
+	$sql = "SELECT k.kelompok
+			  FROM jbsakad.calonsiswa cs, jbsakad.kelompokcalonsiswa k
+			 WHERE cs.idkelompok = k.replid
+			   AND cs.nopendaftaran = '$nis'";
+}
+else
+{
+	$kname = "Kelas";
+	$sql = "SELECT k.kelas
+			  FROM jbsakad.siswa s, jbsakad.kelas k
+			 WHERE s.idkelas = k.replid
+			   AND s.nis = '$nis'";	
+}
 $result = QueryDb($sql);
-$row = mysql_fetch_row($result);
+$row = @mysql_fetch_row($result);
+$kvalue = $row[0];
+
+$sql = "SELECT SUM(jumlah), SUM(info1) FROM penerimaanjtt$status WHERE idbesarjtt$status = '$idbesarjtt'";
+$result = QueryDb($sql);
+$row = @mysql_fetch_row($result);
 $jumlahbayar = $row[0];
+$jumlahdiskon = $row[1];
 
 $sql = "SELECT departemen FROM tahunbuku WHERE replid='$idtahunbuku'";
 $result = QueryDb($sql);
 $row = @mysql_fetch_array($result);
-$departemen=$row[departemen];
+$departemen = $row[departemen];
+
+$sql = "SELECT replid, nama, alamat1 FROM jbsumum.identitas WHERE departemen='$departemen'";
+$result = QueryDb($sql); 
+$row = @mysql_fetch_array($result);
+$idHeader = $row[replid];
+$namaHeader = $row[nama];
+$alamatHeader = $row[alamat1];
+
 CloseDb();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -93,89 +117,115 @@ CloseDb();
 
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
-<table border="0" cellpadding="5" cellspacing="0" width="740" align="center">
-<tr><td >
-<?=getHeader($departemen)?>
+<table border="0" cellpadding="0" cellspacing="0" width="340" align="center">
 <? for($i = 0; $i < 2; $i++) { ?>
 <tr>
-<td colspan="2" align="center" valign="top">
-	<table border="0" cellpadding="2" cellspacing="0" width="90%" align="center">
+<td align="center" valign="top">
+	<table border="0" cellpadding="0" cellspacing="3" width="330" align="center">
+	<? if ($i == 0) { ?>		
+	<tr>
+		<td align="center" width='15%'>
+			<img src='<?= $full_url."library/gambar.php?replid=$idHeader&table=jbsumum.identitas" ?>' height='30' />
+		</td>
+		<td align="left">
+			<font style='font-size:14px'><strong><?=$namaHeader?></strong></font><br>
+			<font style='font-size:10px'><?=$alamatHeader?></font>
+		</td>
+	</tr>
+	<? } else { ?>
+	<tr height="1">
+		<td align="center" width='15%'>&nbsp;</td>
+		<td align="left">&nbsp;</td>
+	</tr>
+	<? } ?>
+	<tr>
+		<td align="right" colspan='2'>
+			<font size="1"><strong>No. <?=$nokas ?></strong></font>
+		</td>
+	</tr>
     <tr>
-    	<td align="right"><font size="2"><strong>No. <?=$nokas ?></strong></font></td>
-    </tr>
-    <tr><td align="center">
-    	<br />
-        <font size="3"><strong>KUITANSI PEMBAYARAN</strong></font>
-    </td></tr>
-    <tr><td align="left">
-    	<br />Telah terima dari:<br />
-        <table cellpadding="3" width="100%">
-        
+		<td align="center" colspan='2'>
+			<font size="1"><strong>TANDA BUKTI PEMBAYARAN</strong></font>
+		</td>
+	</tr>
+    <tr>
+		<td align="left" colspan='2'>
+		Telah terima dari:
+        <table border="0" cellpadding="2" cellspacing="0" width="100%">
         <tr>
         	<td width="20">&nbsp;</td>
-        	<td width="90"><? if ($_REQUEST["status"] == "calon") echo  "No Pendaftaran"; else echo  "N I S"; ?> </td>
+        	<td width="60"><? if ($_REQUEST["status"] == "calon") echo  "No Pendaftaran"; else echo  "N I S"; ?> </td>
             <td>:&nbsp;<strong><?=$nis ?></strong></td>
         </tr>
         <tr>
         	<td>&nbsp;</td>
         	<td>Nama</td>
-            <td>:&nbsp;<strong><?=$nama ?></strong></td>
+            <td>:&nbsp;<strong><?=$nama?></strong></td>
         </tr>
-        
-        <tr>
-        	<td colspan="2">Uang sejumlah</td>
-            <td background="images/bkmoney.png">
-            <font size="2"><strong><em>
-            <?=FormatRupiah($jumlah) ?>
-            </em></strong></font>
-            </td>
-        </tr><p>
-        <tr>
-        	<td colspan="2">&nbsp;</td>
-        	<td background="images/bkmoney.png">
-            (<font size="2"><strong><em>
-            <?=KalimatUang($jumlah) ?>
-            </em></strong></font>)
-            </td>
+		<tr>
+        	<td>&nbsp;</td>
+        	<td><?=$kname?></td>
+            <td>:&nbsp;<strong><?=$kvalue?></strong></td>
+        </tr>
+		<tr>
+        	<td>&nbsp;</td>
+        	<td>Tanggal</td>
+            <td>:&nbsp;<strong><?= $tanggal ?></strong></td>
         </tr>
         <tr>
-        	<td colspan="3">Untuk <?=$transaksi ?></td>
+        	<td colspan="3" valign="top">uang sejumlah
+            <font style="font-size:11px; font-weight:bold; font-style:italic;">
+			<?= FormatRupiah($jumlah) ?> (<?= KalimatUang($jumlah) ?>)
+            </font>
+			untuk <?=$transaksi ?>
+            </td>
         </tr>
         </table>
-        
-        <table border="0" width="100%" cellpadding="2" cellspacing="2">
-        <tr height="160">
+		<br>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
         	<td width="65%">
-            <fieldset>
-            <legend><em><strong>Keterangan</strong></em></legend>
-            <table border="0" width="100%">
-            <tr height="80"><td valign="top">
-            <? if ($jumlahbayar < $total) { ?>
-            <em>Sisa cicilan yang harus dilunasi sebesar: <?=FormatRupiah($total - $jumlahbayar)?></em>
-            <? } ?>
-            </td></tr>
-            </table>
-            </fieldset>
+			
+			<table border="1" cellpadding="2" cellspacing="0" style="border-width:1px" width="100%">
+			<tr>
+				<td valign="top">
+				<strong>Keterangan:</strong><br>					
+				<? if ($jumlahbayar + $jumlahdiskon < $total) { ?>
+				&#149;&nbsp;<em>Sisa pembayaran: <?=FormatRupiah($total - $jumlahbayar - $jumlahdiskon)?></em><br>
+				<? } ?>
+				<? if ($diskon != 0 ) { ?>
+				&#149;&nbsp;<em>Sudah dipotong diskon: <?=FormatRupiah($diskon)?></em><br>
+				<? } ?>
+				&#149;&nbsp;<em>Tgl cetak: <?= date('d/m/Y H:i:s') ?></em><br>
+				&#149;&nbsp;<em>Petugas: <?= $petugas ?></em><br>
+				</td></tr>
+			</table>
+            
             </td>
             <td align="center">
-            <?=$G_LOKASI . ", " . $tglcetak ?><br />
-            Penerima<br /><br /><br /><br /><br /><br />
-            ( <?=getUserName() ?> )
+			<? if ($i == 0) { ?>	
+				Yang menerima<br /><br /><br /><br /><br />
+				( <?=getUserName() ?> )
+			<? } else { ?>
+				Yang menyerahkan<br /><br /><br /><br /><br />
+				( &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; )
+			<? } ?>
             </td>
         </tr>
         </table>
     </td></tr>
     </table>
-</td></tr>
-</table>
-
-</td></tr>
-</table>
+</td></tr>	
+<tr>
+	<td align='right'>
 <? if ($i == 0) { ?>
-<hr width="750" style="border-style:dashed; line-height:1px; color:#999999;" />
-<? } ?>
-
+	<hr width="350" style="border-style:dashed; line-height:1px; color:#666;" />
+<?	} ?>	
+	</td>
+</tr>	
 <? } //for ?>
+</table>
+
 </body>
 <script language="javascript">
 window.print();

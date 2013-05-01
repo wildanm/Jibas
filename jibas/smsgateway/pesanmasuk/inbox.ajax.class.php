@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.0 (Juni 20, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ class NewInbox{
 		$InboxID = $_REQUEST['InboxID'];
 		$this->InboxID = $InboxID;
 
-		$TxtToReply = $_REQUEST['TxtToReply'];
+		$TxtToReply = CQ($_REQUEST['TxtToReply']);
 		$this->TxtToReply = trim($TxtToReply);
 
 		$ID = $_REQUEST['ID'];
@@ -148,7 +148,7 @@ class NewInbox{
 		<table width="100%" border="1" id="InboxTable" class="tab" cellspacing="0" cellpadding="0">
           <tr class="Header">
             <td>No</td>
-            <td>No HP</td>
+            <td>Pengirim</td>
             <td>Tanggal</td>
             <td>Pesan</td>
             <td>&nbsp;</td>
@@ -171,11 +171,16 @@ class NewInbox{
 				
 		  $bg = "";
 		  //if ($cnt%2==0)
-		  	//	$bg = "background-color:#cfddd1;";		
+		  	//	$bg = "background-color:#cfddd1;";
+		  $nohp  = str_replace("+62","",$row['SenderNumber']);	
+          $sqlph = "SELECT nama FROM phonebook WHERE nohp LIKE '%$nohp'";
+		  $resph = QueryDb($sqlph);
+		  $rowph = @mysql_fetch_row($resph);
+		  $nama  = $rowph[0];
 		  ?>
           <tr style="cursor:pointer;<?=$bg?><?=$style?>" id="<?=$row['ID']?>">
             <td class="td" align="center" style="font-weight:normal" onclick="ReadMessage('<?=$row['ID']?>');"><?=$cnt?></td>
-            <td class="td Link" onclick="ReadMessage('<?=$row['ID']?>');"><?=$row['SenderNumber']?></td>
+            <td class="td Link" onclick="ReadMessage('<?=$row['ID']?>');">(<?=$row['SenderNumber']?>) <?php echo $nama ?></td>
             <td class="td" onclick="ReadMessage('<?=$row['ID']?>');" ><?=FullDateFormat($row['ReceivingDateTime'])?></td>
             <td class="td" onclick="ReadMessage('<?=$row['ID']?>');">
 			<?

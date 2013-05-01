@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,16 +20,12 @@
  * 
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
-<? 
+<?
+require_once("include/sessionchecker.php");
 require_once("include/sessioninfo.php");
 require_once("include/db_functions.php");
 require_once("include/config.php");
-//require_once("sessionchecker.php");
 require_once("include/theme.php");
-OpenDb();
-$sql="SELECT * FROM jbsvcr.galerifoto WHERE idguru='".SI_USER_ID()."'";
-$result=QueryDb($sql);
-CloseDb();
 
 $menu="";
 if (isset($_REQUEST['menu']))
@@ -47,53 +43,68 @@ if (isset($_REQUEST['content']))
 <script type="text/javascript" language="JavaScript1.2" src="script/ajax.js"></script>
 <script type="text/javascript" language="JavaScript1.2" src="script/tools.js"></script>
 <script type="text/javascript" language="JavaScript1.2">
-function get_fresh(){
+function get_fresh()
+{
 	document.location.reload();
 }
-function chating_euy(){
+
+function chating_euy()
+{
 	newWindow('buletin/chat/chat.php','ChattingYuk',626,565,'resizable=0,scrollbars=0,status=0,toolbar=0');
 }
-function home(){
+
+function home()
+{
 	document.location.reload();
 	parent.framecenter.location.href="home.php";
 }
-function akademik(){
+
+function akademik()
+{
 	sendRequestText("get_content.php", show_content, "menu=akademik");
 	parent.framecenter.location.href="home.php";
 }
-function buletin(){
+
+function kepegawaian()
+{
+	sendRequestText("get_content.php", show_content, "menu=kepegawaian");
+	parent.framecenter.location.href = "home.php";
+}
+
+function buletin()
+{
 	sendRequestText("get_content.php", show_content, "menu=buletin");
 	parent.framecenter.location.href="home.php";
 }
-function pengaturan(){
+
+function pengaturan()
+{
 	sendRequestText("get_content.php", show_content, "menu=pengaturan");
 	parent.framecenter.location.href="home.php";
 }
-function dotnet(){
-	sendRequestText("get_content.php", show_content, "menu=dotnet");
-	parent.framecenter.location.href="home.php";
-}
-function logout(){
-	if (confirm('Anda yakin akan keluar dari InfoGuru ?')){
+
+function logout()
+{
+	if (confirm('Anda yakin akan keluar dari InfoGuru ?'))
 		document.location.href="logout.php";
-	}
 }
-function show_content(x) {
+
+function show_content(x)
+{
 	document.getElementById("vscroll0").innerHTML = x;
 }
-function show_wait(areaId) {
+
+function show_wait(areaId)
+{
 	var x = document.getElementById("waitBox").innerHTML;
 	document.getElementById(areaId).innerHTML = x;
 }
-function ganti() {
+
+function ganti()
+{
 	var login=document.getElementById('login').value;
 	var addr="pengaturan/ganti_password2.php";
-	//if (login=="LANDLORD" || login=="landlord"){
-		//alert ('Maaf, Administrator tidak dapat mengganti password !');
-		//parent.framecenter.location.href="center.php";
-	//} else {
-		newWindow(addr,'GantiPasswordUser','419','200','resizeable=0,scrollbars=0,status=0,toolbar=0');
-	//}
+	newWindow(addr,'GantiPasswordUser','419','200','resizeable=0,scrollbars=0,status=0,toolbar=0');
 }
 </script>
 <style>
@@ -117,18 +128,25 @@ function ganti() {
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
 <tr>
 	<td width="20">
-		<img src="<?=GetThemeDir()?>InfoGuru_01.png" width="20" height="15" alt=""></td>
+		<img src="<?=GetThemeDir()?>InfoGuru_01.png" width="20" height="15" alt="">
+	</td>
 	<td height="15" colspan="2" background="<?=GetThemeDir()?>InfoGuru_02.png">
-	<span style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">
-    <a href="javascript:buletin();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Buletin</a>&nbsp;
-    <a href="javascript:akademik();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Akademik</a>&nbsp;
-    <a href="javascript:pengaturan();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Pengaturan</a>&nbsp;
-    <!--<a href="javascript:dotnet();" style="font-family:Verdana; color:#FF9900; font-size:10px; font-weight:bold; text-decoration:none">JIBAS.Net</a>&nbsp;-->
-    <a href="javascript:logout()" style="font-family:Verdana; color:#00FF00; font-size:10px; font-weight:bold; text-decoration:none">Logout</a>&nbsp;    </span>	</td>
+		<span style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">
+	    <a href="javascript:buletin();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Buletin</a>&nbsp;
+	    <a href="javascript:akademik();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Akademik</a>&nbsp;
+<? 		if (SI_USER_LEVEL() != 0) { ?>
+			<a href="javascript:kepegawaian();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Kepegawaian</a>&nbsp;
+<?		} ?>			
+	    <a href="javascript:pengaturan();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Pengaturan</a>&nbsp;
+	    <a href="javascript:logout()" style="font-family:Verdana; color:#00FF00; font-size:10px; font-weight:bold; text-decoration:none">Logout</a>&nbsp;
+		</span>
+	</td>
 	<td width="136">
-		<img src="<?=GetThemeDir()?>InfoGuru_03.png" width="136" height="15" alt=""></td>
+		<img src="<?=GetThemeDir()?>InfoGuru_03.png" width="136" height="15" alt="">
+	</td>
 	<td width="17">
-		<img src="<?=GetThemeDir()?>InfoGuru_04.png" width="17" height="15" alt=""></td>
+		<img src="<?=GetThemeDir()?>InfoGuru_04.png" width="17" height="15" alt="">
+	</td>
 </tr>
 <tr>
 	<td>

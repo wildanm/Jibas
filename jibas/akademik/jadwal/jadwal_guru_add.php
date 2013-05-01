@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,15 +60,16 @@ if (isset($_REQUEST['jam2']))
 if (isset($_REQUEST['status']))
 	$status = $_REQUEST['status'];	
 
+OpenDb();
+
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) 
 {			
-	OpenDb();
 	$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
 	$res = QueryDb($sql);
 	$num = mysql_num_rows($res);
-	if ($num>0){
-
+	if ($num > 0)
+	{
 		$dayname = array("", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu");
 		
 		$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
@@ -81,6 +82,7 @@ if (isset($_REQUEST['Simpan']))
 			$idinfo_aktif .= $row[0];	
 		}
 		$idinfo_aktif = "'".$idinfo_aktif."'";
+		
 		// Cek jadwal guru yang bentrok di kelas lain
 		$sqljam = "";
 		for($i = $jam; $i <= $jam2; $i++)
@@ -108,7 +110,6 @@ if (isset($_REQUEST['Simpan']))
 				$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];  	
 			}
 			$ERROR_MSG = "Jadwal guru di kelas lain yang bentrok:\\r\\n$ket";
-			CloseDb();
 		} 
 		else
 		{
@@ -130,7 +131,6 @@ if (isset($_REQUEST['Simpan']))
 					$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];  	
 				}
 				$ERROR_MSG = "Jadwal bentrok di kelas yang sama:\\r\\n$ket";
-				CloseDb();
 			} 
 		}
 		
@@ -166,12 +166,13 @@ if (isset($_REQUEST['Simpan']))
 			<?		
 			}
 		}
-	} else {
+	}
+	else
+	{
 		$ERROR_MSG = "Tidak ada Info jadwal yang aktif, silakan aktifkan salah satu Info Jadwal\\r\\n";
 	}
 }
 
-OpenDb();	
 $sql1 = "SELECT tahunajaran FROM jbsakad.tahunajaran t WHERE replid = '$tahunajaran' ";
 $result1 = QueryDb($sql1);
 $row1 = mysql_fetch_array($result1); 
@@ -332,42 +333,33 @@ function panggil(elem){
     <td><strong>Tingkat</strong> </td>
     <td>
 		<select name="tingkat" id="tingkat" onChange="change_tingkat()"  style="width:80px;" onKeyPress="return focusNext('kelas', event)" onFocus="panggil('tingkat')">
-    	<?	OpenDb();
-			$sql = "SELECT replid,tingkat FROM tingkat WHERE aktif=1 AND departemen='$departemen' ORDER BY urutan";	
-			$result = QueryDb($sql);
-			CloseDb();
-	
-			while($row = mysql_fetch_array($result)) {
+<?		$sql = "SELECT replid,tingkat FROM tingkat WHERE aktif=1 AND departemen='$departemen' ORDER BY urutan";	
+		$result = QueryDb($sql);
+
+		while($row = mysql_fetch_array($result))
+		{
 			if ($tingkat == "")
-				$tingkat = $row['replid'];				
-			?>
-          <option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tingkat) ?>>
+				$tingkat = $row['replid'];?>
+			<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tingkat) ?>>
             <?=$row['tingkat']?>
             </option>
-          <?
-			} //while
-			?>
-        </select></td>
-    
+<?		} ?>
+        </select>
+	</td>
 </tr>
 <tr>
    	<td><strong>Kelas</strong> </td>
     <td>
        	<select name="kelas" id="kelas" onChange="change()"  style="width:180px;" onKeyPress="return focusNext('pelajaran', event)" onFocus="panggil('kelas')">
-		<?	OpenDb();
-			$sql = "SELECT replid,kelas FROM kelas WHERE aktif=1 AND idtahunajaran = '$tahunajaran' AND idtingkat = '$tingkat' ORDER BY kelas";	
-			$result = QueryDb($sql);
-			CloseDb();
-	
-			while($row = mysql_fetch_array($result)) {
+<?		$sql = "SELECT replid,kelas FROM kelas WHERE aktif=1 AND idtahunajaran = '$tahunajaran' AND idtingkat = '$tingkat' ORDER BY kelas";	
+		$result = QueryDb($sql);
+		
+		while($row = mysql_fetch_array($result))
+		{
 			if ($kelas == "")
-				$kelas = $row['replid'];				 
-			?>
-    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelas) ?>><?=$row['kelas']?></option>
-             
-    		<?
-			} //while
-			?>
+				$kelas = $row['replid']; ?>
+	    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelas) ?>><?=$row['kelas']?></option>
+<?		} ?>
     	</select>        
 	</td>    
 </tr>
@@ -375,19 +367,17 @@ function panggil(elem){
 	<td><strong>Pelajaran</strong></td>
  	<td colspan="3">
       	<select name="pelajaran" id="pelajaran" onChange="change()" style="width:180px;" onKeyPress="return focusNext('jam2', event)" onFocus="panggil('pelajaran')">
-   	<?	OpenDb();
-		$sql = "SELECT l.replid,l.nama FROM pelajaran l, guru g WHERE g.nip = '$nip' AND g.idpelajaran = l.replid AND l.aktif=1 AND l.departemen = '$departemen' ORDER BY l.nama";
+<?		$sql = "SELECT l.replid,l.nama FROM pelajaran l, guru g WHERE g.nip = '$nip' AND g.idpelajaran = l.replid AND l.aktif=1 AND l.departemen = '$departemen' ORDER BY l.nama";
 		$result = QueryDb($sql);
-		CloseDb();
-		while ($row = @mysql_fetch_array($result)) {
+	
+		while ($row = @mysql_fetch_array($result))
+		{
 			if ($pelajaran == "") 				
-				$pelajaran = $row['replid'];			
-		?>
-        
-    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>
-                  
-    <?	} ?>
-    	</select>		</td>  
+				$pelajaran = $row['replid']; ?>
+	    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>
+<?		} ?>
+    	</select>
+	</td>  
 </tr>
 
 <tr>
@@ -431,13 +421,20 @@ function panggil(elem){
     <td width="28" background="../<?=GetThemeDir() ?>bgpop_09.jpg">&nbsp;</td>
 </tr>
 </table>
+<?
+CloseDb();
+?>
 
 <!-- Tamplikan error jika ada -->
-<? if (strlen($ERROR_MSG) > 0) { ?>
+<?
+if (strlen($ERROR_MSG) > 0)
+{
+	?>
 <script language="javascript">
 	alert("<?=$ERROR_MSG?>");
 </script>
-<? } ?>
-
+<?
+}
+?>
 </body>
 </html>

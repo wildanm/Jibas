@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -282,28 +282,21 @@ function focusNext(elemName, evt) {
 <tr>
 	<td><strong>Status Guru</strong></td>
     <td>
-    <?
-    	//$sql = "SELECT s.replid,s.status FROM statusguru s, guru g WHERE g.nip = $nip AND g.idpelajaran = $pelajaran AND g.statusguru = s.status ORDER BY status";	
-		//echo $sql;
-	?>
-    	<select name="jenis" id="jenis" style="width:150px;" onKeyPress="return focusNext('keterangan', event)">
-    <?	OpenDb();
-		$sql = "SELECT s.replid,s.status FROM statusguru s, guru g WHERE g.nip = '$nip' AND g.idpelajaran = '$pelajaran' AND g.statusguru = s.status ORDER BY status";	
-		
+   	<select name="jenis" id="jenis" style="width:150px;" onKeyPress="return focusNext('keterangan', event)">
+<?		OpenDb();
+		$sql = "SELECT s.replid, s.status FROM statusguru s ORDER BY status";
 		$result = QueryDb($sql);
 		CloseDb();
-	
-		while($row = mysql_fetch_array($result)) {
+		while($row = mysql_fetch_array($result)) 
+		{
 			if ($jenis == "")
-				$jenis = $row['replid'];				
-			?>
-          <option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $jenis) ?>>
+				$jenis = $row['replid'];	?>
+			<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $jenis) ?>>
             <?=$row['status']?>
             </option>
-          <?
-			} //while
-			?>
-        </select>    </td>
+<?		} //while	?>
+	</select>    
+	</td>
 </tr>
 </table>
 </div>

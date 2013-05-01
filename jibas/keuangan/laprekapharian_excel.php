@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -196,32 +196,32 @@ for($k = 0; $k < count($darray); $k++)
 				
 				if ($idkategori == "JTT")
 				{
-					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanjtt p, jbsfina.besarjtt b, jbsfina.datapenerimaan dp 
+					$sql = "SELECT SUM(p.jumlah), SUM(p.info1) FROM jbsfina.penerimaanjtt p, jbsfina.besarjtt b, jbsfina.datapenerimaan dp 
 							WHERE p.idbesarjtt = b.replid AND b.idpenerimaan = dp.replid
 							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "SKR")
 				{
-					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaaniuran p, jbsfina.datapenerimaan dp 
+					$sql = "SELECT SUM(p.jumlah), 0 FROM jbsfina.penerimaaniuran p, jbsfina.datapenerimaan dp 
 							WHERE p.idpenerimaan = dp.replid 
 							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "CSWJB")
 				{
-					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsfina.datapenerimaan dp 
+					$sql = "SELECT SUM(p.jumlah), SUM(p.info1) FROM jbsfina.penerimaanjttcalon p, jbsfina.besarjttcalon b, jbsfina.datapenerimaan dp 
 							WHERE p.idbesarjttcalon = b.replid AND b.idpenerimaan = dp.replid
 							AND dp.replid = '$idp' AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "CSSKR")
 
 				{
-					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaaniurancalon p, jbsfina.datapenerimaan dp 
+					$sql = "SELECT SUM(p.jumlah), 0 FROM jbsfina.penerimaaniurancalon p, jbsfina.datapenerimaan dp 
 							WHERE p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 							AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
 				elseif ($idkategori == "LNN")
 				{
-					$sql = "SELECT SUM(p.jumlah) FROM jbsfina.penerimaanlain p, jbsfina.datapenerimaan dp 
+					$sql = "SELECT SUM(p.jumlah), 0 FROM jbsfina.penerimaanlain p, jbsfina.datapenerimaan dp 
 							WHERE p.idpenerimaan = dp.replid AND dp.replid = '$idp' 
 							AND dp.departemen='$dept' AND p.tanggal = '$tanggal'";
 				}
@@ -231,7 +231,7 @@ for($k = 0; $k < count($darray); $k++)
 				$jumlah = 0;
 				if (!is_null($jrow[0]))
 					$jumlah = $jrow[0];
-				
+									
 				$rarray[$j][$i] = $jumlah;
 			} // for j
 		}  // for i

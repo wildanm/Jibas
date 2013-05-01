@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -405,5 +405,39 @@ function CQ($string){
 	$string = str_replace("'","`",$string);
 	$string = str_replace('"','`',$string);
 	return $string;
+}
+
+function GetDatePart($value, $part)
+{
+	$inf = split("-", $value);
+	$part = strtolower($part);
+	
+	if (count($inf) == 3)
+	{
+		if ($part == "d")
+			return $inf[2];
+		elseif ($part == "m")
+			return $inf[1];
+		elseif ($part == "y")
+			return $inf[0];
+	}
+	else
+	{
+		return "";
+	}
+}
+
+function RandomString($length)
+{
+    $set = "abcdefghijklmnoprstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789";
+    
+    $result = "";
+    for($i = 0; $i < $length; $i++)
+    {
+        $ix = rand(0, strlen($set) - 1);
+        $result .= substr($set, $ix, 1);
+    }
+    
+    return $result;
 }
 ?>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,23 +25,30 @@ require_once('../../include/common.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/config.php');
 require_once('../../include/db_functions.php');
+require_once('../../include/sessionchecker.php');
+
 $replid="";
 if (isset($_REQUEST['replid']))
 	$replid=$_REQUEST['replid'];
+	
 OpenDb();
+
 $sql_berita="SELECT YEAR(tanggal) as thn,MONTH(tanggal) as bln,DAY(tanggal) as tgl,replid as replid,judul as judul,abstrak as abstrak ,isi as berita,idpengirim FROM jbsvcr.beritasiswa WHERE replid='$replid'";
 $result_berita=QueryDb($sql_berita);
 $row_berita=@mysql_fetch_array($result_berita);
 $sql_getnama="SELECT nama FROM jbsakad.siswa WHERE nis='$row_berita[idpengirim]'";
 $result_getnama=QueryDb($sql_getnama);
-if (@mysql_num_rows($result_getnama)>0){
+if (@mysql_num_rows($result_getnama)>0)
+{
 	$row_getnama=@mysql_fetch_array($result_getnama);
 	$nama=$row_getnama[nama];
-} else {
-$sql_getnama2="SELECT nama FROM jbssdm.pegawai WHERE nip='$row_berita[idpengirim]'";	
-$result_getnama2=QueryDb($sql_getnama2);
-$row_getnama2=@mysql_fetch_array($result_getnama2);
-$nama=$row_getnama2[nama];
+}
+else
+{
+	$sql_getnama2="SELECT nama FROM jbssdm.pegawai WHERE nip='$row_berita[idpengirim]'";	
+	$result_getnama2=QueryDb($sql_getnama2);
+	$row_getnama2=@mysql_fetch_array($result_getnama2);
+	$nama=$row_getnama2[nama];
 }
 CloseDb();
 $namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");	
@@ -68,76 +75,60 @@ $tglberita=$row_berita['tgl']." ".$namabulan[$row_berita['bln']-1]." ".$row_beri
 <table id="Table_01" width="100%" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td>
-			<img src="../../images_slice/BGNews_01.png" width="12" height="11" alt=""></td>
-		<td height="11" colspan="2" background="../../images_slice/BGNews_02.png">			</td>
+			<img src="../../images/BGNews_01.png" width="12" height="11" alt=""></td>
+		<td height="11" colspan="2" background="../../images/BGNews_02.png">			</td>
 		<td>
-			<img src="../../images_slice/BGNews_03.png" width="18" height="11" alt=""></td>
+			<img src="../../images/BGNews_03.png" width="18" height="11" alt=""></td>
 	</tr>
 	<tr>
-	  <td background="../../images_slice/BGNews_04.png"></td>
-	  <td width="570" align="left" background="../../images_slice/BGNews_05.png">
+	  <td background="../../images/BGNews_04.png"></td>
+	  <td width="570" align="left" background="../../images/BGNews_05.png">
       <div align="left" style="padding-bottom:10px"><span style="color:#339900; font-size:20px; font-weight:bold">.:</span><span style="color:#FF6600; font-family:Calibri; font-size:16px; font-weight:bold; ">Berita Siswa</span></div>
       </td>
-	  <td width="614" valign="top" align="right" background="../../images_slice/BGNews_05.png"><img src="../../images/ico/closelabel_transp.gif" width="19" height="22" style="cursor:pointer"  onclick="window.close();" /></td>
-	  <td background="../../images_slice/BGNews_06.png"></td>
+	  <td width="614" valign="top" align="right" background="../../images/BGNews_05.png"><img src="../../images/ico/closelabel_transp.gif" width="19" height="22" style="cursor:pointer"  onclick="window.close();" /></td>
+	  <td background="../../images/BGNews_06.png"></td>
   </tr>
 	<tr>
-		<td background="../../images_slice/BGNews_04.png" width="12">			</td>
-		<td colspan="2" background="../../images_slice/BGNews_05.png">
-            <table width="100%" border="0" cellspacing="0" >
-              <tr>
-                <th width="8%" scope="row"><div align="left">Dari</div></th>
-                <th width="1%" scope="row">:</th>
-                <td width="91%" scope="row"><div align="left">
-                  <?=$nama?>
-                </div></td>
-              </tr>
-              <tr>
-                <th scope="row"><div align="left">Tanggal </div></th>
-                <th scope="row">:</th>
-                <td scope="row"><div align="left"><?=$tglberita?></div></td>
-              </tr>
-              <tr>
-                <th scope="row"><div align="left">Judul </div></th>
-                <th scope="row">:</th>
-                <td scope="row"><div align="left"><?=$row_berita['judul']?></div></td>
-              </tr>
-              <tr>
-                <th valign="top" scope="row"><div align="left">Abstrak </div></th>
-                <th valign="top" scope="row">:</th>
-                <td scope="row"><div align="left"><?=$row_berita['abstrak']?></div></td>
-              </tr>
-              <tr>
-                <th colspan="2" valign="top" scope="row">&nbsp;</th>
-                <th background="../../images/box_hr1.gif" scope="row" style="background-repeat:repeat-x; background-position:center">&nbsp;</th>
-              </tr>
-              <tr>
-                <th valign="top" scope="row"><div align="left">Berita </div></th>
-                <th valign="top" scope="row">:</th>
-                <td scope="row"><div align="left"><?=$row_berita['berita']?></div></td>
-              </tr>
-              <tr>
-                <td align="left" valign="top" scope="row"><strong>Lampiran </strong></td>
-                <td align="center" valign="top" scope="row"><strong>:</strong></td>
-                <td scope="row" align="left"><?
-        OpenDb();
-        $sql2="SELECT direktori,namafile FROM jbsvcr.lampiranberitasiswa WHERE idberita='$row_berita[replid]'";
-        $result2=QueryDb($sql2);
-        while ($row2=@mysql_fetch_array($result2)){
-            echo "<a title='Buka lampiran ini!' href='".$row2[direktori].$row2[namafile]."' target='_blank' ><img border='0' src='../../images/ico/titik.png' width='5' height='5'/> ".$row2['namafile']."</a><br>";
-        }
-        CloseDb();
-        ?></td>
-              </tr>
-        	</table>		</td>
-		<td background="../../images_slice/BGNews_06.png" width="18">			</td>
+		<td background="../../images/BGNews_04.png" width="12">			</td>
+		<td colspan="2" background="../../images/BGNews_05.png">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0" >
+            <tr>
+				<td align="left">
+					<font style="color:#a20707; font-size:9px;"><i><?=$tglberita?></i></font>
+				</td>
+			</tr>
+			<tr>
+				<td align="left">
+					<font style="font-size:16px;"><strong><?=$row_berita['judul']?></strong></font>
+				</td>
+			</tr>
+			<tr>
+				<td align="left">
+					<font style="color: #757575; font-size:11px;"><?=$nama?></font>
+					<br><br>
+				</td>
+			</tr>
+			<tr>
+				<td align="left">
+					<font style="font-size:11px; line-height: 18px;">
+					<?
+					$berita = $row_berita['berita'];
+					$berita = str_replace("#sq;", "'", $berita);
+					echo $berita;
+					?>
+					</font>
+				</td>
+			</tr>
+            </table>
+        </td>
+		<td background="../../images/BGNews_06.png" width="18">			</td>
 	</tr>
 	<tr>
 		<td>
-			<img src="../../images_slice/BGNews_07.png" width="12" height="20" alt=""></td>
-		<td height="17" colspan="2" background="../../images_slice/BGNews_08.png">			</td>
+			<img src="../../images/BGNews_07.png" width="12" height="20" alt=""></td>
+		<td height="17" colspan="2" background="../../images/BGNews_08.png">			</td>
 		<td>
-			<img src="../../images_slice/BGNews_09.png" width="18" height="20" alt=""></td>
+			<img src="../../images/BGNews_09.png" width="18" height="20" alt=""></td>
 	</tr>
 </table>
 </body>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@
 require_once("../include/config.php");
 require_once("../include/db_functions.php");
 require_once("../include/common.php");
+require_once("../include/rupiah.php");
+
 $varkolom=4;
 OpenDb();
 $idkelompok = $_REQUEST[idkelompok];
@@ -52,7 +54,7 @@ if ($op=="EraseBarang"){
 <script language="javascript">
 function TambahBarang(idkelompok){
 	var addr="AddBarang.php?idkelompok="+idkelompok;
-	newWindow(addr,'AddBarang',432,349,'');
+	newWindow(addr,'AddBarang',432,420,'');
 }
 
 function GetFresh(){
@@ -72,7 +74,7 @@ function Hover(id,state){
 function ubah(idbarang, evt){
 	if(evt.target.nodeName=='IMG') {
 		var addr="EditBarang.php?idbarang="+idbarang+"&idkelompok=<?=$_REQUEST[idkelompok]?>";
-		newWindow(addr,'EditBarang',550,373,'resizable=1');		
+		newWindow(addr,'EditBarang',450,420,'resizable=1');		
 		return false;
 	}
 }
@@ -94,6 +96,18 @@ function ViewDetail(idbarang,evt){
 			newWindow(addr,'ViewDetail',480,324,'resizable=1');
 	}
 }
+
+function Cetak(idkelompok)
+{
+	var addr = "Inventory.Cetak.php?idkelompok=" + idkelompok;
+	newWindow(addr, 'CetakInventory','790','630','resizable=1,scrollbars=1,status=0,toolbar=0');
+}
+
+function Excel(idkelompok)
+{
+	var addr = "Inventory.Excel.php?idkelompok=" + idkelompok;
+	newWindow(addr, 'ExcelInventory','780','580','resizable=1,scrollbars=1,status=0,toolbar=0');
+}
 </script>
 </head>
 
@@ -101,7 +115,10 @@ function ViewDetail(idbarang,evt){
 <fieldset style="border:#336699 1px solid; background-color:#FFFFFF" >
 <legend style="background-color:#336699; color:#FFFFFF; font-size:10px; font-weight:bold; padding:5px">&nbsp;Kelompok&nbsp;<?=stripslashes($namakelompok)?>&nbsp;</legend>
 <div align="right">
-  <a href="javascript:TambahBarang('<?=$idkelompok?>')"><img src="../images/ico/tambah.png" border="0" />Tambah Barang</a></div>
+  <a href="javascript:TambahBarang('<?=$idkelompok?>')"><img src="../images/ico/tambah.png" border="0" />&nbsp;Tambah Barang</a>&nbsp;&nbsp;|&nbsp;
+  <a href="javascript:Cetak('<?=$idkelompok?>')"><img src="../images/ico/print.png" border="0" />&nbsp;Cetak</a>&nbsp;&nbsp;|&nbsp;
+  <a href="javascript:Excel('<?=$idkelompok?>')"><img src="../images/ico/excel.png" border="0" />&nbsp;Excel</a>
+</div>
 <?
 $sql = "SELECT * FROM jbsfina.barang WHERE idkelompok='$idkelompok'";
 $result = QueryDb($sql);
@@ -112,19 +129,28 @@ if ($num>0){
 <table width="100%" border="0" cellspacing="2" cellpadding="2">
 <?
 $cnt=1;
-while ($row = @mysql_fetch_array($result)){
-if ($cnt==1 || $cnt%(int)$varkolom==1){
-?><tr><?
-}
+while ($row = @mysql_fetch_array($result))
+{
+	if ($cnt==1 || $cnt%(int)$varkolom==1){
+	?><tr><?
+	}
+	
+	$jumlah = (int)$row[jumlah];
+	$satuan = $row[satuan];
+	$harga = (int)$row[info1];
+	$total = $jumlah * $harga;	
 ?>
 <td valign="top" align="center">
-<div id="div<?=$row[replid]?>" style="padding:5px; margin:5px; border:2px solid #eaf4ff; cursor:default" onmouseover="Hover('div<?=$row[replid]?>','1')" onmouseout="Hover('div<?=$row[replid]?>','0')" title="<?=$row[keterangan]?>" onclick="ViewDetail('<?=$row[replid]?>',event)">
-<img src="gambar.php?table=jbsfina.barang&replid=<?=$row[replid]?>"  style="padding:2px" />
+<div id="div<?=$row[replid]?>" style="padding:5px; width:200px; margin:5px; border:2px solid #eaf4ff; cursor:default" onmouseover="Hover('div<?=$row[replid]?>','1')" onmouseout="Hover('div<?=$row[replid]?>','0')" title="<?=$row[keterangan]?>" onclick="ViewDetail('<?=$row[replid]?>',event)">
 <div align="left">
 <span style="font-family:Arial; font-size:14px; font-weight:bold; color:#990000"><?=$row[kode]?></span><br />
 <span style="font-family:Arial; font-size:12px; font-weight:bold; color:#006600; cursor:pointer"><?=$row[nama]?></span><br />
-<strong><?=$row[jumlah]?>&nbsp;<?=$row[satuan]?></strong><br />
-<span style="font-family:Arial; font-size:12px; font-weight:bold; ">Tgl&nbsp;Perolehan:&nbsp;<?=substr($row[tglperolehan],8,2)."-".substr($row[tglperolehan],5,2)."-".substr($row[tglperolehan],0,4)?></span><br />
+</div>
+<img src="gambar.php?table=jbsfina.barang&replid=<?=$row[replid]?>"  style="padding:2px" />
+<div align="left">
+Jumlah: <?=$jumlah?>&nbsp;<?=$satuan?>&nbsp;@<?=FormatRupiah($harga)?><br />
+Total: <?=FormatRupiah($total)?><br>
+Tanggal: <?=substr($row[tglperolehan],8,2)."-".substr($row[tglperolehan],5,2)."-".substr($row[tglperolehan],0,4)?><br />
 <img src="../images/ico/ubah.png" border="0" onclick="ubah('<?=$row[replid]?>', event)" title="Ubah" style="cursor:pointer; z-index:100" />&nbsp;<img src="../images/ico/hapus.png" border="0" onclick="hapus('<?=$row[replid]?>', event)" title="Hapus" style="cursor:pointer; z-index:100" />
 </div>
 </div>

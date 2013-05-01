@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,26 +23,25 @@
 <? 	
 require_once('../inc/config.php');
 require_once('../inc/db_functions.php');
-function GetHeader($perpustakaan){
-//$perpustakaan = $_REQUEST[perpustakaan];
-if ($perpustakaan=='alls' || $perpustakaan=='-1')
-	$perpustakaan='alls';
-global $db_name_umum;
-OpenDb();
-$sql_identitas = "SELECT * FROM $db_name_umum.identitas WHERE status='1' AND perpustakaan='$perpustakaan'";
-//echo $sql_identitas;
-$result_identitas = QueryDb($sql_identitas); 
-$row_iden = mysql_fetch_array($result_identitas);
-$replid_logo = $row_iden['replid'];
-$logo = $row_iden['foto'];
 
+function GetHeader($perpustakaan)
+{
+	if ($perpustakaan=='alls' || $perpustakaan=='-1')
+		$perpustakaan='alls';
+		
+	OpenDb();
+	$sql_identitas = "SELECT * FROM jbsumum.identitas WHERE perpustakaan='$perpustakaan'";
+	$result_identitas = QueryDb($sql_identitas); 
+	$row_iden = mysql_fetch_array($result_identitas);
+	$replid_logo = $row_iden['replid'];
+	$logo = $row_iden['foto'];
 ?>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
 <tr>
 	<td width="20%" align="center">
-	<img src="../inc/gambar.php?replid=<?=$replid_logo?>&table=<?=$db_name_umum?>.identitas&field=foto" border="0" />
+	<img src="../inc/gambar.php?replid=<?=$replid_logo?>&table=jbsumum.identitas&field=foto" border="0" />
 	</td>
-    <td valign="top">
+   <td valign="top">
        	<? 
 			$result_identitas = QueryDb($sql_identitas); 
 			if (mysql_num_rows($result_identitas) >  0) {	

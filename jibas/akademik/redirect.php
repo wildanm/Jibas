@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,11 +33,10 @@ require_once('include/db_functions.php');
 
 OpenDb();
     
-$_SESSION['maintenance'] = false;
 $username = trim($_POST[username]);
-if ($username == "jibas" || $username == "maintenance") 
+if ($username == "jibas") 
 	$username = "landlord";
-//echo $username;exit;
+	
 $password = trim($_POST[password]);
 
 $user_exists = false;
@@ -53,8 +52,6 @@ if ($username == "landlord")
 		$_SESSION['tingkatsimaka'] = "0";
 		$_SESSION['departemensimaka'] = "ALL";
 		$_SESSION['temasimaka'] = 1;
-		if (trim($_POST['username'])=='maintenance')
-			$_SESSION['maintenance'] = true;	
 		$user_exists = true;
 	}
 	else
@@ -93,24 +90,27 @@ else
 				$result4 = QueryDb($query2) or die(mysql_error());
 				$row2 = mysql_fetch_array($result2);
 				$num2 = mysql_num_rows($result2);
-				
-				$i = 0;
-				while ($row4 = mysql_fetch_array($result4))
+						
+				if ($num2 > 0)
 				{
-					$dep[$i] = $row4['departemen'];
-					$i++;
+					$i = 0;
+					while ($row4 = mysql_fetch_array($result4))
+					{
+						$dep[$i] = $row4['departemen'];
+						$i++;
+					}
+					
+					$_SESSION['login'] = $row[login];
+					$_SESSION['namasimaka'] = $row2[nama];
+					$_SESSION['tingkatsimaka'] = $row2[tingkat];
+					$_SESSION['temasimaka'] = $row2[tema];
+					if ($row2[tingkat] == 2)
+						$_SESSION['departemensimaka'] = $dep;
+					else
+						$_SESSION['departemensimaka'] = "ALL";
+					
+					$user_exists = true;
 				}
-				
-				$_SESSION['login'] = $row[login];
-				$_SESSION['namasimaka'] = $row2[nama];
-				$_SESSION['tingkatsimaka'] = $row2[tingkat];
-				$_SESSION['temasimaka'] = $row2[tema];
-				if ($row2[tingkat] == 2)
-					$_SESSION['departemensimaka'] = $dep;
-				else
-					$_SESSION['departemensimaka'] = "ALL";
-				
-				$user_exists = true;
 			}
 		} 
 	}

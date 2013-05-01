@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -70,6 +70,16 @@ $query_aturan = "SELECT DISTINCT aturannhb.idpelajaran, pelajaran.nama
 				   FROM jbsakad.aturannhb aturannhb, jbsakad.pelajaran pelajaran 
 				  WHERE aturannhb.nipguru = '$nip' AND idpelajaran=pelajaran.replid 
 				  	AND pelajaran.departemen='$departemen' AND aturannhb.idtingkat='$tingkat' AND aturannhb.aktif = 1 ORDER BY pelajaran.nama";
+
+$query_aturan = "SELECT DISTINCT g.idpelajaran, p.nama
+				       FROM jbsakad.aturannhb a, jbsakad.pelajaran p, jbsakad.guru g
+						WHERE g.nip = '$nip'
+						  AND a.nipguru = g.nip
+						  AND g.idpelajaran = p.replid
+						  AND p.departemen = '$departemen'
+						  AND a.idtingkat = '$tingkat'
+						  AND a.aktif = 1
+					   ORDER BY p.nama";					
 
 $result_aturan = QueryDb($query_aturan);
 if (!mysql_num_rows($result_aturan)==0){ ?>

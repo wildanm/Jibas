@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -60,235 +60,217 @@ if ($dbconnect)
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS Road To Community <?= $G_VERSION ?></title>
+<title>JIBAS Education Community <?=$G_VERSION?></title>
+<link href="script/vtip.css" rel="stylesheet" type="text/css" />
 <link rel="shortcut icon" href="images/jibas.ico" />
-<link rel="stylesheet" type="text/css" href="script/contentslider.css" />
-<link rel="stylesheet" href="style/lytebox.css" type="text/css" media="screen" />
-<script type="text/javascript" language="javascript" src='script/jquery.min.js'></script>
-<script type="text/javascript" language="javascript" src="style/lytebox.js"></script>
-<script type="text/javascript" language="javascript" src="script/tools.js"></script>
-<script type="text/javascript" language="javascript" src="script/contentslider.js"></script>
-<script type="text/javascript" language="javascript" src="script/ajax.js"></script>
-<script type="text/javascript" language="javascript" src="script/footer.js"></script>
-<script language="javascript">
-var first = 1;
-
-function GoTo(page)
-{
-	document.location.href=page;
-}
-
-function getLuStatus(lid)
-{
-	sendRequestText("include/getlustatus.php", acceptLuStatus, "lid="+lid);
-}
-
-function acceptLuStatus(text)
-{
-	document.getElementById("lumessage").innerHTML = text;
-}
-
-function getNewsTicker(id,type){
-	if (first==1){
-		$.ajax({
-			url:'include/getnewsticker.php?id='+id+'&type='+type,
-			type:'get',
-			dataType:'json',
-			success:function(msg){
-				var i;
-				var t;
-				if (msg!=null){
-					if (msg.news!=""){
-						$("#jibasnewsticker").fadeOut(function(){
-							$("#jibasnewsticker #nc").html(msg.news);
-							$("#jibasnewsticker").fadeIn();
-						});
-					}
-					i = (msg.id=="")?'-1':msg.id;
-					t = (msg.type=="")?'0':msg.type;
-				} else {
-					i = '-1';
-					t = '0';
-				}
-				setTimeout(function(){
-					getNewsTicker(i,t);
-				},5000)
-			}
-		})
-	}
-}
-setTimeout(function(){
-	getNewsTicker('-1','0');
-},2000)
-</script>
-
-<style type="text/css">
-<!--
-.style2 {color: #000000}
-.style3 {color: #666666}
-.style1 {
-	color: #333333;
-	font-weight: bold;
-	font-family:Calibri;
-	font-size:16px
-}
-
-#Footer {
-	position:fixed;
-	right:0px;
-	bottom:0px;
-}
-html, body{overflow:hidden}
--->
-</style>
-
+<script language="javascript" src="script/jquery.min.js"></script>
+<script language="javascript" src="script/ajax.js"></script>
+<script language="javascript" src="script/vtip.js"></script>
+<script language="javascript" src="index.js"></script>
+<link rel="stylesheet" href="script/bgstretcher.css" />
+<script language="javascript" src="script/bgstretcher.js"></script>
 </head>
-<body style="background-color:#bdbdb9; " leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table id="Table_01" width="800" height="649" border="0" cellpadding="0" cellspacing="0">
-<tr>
-	<td><img src="images/Front-JIBAS-24_01.jpg" width="46" height="110" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_02.jpg" width="224" height="110" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_03.jpg" width="50" height="110" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_04.jpg" width="212" height="110" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_05.jpg" width="51" height="110" border="0" usemap="#Map"></td>
-	<td><img src="images/Front-JIBAS-24_06.jpg" width="217" height="110" border="0" usemap="#Map2"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_07.jpg" width="46" height="33" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_08.jpg" width="224" height="33" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_09.jpg" width="50" height="33" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_10.jpg" width="212" height="33" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_11.jpg" width="50" height="33" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_12.jpg" width="218" height="33" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_13.jpg" width="46" height="70" border="0"></td>
-	<td><a href="akademik/"><img src="images/Front-JIBAS-24_14.jpg" width="224" height="70" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_15.jpg" width="50" height="70" border="0"></td>
-	<td><a href="keuangan/"><img src="images/Front-JIBAS-24_16.jpg" width="212" height="70" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_17.jpg" width="49" height="70" border="0"></td>
-	<td><a href="simtaka/"><img src="images/Front-JIBAS-24_18.jpg" width="219" height="70" border="0"></a></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_19.jpg" width="46" height="36" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_20.jpg" width="224" height="36" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_21.jpg" width="50" height="36" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_22.jpg" width="213" height="36" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_23.jpg" width="48" height="36" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_24.jpg" width="219" height="36" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_25.jpg" width="46" height="72" border="0"></td>
-	<td><a href="infoguru/"><img src="images/Front-JIBAS-24_26.jpg" width="224" height="72" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_27.jpg" width="50" height="72" border="0"></td>
-	<td><a href="infosiswa/"><img src="images/Front-JIBAS-24_28.jpg" width="213" height="72" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_29.jpg" width="48" height="72" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_30.jpg" width="219" height="72" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_31.jpg" width="46" height="32" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_32.jpg" width="224" height="32" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_33.jpg" width="50" height="32" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_34.jpg" width="213" height="32" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_35.jpg" width="48" height="32" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_36.jpg" width="219" height="32" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_37.jpg" width="46" height="71" border="0"></td>
-	<td><a href="smsgateway/"><img src="images/Front-JIBAS-24_38.jpg" width="224" height="71" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_39.jpg" width="50" height="71" border="0"></td>
-	<td><a href="ema/"><img src="images/Front-JIBAS-24_40.jpg" width="213" height="71" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_41.jpg" width="48" height="71" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_42.jpg" width="219" height="71" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_43.jpg" width="46" height="49" border="0"></td>
-	<td><a href="images/jibas_autoresponse.jpg" rel="lytebox[vacation]"><img src="images/Front-JIBAS-24_44.jpg" width="224" height="49" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_45.jpg" width="50" height="49" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_46.jpg" width="213" height="49" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_47.jpg" width="48" height="49" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_48.jpg" width="219" height="49" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_49.jpg" width="46" height="31" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_50.jpg" width="224" height="31" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_51.jpg" width="50" height="31" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_52.jpg" width="213" height="31" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_53.jpg" width="48" height="31" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_54.jpg" width="219" height="31" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_55.jpg" width="46" height="34" border="0"></td>
-	<td><a href="images/jibas_sinkronisasi.jpg" rel="lytebox[vacation]"><img src="images/Front-JIBAS-24_56.jpg" width="224" height="34" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_57.jpg" width="50" height="34" border="0"></td>
-	<td><a href="images/jibas_backup_restore.jpg" rel="lytebox[vacation]"><img src="images/Front-JIBAS-24_58.jpg" width="213" height="34" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_59.jpg" width="48" height="34" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_60.jpg" width="219" height="34" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_61.jpg" width="46" height="51" border="0"></td>
-	<td><a href="images/jibas_situs.jpg" rel="lytebox[vacation]"><img src="images/Front-JIBAS-24_62.jpg" width="224" height="51" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_63.jpg" width="50" height="51" border="0"></td>
-	<td><a href="images/jibas_liveupdate.jpg" rel="lytebox[vacation]"><img src="images/Front-JIBAS-24_64.jpg" width="213" height="51" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_65.jpg" width="48" height="51" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_66.jpg" width="219" height="51" border="0"></td>
-</tr>
-<tr>
-	<td><img src="images/Front-JIBAS-24_67.jpg" width="46" height="60" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_68.jpg" width="224" height="60" border="0"></td>
-	<td><img src="images/Front-JIBAS-24_69.jpg" width="50" height="60" border="0"></td>
-	<td><a href="http://support.jibas.net" target="_blank"><img src="images/Front-JIBAS-25_70.jpg" width="213" height="60" border="0"></a></td>
-	<td><a href="http://support.jibas.net" target="_blank"><img src="images/Front-JIBAS-25_71.jpg" width="48" height="60" border="0"></a></td>
-	<td><img src="images/Front-JIBAS-24_72.jpg" width="219" height="60" border="0"></td>
-</tr>
-</table>
 
+<body style="leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+<div style="position:relative; z-index:2">
 
-<map name="Map" id="Map">
-  <area shape="rect" coords="29,45,47,67" href="http://www.indonesiamembaca.net" target="_blank" title="Yayasan Indonesia Membaca" alt="Yayasan Indonesia Membaca" />
-</map>
-<map name="Map2" id="Map2">
-  <area shape="rect" coords="3,43,24,67" href="http://www.galileoms.com" target="_blank" title="PT.Galileo Mitra Solusitama" alt="PT.Galileo Mitra Solusitama" />
-</map>
-<div id="jibasnewsticker" style="border:1px solid #d4d0c8; background-color:#ffffe1; font-family:Calibri; font-size:11px; color:#515151; text-align:left; display:none; position:fixed; padding:3px; padding-top:0px; right:20px; min-height:30px; bottom:100px; width:200px">
-    <div><img src="images/ico/close.png" title="Tutup" align="right" style="cursor:pointer; margin-left:3px; margin-top:3px" onclick="$('#jibasnewsticker').fadeOut();first=0;" /></div>
-	<div id="nc" style="padding-top:5px">
-   
-    </div> 
-</div>
-<div id="Footer">
-<table border="0" cellspacing="2" cellpadding="2">
-  <tr>
-    <td align="right">
-	<div id="lumessage" style="background-image:url(images/bglu.gif); background-repeat:no-repeat; width:238px; height:34px;font-family:Arial; font-weight:bold; font-size:12px; text-align:center; padding-top:9px; padding-left:6px">
-	<?	
-	if ($_SESSION['lugetstatus'] && $_SESSION['lugetlid'] == $lid)
-		echo $_SESSION['lugetmessage'];
-	else	
-		echo "<span style='color:cyan'>Memeriksa update ...</span>"; 
-	?>
-    </div>
-    <span style="color:#505050; font-size:10px; font-family:Arial">
-    Version <?=$G_VERSION." - ".$G_BUILDDATE?><br />
-    <div id='cp'>
-	Hak Cipta &copy; 2009 <a href="http://www.galileoms.com" target="_blank" style="color:#0047bd; text-decoration:underline;font-size:10px;font-family:Arial">PT. Galileo Mitra Solusitama</a><br>
-    Komunitas <strong>JIBAS</strong> dikelola oleh <a href="http://www.indonesiamembaca.net" target="_blank" style="color:#0047bd; text-decoration:underline;font-size:10px;font-family:Arial">Yayasan Indonesia Membaca</a>
-	</div>
-	</span>
+<div id="dvMain" style='position:absolute; width:800px; height:525px; '>
+	
+<table border="0" cellpadding="0" cellspacing="0" align="center" >
+<tr>
+	<td align="center" height="70">
+	<br><br><br>
+	<table border="0" cellpadding="5">
+	<tr>
+		<td>
+			<img src="images/<?= $G_LOGO_DEPAN_KIRI ?>">
+		</td>
+		<td width="*" align="center">
+			<font style="font-family:Tahoma; font-size:20px; color:#fff; ">
+			<?= $G_JUDUL_DEPAN_1 ?>
+			</font><br>
+			<font style="font-family:Tahoma; font-size:12px; color:#fff; font-weight:bold; ">
+			<?= $G_JUDUL_DEPAN_2 ?>
+			</font><br>
+			<font style="font-family:Tahoma; font-size:10px; color:#fff; ">
+			<?= $G_JUDUL_DEPAN_3 ?>
+			</font>
+		</td>
+		<td>
+			<img src="images/<?= $G_LOGO_DEPAN_KANAN ?>">
+		</td>
+	</tr>
+	</table>		
+    <br><br>
     </td>
-  </tr>
+</tr>
+<tr>
+	<td align="center">
+		
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" width="160">
+			<a href="akademik/index.php">
+			<img id="btAkademik" src="images/btnmenu_green_p_03.png" onMouseOver="changeImage('btAkademik','images/btnmenu_green_a_03.png')" onMouseOut="changeImage('btAkademik','images/btnmenu_green_p_03.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="160">
+			<a href="keuangan/index.php">
+			<img id="btKeuangan" src="images/btnmenu_green_p_04.png" onMouseOver="changeImage('btKeuangan','images/btnmenu_green_a_04.png')" onMouseOut="changeImage('btKeuangan','images/btnmenu_green_p_04.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="160">
+			<a href="simtaka/index.php">
+			<img id="btPerpustakaan" src="images/btnmenu_green_p_05.png" onMouseOver="changeImage('btPerpustakaan','images/btnmenu_green_a_05.png')" onMouseOut="changeImage('btPerpustakaan','images/btnmenu_green_p_05.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="160">
+			<a href="kepegawaian/index.php">
+			<img id="btKepegawaian" src="images/btnmenu_green_p_19.png" onMouseOver="changeImage('btKepegawaian','images/btnmenu_green_a_19.png')" onMouseOut="changeImage('btKepegawaian','images/btnmenu_green_p_19.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="160">
+			<a href="ema/index.php">
+			<img id="btPelaporan" src="images/btnmenu_green_p_06.png" onMouseOver="changeImage('btPelaporan','images/btnmenu_green_a_06.png')" onMouseOut="changeImage('btPelaporan','images/btnmenu_green_p_06.png')" border="0">
+			</a>	
+		</td>
+		<td align="center" width="160">
+			<a href="anjungan/index.php">
+			<img id="btAnjungan" src="images/btnmenu_green_p_21.png" onMouseOver="changeImage('btAnjungan','images/btnmenu_green_a_21.png')" onMouseOut="changeImage('btAnjungan','images/btnmenu_green_p_21.png')" border="0">
+			</a>	
+		</td>
+	</tr>
+	</table>
+	
+	</td>
+</tr>
+<tr>
+	<td align="center">
+		
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" width="150">
+			<a href="infoguru/index.php">
+			<img id="btInfoGuru" src="images/btnmenu_green_p_08.png" onMouseOver="changeImage('btInfoGuru','images/btnmenu_green_a_08.png')" onMouseOut="changeImage('btInfoGuru','images/btnmenu_green_p_08.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="150">
+			<a href="infosiswa/index.php">
+			<img id="btInfoSiswa" src="images/btnmenu_green_p_09.png" onMouseOver="changeImage('btInfoSiswa','images/btnmenu_green_a_09.png')" onMouseOut="changeImage('btInfoSiswa','images/btnmenu_green_p_09.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="150">
+			<a href="smsgateway/index.php">
+			<img id="btSMSGateway" src="images/btnmenu_green_p_10.png" onMouseOver="changeImage('btSMSGateway','images/btnmenu_green_a_10.png')" onMouseOut="changeImage('btSMSGateway','images/btnmenu_green_p_10.png')" border="0">
+			</a>
+		</td>
+		<td align="center" width="150">
+			<a href="http://jibas.net/content/sms/sms.php" target="_blank">
+			<img id="btAutoResponse" src="images/btnmenu_green_p_11.png" onMouseOver="changeImage('btAutoResponse','images/btnmenu_green_a_11.png')" onMouseOut="changeImage('btAutoResponse','images/btnmenu_green_p_11.png')" border="0"
+				 class="vtip" title="Mengirim SMS nilai/kehadiran/keuangan siswa berdasarkan SMS permintaan dari orangtua">
+			</a>	
+		</td>
+		<td align="center" width="150">
+			<a href="http://jibas.net/content/phototake/phototake.php" target="_blank">
+			<img id="btPhotoTake" src="images/btnmenu_green_p_20.png" onMouseOver="changeImage('btPhotoTake','images/btnmenu_green_a_20.png')" onMouseOut="changeImage('btPhotoTake','images/btnmenu_green_p_20.png')" border="0"
+				 class="vtip" title="Membuat foto siswa & guru dari kamera/webcam">
+			</a>	
+		</td>
+	</tr>
+	</table>
+	
+	</td>
+</tr>
+<tr>
+	<td align="center">
+		
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+		<td align="center" width="120">
+			<a href="http://jibas.net/content/sd/sd.php" target="_blank">
+			<img id="btSync" src="images/btnmenu_green_p_13.png" onMouseOver="changeImage('btSync','images/btnmenu_green_a_13.png')" onMouseOut="changeImage('btSync','images/btnmenu_green_p_13.png')" border="0"
+				 class="vtip" title="Mengirimkan data-data nilai/kehadiran/keuangan siswa supaya dapat tampil di JendelaSekolah">
+			</a>	
+		</td>
+		<td align="center" width="120">
+			<a href="http://jibas.net/content/jendelasekolah/jendelasekolah.php" target="_blank">
+			<img id="btJendela" src="images/btnmenu_green_p_14.png" onMouseOver="changeImage('btJendela','images/btnmenu_green_a_14.png')" onMouseOut="changeImage('btJendela','images/btnmenu_green_p_14.png')" border="0"
+				 class="vtip" title="Media informasi dan komunikasi antara siswa, orangtua dan guru melalui Internet dan Mobile">
+			</a>		
+		</td>
+		<td align="center" width="120">
+			<a href="http://jibas.net/content/br/br.php" target="_blank">
+			<img id="btBackup" src="images/btnmenu_green_p_15.png" onMouseOver="changeImage('btBackup','images/btnmenu_green_a_15.png')" onMouseOut="changeImage('btBackup','images/btnmenu_green_p_15.png')" border="0"
+				 class="vtip" title="Membuat data cadangan untuk keamanan dan ketersediaan data">
+			</a>			
+		</td>
+		<td align="center" width="120">
+			<a href="http://jibas.net/content/lu/lu.php" target="_blank">
+			<img id="btLiveUpdate" src="images/btnmenu_green_p_16.png" onMouseOver="changeImage('btLiveUpdate','images/btnmenu_green_a_16.png')" onMouseOut="changeImage('btLiveUpdate','images/btnmenu_green_p_16.png')" border="0"
+				 class="vtip" title="Memutakhirkan aplikasi dengan mudah dan cepat">
+			</a>	
+		</td>
+		<td align="center" width="120">
+			<a href="http://support.jibas.net" target="_blank">
+			<img id="btSupport" src="images/btnmenu_green_p_17.png" onMouseOver="changeImage('btSupport','images/btnmenu_green_a_17.png')" onMouseOut="changeImage('btSupport','images/btnmenu_green_p_17.png')" border="0"
+				 class="vtip" title="Media layanan dan bantuan penggunaan aplikasi">
+			</a>	
+		</td>
+		<td align="center" width="120">
+			<a href="http://www.jibas.net/forum" target="_blank">
+			<img id="btForum" src="images/btnmenu_green_p_18.png" onMouseOver="changeImage('btForum','images/btnmenu_green_a_18.png')"
+				 onMouseOut="changeImage('btForum','images/btnmenu_green_p_18.png')" border="0"
+				 class="vtip" title="Forum diskusi komunitas pengguna JIBAS">
+			</a>		
+		</td>
+	</tr>
+	</table>
+	
+	</td>
+</tr>
+</table>
+
+</div>
+
+<div id="dvCopy" style="color:#fff; width:300px; font-size:11px; font-family:Tahoma; position:absolute; background-image:url(images/bgdiv_black.png);">
+<table border="0" cellpadding="2" cellspacing="0">
+<tr>
+<td align="right" valign="middle">
+	versi <?=$G_VERSION." - ".$G_BUILDDATE?><br />
+	<a href="http://www.jibas.net" target="_blank" style="color:#fff; text-decoration:none;">
+	&nbsp;&nbsp;<strong>JIBAS</strong>: Jaringan Informasi Bersama Antar Sekolah</a><br />
+	&nbsp;&nbsp;Hak cipta &copy; 2009 <a href="http://www.indonesiamembaca.net" target="_blank" style="color:#00f6f3; text-decoration:underline;">Yayasan Indonesia Membaca</a><br>
+</td>
+<td>
+	<a href="http://www.jibas.net" target="_blank">
+	<img src="images/jibas.png" border="0" title="JIBAS">
+	</a>	
+</td>	
+</tr>	
 </table>
 </div>
+
+<div id="dvPartner" style="color:#fff; width:290px; font-size:11px; font-family:Tahoma; position:absolute; background-image:url(images/bgdiv_black.png);">
+<?
+include('partner.php');
+?>
+</div>
+
+<div id="lumessage" style="width:250px; height:20px; position:absolute; font-family:Tahoma; font-size:11px; color:#ddd; text-align:center; background-image:url(images/bgdiv_black.png);">
+<?	
+if ($_SESSION['lugetstatus'] && $_SESSION['lugetlid'] == $lid)
+	echo $_SESSION['lugetmessage'];
+else	
+	echo "Memeriksa Update ..."; 
+?>
+</div>
+
+</div> 
 </body>
 </html>
+
 <? if (!$_SESSION['lugetstatus'] || $_SESSION['lugetlid'] != $lid) { ?>
 <script type="text/javascript" language="javascript">
 getLuStatus(<?=$lid?>);
 </script>
 <? } ?>
-<script>
-	var sot = "<?='testopentag'?>";//18
-	var len = sot.length;
-	if (len==18 && len!=11)
-		alert('Kami mendeteksi bahwa konfigurasi php Anda belum diaktifkan `short_open_tag`.\nSilakan aktifkan `short_open_tag` di php.ini');
-</script>

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -58,89 +58,89 @@ function change_theme(theme){
     <table id="Table_01" width="319" height="376" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="9">
-			<img src="images_slice/mutasi_01.jpg" width="318" height="11" alt=""></td>
+			<img src="images/mutasi_01.jpg" width="318" height="11" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="11" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="11" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4" rowspan="2">
-			<img src="images_slice/mutasi_02.jpg" width="121" height="129" alt=""></td>
+			<img src="images/mutasi_02.jpg" width="121" height="129" alt=""></td>
 		<td>
-			<a href="mutasi/jenis_mutasi_siswa.php" onMouseOver="showhint('Pendataan Jenis Mutasi Siswa', this, event, '100px')"><img src="images_slice/mutasi_03.jpg" alt="" width="68" height="95" border="0"></a></td>
+			<a href="mutasi/jenis_mutasi_siswa.php" onMouseOver="showhint('Pendataan Jenis Mutasi Siswa', this, event, '100px')"><img src="images/mutasi_03.jpg" alt="" width="68" height="95" border="0"></a></td>
   <td colspan="4" rowspan="2">
-			<img src="images_slice/mutasi_04.jpg" width="129" height="129" alt=""></td>
+			<img src="images/mutasi_04.jpg" width="129" height="129" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="95" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="95" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/mutasi_05.jpg" width="68" height="34" alt=""></td>
+			<img src="images/mutasi_05.jpg" width="68" height="34" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="34" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="34" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3" rowspan="3">
-			<img src="images_slice/mutasi_06.jpg" width="114" height="133" alt=""></td>
+			<img src="images/mutasi_06.jpg" width="114" height="133" alt=""></td>
 		<td colspan="3">
-			<a href="mutasi/mutasi_siswa.php" onMouseOver="showhint('Pendataan Siswa Yang Akan Dimutasi', this, event, '100px')"><img src="images_slice/mutasi_07.jpg" alt="" width="84" height="95" border="0"></a></td>
+			<a href="mutasi/mutasi_siswa.php" onMouseOver="showhint('Pendataan Siswa Yang Akan Dimutasi', this, event, '100px')"><img src="images/mutasi_07.jpg" alt="" width="84" height="95" border="0"></a></td>
   <td colspan="3" rowspan="2">
-			<img src="images_slice/mutasi_08.jpg" width="120" height="131" alt=""></td>
+			<img src="images/mutasi_08.jpg" width="120" height="131" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="95" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="95" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3" rowspan="4">
-			<img src="images_slice/mutasi_09.jpg" width="84" height="140" alt=""></td>
+			<img src="images/mutasi_09.jpg" width="84" height="140" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="36" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="36" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="3">
-			<img src="images_slice/mutasi_10.jpg" width="36" height="104" alt=""></td>
+			<img src="images/mutasi_10.jpg" width="36" height="104" alt=""></td>
 		<td rowspan="2">
-			<a href="mutasi/daftar_mutasi.php" onMouseOver="showhint('Daftar Siswa Yang Sudah Dimutasi', this, event, '100px')"><img src="images_slice/mutasi_11.jpg" alt="" width="69" height="96" border="0"></a></td>
+			<a href="mutasi/daftar_mutasi.php" onMouseOver="showhint('Daftar Siswa Yang Sudah Dimutasi', this, event, '100px')"><img src="images/mutasi_11.jpg" alt="" width="69" height="96" border="0"></a></td>
   <td rowspan="3">
-			<img src="images_slice/mutasi_12.jpg" width="15" height="104" alt=""></td>
+			<img src="images/mutasi_12.jpg" width="15" height="104" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="2" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="2" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="2">
-			<img src="images_slice/mutasi_13.jpg" width="19" height="102" alt=""></td>
+			<img src="images/mutasi_13.jpg" width="19" height="102" alt=""></td>
 		<td>
-			<a href="mutasi/statistik_mutasi_siswa.php" onMouseOver="showhint('Statistik Mutasi Siswa', this, event, '100px')"><img src="images_slice/mutasi_14.jpg" alt="" width="67" height="94" border="0"></a></td>
+			<a href="mutasi/statistik_mutasi_siswa.php" onMouseOver="showhint('Statistik Mutasi Siswa', this, event, '100px')"><img src="images/mutasi_14.jpg" alt="" width="67" height="94" border="0"></a></td>
   <td rowspan="2">
-			<img src="images_slice/mutasi_15.jpg" width="28" height="102" alt=""></td>
+			<img src="images/mutasi_15.jpg" width="28" height="102" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="94" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="94" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/mutasi_16.jpg" width="67" height="8" alt=""></td>
+			<img src="images/mutasi_16.jpg" width="67" height="8" alt=""></td>
 		<td>
-			<img src="images_slice/mutasi_17.jpg" width="69" height="8" alt=""></td>
+			<img src="images/mutasi_17.jpg" width="69" height="8" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="1" height="8" alt=""></td>
+			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
 	</tr>
 	<tr>
 		<td>
-			<img src="images_slice/spacer.gif" width="19" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="19" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="67" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="67" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="28" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="28" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="7" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="7" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="68" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="68" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="9" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="9" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="36" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="36" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="69" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="69" height="1" alt=""></td>
 		<td>
-			<img src="images_slice/spacer.gif" width="15" height="1" alt=""></td>
+			<img src="images/spacer.gif" width="15" height="1" alt=""></td>
 		<td></td>
 	</tr>
 </table>

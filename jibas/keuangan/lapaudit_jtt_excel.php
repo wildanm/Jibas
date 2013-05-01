@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,6 +98,7 @@ header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     <td width="15%" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Status Data</font></strong></td>
     <td width="10%" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Tanggal</font></strong></td>
     <td width="15%" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Jumlah</font></strong></td>
+	<td width="15%" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Diskon</font></strong></td>
     <td width="*" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Keterangan</font></strong></td>
     <td width="15%" bgcolor="#CCCCCC" class="header"><strong><font size="2" face="Arial">Petugas</font></strong></td>
 </tr>
@@ -105,7 +106,7 @@ header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
 OpenDb();
 $sql = "SELECT DISTINCT ai.petugas as petugasubah, j.transaksi, date_format(ai.tanggal, '%d-%b-%Y %H:%i:%s') as tanggalubah, ap.replid AS id, 
 					ap.idaudit, ap.statusdata, j.nokas, date_format(ap.tanggal, '%d-%b-%Y') AS tanggal, ap.petugas, ap.keterangan, ap.jumlah, 
-					ap.petugas, ai.alasan 
+					ap.petugas, ai.alasan, ap.info1 AS diskon 
 			 FROM auditpenerimaanjtt$calon ap, auditinfo ai, jurnal j 
 			WHERE j.replid = ap.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND ap.idaudit = ai.replid AND ai.departemen = '$departemen' 
 			  AND ai.sumber='penerimaanjtt$calon' AND ai.tanggal BETWEEN '$tanggal1 00:00:00' AND '$tanggal2 23:59:59' 
@@ -126,12 +127,12 @@ while ($row = mysql_fetch_array($result)) {
 		<td rowspan="4" align="center" bgcolor="#CCCC66"><font size="2" face="Arial"><strong>
 	    <?=++$no ?>
 		</strong></font></td>
-      <td colspan="6" align="left" bgcolor="#CCCC66"><font size="2" face="Arial"><em><strong>Perubahan dilakukan oleh 
+      <td colspan="7" align="left" bgcolor="#CCCC66"><font size="2" face="Arial"><em><strong>Perubahan dilakukan oleh 
       <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?>
       </strong></em></font></td>
   </tr>
     <tr>
-    	<td colspan="6" bgcolor="#E5E5E5"><font size="2" face="Arial"><strong>No. Jurnal :</strong> 
+    	<td colspan="7" bgcolor="#E5E5E5"><font size="2" face="Arial"><strong>No. Jurnal :</strong> 
         <?=$row['nokas'] ?>
 &nbsp;&nbsp;<strong>Alasan : </strong>
 <?=$row['alasan'];?>
@@ -151,6 +152,9 @@ while ($row = mysql_fetch_array($result)) {
       </font></td>
       <td align="right"><font size="2" face="Arial">
       <?=$row['jumlah'] ?>
+      </font></td>
+	  <td align="right"><font size="2" face="Arial">
+      <?=$row['diskon'] ?>
       </font></td>
       <td><font size="2" face="Arial">
       <?=$row['keterangan'] ?>

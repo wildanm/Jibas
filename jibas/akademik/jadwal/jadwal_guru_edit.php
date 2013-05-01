@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,9 +33,11 @@ if (isset($_REQUEST['replid']))
 	$replid = $_REQUEST['replid'];
 
 OpenDb();
-$sql = "SELECT *, j.keterangan AS keterangan, idtahunajaran, idtingkat, t.tahunajaran, p.nama AS guru FROM jadwal j, kelas k, tahunajaran t, jbssdm.pegawai p WHERE j.replid = '$replid' AND j.idkelas = k.replid AND k.idtahunajaran = t.replid AND p.nip = j.nipguru";
+
+$sql = "SELECT *, j.keterangan AS keterangan, idtahunajaran, idtingkat, t.tahunajaran, p.nama AS guru
+		FROM jadwal j, kelas k, tahunajaran t, jbssdm.pegawai p
+		WHERE j.replid = '$replid' AND j.idkelas = k.replid AND k.idtahunajaran = t.replid AND p.nip = j.nipguru";
 $result = QueryDb($sql);
-CloseDb();
 $row = mysql_fetch_array($result);
 $pelajaran = $row['idpelajaran'];
 $departemen = $row['departemen'];
@@ -85,11 +87,11 @@ if (isset($_REQUEST['status']))
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan'])) 
 {		
-	OpenDb();
 	$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
 	$res = QueryDb($sql);
 	$num = mysql_num_rows($res);
-	if ($num>0){
+	if ($num>0)
+	{
 		$dayname = array("", "Senin", "Selasa", "Rabu", "Kamis", "Jum'at", "Sabtu", "Minggu");
 		
 		$sql = "SELECT replid FROM infojadwal WHERE aktif=1";
@@ -102,6 +104,7 @@ if (isset($_REQUEST['Simpan']))
 			$idinfo_aktif .= $row[0];	
 		}
 		$idinfo_aktif = "'".$idinfo_aktif."'";
+		
 		// cek jadwal guru bentrok di kelas lain
 		$sqljam = "";
 		for($i = $jam; $i <= $jam2; $i++)
@@ -132,7 +135,6 @@ if (isset($_REQUEST['Simpan']))
 					$ket .= "\\r\\n";
 				$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2'];   	  	
 			}
-			CloseDb();		
 			$ERROR_MSG = "Jadwal guru yang bentrok:\\r\\n$ket";
 		} 
 		else
@@ -167,14 +169,12 @@ if (isset($_REQUEST['Simpan']))
 						$ket .= "\\r\\n";
 					$ket .= $row['departemen'] . " " . $row['kelas'] . ", " . $row['deskripsi'] . ", " . $row['nama'] . ", " .  $row['pelajaran'] . ", " . $dayname[$row['hari']] . " jam " . $row['jam1'] . " s/d "  . $row['jam2']; 	
 				}
-				CloseDb();		
 				$ERROR_MSG = "Jadwal bentrok di kelas yang sama:\\r\\n$ket";
 			}
 		}
 		
 		if (strlen($ERROR_MSG) == 0)
 		{
-		
 			$sql1 = "SELECT replid, TIME_FORMAT(jam1, '%H:%i') AS jam1 FROM jam WHERE departemen = '$departemen' AND jamke = '$jam'";
 			$result1 = QueryDb($sql1);
 			$row1 = mysql_fetch_array($result1);
@@ -192,16 +192,20 @@ if (isset($_REQUEST['Simpan']))
 					hari = $hari, jamke = $jam, njam = $jum, sifat = 1, status = '$status', keterangan='$keterangan', jam1 = '$jm1', 
 					jam2 = '$jm2', idjam1 = '$rep1', idjam2 = '$rep2' WHERE replid = '$replid'";
 			$result = QueryDb($sql);
-			CloseDb();
 		
-			if ($result) { ?>
+			if ($result)
+			{
+				CloseDb();
+				?>
 				<script language="javascript">
 					opener.parent.footer.refresh();
 					window.close();
 				</script> 
 	<?		}
 		}
-	} else {
+	}
+	else
+	{
 		$ERROR_MSG = "Tidak ada Info jadwal yang aktif, silakan aktifkan salah satu Info Jadwal\\r\\n";
 	}
 }
@@ -361,41 +365,33 @@ function panggil(elem){
     <td><strong>Tingkat</strong> </td>
     <td>
 		<select name="tingkat" id="tingkat" onChange="change_tingkat()" style="width:80px;" onKeyPress="return focusNext('kelas', event)" onFocus="panggil('tingkat')">
-    	<?	OpenDb();
-			$sql = "SELECT replid,tingkat FROM tingkat WHERE aktif=1 AND departemen='$departemen' ORDER BY urutan";	
+<?			$sql = "SELECT replid,tingkat FROM tingkat WHERE aktif=1 AND departemen='$departemen' ORDER BY urutan";	
 			$result = QueryDb($sql);
-			CloseDb();
-	
-			while($row = mysql_fetch_array($result)) {
-			if ($tingkat == "")
-				$tingkat = $row['replid'];				
-			?>
-          <option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tingkat) ?>>
+				
+			while($row = mysql_fetch_array($result))
+			{
+				if ($tingkat == "")
+					$tingkat = $row['replid'];	?>
+			<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tingkat) ?>>
             <?=$row['tingkat']?>
             </option>
-          <?
-			} //while
-			?>
-        </select></td>
+<?			} ?>
+        </select>
+	</td>
 </tr>
 <tr>
    	<td><strong>Kelas</strong> </td>
     <td>
        	<select name="kelas" id="kelas" onChange="change()" style="width:180px;" onKeyPress="return focusNext('pelajaran', event)" onFocus="panggil('kelas')">
-		<?	OpenDb();
-			$sql = "SELECT replid,kelas FROM kelas WHERE aktif=1 AND idtahunajaran = '$tahunajaran' AND idtingkat = '$tingkat' ORDER BY kelas";	
+<?			$sql = "SELECT replid,kelas FROM kelas WHERE aktif=1 AND idtahunajaran = '$tahunajaran' AND idtingkat = '$tingkat' ORDER BY kelas";	
 			$result = QueryDb($sql);
-			CloseDb();
-	
-			while($row = mysql_fetch_array($result)) {
-			if ($kelas == "")
-				$kelas = $row['replid'];				 
-			?>
-    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelas) ?>><?=$row['kelas']?></option>
-             
-    		<?
-			} //while
-			?>
+		
+			while($row = mysql_fetch_array($result))
+			{
+				if ($kelas == "")
+					$kelas = $row['replid'];	?>
+				<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $kelas) ?>><?=$row['kelas']?></option>
+<?			} ?>
     	</select>        
 	</td>    
 </tr>
@@ -403,19 +399,17 @@ function panggil(elem){
 	<td align="left"><strong>Pelajaran</strong></td>
  	<td>
       	<select name="pelajaran" id="pelajaran" onChange="change()" style="width:180px;" onKeyPress="return focusNext('jam2', event)" onFocus="panggil('pelajaran')">
-   	<?	OpenDb();
-		$sql = "SELECT l.replid,l.nama FROM pelajaran l, guru g WHERE g.nip = '$nip' AND g.idpelajaran = l.replid AND l.aktif=1 AND departemen = '$departemen' ORDER BY l.nama";
+<?		$sql = "SELECT l.replid,l.nama FROM pelajaran l, guru g WHERE g.nip = '$nip' AND g.idpelajaran = l.replid AND l.aktif=1 AND departemen = '$departemen' ORDER BY l.nama";
 		$result = QueryDb($sql);
-		CloseDb();
-		while ($row = @mysql_fetch_array($result)) {
+		
+		while ($row = @mysql_fetch_array($result))
+		{
 			if ($pelajaran == "") 				
-				$pelajaran = $row['replid'];			
-		?>
-        
-    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>
-                  
-    <?	} ?>
-    	</select>		</td>  
+				$pelajaran = $row['replid'];	?>
+	    	<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $pelajaran)?> ><?=$row['nama']?></option>                 
+<?		} ?>
+    	</select>
+	</td>  
 </tr>
 <tr>
 	<td><strong>Hari</strong> </td>
@@ -469,5 +463,8 @@ function panggil(elem){
 </script>
 <? } ?>
 
+<?
+CloseDb();
+?>
 </body>
 </html>

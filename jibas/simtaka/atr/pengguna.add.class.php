@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,57 +21,78 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CPenggunaAdd{
-	function OnStart(){
-		$this->nip="";
+class CPenggunaAdd
+{
+	
+	function OnStart()
+	{
+		$this->nip = "";
 		if (isset($_REQUEST[nip]))
-			$this->nip=$_REQUEST[nip];
-		$this->tingkat=1;
+			$this->nip = $_REQUEST[nip];
+			
+		$this->tingkat = 1;
 		if (isset($_REQUEST[tingkat]))
-			$this->tingkat=$_REQUEST[tingkat];	
+			$this->tingkat = $_REQUEST[tingkat];
+			
 		$this->nama="";
 		if (isset($_REQUEST[nama]))
-			$this->nama=$_REQUEST[nama];
-		$this->perpustakaan=$_REQUEST[perpustakaan];
-		$this->keterangan=CQ($_REQUEST[keterangan]);
+			$this->nama = $_REQUEST[nama];
 		
+		$perpus = $_REQUEST[perpustakaan];
+		$temp = explode(":", $perpus);
+		$this->perpustakaan = $temp[1];
+		$this->idperpustakaan = $temp[0];
 		
-		//echo "Tingkat=".$this->tingkat;		
-		if (isset($_REQUEST[simpan])){
-			
+		$this->keterangan = CQ($_REQUEST[keterangan]);
+		
+		if (isset($_REQUEST[simpan]))
+		{
 			$nip = $_REQUEST[nip];
-			$sql = "SELECT * FROM ".get_db_name('user').".login WHERE login='$nip' ";
+			
+			$sql = "SELECT * FROM ".get_db_name('user').".login WHERE login='$nip'";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
-			if ($num>0){
+			if ($num > 0)
+			{
 				$sql = "SELECT * FROM ".get_db_name('user').".hakakses WHERE login='$nip' AND modul='SIMTAKA' ";
 				$result = QueryDb($sql);
 				$num = @mysql_num_rows($result);
-				if ($num==0){
+				if ($num==0)
+				{
 					if ($this->tingkat=='1')
 						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', keterangan='$this->keterangan'";
 					else
-						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', keterangan='$this->keterangan'"; 
+						$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', info1='$this->idperpustakaan', keterangan='$this->keterangan'"; 
 					$result = QueryDb($sql);
 					//echo $sql;
 					if ($result)
 						$this->success();
-				} else {
+				}
+				else
+				{
 					$this->success();
 				}	
-			} else {
+			}
+			else
+			{
 				$password = trim(addslashes($_REQUEST[password1]));
+				
 				$sql = "INSERT INTO ".get_db_name('user').".login SET login='$nip', password='".md5($password)."'";
 				$result = QueryDb($sql);
+				
 				$sql = "SELECT * FROM ".get_db_name('user').".hakakses WHERE login='$nip' AND modul='SIMTAKA' ";
 				$result = QueryDb($sql);
+				
 				$num = @mysql_num_rows($result);
-				if ($num==0){
-					$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', keterangan='$this->keterangan'";
+				if ($num == 0)
+				{
+					$sql = "INSERT INTO ".get_db_name('user').".hakakses SET login='$nip', modul='SIMTAKA', tingkat='$this->tingkat', departemen='$this->perpustakaan', info1='$this->idperpustakaan', keterangan='$this->keterangan'";
 					$result = QueryDb($sql);
 					if ($result)
 						$this->success();
-				} else {
+				}
+				else
+				{
 					$this->success();
 				}		
 			}
@@ -168,7 +189,7 @@ class CPenggunaAdd{
                     <?	$sql = "SELECT * FROM perpustakaan ORDER BY replid"; ?>
                     <?	$result = QueryDb($sql); ?>
 					<?  while ($row = @mysql_fetch_array($result)){ ?>
-                    	<option value="<?=$row[nama]?>" <?=StringIsSelected($row[nama],$this->perpustakaan)?>><?=$row[nama]?></option>
+                    	<option value="<?=$row[replid] . ":" . $row[nama]?>" <?=StringIsSelected($row[nama],$this->perpustakaan)?>><?=$row[nama]?></option>
 					<?	} ?>	
 					<? } ?>
                 </select>

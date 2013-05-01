@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,10 +25,10 @@ require_once('../../include/errorhandler.php');
 require_once('../../include/sessioninfo.php');
 require_once('../../include/common.php');
 require_once('../../include/config.php');
-require_once('../../include/getheader.php');
 require_once('../../include/db_functions.php');
-require_once('../../library/departemen.php');
-//require_once('../../cek.php');
+//require_once('../../library/departemen.php');
+require_once("../../include/sessionchecker.php");
+
 if (isset($_REQUEST['departemen']))
 	$departemen=$_REQUEST['departemen'];
 if (isset($_REQUEST['kalender']))
@@ -42,15 +42,15 @@ OpenDb();
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<link rel="stylesheet" type="text/css" href="../../style/style.css">
+<link rel="stylesheet" type="text/css" href="../style/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Kalender Akademik</title>
-<script src="../../script/SpryValidationSelect.js" type="text/javascript"></script>
-<link href="../../script/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
-<link rel="stylesheet" type="text/css" href="../../style/tooltips.css">
-<script language="javascript" src="../../script/tooltips.js"></script>
-<script language="javascript" src="../../script/tools.js"></script>
-<script language="javascript" src="../../script/ajax.js"></script>
+<script src="../script/SpryValidationSelect.js" type="text/javascript"></script>
+<link href="../script/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="../style/tooltips.css">
+<script language="javascript" src="../script/tooltips.js"></script>
+<script language="javascript" src="../script/tools.js"></script>
+<script language="javascript" src="../script/ajax.js"></script>
 <script language="javascript">
 
 function change(cal, dept){	
@@ -132,31 +132,7 @@ function focusNext(elemName, evt) {
             </select>		</td>
     </tr>
     <tr>
-    	<!--<td><strong>Tahun Ajaran </strong></td>
-    	<td>       
-        <select name="tahunajaran" id="tahunajaran" onChange="change_tahunajaran()" style="width:200px;" onkeypress="return focusNext('kalender', event)">
-   		 	<?
-			OpenDb();
-			$sql = "SELECT replid,tahunajaran,aktif FROM jbsakad.tahunajaran where departemen='$departemen' ORDER BY aktif DESC, replid DESC";
-			$result = QueryDb($sql);
-			CloseDb();
-			while ($row = @mysql_fetch_array($result)) {
-				if ($tahunajaran == "") 
-					$tahunajaran = $row['replid'];
-				if ($row['aktif']) 
-					$ada = '(Aktif)';
-				else 
-					$ada = '';			 
-			?>
-            
-    		<option value="<?=urlencode($row['replid'])?>" <?=IntIsSelected($row['replid'], $tahunajaran)?> ><?=$row['tahunajaran'].' '.$ada?></option>
-    		<?
-			}
-    		?>
-    	</select>        </td>-->
-    </tr>
-    <tr>
-    	<td><strong>Kalender Akademik</strong></td>
+    	<td><strong>Kalender&nbsp;Akademik</strong></td>
     	<td><select name="kalender" id="kalender" onchange="change(0)" style="width:250px;" onkeypress="return focusNext('tabel', event)">
           <? OpenDb();
 				$sql_kalender = "SELECT * FROM jbsakad.kalenderakademik where departemen='$departemen' ORDER BY aktif DESC, replid ASC";
@@ -192,12 +168,10 @@ function focusNext(elemName, evt) {
         </td>
   	</tr>          
    	</table>    </td>
-    <td valign="middle" rowspan="2" width="10%" align="left" ><a href="#" onClick="tampil()"><img src="../../images/ico/view.png" height="48" width="48" border="0" name="tabel" id="tabel"  onmouseover="showhint('Klik untuk menampilkan kalender akademik !', this, event, '120px')"/></a></td>
-  <td valign="top" align="right" width="35%">
-    <font size="4" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#ffcc66">&nbsp;</font>&nbsp;<font size="4" face="Verdana, Arial, Helvetica, sans-serif" color="Gray">Kalender Akademik</font><br />      
-        <a href="../../jadwal.php?flag=1" target="content">
-        <font size="1" color="#000000"><b>Jadwal</b></font></a>&nbsp>&nbsp 
-		<font size="1" color="#000000"><b>Kalender Akademik</b></font><a>   	</td>
+    <td valign="middle" rowspan="2" width="10%" align="left" ><a href="#" onClick="tampil()"><img src="../images/ico/view.png" height="48" width="48" border="0" name="tabel" id="tabel"  onmouseover="showhint('Klik untuk menampilkan kalender akademik !', this, event, '120px')"/></a></td>
+	<td valign="top" align="right" width="35%">
+		<font size="4" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#ffcc66">&nbsp;</font>&nbsp;<font size="4" face="Verdana, Arial, Helvetica, sans-serif" color="Gray">Kalender Akademik</font>   	
+	</td>
 </tr>
 </table>
 

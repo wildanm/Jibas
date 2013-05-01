@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -123,6 +123,13 @@ OpenDb();
 $ERROR_MSG = "";
 if (isset($_REQUEST['Simpan']))
 {
+    $sql = "SELECT COUNT(replid)
+              FROM jbsakad.siswa
+             WHERE NIS = '$nis' AND replid <> $replid";
+    $res = QueryDb($sql);
+    $row = mysql_fetch_row($res);
+    $countnis = (int)$row[0];
+    
 	$sql_cek = "SELECT k.kapasitas, COUNT(s.replid) 
 				FROM kelas k, siswa s 
 				WHERE k.replid = $kelas AND s.idkelas = k.replid AND k.replid <> '$_REQUEST[kelas_lama]' AND s.aktif = 1 GROUP BY kelas"; 
@@ -140,7 +147,11 @@ if (isset($_REQUEST['Simpan']))
 	if ($kapasitas == $isi && $_REQUEST['kelas_lama'] != $kelas) 
 	{
 		$ERROR_MSG = "Kapasitas kelas tidak mencukupi untuk menambah data siswa baru!";
-	} 
+	}
+    else if ($countnis > 0)
+    {
+        $ERROR_MSG = "NIS $nis sudah digunakan siswa lain!";
+    }
 	else 
 	{ 
 		$lahir=$thnlahir."-".$blnlahir."-".$tgllahir;

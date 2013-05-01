@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,15 +27,20 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/getheader.php');
+
 $replid = $_REQUEST['replid'];
 $tgl1 = $_REQUEST['tgl1'];
 $tgl2 = $_REQUEST['tgl2'];
 $bln = $_REQUEST['bln'];
 $th = $_REQUEST['th'];
 $kelas = $_REQUEST['kelas'];
+
 OpenDb();
 	
-$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat, p.hariaktif FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p WHERE p.replid = '$replid' AND p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid AND p.idsemester = s.replid";   
+$sql = "SELECT t.departemen, a.tahunajaran, s.semester, k.kelas, t.tingkat, p.hariaktif
+		FROM tahunajaran a, kelas k, tingkat t, semester s, presensiharian p
+		WHERE p.replid = '$replid' AND p.idkelas = k.replid AND k.idtingkat = t.replid AND k.idtahunajaran = a.replid
+		  AND p.idsemester = s.replid";   
 $result = QueryDB($sql);
 
 $row = mysql_fetch_array($result);
@@ -72,10 +77,6 @@ $hariaktif = $row['hariaktif'];
 	<td><strong>Semester</strong></td>
     <td><strong>: <?=$row['semester']?></strong></td>
 </tr>
-<!--<tr>
-	<td><strong>Tingkat</strong></td>
-    <td><strong>: <?=$row['tingkat']?></strong></td>
-</tr>-->
 <tr>
 	<td><strong>Kelas</strong></td>
     <td><strong>: <?=$row['tingkat']. ' - '.$row['kelas']?></strong></td>
@@ -99,9 +100,13 @@ $hariaktif = $row['hariaktif'];
         <td class="header" align="center" width="*">Keterangan</td>    
     </tr>
 <?	
-	OpenDb();	
-	
-	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, kelas k WHERE s.idkelas = '$kelas' AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas UNION SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif FROM siswa s, phsiswa p, kelas k WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = '$replid' ORDER BY nama";
+	$sql = "SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif
+			FROM siswa s, kelas k
+			WHERE s.idkelas = '$kelas' AND s.aktif = 1 AND s.alumni=0 AND k.replid = s.idkelas
+			UNION
+			SELECT s.nis, s.nama, s.idkelas, k.kelas, s.aktif
+			FROM siswa s, phsiswa p, kelas k
+			WHERE  p.nis = s.nis AND s.idkelas = k.replid AND p.idpresensi = '$replid' ORDER BY nama";
 		
 	$result = QueryDb($sql);
 	$cnt = 0;

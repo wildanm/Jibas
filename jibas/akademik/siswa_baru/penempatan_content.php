@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -429,7 +429,7 @@ function refresh_isi() {
 </tr>
 <tr>
 	<td>
-<?  if ($angkatan <> "" &&$tahunajaran <> "" && $tingkat <> "" && $kelas <> "" ) 
+<?  if ($angkatan <> "" && $tahunajaran <> "" && $tingkat <> "" && $kelas <> "" ) 
 	{
 		$sql_tot = "SELECT s.replid,s.nis,s.nama,s.frompsb,s.nisn
 					FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tahunajaran t 

@@ -1,12 +1,12 @@
 <?
 /**[N]**
- * JIBAS Road To Community
+ * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 2.5.2 (October 5, 2011)
+ * @version: 3.0 (January 09, 2013)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
- * Copyright (C) 2009 PT.Galileo Mitra Solusitama (http://www.galileoms.com)
+ * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -223,13 +223,13 @@ function change_page(page) {
     <td height="20" colspan="4" >&nbsp;&nbsp;<input name="ubah" type="button" class="header" style="width:100px;" value="Profil" onClick="document.location.href='profile.php'">&nbsp;<input name="tema" type="button" class="header" style="width:100px;" value="Tema Profil">&nbsp;<input name="ngobrol" type="button" class="header" style="width:100px;" value="Ajak Ngobrol">&nbsp;<input name="pesan" type="button" class="header" style="width:100px;" value="Kirim Pesan"></td>
   </tr>
   <tr>
-    <td width="19" height="20" style="background-image:url(../images_slice/bg_profil80_01.png); background-repeat:no-repeat; background-position:right;">&nbsp;</td>
-    <td height="20" colspan="2" style="background-image:url(../images_slice/bg_profil80_02.png); background-repeat:repeat-x;"></td>
-    <td width="19" height="20" style="background-image:url(../images_slice/bg_profil80_04.png); background-repeat:no-repeat;">&nbsp;</td>
+    <td width="19" height="20" style="background-image:url(../images/bg_profil80_01.png); background-repeat:no-repeat; background-position:right;">&nbsp;</td>
+    <td height="20" colspan="2" style="background-image:url(../images/bg_profil80_02.png); background-repeat:repeat-x;"></td>
+    <td width="19" height="20" style="background-image:url(../images/bg_profil80_04.png); background-repeat:no-repeat;">&nbsp;</td>
   </tr>
   <tr>
-    <td width="19" style="background-image:url(../images_slice/bg_profil80_07.png); background-repeat:repeat-y; background-position:right;">&nbsp;</td>
-    <td width="453" valign="top" style="background-image:url(../images_slice/bg_profil80_08.png); background-repeat:repeat;">
+    <td width="19" style="background-image:url(../images/bg_profil80_07.png); background-repeat:repeat-y; background-position:right;">&nbsp;</td>
+    <td width="453" valign="top" style="background-image:url(../images/bg_profil80_08.png); background-repeat:repeat;">
  <table border="0" cellspacing="2" >
   <tr>
     <th width="57" height="25" scope="row"><div align="left">Nama </div></th>
@@ -290,7 +290,7 @@ function change_page(page) {
     <th colspan="3" scope="row"></th>
     </tr>
 </table>    </td>
-    <td width="465" valign="top" style="background-image:url(../images_slice/bg_profil80_08.png); background-repeat:repeat;"><table border="0" cellspacing="2" >
+    <td width="465" valign="top" style="background-image:url(../images/bg_profil80_08.png); background-repeat:repeat;"><table border="0" cellspacing="2" >
  
   
   <tr>
@@ -327,21 +327,21 @@ function change_page(page) {
     <th colspan="3" scope="row"></th>
     </tr>
 </table></td>
-    <td width="19" style="background-image:url(../images_slice/bg_profil80_09.png); background-repeat:repeat-y;">&nbsp;</td>
+    <td width="19" style="background-image:url(../images/bg_profil80_09.png); background-repeat:repeat-y;">&nbsp;</td>
   </tr>
   <tr>
-    <td style="background-image:url(../images_slice/bg_profil80_07.png); background-repeat:repeat-y; background-position:right;">&nbsp;</td>
-    <td colspan="2" valign="top" style="background-image:url(../images_slice/bg_profil80_08.png); background-repeat:repeat;"><div align="center">
+    <td style="background-image:url(../images/bg_profil80_07.png); background-repeat:repeat-y; background-position:right;">&nbsp;</td>
+    <td colspan="2" valign="top" style="background-image:url(../images/bg_profil80_08.png); background-repeat:repeat;"><div align="center">
   <input name="simpan" type="submit" class="but" id="simpan" value="Simpan">
   &nbsp;&nbsp;
       <input name="batal" type="button" class="but" id="batal" value="Batal" onClick="window.self.history.back();">
     </div></td>
-    <td style="background-image:url(../images_slice/bg_profil80_09.png); background-repeat:repeat-y;">&nbsp;</td>
+    <td style="background-image:url(../images/bg_profil80_09.png); background-repeat:repeat-y;">&nbsp;</td>
   </tr>
   <tr>
-    <td width="19" height="23" style="background-image:url(../images_slice/bg_profil80_10.png); background-repeat:no-repeat; background-position:right;">&nbsp;</td>
-    <td height="23" colspan="2" style="background-image:url(../images_slice/bg_profil80_11.png); background-repeat:repeat-x;">&nbsp;</td>
-    <td width="19" height="23" style="background-image:url(../images_slice/bg_profil80_12.png); background-repeat:no-repeat;">&nbsp;</td>
+    <td width="19" height="23" style="background-image:url(../images/bg_profil80_10.png); background-repeat:no-repeat; background-position:right;">&nbsp;</td>
+    <td height="23" colspan="2" style="background-image:url(../images/bg_profil80_11.png); background-repeat:repeat-x;">&nbsp;</td>
+    <td width="19" height="23" style="background-image:url(../images/bg_profil80_12.png); background-repeat:no-repeat;">&nbsp;</td>
   </tr>
 </table>
 <!-- End ImageReady Slices -->
