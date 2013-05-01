@@ -110,9 +110,10 @@ if ($dbconnect)
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td align="center" width="160">
+		   <!-- 
 			<a href="akademik/index.php">
 			<img id="btAkademik" src="images/btnmenu_green_p_03.png" onMouseOver="changeImage('btAkademik','images/btnmenu_green_a_03.png')" onMouseOut="changeImage('btAkademik','images/btnmenu_green_p_03.png')" border="0">
-			</a>
+			</a>  -->
 		</td>
 		<td align="center" width="160">
 			<a href="keuangan/index.php">
@@ -120,9 +121,10 @@ if ($dbconnect)
 			</a>
 		</td>
 		<td align="center" width="160">
+		    <!-- 
 			<a href="simtaka/index.php">
 			<img id="btPerpustakaan" src="images/btnmenu_green_p_05.png" onMouseOver="changeImage('btPerpustakaan','images/btnmenu_green_a_05.png')" onMouseOut="changeImage('btPerpustakaan','images/btnmenu_green_p_05.png')" border="0">
-			</a>
+			</a> -->
 		</td>
 		<td align="center" width="160">
 			<a href="kepegawaian/index.php">
@@ -135,9 +137,10 @@ if ($dbconnect)
 			</a>	
 		</td>
 		<td align="center" width="160">
+		    <!-- 
 			<a href="anjungan/index.php">
 			<img id="btAnjungan" src="images/btnmenu_green_p_21.png" onMouseOver="changeImage('btAnjungan','images/btnmenu_green_a_21.png')" onMouseOut="changeImage('btAnjungan','images/btnmenu_green_p_21.png')" border="0">
-			</a>	
+			</a> -->	
 		</td>
 	</tr>
 	</table>
@@ -150,31 +153,36 @@ if ($dbconnect)
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td align="center" width="150">
+		  <!-- 
 			<a href="infoguru/index.php">
 			<img id="btInfoGuru" src="images/btnmenu_green_p_08.png" onMouseOver="changeImage('btInfoGuru','images/btnmenu_green_a_08.png')" onMouseOut="changeImage('btInfoGuru','images/btnmenu_green_p_08.png')" border="0">
-			</a>
+			</a>  -->
 		</td>
 		<td align="center" width="150">
+		  <!-- 
 			<a href="infosiswa/index.php">
 			<img id="btInfoSiswa" src="images/btnmenu_green_p_09.png" onMouseOver="changeImage('btInfoSiswa','images/btnmenu_green_a_09.png')" onMouseOut="changeImage('btInfoSiswa','images/btnmenu_green_p_09.png')" border="0">
-			</a>
+			</a> -->
 		</td>
 		<td align="center" width="150">
+		<!-- 
 			<a href="smsgateway/index.php">
 			<img id="btSMSGateway" src="images/btnmenu_green_p_10.png" onMouseOver="changeImage('btSMSGateway','images/btnmenu_green_a_10.png')" onMouseOut="changeImage('btSMSGateway','images/btnmenu_green_p_10.png')" border="0">
-			</a>
+			</a> -->
 		</td>
 		<td align="center" width="150">
+		 <!-- 
 			<a href="http://jibas.net/content/sms/sms.php" target="_blank">
 			<img id="btAutoResponse" src="images/btnmenu_green_p_11.png" onMouseOver="changeImage('btAutoResponse','images/btnmenu_green_a_11.png')" onMouseOut="changeImage('btAutoResponse','images/btnmenu_green_p_11.png')" border="0"
 				 class="vtip" title="Mengirim SMS nilai/kehadiran/keuangan siswa berdasarkan SMS permintaan dari orangtua">
-			</a>	
+			</a> -->	
 		</td>
 		<td align="center" width="150">
+		  <!-- 
 			<a href="http://jibas.net/content/phototake/phototake.php" target="_blank">
 			<img id="btPhotoTake" src="images/btnmenu_green_p_20.png" onMouseOver="changeImage('btPhotoTake','images/btnmenu_green_a_20.png')" onMouseOut="changeImage('btPhotoTake','images/btnmenu_green_p_20.png')" border="0"
 				 class="vtip" title="Membuat foto siswa & guru dari kamera/webcam">
-			</a>	
+			</a> -->	
 		</td>
 	</tr>
 	</table>
@@ -187,41 +195,49 @@ if ($dbconnect)
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td align="center" width="120">
+		<!--
 			<a href="http://jibas.net/content/sd/sd.php" target="_blank">
 			<img id="btSync" src="images/btnmenu_green_p_13.png" onMouseOver="changeImage('btSync','images/btnmenu_green_a_13.png')" onMouseOut="changeImage('btSync','images/btnmenu_green_p_13.png')" border="0"
 				 class="vtip" title="Mengirimkan data-data nilai/kehadiran/keuangan siswa supaya dapat tampil di JendelaSekolah">
-			</a>	
+			</a> -->	
 		</td>
 		<td align="center" width="120">
+		<!--
 			<a href="http://jibas.net/content/jendelasekolah/jendelasekolah.php" target="_blank">
 			<img id="btJendela" src="images/btnmenu_green_p_14.png" onMouseOver="changeImage('btJendela','images/btnmenu_green_a_14.png')" onMouseOut="changeImage('btJendela','images/btnmenu_green_p_14.png')" border="0"
 				 class="vtip" title="Media informasi dan komunikasi antara siswa, orangtua dan guru melalui Internet dan Mobile">
-			</a>		
+			</a> -->		
 		</td>
 		<td align="center" width="120">
+		<!--
 			<a href="http://jibas.net/content/br/br.php" target="_blank">
 			<img id="btBackup" src="images/btnmenu_green_p_15.png" onMouseOver="changeImage('btBackup','images/btnmenu_green_a_15.png')" onMouseOut="changeImage('btBackup','images/btnmenu_green_p_15.png')" border="0"
 				 class="vtip" title="Membuat data cadangan untuk keamanan dan ketersediaan data">
-			</a>			
+			</a> -->			
 		</td>
 		<td align="center" width="120">
+		    <!--
 			<a href="http://jibas.net/content/lu/lu.php" target="_blank">
 			<img id="btLiveUpdate" src="images/btnmenu_green_p_16.png" onMouseOver="changeImage('btLiveUpdate','images/btnmenu_green_a_16.png')" onMouseOut="changeImage('btLiveUpdate','images/btnmenu_green_p_16.png')" border="0"
 				 class="vtip" title="Memutakhirkan aplikasi dengan mudah dan cepat">
-			</a>	
+			</a> -->	
 		</td>
 		<td align="center" width="120">
+		<!--
 			<a href="http://support.jibas.net" target="_blank">
 			<img id="btSupport" src="images/btnmenu_green_p_17.png" onMouseOver="changeImage('btSupport','images/btnmenu_green_a_17.png')" onMouseOut="changeImage('btSupport','images/btnmenu_green_p_17.png')" border="0"
 				 class="vtip" title="Media layanan dan bantuan penggunaan aplikasi">
-			</a>	
+			</a>
+			-->	
 		</td>
 		<td align="center" width="120">
+		    <!-- 
 			<a href="http://www.jibas.net/forum" target="_blank">
 			<img id="btForum" src="images/btnmenu_green_p_18.png" onMouseOver="changeImage('btForum','images/btnmenu_green_a_18.png')"
 				 onMouseOut="changeImage('btForum','images/btnmenu_green_p_18.png')" border="0"
 				 class="vtip" title="Forum diskusi komunitas pengguna JIBAS">
-			</a>		
+			</a>
+			 -->		
 		</td>
 	</tr>
 	</table>
