@@ -28,6 +28,7 @@ require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
 require_once('library/departemen.php');
+require_once('library/openthinksas.jibas.php');
 
 $idkategori = "";
 if (isset($_REQUEST['idkategori']))
@@ -131,7 +132,7 @@ function focusNext(elemName, evt) {
         foreach($dep as $value) {
             if ($departemen == "")
                 $departemen = $value; ?>
-            <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?>><?=$value ?></option>
+            <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?>><?=getDepartemenInOpenThinkSAS($value) ?></option>
         <? } ?>    
         </select>&nbsp;
         <strong>Tahun Buku&nbsp;</strong>

@@ -26,6 +26,7 @@ require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/sessioninfo.php');
 require_once('departemen.php');
+require_once('openthinksas.jibas.php');
 
 $flag = 0;
 if (isset($_REQUEST['flag']))
@@ -48,7 +49,7 @@ OpenDb();
 <tr>
     <td width="20%"><font color="#000000"><strong>Departemen</strong></font></td>
     <td>
-    <input type="text" name="departemen" id="departemen" value="<?=$_REQUEST['departemen']?>" readonly="readonly" style="background-color:#CCCC99;width:150px">
+    <input type="text" name="departemen" id="departemen" value="<?=getDepartemenInOpenThinkSAS($_REQUEST['departemen']); ?>" readonly="readonly" style="background-color:#CCCC99;width:150px">
     <input type="hidden" name="depart" id="depart" value="<?=$_REQUEST['departemen']?>" />
     <!--<select name="depart" id="depart" onChange="change_departemen(0)" style="width:155px" onkeypress="return focusNext('tingkat', event)">
    

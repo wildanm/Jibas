@@ -110,10 +110,10 @@ if ($dbconnect)
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td align="center" width="160">
-		   <!-- 
+		   
 			<a href="akademik/index.php">
 			<img id="btAkademik" src="images/btnmenu_green_p_03.png" onMouseOver="changeImage('btAkademik','images/btnmenu_green_a_03.png')" onMouseOut="changeImage('btAkademik','images/btnmenu_green_p_03.png')" border="0">
-			</a>  -->
+			</a>  
 		</td>
 		<td align="center" width="160">
 			<a href="keuangan/index.php">

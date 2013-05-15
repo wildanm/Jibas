@@ -805,8 +805,8 @@ SET foreign_key_checks=1;</sql>
     </arguments>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>223</xloc>
-      <yloc>114</yloc>
+      <xloc>177</xloc>
+      <yloc>97</yloc>
       <draw>Y</draw>
       </GUI>
     </step>

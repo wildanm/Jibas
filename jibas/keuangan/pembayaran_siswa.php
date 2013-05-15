@@ -89,7 +89,6 @@ if (status == "Calon") {
 	sendRequestText("library/pilih_calonsiswa.php", show_panel0, "departemen=<?=$departemen?>");
 	sendRequestText("library/cari_calonsiswa.php", show_panel1, "departemen=<?=$departemen?>");
 } else {
-	
 	sendRequestText("library/pilih_siswa.php", show_panel0, "departemen=<?=$departemen?>");
 	sendRequestText("library/cari_siswa.php", show_panel1, "departemen=<?=$departemen?>");
 }
