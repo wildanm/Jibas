@@ -868,6 +868,156 @@ INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangka
        2 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
        h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
        AND h05322_simmsit.siswa_kelas.kd_kelas=2;
+       
+/** angkatan 2006, kelas 1 C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       3 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=3;       
+       
+/** angkatan 2006, kelas 1 D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       4 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=4;              
+       
+/** angkatan 2006, kelas 2 A**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       8 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=5;                     
+       
+/** angkatan 2006, kelas 2 B**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       9 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=6;                            
+       
+/** angkatan 2006, kelas 2 C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       10 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=7;                                   
+       
+/** angkatan 2006, kelas 2 D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       11 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=8;                                          
+       
+/** angkatan 2006, kelas 3A**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       15 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=9;                                                 
+       
+/** angkatan 2006, kelas 3B**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       16 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=10;                                                        
+       
+/** angkatan 2006, kelas 3C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       17 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=11;                                                               
+       
+/** angkatan 2006, kelas 3D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       18 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=12;                                                                      
+       
+/** angkatan 2006, kelas 4A**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       22 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=13;                                                                             
 
+/** angkatan 2006, kelas 4C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       24 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=15;                                                                             
+       
+/** angkatan 2006, kelas 4D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       25 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=16;                                                                                    
+       
+/** angkatan 2006, kelas 5A**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       29 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=17;                                                                                           
+       
+/** angkatan 2006, kelas 5B**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       30 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=18;                                                                                                  
+       
+/** angkatan 2006, kelas 5C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       31 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=19;                                                                                                         
+       
+       
+/** angkatan 2006, kelas 5D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       32 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=20;                                                                                                                
+       
+       
+/** angkatan 2006, kelas 6A**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       36 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=39;                                                                                                                       
+       
+/** angkatan 2006, kelas 6B**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       37 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=40;                                                                                                                              
+       
+       
+/** angkatan 2006, kelas 6C**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       38 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=41;                                                                                                                                     
+
+
+/** angkatan 2006, kelas 6D**/       
+INSERT IGNORE INTO siswa (nis, nisn, nama, panggilan, aktif, tahunmasuk, idangkatan, idkelas) 
+       SELECT siswa.nis, nisn, nama, panggilan, 1 AS aktif,  h05322_simmsit.siswa_kelas.tahun AS tahunmasuk, 1 AS idangkatan, 
+       39 AS idkelas FROM h05322_simmsit.siswa LEFT JOIN h05322_simmsit.siswa_kelas ON 
+       h05322_simmsit.siswa.nis=h05322_simmsit.siswa_kelas.nis WHERE h05322_simmsit.siswa_kelas.tahun='2006' 
+       AND h05322_simmsit.siswa_kelas.kd_kelas=42;                                                                                                                                     
 
 set foreign_key_checks=1 ;
