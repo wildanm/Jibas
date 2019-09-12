@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -71,7 +71,7 @@ function tambah(tanggal){
 	newWindow('tambahagenda.php?tanggal='+tanggal,'TambahAgenda',660, 480,'resizable=0,scrollbars=0,status=0,toolbar=0');
 }
 function cetak(){
-	newWindow('cetakagenda.php?bulan=<?=$bulan?>&tahun=<?=$tahun?>','CetakAgenda','798','529','resizable=1,scrollbars=0,status=0,toolbar=0');
+	newWindow('cetakagenda.php?bulan=<?=$bulan?>&tahun=<?=$tahun?>','CetakAgenda','798','529','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 function get_fresh(bulan,tahun){
 	parent.kiriatas.location.href="jadwal.php?bulan="+bulan+"&tahun="+tahun;

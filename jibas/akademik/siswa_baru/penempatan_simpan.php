@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -60,6 +60,12 @@ if (isset($_REQUEST['Simpan']))
 		$sql = "SELECT * FROM calonsiswa WHERE replid = '$replid'";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_array($result);
+
+		$nopendaftaran = $row['nopendaftaran'];
+		$agama = $row['agama'] == NULL ? "NULL" : "'" . $row['agama'] . "'";
+		$suku = $row['suku'] == NULL ? "NULL" : "'" . $row['suku'] . "'";
+		$kondisi = $row['kondisi'] == NULL ? "NULL" : "'" . $row['kondisi'] . "'";
+		$status = $row['status'] == NULL ? "NULL" : "'" . $row['status'] . "'";
 		
 		$kodepos = $row['kodepossiswa'];
 		$kodepos_sql = "kodepossiswa = '$kodepos'";
@@ -106,16 +112,21 @@ if (isset($_REQUEST['Simpan']))
 		BeginTrans();
 		$success = true;		
 		$sql = "INSERT INTO jbsakad.siswa SET nis='$nis',nama='$nama', panggilan='$row[panggilan]', tahunmasuk=$year, 
-					idangkatan=$angkatan, idkelas=$kelas, suku='$row[suku]', agama='$row[agama]', status='$row[status]', 
-					kondisi='$row[kondisi]', kelamin='$row[kelamin]', tmplahir='$row[tmplahir]', tgllahir='$row[tgllahir]', 
+					idangkatan=$angkatan, idkelas=$kelas, suku=$suku, agama=$agama, status=$status, 
+					kondisi=$kondisi, kelamin='$row[kelamin]', tmplahir='$row[tmplahir]', tgllahir='$row[tgllahir]', 
 					warga='$row[warga]', anakke=$row[anakke], jsaudara=$row[jsaudara], bahasa='$row[bahasa]', berat=$row[berat], 
 					tinggi=$row[tinggi], darah='$row[darah]', alamatsiswa='$row[alamatsiswa]', $kodepos_sql, telponsiswa='$row[telponsiswa]', 
 					hpsiswa='$row[hpsiswa]', emailsiswa='$row[emailsiswa]', kesehatan='$row[kesehatan]', $sekolah_sql, ketsekolah='$row[ketsekolah]', 
 					namaayah='$row[namaayah]', namaibu='$row[namaibu]', almayah=$row[almayah], almibu=$row[almibu], $pendidikanayah_sql, 
 					$pendidikanibu_sql, $pekerjaanayah_sql, $pekerjaanibu_sql, wali='$row[namawali]', penghasilanayah=$row[penghasilanayah], 
-					penghasilanibu=$row[penghasilanibu], alamatortu='$row[alamatortu]', telponortu='$row[telponortu]', hportu='$row[hportu]', 
+					penghasilanibu=$row[penghasilanibu], alamatortu='$row[alamatortu]', telponortu='$row[telponortu]', hportu='$row[hportu]',
+					info1='$row[info1]', info2='$row[info2]', 
 					emailayah='$row[emailayah]', emailibu='$row[emailibu]', alamatsurat='$row[alamatsurat]', keterangan='$row[keterangan]', 
-					frompsb=1, ketpsb='$keterangan', pinsiswa='$pinsiswa', pinortu='$pinortu', pinortuibu = '$pinortuibu',nisn='$nisn'";
+					frompsb=1, ketpsb='$keterangan', pinsiswa='$pinsiswa', pinortu='$pinortu', pinortuibu = '$pinortuibu',nisn='$nisn',
+					nik='$row[nik]',noun='$row[noun]',statusanak='$row[statusanak]',jkandung='$row[jkandung]',jtiri='$row[jtiri]',jarak='$row[jarak]',
+					noijasah='$row[noijasah]', tglijasah='$row[tglijasah]', statusayah='$row[statusayah]', statusibu='$row[statusibu]',
+					tmplahirayah='$row[tmplahirayah]', tmplahiribu='$row[tmplahiribu]', tgllahirayah='$row[tgllahirayah]', tgllahiribu='$row[tgllahiribu]',
+					hobi='$row[hobi]'";
 		QueryDbTrans($sql,$success);
 		
 		if ($success) 
@@ -142,6 +153,15 @@ if (isset($_REQUEST['Simpan']))
 		$sql_kls = "INSERT INTO jbsakad.riwayatkelassiswa SET nis='$nis',idkelas='$kelas',mulai='$kumplit'";
 		if ($success)
 			QueryDbTrans($sql_kls,$success);
+
+		if ($success)
+        {
+            $sql = "INSERT INTO jbsakad.tambahandatasiswa (nis, idtambahan, jenis, teks, filedata, filename, filemime, filesize)
+                    SELECT '$nis', idtambahan, jenis, teks, filedata, filename, filemime, filesize
+                      FROM jbsakad.tambahandatacalon
+                     WHERE nopendaftaran = '$nopendaftaran'";
+            QueryDbTrans($sql, $success);
+        }
 		
 		if ($success)
 		{			
@@ -156,6 +176,7 @@ if (isset($_REQUEST['Simpan']))
 		else 
 		{
 			RollbackTrans();
+			CloseDb();
 		}
 	}
 } ?>

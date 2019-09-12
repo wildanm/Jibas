@@ -3,9 +3,9 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
- * 
+ *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * This program is free software: you can redistribute it and/or modify
@@ -17,18 +17,17 @@
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *  
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
 require_once("../inc/config.php");
 require_once("../inc/rupiah.php");
-require_once("../inc/db_functions.php");
-require_once("../lib/class/jpgraph.php");
-require_once("../lib/class/jpgraph_pie.php");
-require_once("../lib/class/jpgraph_pie3d.php");
-require_once("../lib/class/jpgraph_bar.php");
-require_once("../lib/class/jpgraph_line.php");
+require_once("class/jpgraph.php");
+require_once("class/jpgraph_pie.php");
+require_once("class/jpgraph_pie3d.php");
+require_once("class/jpgraph_bar.php");
+require_once("class/jpgraph_line.php");
 
 class ChartFactory {
 	var $bulan = array('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nop','Des');
@@ -56,7 +55,8 @@ class ChartFactory {
 	function SqlData($sql, $btit, $ptit, $xti, $yti) {
 		OpenDb();
 		$result = QueryDb($sql);
-		while ($row = mysql_fetch_row($result)) {
+		while ($row = mysql_fetch_row($result))
+		{
 			$this->xdata[] = $row[0];
 			$this->ydata[] = $row[1];
 		}
@@ -72,7 +72,7 @@ class ChartFactory {
 		if ( (count($this->xdata) == 0) || (count($this->ydata) == 0) ) return;
 		
 		//Buat grafik
-		$graph = new Graph(400,275,"auto");
+		$graph = new Graph(550,280,"auto");
 		$graph->SetScale("textlin");
 		
 		//setting kanvas
@@ -112,10 +112,11 @@ class ChartFactory {
 	}
 	
 	function DrawPieChart() {
+		
 		if ( (count($this->xdata) == 0) || (count($this->ydata) == 0) ) return;
 		
 		//Buat grafik
-		$graph = new PieGraph(400,275,"auto");
+		$graph = new PieGraph(550,280,"auto");
 		$graph->img->SetAntiAliasing();
 		$graph->SetShadow();
 

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -51,7 +51,9 @@ if (1 == (int)$_REQUEST['issubmit'])
 {
 	$idtahunbuku = $_REQUEST['idtahunbuku'];
 	$tanggal = MySqlDateFormat($_REQUEST['tcicilan']);
+	$idpetugas = getIdUser();
 	$petugas = getUserName();
+	$idpetugas_value = $idpetugas == "landlord" ? "NULL" : "'$idpetugas'";
 	
 	OpenDb();
 	
@@ -78,7 +80,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$success = 0;
 	
 	$sql = "INSERT INTO jurnal 
-			   SET tanggal='$tanggal', transaksi='".CQ($_REQUEST[keperluan])."', petugas='$petugas', 
+			   SET tanggal='$tanggal', transaksi='".CQ($_REQUEST[keperluan])."', idpetugas=$idpetugas_value, petugas='$petugas', 
 			   	   nokas='$nokas', idtahunbuku='$idtahunbuku', keterangan='".CQ($_REQUEST['keterangan'])."', sumber='jurnalumum'";
 	QueryDbTrans($sql, $success);
 	
@@ -143,7 +145,7 @@ OpenDb();
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
 <script type="text/javascript" src="script/calendar-setup.js"></script>
-<script src="script/rupiah.js" language="javascript"></script>
+<script src="script/rupiah2.js" language="javascript"></script>
 <script src="script/validasi.js" language="javascript"></script>
 <script src="script/tables.js" language="javascript"></script>
 <script language="javascript">

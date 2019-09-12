@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -60,12 +60,17 @@ $total = $_REQUEST['total'];
     	<td width="4%" class="header" align="center">No</td>
         <td width="8%" class="header" align="center">Singkatan</td>
         <td width="25%" class="header" align="center">Nama</td>
-        <td width="10%" class="header" align="center">Sifat</td>        
+        <td width="10%" class="header" align="center">Sifat</td>
+        <td width="15%" class="header" align="center">Kelompok Pelajaran</td>
         <td width="*" class="header" align="center">Keterangan</td>
         <td width="10%" class="header" align="center">Status</td>
     </tr>
 <? 	OpenDb();
-	$sql = "SELECT kode,nama,sifat,keterangan,aktif FROM pelajaran WHERE departemen='$departemen' ORDER BY $urut $urutan";// LIMIT ".(int)$page*(int)$varbaris.",$varbaris";   
+	$sql = "SELECT p.kode, p.nama, p.sifat, p.keterangan, p.aktif, k.kelompok
+              FROM pelajaran p, kelompokpelajaran k 
+             WHERE p.idkelompok = k.replid
+               AND departemen='$departemen' 
+             ORDER BY $urut $urutan";// LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 	$result = QueryDB($sql);
 	//if ($page==0)
 		$cnt = 0;
@@ -83,7 +88,8 @@ $total = $_REQUEST['total'];
 				else
 					echo 'Tambahan';
 			?>		
-        </td>          
+        </td>
+        <td><?=$row['kelompok'] ?></td>
         <td><?=$row['keterangan'] ?></td>
         <td align="center">
 			<? if ($row['aktif'] == 1) 

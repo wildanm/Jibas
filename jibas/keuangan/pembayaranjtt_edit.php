@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -35,6 +35,16 @@ OpenDb();
 
 $idpembayaran = $_REQUEST['idpembayaran'];
 
+// -- Default Rekening Kas using value from previous input
+$sql = "SELECT jd.koderek
+		  FROM jbsfina.penerimaanjtt p, jbsfina.jurnal j, jbsfina.jurnaldetail jd, rekakun rk
+	     WHERE p.replid = '$idpembayaran'
+		   AND p.idjurnal = j.replid
+		   AND j.replid = jd.idjurnal
+		   AND jd.koderek = rk.kode
+		   AND rk.kategori = 'HARTA'";
+$defrekkas = FetchSingle($sql);
+   
 // -- ambil data-data pembayaran ---------------------------------
 $sql = "SELECT b.nis, b.besar, b.lunas, p.idbesarjtt, s.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
         	   p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang, pn.info1 AS rekdiskon,
@@ -95,17 +105,38 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 	
+	$selrekkas = $_REQUEST['rekkas']; // selected rekening kas
+	
 	if ($jbayar == $besar && $jdiskon == $besardiskon) 
 	{
 		//--------------------------------------------------------------
 		// Hanya mengubah informasi pembayaran tanpa mengubah besarnya  
 		// -------------------------------------------------------------
 		
-		$sql = "UPDATE penerimaanjtt SET tanggal='$tcicilan', keterangan='$kcicilan', alasan='$alasan', petugas = '$petugas' WHERE replid=$idpembayaran";
-		$result = QueryDb($sql);
+		BeginTrans();
+		$success = true;
+			
+		$sql = "UPDATE penerimaanjtt
+				   SET tanggal='$tcicilan', keterangan='$kcicilan', alasan='$alasan',
+					   petugas = '$petugas'
+				 WHERE replid=$idpembayaran";
+		$result = QueryDbTrans($sql, $success);
 		
-		if ($result) 
+		// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+		$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+		if ($success && $rekkas != $selrekkas)
 		{
+			$sql = "UPDATE jurnaldetail
+					   SET koderek='$selrekkas'
+					 WHERE idjurnal='$idjurnal'
+					   AND koderek='$rekkas'
+					   AND kredit=0";
+			QueryDbTrans($sql, $success);	
+		}
+			
+		if ($success) 
+		{
+			CommitTrans();
 			CloseDb();
 			echo  "<script language='javascript'>";
 			echo  "opener.refresh();";
@@ -115,6 +146,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 		} 
 		else 
 		{
+			RollbackTrans();
 			CloseDb();
 			echo  "<script language='javascript'>";
 			echo  "alert('Gagal mengubah data!');";
@@ -159,9 +191,14 @@ if (1 == (int)$_REQUEST['issubmit'])
 					if ($row[0] == $idpembayaran)
 						break;
 				}
-				$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
+				$ketjurnal = "Pembayaran ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
 				$lunas = 0;
 			}
+			
+			// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+			$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+			$rekpiutang = AmbilKodeRekJurnal($idjurnal, "PIUTANG", $idpenerimaan);
+			$rekdiskon = AmbilKodeRekJurnal($idjurnal, "DISKON", $idpenerimaan);
 						
 			BeginTrans();
 			$success = true;
@@ -186,6 +223,12 @@ if (1 == (int)$_REQUEST['issubmit'])
 			if ($success)
 			{
 				$sql = "UPDATE jurnaldetail SET debet='$jbayar' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
+				QueryDbTrans($sql, $success);	
+			}
+			
+			if ($success && $rekkas != $selrekkas)
+			{
+				$sql = "UPDATE jurnaldetail SET koderek='$selrekkas' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
@@ -255,7 +298,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 <script src="script/tooltips.js" language="javascript"></script>
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
@@ -295,9 +338,9 @@ function validasiAngka()
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
-	else if(angka < 0)
+	else if(parseInt(angka) < 0)
 	{
-		alert ('Besar cicilan tidak boleh negatif!');
+		alert ('Besar cicilan harus positif!');
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
@@ -310,9 +353,16 @@ function validasiAngka()
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
-	else if(diskon < 0)
+	else if(parseInt(diskon) < 0)
 	{
 		alert ('Besar diskon tidak boleh negatif!');
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+	
+	if (parseInt(diskon) > parseInt(angka))
+	{
+		alert ('Besar diskon tidak boleh lebih besar daripada besar cicilan!');
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
@@ -402,22 +452,41 @@ function CalculatePay()
 			<input type="text" name="jbayar" id="jbayar" readonly="readonly" value="<?=$jbayar?>" style="background-color: #CCCCCC"/>
         </td>
     </tr>
+	<tr>
+        <td><strong>Rek. Kas</strong></td>
+        <td colspan="2">
+			<select name="rekkas" id="rekkas" style="width: 200px">
+<?              OpenDb();
+                $sql = "SELECT kode, nama
+                          FROM jbsfina.rekakun
+                         WHERE kategori = 'HARTA'
+                         ORDER BY nama";        
+                $res = QueryDb($sql);
+                while($row = mysql_fetch_row($res))
+                {
+                    $sel = $row[0] == $defrekkas ? "selected" : "";
+                    echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+                }
+                CloseDb();
+                ?>                
+            </select>
+		</td>
+    </tr>
     <tr>
         <td><strong>Tanggal</strong></td>
-        <td>
-        <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" style="background-color:#CCCC99"> </td>
-        <td width="45%">
-		  &nbsp;	
-	     </td>        
+        <td colspan="2">
+			<input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('alasan', event)" style="background-color:#CCCC99">
+		</td>
+        
     </tr>
     <tr>
         <td valign="top"><strong>Alasan Perubahan</strong></td>
-        <td colspan="2"><textarea id="alasan" name="alasan" rows="3" cols="30" onKeyPress="return focusNext('kcicilan', event)"><?=$alasan ?></textarea>
+        <td colspan="2"><textarea id="alasan" name="alasan" rows="2" cols="30" onKeyPress="return focusNext('kcicilan', event)"><?=$alasan ?></textarea>
         </td>
     </tr>
     <tr>
         <td valign="top">Keterangan</td>
-        <td colspan="2"><textarea id="kcicilan" name="kcicilan" rows="3" cols="30" onKeyPress="return focusNext('Simpan', event)"><?=$keterangan ?></textarea>
+        <td colspan="2"><textarea id="kcicilan" name="kcicilan" rows="2" cols="30" onKeyPress="return focusNext('Simpan', event)"><?=$keterangan ?></textarea>
         </td>
     </tr>
     <tr>

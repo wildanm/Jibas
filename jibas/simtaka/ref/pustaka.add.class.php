@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,37 +27,24 @@ class CPustakaAdd
 	{
 		if (isset($_REQUEST[simpan]))
 		{
-			$sql = "SELECT nama FROM perpustakaan WHERE nama='$_REQUEST[nama]' ";
+			$sql = "SELECT nama FROM perpustakaan WHERE nama = '$_REQUEST[nama]' ";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
-			if ($num>0)
+			if ($num > 0)
 			{
 				$this->exist('1');
 			}
 			else
 			{
-				$sql = "SELECT perpustakaan FROM jbsumum.identitas WHERE perpustakaan='$_REQUEST[dep]' ";
-				$result = QueryDb($sql);
-				$num = @mysql_num_rows($result);
-				if ($num>0)
-				{
-					$this->exist($_REQUEST[dep]);
-				}
-				else
-				{
-					$sql = "INSERT INTO perpustakaan SET nama='".CQ($_REQUEST['nama'])."',keterangan='".CQ($_REQUEST['keterangan'])."'";
-					$result = QueryDb($sql);
-					
-					$sql = "SELECT LAST_INSERT_ID()";
-					$result = QueryDb($sql);
-					$row = mysql_fetch_row($result);
-					$perpusid = $row[0];
-					
-					$sql = "UPDATE jbsumum.identitas SET perpustakaan='$perpusid' WHERE departemen='$_REQUEST[dep]'";
-					$result = QueryDb($sql);
-					
-					$this->success();
-				}
+				$departemen = ($_REQUEST['dep'] == "--ALL--") ? "NULL" : "'" . $_REQUEST['dep'] . "'";
+				
+				$sql = "INSERT INTO perpustakaan
+						   SET nama = '" . $_REQUEST['nama'] . "',
+							   keterangan = '" . $_REQUEST['keterangan'] . "',
+							   departemen = $departemen";
+				QueryDb($sql);
+			
+				$this->success();
 			}
 		}
 	}
@@ -103,6 +90,7 @@ class CPustakaAdd
          <td>&nbsp;<strong>Departemen</strong></td>
          <td>
          <select id="dep" name="dep" class="cmbfrm2">
+			<option value='--ALL--'>(Semua Departemen)</option>	
 <?			$sql = "SELECT departemen FROM jbsakad.departemen ORDER BY urutan ASC";
 			$res = QueryDb($sql);
 			while ($row = @mysql_fetch_row($res))

@@ -139,7 +139,8 @@ $("#btnImport").live('click',function(e){
 		$.ajax({
 			url  : 'phonebook.class.php',
 			data : 'cmd=import',
-			success : function(out){
+			success : function(out)
+			{
 				$.ajax({
 					url  : 'phonebook.class.php',
 					data : 'cmd=view&jenis=-1&alpha=-1',

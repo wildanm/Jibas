@@ -1,117 +1,186 @@
-$(function(){
-	$("#CheckAllPegawai").live('click',function(){
-		if ($(this).attr('checked')){
+$(function() {
+	
+	$("#CheckAllPegawai").live('click', function() {
+		if ($(this).attr('checked'))
 			$(".checkboxpegawai").attr('checked','checked');
-		} else {
+		else 
 			$(".checkboxpegawai").removeAttr('checked');
-		}
 
-		$(".checkboxpegawai").each(function(){
+		$(".checkboxpegawai").each(function() {
 			var nip = $(this).attr('nip');
 			var nama = $(this).attr('nama');
 			var hp = $(this).attr('hp');
 			var pin = $(this).attr('pin');
-			if ($(this).attr('checked')){
+			
+			if ($(this).attr('checked'))
 				InsertNewReceipt(hp,nama,nip,'peg',pin,'');
-			} else {
+			else 
 				RemoveReceive(nip,'peg');
-			}
 		});
 	});
-	$(".checkboxpegawai").live('click',function(){
+	
+	$(".checkboxpegawai").live('click', function() {
 		var nip = $(this).attr('nip');
 		var nama = $(this).attr('nama');
 		var hp = $(this).attr('hp');
 		var pin = $(this).attr('pin');
-		if ($(this).attr('checked')){
+		
+		if ($(this).attr('checked'))
 			InsertNewReceipt(hp,nama,nip,'peg',pin,'');
-		} else {
+		else 
 			RemoveReceive(nip,'peg');
-		}
 	});
 
-	$("#CheckAllOrtu").live('click',function(){
-		if ($(this).attr('checked')){
+	$("#CheckAllOrtu").live('click', function() {
+		if ($(this).attr('checked'))
 			$(".checkboxortu").attr('checked','checked');
-		} else {
+		else 
 			$(".checkboxortu").removeAttr('checked');
-		}
 
-		$(".checkboxortu").each(function(){
+		$(".checkboxortu").each(function() {
 			var nip = $(this).attr('nip');
 			var nama = $(this).attr('nama');
 			var hp = $(this).attr('hp');
 			var pina = $(this).attr('pinayah');
 			var pini = $(this).attr('pinibu');
-			if ($(this).attr('checked')){
+			var pins = $(this).attr('pinsiswa');
+			if ($(this).attr('checked'))
 				InsertNewReceipt(hp,nama,nip,'ortu',pina,pini);
-			} else {
+			else 
 				RemoveReceive(nip,'ortu');
-			}
 		});
 	});
-	$(".checkboxortu").live('click',function(){
+	
+	$(".checkboxortu").live('click',function() {
 		var nip = $(this).attr('nip');
 		var nama = $(this).attr('nama');
 		var hp = $(this).attr('hp');
 		var pina = $(this).attr('pinayah');
 		var pini = $(this).attr('pinibu');
-		if ($(this).attr('checked')){
+		
+		if ($(this).attr('checked'))
 			InsertNewReceipt(hp,nama,nip,'ortu',pina,pini);
-		} else {
+		else 
 			RemoveReceive(nip,'ortu');
-		}
 	});
 
-	$("#CheckAllSiswa").live('click',function(){
-		if ($(this).attr('checked')){
+	$("#CheckAllSiswa").live('click',function() {
+		if ($(this).attr('checked'))
 			$(".checkboxsiswa").attr('checked','checked');
-		} else {
+		else 
 			$(".checkboxsiswa").removeAttr('checked');
-		}
 
-		$(".checkboxsiswa").each(function(){
+		$(".checkboxsiswa").each(function() {
 			var nip = $(this).attr('nip');
 			var nama = $(this).attr('nama');
 			var hp = $(this).attr('hp');
 			var pin = $(this).attr('pin');
-			if ($(this).attr('checked')){
+			
+			if ($(this).attr('checked'))
 				InsertNewReceipt(hp,nama,nip,'siswa',pin,'');
-			} else {
+			else 
 				RemoveReceive(nip,'siswa');
-			}
 		});
 	});
-	$(".checkboxsiswa").live('click',function(){
+	
+	$(".checkboxsiswa").live('click',function() {
 		var nip = $(this).attr('nip');
 		var nama = $(this).attr('nama');
 		var hp = $(this).attr('hp');
 		var pin = $(this).attr('pin');
-		if ($(this).attr('checked')){
+		
+		if ($(this).attr('checked'))
 			InsertNewReceipt(hp,nama,nip,'siswa',pin,'');
-		} else {
+		else 
 			RemoveReceive(nip,'siswa');
-		}
+	});
+	
+	$("#CheckAllCalonSiswa").live('click',function() {
+		if ($(this).attr('checked'))
+			$(".checkboxcalonsiswa").attr('checked','checked');
+		else 
+			$(".checkboxcalonsiswa").removeAttr('checked');
+
+		$(".checkboxcalonsiswa").each(function() {
+			var nip = $(this).attr('nip');
+			var nama = $(this).attr('nama');
+			var hp = $(this).attr('hp');
+			var pin = $(this).attr('pin');
+			if ($(this).attr('checked'))
+				InsertNewReceipt(hp, nama, nip, 'calonsiswa',pin,'');
+			else 
+				RemoveReceive(nip, 'calonsiswa');
+		});
+	});
+	
+	$(".checkboxcalonsiswa").live('click',function() {
+		var nip = $(this).attr('nip');
+		var nama = $(this).attr('nama');
+		var hp = $(this).attr('hp');
+		var pin = $(this).attr('pin');
+		
+		if ($(this).attr('checked'))
+			InsertNewReceipt(hp,nama,nip,'calonsiswa',pin,'');
+		else 
+			RemoveReceive(nip,'calonsiswa');
+	});
+	
+	$("#CheckAllOrtuCS").live('click',function() {
+		if ($(this).attr('checked'))
+			$(".checkboxortucs").attr('checked','checked');
+		else 
+			$(".checkboxortucs").removeAttr('checked');
+
+		$(".checkboxortucs").each(function() {
+			var nip = $(this).attr('nip');
+			var nama = $(this).attr('nama');
+			var hp = $(this).attr('hp');
+			var pin = $(this).attr('pin');
+			if ($(this).attr('checked'))
+				InsertNewReceipt(hp, nama, nip, 'ortucalonsiswa',pin,'');
+			else 
+				RemoveReceive(nip, 'ortucalonsiswa');
+		});
+	});
+	
+	$(".checkboxortucs").live('click',function() {
+		var nip = $(this).attr('nip');
+		var nama = $(this).attr('nama');
+		var hp = $(this).attr('hp');
+		var pin = $(this).attr('pin');
+		
+		if ($(this).attr('checked'))
+			InsertNewReceipt(hp,nama,nip,'ortucalonsiswa',pin,'');
+		else 
+			RemoveReceive(nip,'ortucalonsiswa');
 	});
 })
-function MaxChar(value,maxlen,clid){
+
+function MaxChar(value,maxlen,clid)
+{
 	var currentlen = maxlen-value.length;
 	
 	document.getElementById(clid).value=currentlen;
-	if (currentlen < 0){
+	if (currentlen < 0)
+	{
 		document.getElementById('Message').value = value.substring(0, maxlen);
 		document.getElementById(clid).value=0;
 		document.getElementById('Message').scrollTop;
 	}
 }
-function RemoveReceive(nip,type){
+
+function RemoveReceive(nip,type)
+{
 	$("#ReceiptTable #"+type+nip).remove();
 }
-function InsertNewReceipt2(x,y,z){
 
+function InsertNewReceipt2(x,y,z)
+{
 	InsertNewReceipt(x,y,z,a,b);
 }
-function InsertNewReceipt(x,y,z,w,a,b){
+
+function InsertNewReceipt(x,y,z,w,a,b)
+{
 	if (x.length==0 && y.length==0 && z.length==0){
 		HideError('ErrNewReceiptNo');
 		HideError('ErrNewReceiptName');
@@ -207,6 +276,7 @@ function InsertNewReceipt(x,y,z,w,a,b){
 		}*/
 	}
 }
+
 function CheckAllReceipt(state){
 	var tbl = parseInt(document.getElementById('ReceiptTable').rows.length)-1;
 	if (state){
@@ -217,7 +287,9 @@ function CheckAllReceipt(state){
 			document.getElementById('ChkReceipt'+i).checked=false;		
 	}
 }
-function Send(){
+
+function Send()
+{
 	HideError('ErrSender');
 	HideError('ErrMessage');
 	HideError('ErrNewReceiptList');
@@ -323,40 +395,215 @@ function ShowTablePegawai(x){
 	Tables('TablePeg', 1, 0);
 }
 
-function ChgCmbDepSis(){
-	var Dep 	= document.getElementById('CmbDepSis').value;
+function ChgCmbDepSis()
+{
+	var Dep = document.getElementById('CmbDepSis').value;
+	
 	ShowWait('DivCmbKelas');
-	sendRequestText('pengumuman.ajax.php',ShowFilterSiswa,'dep='+Dep+'&op=GetFilterSiswa');
+	
+	sendRequestText('pengumuman.ajax.php', ShowFilterSiswa, 'dep='+Dep+'&op=GetFilterSiswa');
 }
-function ChgCmbKlsSis(){
-	var Kls 	= document.getElementById('CmbKlsSis').value;
-	ShowWait('TableSiswa');
-	sendRequestText('pengumuman.ajax.php',ShowTableSiswa,'kls='+Kls+'&Source=Pilih&op=GetTableSiswa');
-}
-function ShowFilterSiswa(x){
+
+function ShowFilterSiswa(x)
+{
 	document.getElementById('DivCmbKelas').innerHTML = x;
+	var Kls = document.getElementById('CmbKlsSis').value;
+	
+	ShowWait('TableSiswa');
+	
+	sendRequestText('pengumuman.ajax.php',ShowTableSiswa,'kls='+Kls+'&Source=Pilih&op=GetTableSiswa');
+}
+
+function ShowTableSiswa(x)
+{
+	document.getElementById('TableSiswa').innerHTML = x;
+	
+	if ($("#TableSis").length > 0)
+		Tables('TableSis', 1, 0); 
+}
+
+// Calon Siswa ---------------------
+
+function ChgCmbDepCSis()
+{
+	var Dep = document.getElementById('CmbDepCSis').value;
+	sendRequestText('pengumuman.ajax.php', ShowProsesCalonSiswa, 'dep='+Dep+'&op=GetProsesCalonSiswa');
+	
+	ShowWait('DivCmbProsesCS');
+	ShowWait('DivCmbKelompokCS');
+}
+
+function ShowProsesCalonSiswa(x)
+{
+	document.getElementById('DivCmbProsesCS').innerHTML = x;
+	var proses = document.getElementById('CmbProsesCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowKelompokCalonSiswa, 'proses='+proses+'&Source=Pilih&op=GetKelompokCalonSiswa');
+	
+	ShowWait('DivCmbKelompokCS');
+}
+
+function ShowKelompokCalonSiswa(x)
+{
+	document.getElementById('DivCmbKelompokCS').innerHTML = x;
+	var kelompok = document.getElementById('CmbKelompokCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableCalonSiswa, 'kelompok='+kelompok+'&Source=Pilih&op=GetTableCalonSiswa');
+	
+	ShowWait('TableCalonSiswa');
+}
+
+function ChgCmbProsesCS()
+{
+	var proses = document.getElementById('CmbProsesCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowKelompokCalonSiswa, 'proses='+proses+'&Source=Pilih&op=GetKelompokCalonSiswa');
+	
+	ShowWait('DivCmbKelompokCS');
+}
+
+function ChgCmbKelompokCS()
+{
+	var kelompok = document.getElementById('CmbKelompokCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableCalonSiswa, 'kelompok='+kelompok+'&Source=Pilih&op=GetTableCalonSiswa');
+	
+	ShowWait('TableCalonSiswa');
+}
+
+function ShowTableCalonSiswa(x)
+{
+	document.getElementById('TableCalonSiswa').innerHTML = x;
+	
+	if ($("#TableCalonSiswa").length > 0)
+		Tables('TableCSis', 1, 0); 
+}
+
+function SearchCS()
+{
+	HideError('ErrInpNoCS');
+	HideError('ErrInpNamaCS');
+	
+	var NoCS = document.getElementById('InpNoCS').value;
+	var Nama = document.getElementById('InpNamaCS').value;
+	if (NoCS == 'No Calon Siswa' && Nama == 'Nama Calon Siswa')
+	{
+		ShowError('ErrInpNamaCS','Masukan kata kunci','InpNoCS');
+		return false;
+	}
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableCalonSiswa,'NoCS='+NoCS+'&Nama='+Nama+'&Source=Cari&op=GetTableCalonSiswa');
+	
+	ShowWait('TableCalonSiswa');
+	
+}
+
+// Calon Siswa ---------------------
+
+// Ortu Calon Siswa ----------------
+
+function ChgCmbDepOrtuCS()
+{
+	var Dep = document.getElementById('CmbDepOrtuCS').value;
+	sendRequestText('pengumuman.ajax.php', ShowProsesOrtuCalonSiswa, 'dep='+Dep+'&op=GetProsesOrtuCalonSiswa');
+	
+	ShowWait('DivCmbProsesOrtuCS');
+	ShowWait('DivCmbKelompokOrtuCS');
+}
+
+function ShowProsesOrtuCalonSiswa(x)
+{
+	document.getElementById('DivCmbProsesOrtuCS').innerHTML = x;
+	var proses = document.getElementById('CmbProsesOrtuCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowKelompokOrtuCalonSiswa, 'proses='+proses+'&Source=Pilih&op=GetKelompokOrtuCalonSiswa');
+	
+	ShowWait('DivCmbKelompokOrtuCS');
+}
+
+function ShowKelompokOrtuCalonSiswa(x)
+{
+	document.getElementById('DivCmbKelompokOrtuCS').innerHTML = x;
+	var kelompok = document.getElementById('CmbKelompokOrtuCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableOrtuCalonSiswa, 'kelompok='+kelompok+'&Source=Pilih&op=GetTableOrtuCalonSiswa');
+	
+	ShowWait('TableOrtuCalonSiswa');
+}
+
+function ShowTableOrtuCalonSiswa(x)
+{
+	document.getElementById('TableOrtuCalonSiswa').innerHTML = x;
+	
+	if ($("#TableOrtuCalonSiswa").length > 0)
+		Tables('TableOrCS', 1, 0); 
+}
+
+function ChgCmbProsesOrtuCS()
+{
+	var proses = document.getElementById('CmbProsesOrtuCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowKelompokOrtuCalonSiswa, 'proses='+proses+'&Source=Pilih&op=GetKelompokOrtuCalonSiswa');
+	
+	ShowWait('DivCmbKelompokOrtuCS');
+}
+
+function ChgCmbKelompokOrtuCS()
+{
+	var kelompok = document.getElementById('CmbKelompokOrtuCS').value;
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableOrtuCalonSiswa, 'kelompok='+kelompok+'&Source=Pilih&op=GetTableOrtuCalonSiswa');
+	
+	ShowWait('TableOrtuCalonSiswa');
+}
+
+function SearchOrtuCS()
+{
+	HideError('ErrInpNoOrtuCS');
+	HideError('ErrInpNamaOrtuCS');
+	
+	var NoCS = document.getElementById('InpNoOrtuCS').value;
+	var Nama = document.getElementById('InpNamaOrtuCS').value;
+	if (NoCS == 'No Calon Siswa' && Nama == 'Nama Calon Siswa')
+	{
+		ShowError('ErrInpNamaOrtuCS','Masukan kata kunci','InpNoOrtuCS');
+		return false;
+	}
+	
+	sendRequestText('pengumuman.ajax.php', ShowTableOrtuCalonSiswa,'NoCS='+NoCS+'&Nama='+Nama+'&Source=Cari&op=GetTableOrtuCalonSiswa');
+	
+	ShowWait('TableOrtuCalonSiswa');
+	
+}
+
+// Ortu Calon Siswa ----------------
+
+function ChgCmbKlsSis()
+{
 	var Kls 	= document.getElementById('CmbKlsSis').value;
 	ShowWait('TableSiswa');
 	sendRequestText('pengumuman.ajax.php',ShowTableSiswa,'kls='+Kls+'&Source=Pilih&op=GetTableSiswa');
 }
-function ShowTableSiswa(x){
-	document.getElementById('TableSiswa').innerHTML = x;
-	if ($("#TableSis").length>0)
-	Tables('TableSis', 1, 0);
-}
-function SearchSis(){
+
+function SearchSis()
+{
 	HideError('ErrInpNISSis');
 	HideError('ErrInpNamaSis');
-	var NIS 	= document.getElementById('InpNISSis').value;
-	var Nama 	= document.getElementById('InpNamaSis').value;
-	if (NIS=='NIS Siswa' && Nama=='Nama Siswa'){
+	
+	var NIS	= document.getElementById('InpNISSis').value;
+	var Nama = document.getElementById('InpNamaSis').value;
+	if (NIS=='NIS Siswa' && Nama=='Nama Siswa')
+	{
 		ShowError('ErrInpNamaSis','Masukan kata kunci','InpNISSis');
 		return false;
-	} else {
-		ShowWait('TableSiswa');
-		sendRequestText('pengumuman.ajax.php',ShowTableSiswa,'NIS='+NIS+'&Nama='+Nama+'&Source=Cari&op=GetTableSiswa');
 	}
+	
+	ShowWait('TableSiswa');
+	sendRequestText('pengumuman.ajax.php',ShowTableSiswa,'NIS='+NIS+'&Nama='+Nama+'&Source=Cari&op=GetTableSiswa');
+	
 }
+
+
 
 function ChgCmbDepOrtu(){
 	var Dep 	= $('#CmbDepOrtu').val();

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -82,17 +82,31 @@ function change_page()
 OpenDb();
 if ($idkategori == "JTT")
 {
+	/*
 	$sql = "SELECT COUNT(DISTINCT s.nis) 
-			    FROM besarjtt b, penerimaanjtt p, jurnal j, jbsakad.siswa s
-			   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
-			     AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.nis = s.nis";
+			  FROM besarjtt b, penerimaanjtt p, jurnal j, jbsakad.siswa s
+			 WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
+			   AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.nis = s.nis";
+	*/
+	$sql = "SELECT COUNT(b.replid) 
+			  FROM besarjtt b
+			 WHERE b.idpenerimaan = '$idpenerimaan'
+			   AND b.info2 = '$idtahunbuku'
+			   AND b.lunas = 0";
 }
 else
 {
+	/*
 	$sql = "SELECT COUNT(DISTINCT cs.replid)  
 			    FROM besarjttcalon b, penerimaanjttcalon p, jurnal j, jbsakad.calonsiswa cs
 			   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjttcalon AND p.idjurnal = j.replid 
-			     AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid";	
+			     AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid";
+	*/
+	$sql = "SELECT COUNT(b.replid)  
+			  FROM besarjttcalon b
+			 WHERE b.idpenerimaan = '$idpenerimaan' 
+			   AND b.info2 = '$idtahunbuku'
+			   AND b.lunas = 0";
 }
 
 $ndata = FetchSingle($sql);
@@ -119,17 +133,37 @@ else
 <? 
 	 if ($idkategori == "JTT")
 	 {
+			/*
 			$sql = "SELECT DISTINCT b.nis, s.nama 
 			 			FROM besarjtt b, penerimaanjtt p, jurnal j, jbsakad.siswa s
 					   WHERE b.idpenerimaan = '$idpenerimaan' AND b.replid = p.idbesarjtt AND p.idjurnal = j.replid 
 						 AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.nis = s.nis ORDER BY nama LIMIT $minno, $nitem";
+			*/
+			$sql = "SELECT DISTINCT b.nis, s.nama 
+			 	  	  FROM besarjtt b, jbsakad.siswa s
+					 WHERE b.idpenerimaan = '$idpenerimaan' 
+					   AND b.info2 = '$idtahunbuku'
+					   AND b.lunas = 0
+					   AND b.nis = s.nis
+					 ORDER BY nama
+					 LIMIT $minno, $nitem";
 	 }
 	 else
 	 {
+			/*
 			$sql = "SELECT DISTINCT cs.nopendaftaran, cs.nama 
 						FROM besarjttcalon b, penerimaanjttcalon p, jurnal j, jbsakad.calonsiswa cs
 						WHERE b.replid = p.idbesarjttcalon AND p.idjurnal = j.replid 
-						 AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid ORDER BY nama LIMIT $minno, $nitem";	
+						 AND j.idtahunbuku = '$idtahunbuku' AND b.lunas = 0 AND b.idcalon = cs.replid ORDER BY nama LIMIT $minno, $nitem";
+			*/
+			$sql = "SELECT DISTINCT cs.nopendaftaran, cs.nama 
+					  FROM besarjttcalon b, jbsakad.calonsiswa cs
+					 WHERE b.idpenerimaan = '$idpenerimaan' 
+					   AND b.info2 = '$idtahunbuku'
+					   AND b.lunas = 0
+					   AND b.idcalon = cs.replid
+					 ORDER BY nama
+					 LIMIT $minno, $nitem";
 	 }
 	 $res = QueryDb($sql);
 	 

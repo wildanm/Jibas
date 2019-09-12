@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,7 +31,7 @@ function OpenDb()
 {
 	global $db_host, $db_user, $db_pass, $db_name, $mysqlconnection;
 
-	$mysqlconnection = mysql_connect($db_host, $db_user, $db_pass);
+	$mysqlconnection = @mysql_connect($db_host, $db_user, $db_pass);
 	if (!$mysqlconnection)
 	{
 		HandleQueryError("Tidak dapat terhubung dengan server database JIBAS di $db_host", 
@@ -40,7 +40,7 @@ function OpenDb()
 	} 
 	else 
 	{
-		$select = mysql_select_db($db_name, $mysqlconnection);
+		$select = @mysql_select_db($db_name, $mysqlconnection);
 		if (!$select)
 		{
 			HandleQueryError("Tidak dapat membuka database $db_name", 
@@ -58,8 +58,8 @@ function OpenDbi()
 {
 	global $db_host, $db_user, $db_pass, $db_name, $conni;
 
-	$conni = mysqli_connect($db_host, $db_user, $db_pass) or trigger_error("Can not connect to database server", E_USER_ERROR);
-	$select = mysqli_select_db($conni, $db_name) or trigger_error("Can not open the database", E_USER_ERROR);
+	$conni = @mysqli_connect($db_host, $db_user, $db_pass) or trigger_error("Can not connect to database server", E_USER_ERROR);
+	$select = @mysqli_select_db($conni, $db_name) or trigger_error("Can not open the database", E_USER_ERROR);
 	
 	return $conni;
 }
@@ -103,7 +103,7 @@ function QueryDb($sql)
 {
 	global $mysqlconnection;
 	
-	$result = mysql_query($sql, $mysqlconnection);  
+	$result = @mysql_query($sql, $mysqlconnection);  
 	
 	if (mysql_errno() > 0)
 	{
@@ -224,7 +224,7 @@ function FetchSingleArray($sql)
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) == 0) 
 	{
-	    HandleQueryError($sql, 3477, "Data cannot be found", true);
+		HandleQueryError($sql, 3477, "Data cannot be found", true);
 		exit();
 	} 
 	else 
@@ -235,9 +235,8 @@ function FetchSingleArray($sql)
 }
 
 function FetchSingle($sql)
-{	
+{
 	$result = QueryDb($sql);
-
 	if (mysql_num_rows($result) == 0) 
 	{
 		HandleQueryError($sql, 3477, "Data cannot be found", true);

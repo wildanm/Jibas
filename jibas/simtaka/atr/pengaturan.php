@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,10 +31,18 @@ require_once("../inc/session.checker.php");
 <link href="../sty/style.css" rel="stylesheet" type="text/css" />
 <script language="javascript" src="../scr/tools.js"></script>
 <script language="javascript">
-function OpenConf(){
-	newWindow('konfigurasi.php', 'Konfigurasi','348','225','resizable=0,scrollbars=0,status=0,toolbar=0')
+function OpenConf()
+{
+	newWindow('konfigurasi.php', 'Konfigurasi','500','300','resizable=0,scrollbars=0,status=0,toolbar=0')
 }
-function ChgPass(){
+
+function OpenConfTime()
+{
+	newWindow('waktu.pinjam.config.php', 'KonfigurasiWaktuPinjam','500','300','resizable=0,scrollbars=0,status=0,toolbar=0')
+}
+
+function ChgPass()
+{
 	newWindow('user_ganti.php', 'Konfigurasi','348','225','resizable=0,scrollbars=0,status=0,toolbar=0')
 }
 </script>
@@ -55,66 +63,99 @@ function ChgPass(){
 	<font style="font-size:18px; color:#999999">Pengaturan</font><br />
 </div>
 <br>
-<!-- ImageReady Slices (Untitled-5) -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-    <table width="0%" border="0" cellspacing="0" cellpadding="0" align="center">
-      <tr>
-        <td>
-        <table id="Table_01" width="194" height="100" border="0" cellpadding="0" cellspacing="0" align="center">
-            <tr>
-                <td colspan="4">
-                    <img src="../img/set_01.jpg" width="194" height="15" alt=""></td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="anggota.php"><img src="../img/set_02.jpg" alt="" width="82" height="78" border="0"></a></td>
-                <td rowspan="2">
-                  <img src="../img/set_03.jpg" width="23" height="85" alt=""></td>
-                <td>
-                  <a href="pengguna.php"><img src="../img/set_04.jpg" alt="" width="79" height="78" border="0"></a></td>
-                <td rowspan="2">
-                  <img src="../img/set_05.jpg" width="10" height="85" alt=""></td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="../img/set_06.jpg" width="82" height="7" alt=""></td>
-                <td>
-                    <img src="../img/set_07.jpg" width="79" height="7" alt=""></td>
-            </tr>
-        </table>
-        </td>
-        <td>
-        <table  border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td align="center"><a href="javascript:ChgPass()"><img src="../img/lock.png" width="64" height="63" border="0" /><br />
-              <span class="style4">Ganti&nbsp;Password</span></a></td>
-          </tr>
-        </table>
-        </td>
-      </tr>
-    </table>
 
-    
-    
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-    <table border="0">
-      <tr>
-        <td width="105"><a href="javascript:OpenConf()"><img src="../img/Konfigurasi.png" width="105" height="105" border="0" /><br />
-          <span class="style2">Konfigurasi</span></a></td>
-        <td width="95" align="center"><a href="Header.php"><img src="../img/header.png" width="105" height="105" border="0" /><br />
-          <span class="style4">Header Cetak</span></a></td>
-        <td width="95" align="center"><a href="queryerror.php"><img src="../img/ico/b_warning.png" width="105" height="105" border="0" /><br />
-          <span class="style4">Query Error Log</span></a></td>
-      </tr>
-    </table>
-    </td>
-  </tr>
+<table width="0%" border="0" cellspacing="0" cellpadding="0" align="center">
+<tr>
+	<td>
+		
+	<table border='0' align='center' cellpadding='4' cellspacing='0'>
+	<tr>
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/members.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="anggota.php">
+				Daftar Anggota<br>Non Sekolah
+			</a>
+		</td>
+		<td width='10'>&nbsp;</td>
+		
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/users.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="pengguna.php">
+				Hak Akses Pengguna
+			</a>
+		</td>
+		<td width='10'>&nbsp;</td>
+		
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/key.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="javascript:ChgPass()">
+				Ganti Password
+			</a>
+		</td>
+	</tr>
+	<tr height='25'>
+		<td colspan='8'>&nbsp;</td>
+	</tr>
+	<tr>
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/configuration.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="javascript:OpenConf()">
+				Konfigurasi<br>Maksimal
+				Jumlah Peminjaman
+			</a>
+		</td>
+		<td width='10'>&nbsp;</td>
+		
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/configuration.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="javascript:OpenConfTime()">
+				Konfigurasi<br>
+				Waktu Peminjaman
+			</a>
+		</td>
+		<td width='10'>&nbsp;</td>
+		
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/document.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="Header.php">
+				Konfigurasi<br>
+				Header Dokumen
+			</a>
+		</td>
+	</tr>
+	<tr height='25'>
+		<td colspan='8'>&nbsp;</td>
+	</tr>
+	<tr>
+		<td align='center' valign='middle' width='80'>
+			<img src='../img/warning.png' height='60'>
+		</td>
+		<td align='left' valign='middle' width='120'>
+			<a href="queryerror.php">
+				Query Error Log
+			</a>
+		</td>
+		<td width='10'>&nbsp;</td>
+		
+		<td colspan='5'>&nbsp;</td>
+	</tr>
+	</table>
+	</td>
+</tr>
 </table>
+
 
 
 <!-- End ImageReady Slices -->

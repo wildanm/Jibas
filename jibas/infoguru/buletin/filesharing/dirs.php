@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -163,6 +163,7 @@ function traverse($iddir, $count)
 		$msg="";
 		$iddir = $row[0];
 		$dirname = $row[1];
+		$uname = $row[3] . " <font style='font-weight: normal'>(" . $row[1] . ")</font>";
 		$idguru = $row[2];
 		$namaguru = $row[3];
 		$nsubdir = getNSubDir($iddir);
@@ -201,7 +202,7 @@ function traverse($iddir, $count)
 				
 		if ($nsubdir == 0)
 		{
-			echo "$space<li class='liBullet'>&nbsp;</span><a $msg href='files.php?iddir=$iddir' style='text-decoration:none;' target='files'><img src='../../images/ico/folder.gif' border='0'>&nbsp;$dirname</a>&nbsp;";
+			echo "$space<li class='liBullet'>&nbsp;</span><a $msg href='files.php?iddir=$iddir' style='text-decoration:none;' target='files'><img src='../../images/ico/folder.gif' border='0'>&nbsp;$uname</a>&nbsp;";
 			if (SI_USER_ID()==$idguru)
 			{
 				echo "<img onclick='createfolder($iddir)' src='../../images/ico/tambah.png'>&nbsp;";
@@ -217,7 +218,7 @@ function traverse($iddir, $count)
 		}
 		else
 		{
-			echo "$space<li class='liClosed'>&nbsp;<a $msg style='text-decoration:none;' href='files.php?iddir=$iddir' target='files'><img src='../../images/ico/folder.gif' border='0'>&nbsp;$dirname</a>&nbsp;";
+			echo "$space<li class='liClosed'>&nbsp;<a $msg style='text-decoration:none;' href='files.php?iddir=$iddir' target='files'><img src='../../images/ico/folder.gif' border='0'>&nbsp;$uname</a>&nbsp;";
 			
 			if (SI_USER_ID()==$idguru)
 			{

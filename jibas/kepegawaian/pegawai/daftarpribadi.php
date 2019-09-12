@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -301,6 +301,108 @@ $DP = new DaftarPribadi();
     <td width="*" align="left" valign="top">
     <textarea id="txKeterangan" name="txKeterangan" rows="3" cols="60" onKeyPress="return focusNext('txAlasan', event)"><?=$DP->keterangan?></textarea>    </td>
 </tr>
+<?php
+    $nip = $DP->nip;
+
+    $sql = "SELECT replid, kolom, jenis
+              FROM jbssdm.tambahandata 
+             WHERE aktif = 1
+             ORDER BY urutan";
+    $res = QueryDb($sql);
+    $idtambahan = "";
+    while($row = mysql_fetch_row($res))
+    {
+        $replid = $row[0];
+        $kolom = $row[1];
+        $jenis = $row[2];
+
+        if ($idtambahan != "") $idtambahan .= ",";
+        $idtambahan .= $replid;
+
+        $replid_data = 0;
+        $data = "";
+        if ($jenis == 1)
+        {
+            $sql = "SELECT replid, teks FROM jbssdm.tambahandatapegawai WHERE nip = '$nip' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $data = $row2[1];
+            }
+        }
+        else if ($jenis == 2)
+        {
+            $sql = "SELECT replid, filename FROM jbssdm.tambahandatapegawai WHERE nip = '$nip' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $filename = $row2[1];
+                $data = "<a href='datapribadi.file.php?replid=$replid_data'>$filename</a>";
+            }
+        }
+        else if ($jenis == 3)
+        {
+            $sql = "SELECT replid, teks FROM jbssdm.tambahandatapegawai WHERE nip = '$nip' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $data = $row2[1];
+            }
+
+            $sql = "SELECT pilihan 
+                      FROM jbssdm.pilihandata 
+                     WHERE idtambahan = '$replid'
+                       AND aktif = 1
+                     ORDER BY urutan";
+            $res2 = QueryDb($sql);
+
+            $arrList = array();
+            if (mysql_num_rows($res2) == 0)
+                $arrList[] = "-";
+
+            while($row2 = mysql_fetch_row($res2))
+            {
+                $arrList[] = $row2[0];
+            }
+
+            $opt = "";
+            for($i = 0; $i < count($arrList); $i++)
+            {
+                $pilihan = CQ($arrList[$i]);
+                $sel = $pilihan == $data ? "selected" : "";
+                $opt .= "<option value='$pilihan' $sel>$pilihan</option>";
+            }
+        }
+
+        ?>
+        <tr>
+            <td align="right" valign="top"><?=$kolom?> :</td>
+            <td width="*" align="left" valign="top">
+                <? if ($jenis == 1) { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="1">
+                    <input type="hidden" id="repliddata-<?=$replid?>" name="repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <input type="text" name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" size="40" maxlength="1000" value="<?=$data?>">
+                <? } else if ($jenis == 2) { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="2">
+                    <input type="hidden" id="repliddata-<?=$replid?>" name="repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <input type="file" name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" size="40" style="width: 255px""/>
+                    <i><?=$data?></i>
+                <? } else { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="3">
+                    <input type="hidden" id="repliddata-<?=$replid?>" name="repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <select name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" style="width:215px">
+                        <?= $opt ?>
+                    </select>
+                <? } ?>
+            </td>
+        </tr>
+        <?
+    }
+    ?>
+    <input type="hidden" id="idtambahan" name="idtambahan" value="<?=$idtambahan?>">
 <tr>
 	<td align="center" valign="top" colspan="2" bgcolor="#CCCCCC">
     <input type="submit" value="Simpan" name="btSubmit" id="btSubmit" class="but" />

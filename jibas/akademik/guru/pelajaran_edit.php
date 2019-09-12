@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -42,7 +42,13 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();
 		$ERROR_MSG = "Singkatan $_REQUEST[kode] sudah digunakan!";
 	} else {
-		$sql = "UPDATE pelajaran SET kode='".CQ($_REQUEST['kode'])."',nama='".CQ($_REQUEST['nama'])."',sifat='$_REQUEST[sifat]',keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$replid'";
+		$sql = "UPDATE pelajaran 
+                   SET kode='".CQ($_REQUEST['kode'])."',
+                       nama='".CQ($_REQUEST['nama'])."',
+                       sifat='$_REQUEST[sifat]',
+                       idkelompok='$_REQUEST[kelompok]',
+                       keterangan='".CQ($_REQUEST['keterangan'])."' 
+                 WHERE replid='$replid'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -58,22 +64,32 @@ if (isset($_REQUEST['Simpan'])) {
 
 OpenDb();
 
-$sql = "SELECT kode,nama,sifat,keterangan,departemen FROM pelajaran WHERE replid='$replid'";
+$sql = "SELECT kode,nama,sifat,keterangan,departemen,idkelompok FROM pelajaran WHERE replid='$replid'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
+
 $kode = $row[0];
 if (isset($_REQUEST['kode']))
 	$kode = $_REQUEST['kode'];
+
 $nama = $row[1];
 if (isset($_REQUEST['nama']))
 	$nama = $_REQUEST['nama'];
+
 $sifat = $row[2];
 if (isset($_REQUEST['sifat']))
 	$sifat = $_REQUEST['sifat'];
+
 $keterangan = $row[3];
 if (isset($_REQUEST['keterangan']))
 	$keterangan = $_REQUEST['keterangan'];
+
 $departemen = $row[4];
+
+$idkelompok = $row[5];
+if (isset($_REQUEST['kelompok']))
+    $idkelompok = $_REQUEST['kelompok'];
+
 CloseDb();
 
 ?>
@@ -165,6 +181,25 @@ function panggil(elem){
 		<input type="radio" name="sifat" value=1 />&nbsp;Wajib&nbsp;
     	<input type="radio" name="sifat" value=0 checked />&nbsp;Tambahan&nbsp;
     <? } ?>
+    </td>
+</tr>
+<tr>
+    <td><strong>Kelompok</strong></td>
+    <td>
+        <select name="kelompok" id="kelompok">
+<?      OpenDb();
+        $sql = "SELECT replid, kelompok FROM kelompokpelajaran ORDER BY urutan";
+        $res = QueryDb($sql);
+        while($row = mysql_fetch_row($res))
+        {
+            $idkel = $row[0];
+            $kelompok = $row[1];
+
+            $selected = $idkel == $idkelompok ? "selected" : "";
+            echo "<option value='$idkel' $selected>$kelompok</option>";
+        }
+        CloseDb(); ?>
+        </select>
     </td>
 </tr>
 <tr>

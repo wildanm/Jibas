@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -122,6 +122,27 @@ function QueryDb($sql)
 	return $result;
 }
 
+function QueryDbEx($sql) 
+{
+	global $mysqlconnection;
+	
+	$result = @mysql_query($sql, $mysqlconnection);
+	
+	if (mysql_errno() > 0)
+	{
+		// Save Error Information
+		$errmsg = mysql_error();
+		$errno = mysql_errno();
+		
+		// Force Closing Database Connection
+		CloseDb();
+		
+		throw new Exception($errmsg, $errno);
+	}
+
+	return $result;
+}
+
 function QueryDbTrans($sql, &$success) 
 {
 	global $mysqlconnection;
@@ -220,6 +241,42 @@ function FetchRow($sql)
 	
 	$res = QueryDb($sql);
 	$row = @mysql_fetch_row($res);
+	return $row;
+}
+
+function FetchArray($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDb($sql);
+	$row = @mysql_fetch_array($res);
+	return $row;
+}
+
+function FetchSingleEx($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDbEx($sql);
+	$row = @mysql_fetch_row($res);
+	return $row[0];
+}
+
+function FetchRowEx($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDbEx($sql);
+	$row = @mysql_fetch_row($res);
+	return $row;
+}
+
+function FetchArrayEx($sql)
+{
+	global $mysqlconnection;
+	
+	$res = QueryDbEx($sql);
+	$row = @mysql_fetch_array($res);
 	return $row;
 }
 ?>

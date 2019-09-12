@@ -60,3 +60,8 @@ function change_page(page) {
 		page = document.getElementById('page').value;
 	document.location.href="pustaka.cari.php?perpustakaan="+perpustakaan+"&kategori="+kategori+"&keywords="+keywords+"&cari=1&page="+page;
 }
+
+function aturpustaka(idpustaka, perpus)
+{
+	document.location.href = "pustaka.adddel.php?idpustaka="+idpustaka+"&perpus="+perpus;
+}

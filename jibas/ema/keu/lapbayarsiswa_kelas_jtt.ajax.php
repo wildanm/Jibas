@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -307,7 +307,7 @@ if ($statuslunas == -1)
 		          FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 					WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan 
 					  AND s.idangkatan = $idangkatan AND s.idkelas = k.replid AND k.idtingkat = t.replid 
-			   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+			   ORDER BY $urut $urutan"; 
 	} 
 	else 
 	{
@@ -333,7 +333,7 @@ if ($statuslunas == -1)
 			          FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 						WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
 						  AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid 
-			      ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+			      ORDER BY $urut $urutan"; 
 		} 
 		else 
 		{
@@ -357,7 +357,7 @@ if ($statuslunas == -1)
 			          FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k 
 						WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
 						  AND s.idkelas = k.replid AND s.idangkatan = $idangkatan 
-				   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				   ORDER BY $urut $urutan"; 
 		}
 	} 
 } 
@@ -385,7 +385,7 @@ else
 		          FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 				   WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
 					  AND s.idkelas = k.replid AND k.idtingkat = t.replid AND b.lunas = $statuslunas 
-				ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				ORDER BY $urut $urutan"; 
 	} 
 	else 
 	{
@@ -411,7 +411,7 @@ else
 						WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idangkatan = $idangkatan 
 						  AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND k.idtingkat = t.replid 
 						  AND b.lunas = $statuslunas 
-				   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				   ORDER BY $urut $urutan"; 
 		} 
 		else 
 		{
@@ -434,7 +434,7 @@ else
 			          FROM penerimaanjtt p RIGHT JOIN besarjtt b ON p.idbesarjtt = b.replid, jbsakad.siswa s, jbsakad.kelas k
 					 WHERE b.info2 = '$idtahunbuku' AND s.nis = b.nis AND b.idpenerimaan = $idpenerimaan AND s.idkelas = $idkelas 
 					   AND s.idkelas = k.replid AND b.lunas = $statuslunas AND s.idangkatan = $idangkatan 
-				  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				  ORDER BY $urut $urutan"; 
 		}
 	}
 }
@@ -569,17 +569,6 @@ if ($total - 1 == $page)
 <tr>
 	<td align="center" valign="middle" height="250">
     	<font size = "2" color ="red"><b>Tidak ditemukan adanya data.
-        <br />Tambah data pembayaran pada 
-		<? 	if ($idtingkat <> -1) {	
-				if ($idkelas <> -1) 
-                    echo  "kelas ".$namakelas; 
-                else 
-                        echo  "tingkat ".$namatingkat;
-			} else {
-				echo  "departemen ".$departemen;
-			}	
-		?> dan kategori <?=$namapenerimaan?> di menu Penerimaan Pembayaran pada bagian Penerimaan.
-        
         </b></font>
 	</td>
 </tr>

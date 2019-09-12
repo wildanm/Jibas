@@ -355,4 +355,101 @@ function GetReportContent()
         sendRequestText('infosiswa/infosiswa.content.php', showInfo, 'reporttype='+reporttype);
 }
 
+function pk_changeBulan()
+{
+	var bulan = document.getElementById('pk_cbBulan').value;
+	var tahun = document.getElementById('pk_cbTahun').value;
+	var param = "bulan="+bulan+"&tahun="+tahun;
+	
+	show_wait("infosiswa.content");      
+    sendRequestText('infosiswa/infosiswa.presensikegiatan.php', showInfoSiswaContent, param);  
+}
 
+var pk_divDetail_Target = "";
+function pk_showDetail(cnt, idkegiatan)
+{
+	var bulan = document.getElementById('pk_cbBulan').value;
+	var tahun = document.getElementById('pk_cbTahun').value;
+	var param = "idkegiatan="+idkegiatan+"&bulan="+bulan+"&tahun="+tahun+"&cnt="+cnt;
+	
+	pk_divDetail_Target = "pk_divDetail_" + cnt;
+	show_wait(pk_divDetail_Target);      
+    sendRequestText('infosiswa/infosiswa.presensikegiatan.detail.php', showDetailPresensiKegiatan, param);  
+}
+
+function showDetailPresensiKegiatan(html)
+{
+	document.getElementById(pk_divDetail_Target).innerHTML = html;
+}
+
+function pk_closeDetail(cnt, idkegiatan)
+{
+	var ahref = "<a href='#' onclick='pk_showDetail(" + cnt + "," + idkegiatan + ")' style='color: blue; font-weight: normal;'>detail</a>";
+	document.getElementById("pk_divDetail_" + cnt).innerHTML = ahref;
+}
+
+function is_Pengaturan()
+{
+	$.ajax({
+        url : 'infosiswa/infosiswa.adminlogin.php',
+        type: 'get',
+        data: 'op=adminlogin',
+        success : function(html) {
+            $('#is_main').html(html);
+        }
+    })
+}
+
+function is_Admin_Login()
+{
+    var password = trim($('#is_admin_password').val());
+    if (password.length == 0)
+        return;
+    
+    $.ajax({
+        url : 'infosiswa/infosiswa.doadminlogin.php',
+        type: 'get',
+        data: 'password='+password,
+        success : function(html) {
+            $('#is_main').html(html);
+        }
+    })
+}
+
+function is_Admin_Cancel()
+{
+	$.ajax({
+        url : 'infosiswa/infosiswa.login.php',
+        type: 'get',
+        success : function(html) {
+            $('#is_main').html(html);
+        }
+    })   
+}
+
+function is_SaveConfig()
+{
+	if (!confirm('Simpan konfigurasi?'))
+		return;
+	
+	var allow = $('#is_allowedit').prop('checked') ? 1 : 0;
+	$.ajax({
+        url : 'infosiswa/infosiswa.saveconfig.php',
+        type: 'post',
+        data: 'allow='+allow,
+        success : function(html) {
+            $('#is_main').html(html);
+        }
+    })
+}
+
+function is_CloseConfig()
+{
+	$.ajax({
+        url : 'infosiswa/infosiswa.doadminlogout.php',
+        type: 'get',
+        success : function(html) {
+            $('#is_main').html(html);
+        }
+    })   
+}

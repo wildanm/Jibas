@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -76,4 +76,37 @@ $VAR_BERITA_GURU = 3 ;
 
 $G_ENABLE_QUERY_ERROR_LOG = false;
 $full_url = "http://$G_SERVER_ADDR/infoguru/";
+
+// ------------------------------------------------------------
+// FORMAT SPECIAL CHARACTERS WITHIN ALL REQUEST
+// ------------------------------------------------------------
+function FmtReq_FormatValue($value)
+{
+    $value = str_replace("'", "`", $value);  //&#39;
+	$value = str_replace('"', "`", $value);  //&#34;
+	//$value = str_replace("<", "&lt;", $value);
+	//$value = str_replace(">", "&gt;", $value);
+	$value = addslashes($value);
+
+    return $value;
+}
+
+function FmtReq_TraverseRequestArray(&$arr)
+{
+    foreach($arr as $key => $value)
+    {
+        if (is_array($arr[$key]))
+            FmtReq_TraverseRequestArray($arr[$key]);
+        else
+            $arr[$key] = FmtReq_FormatValue($value);
+    }
+}
+
+foreach($_REQUEST as $key => $value)
+{
+    if (is_array($_REQUEST[$key]))
+        FmtReq_TraverseRequestArray($_REQUEST[$key]);
+    else
+        $_REQUEST[$key] = FmtReq_FormatValue($value);
+}
 ?>

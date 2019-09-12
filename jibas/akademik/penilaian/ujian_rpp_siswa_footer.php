@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -30,8 +30,8 @@ $pelajaran=$_REQUEST['pelajaran'];
 <HEAD>
 <TITLE> Content Penentuan Nilai Rapor </TITLE>
 </HEAD>
-<frameset cols="18%,*" border="1">
+<frameset cols="18%,*" border="1" frameborder="0" framespacing = "0">
     <frame name="menu" src="ujian_rpp_siswa_menu.php?kelas=<?=$kelas?>&semester=<?=$semester?>&pelajaran=<?=$pelajaran?>" >
-    <frame name="content" src="../blank.php" style="border:1; border-left-color:#000000; border-left-style:solid">
+    <frame name="content" src="../blank.php" style="border:1px; border-left-color:#000000; border-left-style:solid">
 </frameset><noframes></noframes>
 </HTML>

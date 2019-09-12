@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -194,11 +194,22 @@ function change_theme(theme){
 </table>
 </td>
 	<td align="left" valign="top">
-    <a href="siswa_baru/settingpsb_main.php" style="text-decoration:none" onMouseOver="showhint('Konfigurasi Pendataan PSB', this, event, '100px')">
-    <img src="images/ico/settings.png" height="60" alt="" border="0"><br>
-    <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold; ">Konfigurasi Pendataan PSB</font>
-    </td>
-  </tr>
+    <a href="siswa_baru/settingpsb_main.php" style="text-decoration:none" onMouseOver="showhint('Konfigurasi Pendataan PSB', this, event, '100px');">
+        <img src="images/ico/settings.png" height="60" alt="" border="0"><br>
+        <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold; ">Konfigurasi Pendataan PSB</font>
+    </a>
+    <br><br>
+    <a href="siswa_baru/pincs.main.php" style="text-decoration:none" onMouseOver="showhint('PIN Calon Siswa', this, event, '100px');">
+        <img src="images/pincs.jpg" height="60" alt="" border="0"><br>
+        <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold; ">PIN Calon Siswa</font>
+    </a>
+    <br><br>
+    <a href="referensi/tambahandata.php?from=Penerimaan%20Siswa%20Baru" style="text-decoration:none;" onMouseOver="showhint('Konfigurasi Tambahan Data', this, event, '100px')">
+        <img src="images/tambahandata.png" height="60" alt="" border="0"><br>
+        <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold">Kolom Tambahan Data Calon Siswa</font>
+    </a>
+  </td>
+</tr>
 </table>
 <div style="right:5px; bottom:5px; position:absolute;" align="right">
 </div>

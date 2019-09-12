@@ -23,7 +23,9 @@ function getFresh(){
 	}
 	
 }
-function cetak(){
+
+function cetak()
+{
 	var kriteria = document.getElementById('kriteria').value;
 	var addr;
 	if (kriteria=='nip' || kriteria=='nis')
@@ -31,16 +33,22 @@ function cetak(){
 		var statuspeminjam = document.getElementById('statuspeminjam').value;
 		var noanggota = document.getElementById('noanggota').value;
 		var nama = document.getElementById('nama').value;
-		addr = "daftar.pinjam.cetak.php?kriteria="+kriteria+"&statuspeminjam="+statuspeminjam+"&noanggota="+noanggota+"&nama="+nama;
-	} else if (kriteria=='tglkembali' || kriteria=='tglpinjam'){
+		addr = "daftar.pinjam.telat.cetak.php?kriteria="+kriteria+"&statuspeminjam="+statuspeminjam+"&noanggota="+noanggota+"&nama="+nama;
+	}
+	else if (kriteria=='tglkembali' || kriteria=='tglpinjam')
+	{
 		var tglAwal = document.getElementById('tglAwal').value;
 		var tglAkhir = document.getElementById('tglAkhir').value;
-		addr = "daftar.pinjam.cetak.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
-	} else {
-		addr = 'daftar.pinjam.cetak.php';
+		addr = "daftar.pinjam.telat.cetak.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
 	}
-	newWindow(addr, 'CetakDaftarPeminjaman','790','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+	else
+	{
+		addr = 'daftar.pinjam.telat.cetak.php';
+	}
+	
+	newWindow(addr, 'CetakDaftarPeminjamanTelat','790','650','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
+
 function cari(){
 	var status = document.getElementById('statuspeminjam').value;
 	var addr;

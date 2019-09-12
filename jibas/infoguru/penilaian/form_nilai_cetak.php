@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -39,7 +39,7 @@ $nip = $_REQUEST['nip'];
 OpenDb();
 $sql = "SELECT k.kelas, s.semester, a.tahunajaran, t.tingkat, l.nama, p.nama AS guru FROM kelas k, semester s, tahunajaran a, tingkat t, pelajaran l, jbssdm.pegawai p WHERE k.replid = '$kelas' AND s.replid = '$semester' AND a.replid = '$tahunajaran' AND k.idtahunajaran = a.replid AND k.idtingkat = t.replid AND l.replid = '$pelajaran' AND p.nip = '$nip'";
 $result = QueryDb($sql);
-CloseDb();
+
 $row = mysql_fetch_array($result);
 $namakelas = $row['kelas'];
 $namasemester = $row['semester'];
@@ -54,7 +54,7 @@ $namaguru = $row['guru'];
 <head>
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS INFOGURU [Cetak Form Pengisian Nilai Siswa]</title>
+<title>JIBAS InfoGuru [Cetak Form Pengisian Nilai Siswa]</title>
 </head>
 
 <body>
@@ -125,11 +125,9 @@ $namaguru = $row['guru'];
         </tr>
         
         <?
-        OpenDb();
         
-        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = '$kelas' ORDER BY nama";
+        $sql = "SELECT nis, nama FROM siswa WHERE idkelas = '$kelas' AND aktif = 1 AND alumni = 0 ORDER BY nama";
         $result = QueryDb($sql);
-        CloseDb();
         
         while($row = @mysql_fetch_array($result)){
         
@@ -166,6 +164,9 @@ $namaguru = $row['guru'];
   </tr>
 </table>
 </body>
+<?
+CloseDb();
+?>
 <script language="javascript">
 window.print();
 </script>

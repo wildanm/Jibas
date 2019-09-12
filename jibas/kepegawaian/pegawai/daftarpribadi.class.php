@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -65,6 +65,7 @@ class DaftarPribadi
     public $aktif;
     public $ketnonaktif;
     public $pns;
+    public $idtambahan;
     
     public function __construct()
     {
@@ -126,11 +127,11 @@ class DaftarPribadi
     
     private function SaveData()
     {
-		  $this->bagian = $_REQUEST['rbBagian'];
-		  $this->nuptk = $_REQUEST['txNUPTK'];
-		  $this->nrp = $_REQUEST['txNRP'];
+      $this->bagian = $_REQUEST['rbBagian'];
+      $this->nuptk = $_REQUEST['txNUPTK'];
+      $this->nrp = $_REQUEST['txNRP'];
         $this->nama = CQ($_REQUEST['txNama']);
-		  $this->panggilan = CQ($_REQUEST['txPanggilan']);
+          $this->panggilan = CQ($_REQUEST['txPanggilan']);
         $this->gelarawal = $_REQUEST['txGelarAwal'];
         $this->gelarakhir = $_REQUEST['txGelarAkhir'];
         $this->newnip  = $_REQUEST['txNIP'];
@@ -139,16 +140,16 @@ class DaftarPribadi
         $this->blnlahir = $_REQUEST['cbBlnLahir'];
         $this->thnlahir = $_REQUEST['txThnLahir'];
         $this->agama = $_REQUEST['cbAgama'];
-		  $this->suku = $_REQUEST['cbSuku'];
+          $this->suku = $_REQUEST['cbSuku'];
         $this->nikah = $_REQUEST['cbNikah'];
         $this->kelamin = strtolower($_REQUEST['cbKelamin']);
         $this->alamat = CQ($_REQUEST['txAlamat']);
         $this->hp = $_REQUEST['txHP'];
         $this->telpon = $_REQUEST['txTelpon'];
         $this->email = $_REQUEST['txEmail'];
-		  $this->facebook = $_REQUEST['txFacebook'];
-		  $this->twitter = $_REQUEST['txTwitter'];
-		  $this->website = $_REQUEST['txWebsite'];
+          $this->facebook = $_REQUEST['txFacebook'];
+          $this->twitter = $_REQUEST['txTwitter'];
+          $this->website = $_REQUEST['txWebsite'];
         $this->foto = $_FILES['foto'];
         $this->status = $_REQUEST['cbStatus'];
         $this->tglmulai = $_REQUEST['cbTglMulai'];
@@ -159,9 +160,10 @@ class DaftarPribadi
         $this->aktif = $_REQUEST['rbAktif'];
         $this->ketnonaktif = CQ($_REQUEST['txKetNonAktif']);
         $this->pns = $_REQUEST['rbPNS'];
+        $this->idtambahan = $_REQUEST['idtambahan'];
 	
         $sql = "SELECT replid FROM jbssdm.pegawai WHERE nip = '$this->newnip' AND nip <> '$this->nip'";
-		  $result = QueryDb($sql);
+        $result = QueryDb($sql);
         if (mysql_num_rows($result) > 0)
         {
     		$this->ERRMSG = "Telah ada pegawai dengan NIP $nip";
@@ -196,8 +198,96 @@ class DaftarPribadi
 						   ketnonaktif='$this->ketnonaktif', doaudit = 1, status='$this->pns' $gantifoto
 					 WHERE nip='$this->nip'";
 			QueryDbTrans($sql, $success);
-						
-			if ($success)
+
+            if ($success && strlen($this->idtambahan) > 0)
+            {
+                if (strpos($this->idtambahan, ",") === false)
+                    $arridtambahan = array($this->idtambahan);
+                else
+                    $arridtambahan = explode(",", $this->idtambahan);
+
+                // READ WARNING IMAGE
+                $warnimg = "../images/warningimg.jpg";
+                $fh = fopen($warnimg,"r");
+                $warnsize = filesize($warnimg);
+                $warnfile = addslashes(fread($fh, $warnsize));
+                $warntype = "image/jpeg";
+                $warnname = "warning.jpg";
+                fclose($fh);
+
+                for($i = 0; $success && $i < count($arridtambahan); $i++)
+                {
+                    $replid = $arridtambahan[$i];
+
+                    $param = "jenisdata-$replid";
+                    if (!isset($_REQUEST[$param])) continue;
+                    $jenis = $_REQUEST[$param];
+
+                    $param = "repliddata-$replid";
+                    if (!isset($_REQUEST[$param])) continue;
+                    $repliddata = $_REQUEST[$param];
+
+                    if ($jenis == 1 || $jenis == 3)
+                    {
+                        $param = "tambahandata-$replid";
+                        if (!isset($_REQUEST[$param])) continue;
+                        $teks = $_REQUEST[$param];
+                        $teks = CQ($teks);
+
+                        if ($repliddata == 0)
+                            $sql = "INSERT INTO jbssdm.tambahandatapegawai
+                                       SET nip = '$this->nip', idtambahan = '$replid', jenis = '$jenis', teks = '$teks'";
+                        else
+                            $sql = "UPDATE jbssdm.tambahandatapegawai
+                                       SET teks = '$teks'
+                                     WHERE replid = '$repliddata'";
+
+                        QueryDbTrans($sql, $success);
+                    }
+                    else
+                    {
+                        $param = "tambahandata-$replid";
+                        if (!isset($_FILES[$param])) continue;
+                        $file = $_FILES[$param];
+                        $tmpfile = $file['tmp_name'];
+
+                        if (strlen($tmpfile) != 0)
+                        {
+                            if (filesize($tmpfile) <= 256000)
+                            {
+                                $fh = fopen($tmpfile, "r");
+                                $datafile = addslashes(fread($fh, filesize($tmpfile)));
+                                fclose($fh);
+
+                                $namefile = $file['name'];
+                                $typefile = $file['type'];
+                                $sizefile = $file['size'];
+                            }
+                            else
+                            {
+                                $datafile = $warnfile;
+                                $namefile = $warnname;
+                                $typefile = $warntype;
+                                $sizefile = $warnsize;
+                            }
+
+                            if ($repliddata == 0)
+                                $sql = "INSERT INTO jbssdm.tambahandatapegawai
+                                           SET nip = '$this->nip', idtambahan = '$replid', jenis = '2', 
+                                               filedata = '$datafile', filename = '$namefile', filemime = '$typefile', filesize = '$sizefile'";
+                            else
+                                $sql = "UPDATE jbssdm.tambahandatapegawai
+                                           SET filedata = '$datafile', filename = '$namefile', filemime = '$typefile', filesize = '$sizefile'
+                                         WHERE replid = '$repliddata'";
+
+                            QueryDbTrans($sql, $success);
+                        }
+                    }
+                }
+            }
+
+
+            if ($success)
 			{
 				CommitTrans();
 				CloseDb(); ?>

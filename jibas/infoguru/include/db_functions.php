@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -222,4 +222,61 @@ function FetchRow($sql)
 	$row = @mysql_fetch_row($res);
 	return $row;
 }
+
+function QueryDbEx($sql)
+{
+	global $mysqlconnection;
+		
+    $result = @mysql_query($sql, $mysqlconnection);
+	LogQuery($sql);
+	
+	if (mysql_errno() > 0)
+	{
+		LogIfError($sql);
+		throw new DbException(mysql_error(), mysql_errno());
+	}
+		
+    return $result;
+}
+
+function FetchSingleEx($sql)
+{
+	$res = QueryDbEx($sql);
+	LogQuery($sql);
+	LogIfError($sql);
+	
+	if (mysql_num_rows($res) > 0)
+	{
+		$row = mysql_fetch_row($res);
+		return $row[0];
+	}
+	else
+	{
+		return NULL;
+	}
+}
+
+function LogQuery($sql)
+{
+	global $G_ENABLE_QUERY_LOG, $G_FILE_LOG_QUERY;
+	
+	if (!$G_ENABLE_QUERY_LOG)
+		return;
+		
+	$logPath = @realpath(@dirname(__FILE__)) . "/../../log";
+	$logExists = @file_exists($logPath) && @is_dir($logPath);
+	if (!$logExists)
+		@mkdir($logPath, 0644);
+	
+	$logFile = @realpath(@dirname(__FILE__)) . "/../../log/" . $G_FILE_LOG_QUERY;
+	$modeFile = (@file_exists($logFile) && @filesize($logFile) > 1024 * 1024) ? "w" : "a";
+	
+	$fp = @fopen($logFile, $modeFile);
+	@fwrite($fp, "-- Query Executed on " . date('d-M-Y H:i:s') . " --------\r\n");
+	@fwrite($fp, " SCRIPT > " . $_SERVER['SCRIPT_NAME'] . "\r\n");
+	@fwrite($fp, " QUERY  > $sql\r\n");
+	@fwrite($fp, "\r\n");
+	@fclose($fp);
+}
+
 ?>

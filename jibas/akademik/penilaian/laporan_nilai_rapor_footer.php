@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -49,13 +49,20 @@ if (isset($_REQUEST['harian']))
 
 if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
+
+if (isset($_REQUEST['tglmulai']))
+    $tglmulai = $_REQUEST['tglmulai'];
+
+if (isset($_REQUEST['tglakhir']))
+    $tglakhir = $_REQUEST['tglakhir'];
 ?>
 <script language="JavaScript" src="../script/tooltips.js"></script>
 <script language="javascript" src="../script/tables.js"></script>
 <script language="javascript" src="../script/validasi.js"></script>
 <script language="javascript" src="../script/tools.js"></script>
 
-<frameset cols="25%,*" border="0" frameborder="0">
-<frame src="laporan_nilai_rapor_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&harian=<?=$harian?>&pelajaran=<?=$pelajaran?>" >
-<frame src="blank_laporan_rapor_content.php" name="laporan_rapor_content" id="laporan_rapor_content" style="border:1; border-left-color:#000000; border-left-style:solid">
+<frameset cols="17%,*" border="0" frameborder="0" framespacing="0" >
+<frame src="laporan_nilai_rapor_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&harian=<?=$harian?>&pelajaran=<?=$pelajaran?>&tglmulai=<?=$tglmulai?>&tglakhir=<?=$tglakhir?>"
+       style="border:1px; border-color:#000000; border-bottom-style:solid">
+<frame src="blank_laporan_rapor_content.php" name="laporan_rapor_content" id="laporan_rapor_content" style="border:1px; border-left-color:#000000; border-left-style:solid">
 </frameset><noframes></noframes>

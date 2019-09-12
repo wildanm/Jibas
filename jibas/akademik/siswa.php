@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -55,12 +55,16 @@ function change_theme(theme){
   </tr>
 </table>
 <br>
-<table id="Table_01" width="453" height="463" border="0" cellpadding="0" cellspacing="0">
+<table id="Table_01" width="633" height="463" border="0" cellpadding="0" cellspacing="0">
 	<tr>
 		<td colspan="11">
 			<img src="images/siswa_01.jpg" width="452" height="4" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="4" alt=""></td>
+		<td rowspan="12" align="center" valign="top" width="180">
+            <a href="referensi/tambahandata.php?from=Kesiswaan" style="text-decoration:none;" onMouseOver="showhint('Konfigurasi Tambahan Data', this, event, '100px')">
+                <img src="images/tambahandata.png" height="60" alt="" border="0"><br>
+                <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold">Kolom Tambahan<br>Data Siswa</font>
+            </a>
+        </td>
 	</tr>
 	<tr>
 		<td rowspan="11">
@@ -69,8 +73,6 @@ function change_theme(theme){
 			<img src="images/siswa_03.jpg" width="83" height="104" alt="" style="cursor:pointer" onClick="alert ('Gunakan menu Tahun Ajaran di bagian referensi \nuntuk mendata Tahun Ajaran');"></td>
 		<td colspan="8">
 			<img src="images/siswa_04.jpg" width="345" height="77" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="77" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="3">
@@ -79,20 +81,14 @@ function change_theme(theme){
 			<a href="siswa/siswa_main.php" onMouseOver="showhint('Pendataan Siswa', this, event, '100px')"><img src="images/siswa_06.jpg" width="114" height="135" alt="" border="0"></a></td>
 		<td colspan="3" rowspan="3">
 			<img src="images/siswa_07.jpg" width="184" height="156" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="27" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="2" rowspan="2">
 			<img src="images/siswa_08.jpg" width="83" height="129" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="108" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4">
 			<img src="images/siswa_09.jpg" width="114" height="21" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="21" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="7">
@@ -108,14 +104,10 @@ function change_theme(theme){
         </td>
 		<td rowspan="7">
 			<img src="images/siswa_14.jpg" width="59" height="225" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="71" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="3">
 			<img src="images/siswa_15.jpg" width="146" height="8" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="8" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4" rowspan="2">
@@ -123,34 +115,24 @@ function change_theme(theme){
             <img src="images/siswa_16.jpg" width="173" height="67" alt="" border="0"></a></td>
 		<td colspan="3" rowspan="3">
 			<img src="images/siswa_17.jpg" width="77" height="77" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="38" alt=""></td>
 	</tr>
 	<tr>
 		<td rowspan="4">
 			<img src="images/siswa_18.jpg" width="101" height="108" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="29" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="4">
 			<img src="images/siswa_19.jpg" width="173" height="10" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="10" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="5">
 			<a href="siswa/pin_main.php"><img src="images/siswa_20.jpg" width="208" height="57" alt="" border="0"></a></td>
 		<td colspan="2" rowspan="2">
 			<img src="images/siswa_21.jpg" width="42" height="69" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="57" alt=""></td>
 	</tr>
 	<tr>
 		<td colspan="5">
 			<img src="images/siswa_22.jpg" width="208" height="12" alt=""></td>
-		<td>
-			<img src="images/spacer.gif" width="1" height="12" alt=""></td>
 	</tr>
 	<tr>
 		<td>

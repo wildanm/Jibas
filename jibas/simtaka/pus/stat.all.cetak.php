@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -26,16 +26,21 @@ require_once('../inc/config.php');
 require_once('../inc/rupiah.php');
 require_once('../inc/db_functions.php');
 require_once('../lib/GetHeaderCetak.php');
+
 $perpustakaan	= $_REQUEST[perpustakaan];
 $from			= $_REQUEST[from];
 $to				= $_REQUEST[to];
+
 OpenDb();
-if ($perpustakaan!='-1') {
+if ($perpustakaan!='-1')
+{
 	$sql 	= "SELECT nama FROM perpustakaan WHERE replid='$perpustakaan'";
 	$result = QueryDb($sql);
 	$row 	= @mysql_fetch_row($result);
 	$nama	= $row[0];
-} else {
+}
+else
+{
 	$nama = "<i>Semua</i>";
 }
 $from	= split('-',$from);
@@ -62,71 +67,82 @@ $to		= split('-',$to);
 
 <br />
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-  <tr>
+<tr>
     <td>
     	<table width="100%" border="0" cellspacing="1" cellpadding="1">
-          <tr>
+        <tr>
             <td width="14%"><strong>Perpustakaan</strong></td>
             <td width="86%">&nbsp;<?=$nama?></td>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
             <td><strong>Periode</strong></td>
             <td>&nbsp;<?=NamaBulan($from[1])?> <?=$from[0]?> s.d. <?=NamaBulan($to[1])?> <?=$to[0]?></td>
-          </tr>
+        </tr>
         </table>
     </td>
-  </tr>
-  <tr>
+</tr>
+<tr>
     <td align="center" valign="top">
-    	<?
-		$filter="";
-		if ($perpustakaan!='-1')
-			$filter=" AND d.perpustakaan=".$perpustakaan;
-		$sql = "SELECT count(*) as num, MONTH(p.tglpinjam),YEAR(p.tglpinjam) FROM pinjam p, daftarpustaka d, pustaka pu WHERE p.tglpinjam BETWEEN '$_REQUEST[from]' AND '$_REQUEST[to]' AND d.kodepustaka=p.kodepustaka AND pu.replid=d.pustaka $filter GROUP BY MONTH(p.tglpinjam),YEAR(p.tglpinjam) ORDER BY p.tglpinjam ASC";		
-		$result = QueryDb($sql);
-		//echo $sql;
-		?>
         <img src="<?="statimage.php?type=bar&key=$_REQUEST[from],$_REQUEST[to]&Limit=$limit&krit=3&perpustakaan=$perpustakaan" ?>" />
     </td>
-  </tr>
-  <tr>
+</tr>
+<tr>
     <td align="center" valign="top">
     	<img src="<?="statimage.php?type=pie&key=$_REQUEST[from],$_REQUEST[to]&Limit=$limit&krit=3&perpustakaan=$perpustakaan" ?>" />
     </td>
-  </tr>
-  <tr>
+</tr>
+<tr>
     <td>
     	<table width="90%" border="1" cellspacing="0" cellpadding="0" class="tab" align="center">
-          <tr>
+        <tr>
             <td height="25" align="center" class="header">No</td>
             <td height="25" align="center" class="header">Peminjaman</td>
             <td height="25" align="center" class="header">Jumlah</td>
-          </tr>
-          <? if (@mysql_num_rows($result)>0) { ?>
-          <? $cnt=1; ?>
-          <? while ($row = @mysql_fetch_row($result)) { ?>
-          <? 
-            $bulan = $row[1];
-            $tahun = $row[2];
-          ?>
-          <tr>
-            <td height="20" align="center"><?=$cnt?></td>
-            <td height="20"><div style="padding-left:5px; padding-right:5px;"><?=NamaBulan($bulan)." ".$tahun?></div></td>
-            <td height="20" align="center"><?=$row[0]?></td>
-          </tr>
-          <? $cnt++; ?>
-          <? } ?>
-          <? } else { ?>
-          <tr>
-            <td height="20" align="center" colspan="3" class="nodata">Tidak ada data</td>
-          </tr>	
-          <? } ?>
-      </table>
+        </tr>
+<?		$filter="";
+		if ($perpustakaan!='-1')
+			$filter=" AND d.perpustakaan=".$perpustakaan;
+			
+		$sql = "SELECT count(*) as num, MONTH(p.tglpinjam),YEAR(p.tglpinjam)
+				  FROM pinjam p, daftarpustaka d, pustaka pu
+				 WHERE p.tglpinjam BETWEEN '$_REQUEST[from]' AND '$_REQUEST[to]'
+				   AND d.kodepustaka=p.kodepustaka
+				   AND pu.replid=d.pustaka $filter
+				 GROUP BY MONTH(p.tglpinjam),YEAR(p.tglpinjam)
+				 ORDER BY p.tglpinjam ASC";		
+		$result = QueryDb($sql);
+		
+		if (@mysql_num_rows($result)>0)
+		{
+			$cnt=1;
+			while ($row = @mysql_fetch_row($result))
+			{  
+				$bulan = $row[1];
+				$tahun = $row[2];  ?>
+				<tr>
+					<td height="20" align="center"><?=$cnt?></td>
+					<td height="20"><div style="padding-left:5px; padding-right:5px;"><?=NamaBulan($bulan)." ".$tahun?></div></td>
+					<td height="20" align="center"><?=$row[0]?></td>
+				</tr>
+<? 				$cnt++;
+			}
+		}
+		else
+		{ ?>
+			<tr>
+				<td height="20" align="center" colspan="3" class="nodata">Tidak ada data</td>
+			</tr>	
+<? 		} ?>
+		</table>
     </td>
-  </tr>
+</tr>
 </table>
+
 </td></tr></table>
 </body>
+<?
+CloseDb();
+?>
 <script language="javascript">
 window.print();
 </script>

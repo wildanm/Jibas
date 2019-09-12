@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,6 +31,7 @@ require_once('include/theme.php');
 require_once('include/sessioninfo.php');
 require_once('library/jurnal.php');
 require_once('library/repairdatajtt.php');
+require_once('library/smsmanager.func.php');
 
 $nis = $_REQUEST['nis'];
 $idkategori = $_REQUEST['idkategori'];
@@ -40,8 +41,19 @@ $idtahunbuku = $_REQUEST['idtahunbuku'];
 OpenDb();
 
 // -- ambil nama penerimaan -------------------------------
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
-$namapenerimaan = FetchSingle($sql);
+$sql = "SELECT nama, rekkas, info2 FROM datapenerimaan WHERE replid = '$idpenerimaan'";
+$row = FetchSingleRow($sql);
+$namapenerimaan = $row[0];
+$defrekkas = $row[1];
+$smsinfo = (int)$row[2];
+
+$sql = "SELECT cicilan
+          FROM jbsfina.besarjtt
+         WHERE nis = '$nis'
+           AND idpenerimaan = '$idpenerimaan'
+           AND info2 = '$idtahunbuku'";
+$row = FetchSingleRow($sql);
+$jcicilan_default = $row[0];
 
 // -- cek keberadaan rekening diskon ----------------------
 $sql = "SELECT COUNT(replid) FROM datapenerimaan WHERE replid=$idpenerimaan AND info1 IS NOT NULL";
@@ -72,6 +84,7 @@ $namasiswa = FetchSingle($sql);
 if (1 == (int)$_REQUEST['issubmit']) 
 {
     // -- ambil parameter ---------------------------------
+    $idpetugas = getIdUser();
 	$petugas = getUserName();
 	$idbesarjtt = (int)$_REQUEST['idbesarjtt'];
 	$tcicilan = MySqlDateFormat($_REQUEST['tcicilan']);
@@ -79,32 +92,43 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$jdiskon = UnformatRupiah($_REQUEST['jdiskon']);
 	$jbayar = $jcicilan - $jdiskon;
 	$kcicilan = CQ($_REQUEST['kcicilan']);
+    $rekkas = $_REQUEST['rekkas'];
+    $smsinfo = isset($_REQUEST['smsinfo']) ? 1 : 0;
+
+    foreach($_REQUEST as $key => $value)
+    {
+        echo "$key = $value<br>";
+    }
 		
 	//-- Ambil nama penerimaan -----------------------------------------------
 	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang, info1 AS rekdiskon
 			FROM datapenerimaan WHERE replid='$idpenerimaan'";
 	$row = FetchSingleRow($sql);
 	$namapenerimaan = $row[0];
-	$rekkas = $row[1];
+	//$rekkas = $row[1];
 	$rekpendapatan = $row[2];
 	$rekpiutang = $row[3];
 	$rekdiskon = $row[4];
-		
+    		
 	//-- Cari tahu besar pembayaran ------------------------------------------
 	$idbesarjtt = 0;
 	$besarjtt = 0;
 	$sql = "SELECT b.replid AS id, b.besar
   		   	FROM besarjtt b
 			WHERE b.nis='$nis' AND b.idpenerimaan='$idpenerimaan' AND b.info2='$idtahunbuku'";
+	echo "$sql<br>";
 	$row = FetchSingleRow($sql);
 	$idbesarjtt = $row[0];
 	$besarjtt = $row[1];
+	echo "$idbesarjtt $besarjtt<br>";
 	
 	// -- Cari tahu jumlah pembayaran cicilan dan diskon yang sudah terjadi -------------------
 	$sql = "SELECT SUM(jumlah), SUM(info1) FROM penerimaanjtt WHERE idbesarjtt='$idbesarjtt'";
+    echo "$sql<br>";
 	$row = FetchSingleRow($sql);
 	$totalcicilan = $row[0];
 	$totaldiskon = $row[1];
+    echo "$totalcicilan $totaldiskon<br>";
 	
 	// -- Cek jumlah cicilan dengan besar pembayaran yang mesti dilunasi --
 	$ketjurnal = "";
@@ -117,9 +141,11 @@ if (1 == (int)$_REQUEST['issubmit'])
 	else 
 	{
 		$lunas = 0;
+        $ketsms = "";
 		$ketjurnal = "";
 		if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon == $besarjtt)
 		{
+            $ketsms = "pelunasan $namapenerimaan";
 			$ketjurnal = "Pelunasan $namapenerimaan siswa $namasiswa ($nis)";
 			$lunas = 1; //udah lunas
 		}
@@ -128,12 +154,15 @@ if (1 == (int)$_REQUEST['issubmit'])
 			$sql = "SELECT COUNT(replid) + 1 FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 			$cicilan = FetchSingle($sql);
 			
-			$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
+            $ketsms = "pembayaran ke-$cicilan $namapenerimaan";
+			$ketjurnal = "Pembayaran ke-$cicilan $namapenerimaan siswa $namasiswa ($nis)";
 			$lunas = 0;
 		}
+		echo "$lunas $ketjurnal<br>";
 	
 		// -- Ambil awalan dan cacah tahunbuku untuk bikin nokas -------------
 		$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
+        echo "$sql<br>";
 		$row = FetchSingleRow($sql);
 		$awalan = $row[0];
 		$cacah = $row[1];
@@ -146,7 +175,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	
 		// -- Simpan ke jurnal -----------------------------------------------
 		$idjurnal = 0;
-		$success = SimpanJurnal($idtahunbuku, $tcicilan, $ketjurnal, $nokas, "", $petugas, "penerimaanjtt", $idjurnal);
+		$success = SimpanJurnal($idtahunbuku, $tcicilan, $ketjurnal, $nokas, "", $idpetugas, $petugas, "penerimaanjtt", $idjurnal);
 		
 		//-- Simpan ke jurnaldetail ------------------------------------------
 		if ($success) 
@@ -182,25 +211,41 @@ if (1 == (int)$_REQUEST['issubmit'])
 				QueryDb($sql);
 			}
 		}
+        
+        // -- Kirim SMS Informasi Pembayaran Siswa
+        if ($success && $smsinfo == 1)
+        {
+            $sql = "SELECT departemen
+                      FROM jbsfina.tahunbuku
+                     WHERE replid = '$idtahunbuku'";
+            $departemen = FetchSingle($sql);
+            
+            CreateSMSPaymentInfo('SISPAY',
+                                 $departemen, $nis, $namasiswa,
+                                 RegularDateFormat($tcicilan),
+                                 FormatRupiah($jbayar),
+                                 $ketsms,
+                                 $success);
+        }
 		
 		if ($success) 
 		{			
 			CommitTrans();
 			CloseDb();
-			echo  "<script language='javascript'>";			
+			echo  "<script language='javascript'>";
 			echo  "opener.refresh();";
 			echo  "window.close();";
 			echo  "</script>";
 			exit();
-		} 
+		}
 		else 
 		{
 			RollbackTrans();
-			CloseDb();			
+			CloseDb();
 			echo  "<script language='javascript'>";
 			echo  "alert('Gagal menyimpan data!);";
 			echo  "</script>";
-		}	
+		}
 	} // if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon > $besarjtt) 
 } // if (1 == (int)$_REQUEST['issubmit'])
 
@@ -211,6 +256,8 @@ if (isset($_REQUEST['tcicilan']))
 	
 if (isset($_REQUEST['jcicilan']))
 	$jcicilan = UnformatRupiah($_REQUEST['jcicilan']);
+else
+    $jcicilan = $jcicilan_default;
   
 if (isset($_REQUEST['jdiskon']))
 	$jdiskon = UnformatRupiah($_REQUEST['jdiskon']);  
@@ -233,7 +280,7 @@ $jbayar = $jcicilan - $jdiskon;
 <script src="script/tooltips.js" language="javascript"></script>
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
@@ -272,7 +319,7 @@ function validasiAngka()
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
-	else if(angka <= 0)
+	else if(parseInt(angka) <= 0)
 	{
 		alert ('Besar cicilan harus positif!');
 		document.getElementById('jcicilan').focus();
@@ -286,9 +333,16 @@ function validasiAngka()
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
-	else if(diskon < 0)
+	else if(parseInt(diskon) < 0)
 	{
-		alert ('Besar diskon harus positif!');
+		alert ('Besar diskon tidak boleh negatif!');
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+    
+    if (parseInt(diskon) > parseInt(angka))
+	{
+		alert ('Besar diskon tidak boleh lebih besar daripada besar cicilan!');
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
@@ -386,6 +440,26 @@ function CalculatePay()
         </td>
     </tr>
     <tr>
+        <td>Rek. Kas</td>
+        <td colspan="2">
+			<select name="rekkas" id="rekkas" style="width: 220px">
+<?              OpenDb();
+                $sql = "SELECT kode, nama
+                          FROM jbsfina.rekakun
+                         WHERE kategori = 'HARTA'
+                         ORDER BY nama";        
+                $res = QueryDb($sql);
+                while($row = mysql_fetch_row($res))
+                {
+                    $sel = $row[0] == $defrekkas ? "selected" : "";
+                    echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+                }
+                CloseDb();
+                ?>                
+            </select>
+        </td>
+    </tr>
+    <tr>
         <td><strong>Tanggal</strong></td>
         <td>
         <input type="text" name="tcicilan" id="tcicilan" readonly size="15" value="<?=$tanggal ?>" onKeyPress="return focusNext('kcicilan', event)" style="background-color:#CCCC99"> </td>
@@ -395,7 +469,13 @@ function CalculatePay()
     </tr>
     <tr>
         <td valign="top">Keterangan</td>
-        <td colspan="2"><textarea id="kcicilan" name="kcicilan" rows="3" cols="30" onKeyPress="return focusNext('Simpan', event)"><?=$_REQUEST['kcicilan'] ?></textarea>
+        <td colspan="2"><textarea id="kcicilan" name="kcicilan" rows="2" cols="30" onKeyPress="return focusNext('Simpan', event)"><?=$_REQUEST['kcicilan'] ?></textarea>
+        </td>
+    </tr>
+    <tr>
+        <td valign="top">&nbsp;</td>
+        <td colspan="2">
+            <input type='checkbox' id='smsinfo' name='smsinfo' <? if ($smsinfo == 1) echo "checked"?> >&nbsp;Kirim SMS Informasi Pembayaran
         </td>
     </tr>
     <tr>
@@ -426,3 +506,7 @@ var sprytextfield1 = new Spry.Widget.ValidationTextField("tcicilan");
 var sprytextfield1 = new Spry.Widget.ValidationTextField("jcicilan");
 var sprytextarea1 = new Spry.Widget.ValidationTextarea("kcicilan");
 </script>
+
+<?
+CloseDb();
+?>

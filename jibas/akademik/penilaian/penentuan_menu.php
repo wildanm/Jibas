@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -63,7 +63,7 @@ function klik(idpelajaran,aspek,aspekket,kelas,semester,nip,tingkat,departemen,t
 //}
 </script>
 </head>
-<body topmargin="0" leftmargin="0">
+<body topmargin="5" leftmargin="5" style="background-color: #f5f5f5">
 <?
 OpenDb();
 $query_aturan = "SELECT DISTINCT aturannhb.idpelajaran, pelajaran.nama 
@@ -74,12 +74,13 @@ $query_aturan = "SELECT DISTINCT aturannhb.idpelajaran, pelajaran.nama
 $result_aturan = QueryDb($query_aturan);
 if (!mysql_num_rows($result_aturan)==0){ ?>
 
-<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
+<strong>Pelajaran:</strong><br><br>
+<table class="tab" id="table" border="0" style="border-collapse:collapse; border-width: 0px; line-height: 22px" cellpadding="3"
+       width="100%" align="left" bordercolor="#000000">
+<tr style="height: 2px">
+<td></td>
+</tr>	   
 <!-- TABLE CONTENT -->
-    
-<tr height="30">    	
-    <td width="100%" class="header" align="center">Pelajaran</td>
-</tr>	
 <?  $cnt = 0;
 	while ($row_aturan=@mysql_fetch_array($result_aturan)) 
 	{
@@ -94,10 +95,11 @@ if (!mysql_num_rows($result_aturan)==0){ ?>
 <tr>   	
     <td align="left" height="25">
     <b><font style="font-size:14px; font-family:Arial;"><?=$row_aturan['nama']?></font>:</b><br />
-<?		while($row = mysql_fetch_array($res)) 
+<?		while($row = mysql_fetch_array($res))
 		{ ?>
-		<a href="#" onclick="klik('<?=$row_aturan['idpelajaran']?>','<?=$row['dasarpenilaian']?>','<?=$row['keterangan']?>','<?=$kelas?>','<?=$semester?>','<?=$nip?>','<?=$tingkat?>','<?=$departemen?>','<?=$tahun?>')"><font color="#0000FF"><strong><?=$row['keterangan']?></strong></font></a><br />
-<?		} ?>	
+		&nbsp;&nbsp;&bull;
+        <a href="#" style="font-size: 12px" onclick="klik('<?=$row_aturan['idpelajaran']?>','<?=$row['dasarpenilaian']?>','<?=$row['keterangan']?>','<?=$kelas?>','<?=$semester?>','<?=$nip?>','<?=$tingkat?>','<?=$departemen?>','<?=$tahun?>')"><font color="#0000FF"><strong><?=$row['keterangan']?></strong></font></a><br />
+<?		} ?>
     </td>
 </tr>
 <!-- END TABLE CONTENT -->

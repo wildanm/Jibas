@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -67,6 +67,7 @@ if (isset($_REQUEST['hapus']))
 	{
 		$replid = $_REQUEST['replid'.$i];
 		$sql = "UPDATE jbsakad.komennap SET komentar='' WHERE replid = '$replid'";
+		//echo $sql;
 		$res=QueryDb($sql);
 	}
 	
@@ -143,11 +144,13 @@ function change_urut(urut,urutan)
 </head>
 <body topmargin="0" leftmargin="0">
 <form name="main" method="post" action="komentar_lihat.php" enctype="multipart/form-data" onSubmit="return ver()">
-<br>
-<table width="100%" border="1" cellspacing="0" class="tab" id="table">
+<div align="right"><input <?=$dis?> type="submit" name="hapus" class="but" value="Hapus Komentar Kelas Ini" onClick="hapus()" /></div><br>
+<table width="100%" border="1" cellspacing="0" class="tab" id="table" style="border-width: 1px; border-collapse: collapse; border-color: #f5f5f5;">
   <tr>		
 	<th width="3%" height="30" align="center"  background="../style/formbg2.gif" ><span class="style3">No</span></td>
-	<th height="30" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('nis','<?=$urutan?>');"><div align="center" class="style1"><strong><span class="style2">NIS&nbsp;</span>&nbsp;
+	<th height="30" onMouseOver="background='../style/formbg2agreen.gif';height=30;"
+        onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;"
+        onClick="change_urut('nis','<?=$urutan?>');"><div align="center" class="style1"><strong><span class="style2">NIS&nbsp;</span>&nbsp;
          <? if ($urut=="nis"){
 				if ($urutan=="asc"){
 					echo "<img src='../images/ico/descending copy.png' />";
@@ -191,12 +194,12 @@ function change_urut(urut,urutan)
 				$ada_komentar = $row2[0];
             if ($ada_komentar <> "")
 				{
-					echo "<input type='hidden' name='replid$cnt' value='$row[replid]'>";
+				   echo "<input type='hidden' name='replid$cnt' value='$row2[1]'>";
 				   echo $row2[0];
 				}
 			  	else 
 				{
-					echo "<input type='hidden' name='replid$cnt' value='0'>";
+				   echo "<input type='hidden' name='replid$cnt' value='0'>";
  				   echo "<font color='#9a9a9a'>Belum ada komentar</font>";  
 				}
 ?>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -34,8 +34,19 @@ require_once('include/sessioninfo.php');
 $idpembayaran = $_REQUEST['idpembayaran'];
 
 OpenDb();
+
+// -- Default Rekening Kas using value from previous input
+$sql = "SELECT jd.koderek
+		  FROM jbsfina.penerimaaniuran p, jbsfina.jurnal j, jbsfina.jurnaldetail jd, rekakun rk
+	     WHERE p.replid = '$idpembayaran'
+		   AND p.idjurnal = j.replid
+		   AND j.replid = jd.idjurnal
+		   AND jd.koderek = rk.kode
+		   AND rk.kategori = 'HARTA'";
+$defrekkas = FetchSingle($sql);
+
 $sql = "SELECT p.nis, s.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
-			   p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang 
+			   p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang, pn.replid AS idpenerimaan  
 		  FROM penerimaaniuran p, jbsakad.siswa s, datapenerimaan pn 
 		 WHERE p.replid = '$idpembayaran' AND p.nis = s.nis AND p.idpenerimaan = pn.replid";
 $result = QueryDb($sql);
@@ -45,6 +56,7 @@ $nama = $row['nama'];
 $idjurnal = $row['idjurnal'];
 $tanggal = $row['tanggal'];
 $keterangan = $row['keterangan'];
+$idpenerimaan = $row['idpenerimaan'];
 $namapenerimaan = $row['namapenerimaan'];
 $besar = $row['jumlah'];
 $rekkas = $row['rekkas'];
@@ -65,13 +77,37 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$kcicilan = CQ($_REQUEST['kcicilan']);
 	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
+	
+	$selrekkas = $_REQUEST['rekkas']; // selected rekening kas
 		
 	if ($jcicilan == $besar) 
 	{
-		$sql = "UPDATE penerimaaniuran SET tanggal='$tcicilan', keterangan='$kcicilan', alasan='$alasan', petugas = '$petugas' WHERE replid=$idpembayaran";
-		$result = QueryDb($sql);
+		//--------------------------------------------------------------
+		// Hanya mengubah informasi pembayaran tanpa mengubah besarnya  
+		// -------------------------------------------------------------
 		
-		if ($result) 
+		BeginTrans();
+		$success = true;
+		
+		$sql = "UPDATE penerimaaniuran
+				   SET tanggal='$tcicilan', keterangan='$kcicilan',
+					   alasan='$alasan', petugas = '$petugas'
+				 WHERE replid=$idpembayaran";
+		$result = QueryDbTrans($sql, $success);
+		
+		// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+		$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+		if ($success && $rekkas != $selrekkas)
+		{
+			$sql = "UPDATE jurnaldetail
+					   SET koderek='$selrekkas'
+					 WHERE idjurnal='$idjurnal'
+					   AND koderek='$rekkas'
+					   AND kredit=0";
+			QueryDbTrans($sql, $success);	
+		}
+		
+		if ($success) 
 		{
 			CommitTrans();
 			CloseDb();
@@ -93,19 +129,46 @@ if (1 == (int)$_REQUEST['issubmit'])
 	} 
 	else 
 	{
+		//----------------------------
+		// Mengubah besar pembayaran  
+		// ---------------------------
 		
 		BeginTrans();
-		$success = 0;
+		$success = true;
 		
-		$sql = "UPDATE penerimaaniuran SET tanggal='$tcicilan', jumlah='$jcicilan', keterangan='$kcicilan', alasan='$alasan', petugas = '$petugas' WHERE replid='$idpembayaran'";
-		
+		$sql = "UPDATE penerimaaniuran
+				   SET tanggal='$tcicilan', jumlah='$jcicilan',
+					   keterangan='$kcicilan', alasan='$alasan', petugas='$petugas'
+				 WHERE replid='$idpembayaran'";
 		QueryDbTrans($sql, $success);
 		
-		$sql = "UPDATE jurnaldetail SET debet='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
-		if ($success) QueryDbTrans($sql, $success);
+		// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+		$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+		$rekpendapatan = AmbilKodeRekJurnal($idjurnal, "PENDAPATAN", $idpenerimaan);
 		
-		$sql = "UPDATE jurnaldetail SET kredit='$jcicilan' WHERE idjurnal='$idjurnal' AND koderek='$rekpendapatan' AND debet=0";
-		if ($success) QueryDbTrans($sql, $success);
+		if ($success)
+		{
+			$sql = "UPDATE jurnaldetail
+					   SET debet='$jcicilan'
+					 WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
+			QueryDbTrans($sql, $success);
+		}
+		
+		if ($success && $selrekkas != $rekkas)
+		{
+			$sql = "UPDATE jurnaldetail
+					   SET koderek='$selrekkas'
+					 WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
+			QueryDbTrans($sql, $success);
+		}
+		
+		if ($success)
+		{
+			$sql = "UPDATE jurnaldetail
+					   SET kredit='$jcicilan'
+					 WHERE idjurnal='$idjurnal' AND koderek='$rekpendapatan' AND debet=0";
+			QueryDbTrans($sql, $success);
+		}
 		
 		if ($success) 
 		{
@@ -127,7 +190,6 @@ if (1 == (int)$_REQUEST['issubmit'])
 		}
 	}
 }
-CloseDb();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -144,7 +206,7 @@ CloseDb();
 <script language="javascript" src="script/tooltips.js"></script>
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <!--<link rel="stylesheet" type="text/css" href="style/calendar-win2k-1.css">-->
 <script type="text/javascript" src="script/calendar.js"></script>
@@ -242,6 +304,24 @@ function focusNext(elemName, evt)
         <input type="hidden" name="angkacicilan" id="angkacicilan" value="<?=$jbayar?>" />
         </td>
     </tr>
+	<tr>
+        <td><strong>Rek. Kas</strong></td>
+        <td colspan="2">
+			<select name="rekkas" id="rekkas" style="width: 200px">
+<?				OpenDb();
+				$sql = "SELECT kode, nama
+                          FROM jbsfina.rekakun
+                         WHERE kategori = 'HARTA'
+                         ORDER BY nama";        
+                $res = QueryDb($sql);
+                while($row = mysql_fetch_row($res))
+                {
+                    $sel = $row[0] == $defrekkas ? "selected" : "";
+                    echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+                } ?>                
+            </select>
+		</td>
+    </tr>
     <tr>
         <td align="left"><strong>Tanggal</strong></td>
         <td>
@@ -299,3 +379,6 @@ var sprytextfield1 = new Spry.Widget.ValidationTextField("jcicilan");
 var sprytextarea1 = new Spry.Widget.ValidationTextarea("kcicilan");
 var sprytextarea1 = new Spry.Widget.ValidationTextarea("alasan");
 </script>
+<?
+CloseDb();
+?>

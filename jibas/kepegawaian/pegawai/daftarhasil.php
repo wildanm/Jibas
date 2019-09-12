@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -80,6 +80,8 @@ function ShowPegawai(nip,replid)
 	else if (menu == 10)
 		parent.daftarisi.location.href = "daftarkeluarga.php?nip=" + nip;
 	else if (menu == 11)
+		parent.daftarisi.location.href = "daftarpresensi.php?nip=" + nip;				
+	else if (menu == 12)
 		parent.daftarisi.location.href = "daftarsemua.php?nip=" + nip;			
 }
 

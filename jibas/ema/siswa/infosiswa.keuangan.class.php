@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -48,7 +48,9 @@ class CK
 		$check_nis = $_SESSION["infosiswa.nis"];
 		do
 		{
-			$sql = "SELECT replid, departemen, nislama FROM riwayatdeptsiswa WHERE nis='$check_nis'";
+			$sql = "SELECT replid, departemen, IF(nislama IS NULL, '', nislama) AS nislama
+					  FROM riwayatdeptsiswa
+					 WHERE nis='$check_nis'";
 			$result = QueryDb($sql);
 			$nrow = mysql_num_rows($result);
 			if ($nrow > 0)
@@ -56,7 +58,10 @@ class CK
 				$row = mysql_fetch_array($result);
 				$this->arrdept[] = array($row['departemen'], $check_nis);
 				
-				$check_nis = $row['nislama'];
+				if (strlen($row['nislama']) > 0)
+					$check_nis = $row['nislama'];
+				else
+					$nrow = 0;
 			}
 		}
 		while($nrow > 0);
@@ -126,7 +131,6 @@ class CK
 			<td valign="top" background="" style="background-repeat:no-repeat; background-attachment:fixed">
 
             <div align="right"><a href="javascript:CetakKeuangan()"><img src="../img/print.png" border="0" />&nbsp;Cetak</a></div>			
-			<table class="tab" id="table" border="1"  width="100%" align="center">
 <?
 			$sql =	"SELECT DISTINCT b.replid, b.besar, b.lunas, b.keterangan, d.nama
 					   FROM jbsfina.besarjtt b, jbsfina.penerimaanjtt p, jbsfina.datapenerimaan d
@@ -170,7 +174,7 @@ class CK
 					$byrakhir = $row2[0];
 					$tglakhir = $row2[1];
 				};	?>
-		   
+                <table class="tab" id="table" border="1"  width="100%" align="center">
 				<tr height="35">
 					<td colspan="4" bgcolor="#99CC00" class="header"><font size="2"><strong><em><?=$namapenerimaan?></em></strong></font></td>
 				</tr>    
@@ -183,8 +187,8 @@ class CK
 				<tr height="25">
 					<td bgcolor="#CCFF66"><strong>Jumlah Besar Pembayaran</strong> </td>
 					<td bgcolor="#FFFFFF" align="right"><?=FormatRupiah($pembayaran) ?></td>
-					<td bgcolor="#FFFFFF" align="center" valign="top" rowspan="2"><?=FormatRupiah($byrakhir) . "<br><i>" . $tglakhir . "</i>" ?> </td>
-					<td bgcolor="#FFFFFF" align="left" valign="top" rowspan="2"><?=$keterangan ?></td>
+					<td bgcolor="#FFFFFF" align="center" valign="top" rowspan="3"><?=FormatRupiah($byrakhir) . "<br><i>" . $tglakhir . "</i>" ?> </td>
+					<td bgcolor="#FFFFFF" align="left" valign="top" rowspan="3"><?=$keterangan ?></td>
 				</tr>
 				<tr height="25">
 					<td bgcolor="#CCFF66"><strong>Jumlah Diskon</strong> </td>
@@ -197,6 +201,7 @@ class CK
 				<tr height="3">
 					<td colspan="4" bgcolor="#E8E8E8">&nbsp;</td>
 				</tr>
+                </table>
 <? 			} //while iuran wajib
 		
 			$sql =	"SELECT DISTINCT p.idpenerimaan, d.nama
@@ -239,7 +244,7 @@ class CK
 					$byrakhir = $row2[0];
 					$tglakhir = $row2[1];
 				};	?>
-				
+                <table class="tab" id="table" border="1"  width="100%" align="center">
 				<tr height="35">
 					<td colspan="4" bgcolor="#99CC00" class="header"><font size="2"><strong><em><?=$namapenerimaan?></em></strong></font></td>
 				</tr>  
@@ -256,8 +261,107 @@ class CK
 				<tr height="3">
 					<td colspan="4" bgcolor="#E8E8E8">&nbsp;</td>
 				</tr>
+                </table>
 <?			} //while iuran sukarela ?>
-			</table>
+
+<?
+                // TABUNGAN SISWA
+                $sql =	"SELECT DISTINCT t.idtabungan, d.nama
+                           FROM jbsfina.tabungan t, jbsfina.jurnal j, jbsfina.datatabungan d
+                          WHERE t.idtabungan = d.replid
+                            AND t.idjurnal = j.replid
+                            AND j.idtahunbuku = '$idtahunbuku'
+                            AND t.nis = '$nis'
+                          ORDER BY nama";
+
+                $result = QueryDb($sql);
+                while ($row = mysql_fetch_array($result))
+                {
+                    $idTab = $row['idtabungan'];
+                    $nmTab = $row['nama'];
+
+                    $totsetor = 0;
+                    $tottarik = 0;
+                    $saldo = 0;
+                    $sql = "SELECT SUM(debet), SUM(kredit)
+                              FROM jbsfina.tabungan
+                             WHERE idtabungan = '$idTab'
+                               AND nis = '$nis'";
+                    $res = QueryDb($sql);
+                    if ($row = mysql_fetch_row($res))
+                    {
+                        $tottarik = $row[0];
+                        $totsetor = $row[1];
+                        $saldo = $totsetor - $tottarik;
+                    }
+
+                    $lastsetor = 0;
+                    $tgllastsetor = "";
+                    $sql = "SELECT kredit, DATE_FORMAT(tanggal, '%d-%b-%Y %H:%i:%s')
+                              FROM jbsfina.tabungan
+                             WHERE idtabungan = '$idTab'
+                               AND nis = '$nis'
+                               AND kredit <> 0
+                             ORDER BY replid DESC
+                             LIMIT 1";
+                    $res = QueryDb($sql);
+                    if ($row = mysql_fetch_row($res))
+                    {
+                        $lastsetor = $row[0];
+                        $tgllastsetor = $row[1];
+                    }
+
+                    $lasttarik = 0;
+                    $tgllasttarik = "";
+                    $sql = "SELECT debet, DATE_FORMAT(tanggal, '%d-%b-%Y %H:%i:%s')
+                              FROM jbsfina.tabungan
+                             WHERE idtabungan = '$idTab'
+                               AND nis = '$nis'
+                               AND debet <> 0
+                             ORDER BY replid DESC
+                             LIMIT 1";
+                    $res = QueryDb($sql);
+                    if ($row = mysql_fetch_row($res))
+                    {
+                        $lasttarik = $row[0];
+                        $tgllasttarik = $row[1];
+                    }
+
+                    ?>
+
+                    <table class="tab" id="table" border="1"  width="100%" align="center">
+                        <tr height="35">
+                            <td colspan="4" bgcolor="#99CC00" class="header"><font size="2"><strong><em><?=$nmTab?></em></strong></font></td>
+                        </tr>
+                        <tr height="25">
+                            <td width="17%" bgcolor="#CCFF66"><strong>Total Setoran</strong> </td>
+                            <td width="22%" bgcolor="#FFFFFF" align="right"><strong><?=FormatRupiah($totsetor) ?></strong></td>
+                            <td width="22%" bgcolor="#CCFF66" align="center"><strong>Saldo Tabungan</strong></td>
+                            <td width="*" bgcolor="#CCFF66" align="center"><strong>Keterangan</strong></td>
+                        </tr>
+                        <tr height="25">
+                            <td bgcolor="#CCFF66"><strong>Setoran Terakhir</strong> </td>
+                            <td bgcolor="#FFFFFF" align="right"><strong><?=FormatRupiah($lastsetor) ?></strong><br><i><?=$tgllastsetor?></i></td>
+                            <td bgcolor="#FFFFFF" align="right" valign="top" rowspan="3">
+                                <font style='font-size:14px; font-weight: bold;'><?=FormatRupiah($saldo) ?></font>
+                            </td>
+                            <td bgcolor="#FFFFFF" align="right" valign="top" rowspan="3">
+                                &nbsp;
+                            </td>
+                        </tr>
+                        <tr height="25">
+                            <td bgcolor="#CCFF66"><strong>Total Tarikan</strong> </td>
+                            <td bgcolor="#FFFFFF" align="right"><strong><?=FormatRupiah($tottarik) ?></strong></td>
+                        </tr>
+                        <tr height="25">
+                            <td bgcolor="#CCFF66"><strong>Tarikan Terakhir</strong> </td>
+                            <td bgcolor="#FFFFFF" align="right"><strong><?=FormatRupiah($lasttarik)?></strong><br><i><?=$tgllasttarik?></i></td>
+                        </tr>
+                        <tr height="3">
+                            <td colspan="4" bgcolor="#E8E8E8">&nbsp;</td>
+                        </tr>
+                    </table>
+<?			} //while tabungan ?>
 			</tr>
 		</td>
 		</table>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -372,7 +372,7 @@ function panggil(elem, total)
 -->
 </style>
 </head>
-<body topmargin="0" leftmargin="0" onLoad="document.getElementById('PK_1').focus()">
+<body topmargin="5" leftmargin="5" onLoad="document.getElementById('PK_1').focus()">
 <form action="penentuan_content.php" method="get" onSubmit="return cek()">
 <input type="hidden" name="pelajaran" id="pelajaran" value="<?=$pelajaran?>">
 <input type="hidden" name="kelas" id="kelas" value="<?=$kelas?>">	 

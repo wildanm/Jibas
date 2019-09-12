@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -34,6 +34,16 @@ require_once('include/sessioninfo.php');
 OpenDb();
 
 $idpembayaran = $_REQUEST['idpembayaran'];
+
+// -- Default Rekening Kas using value from previous input
+$sql = "SELECT jd.koderek
+		  FROM jbsfina.penerimaanjttcalon p, jbsfina.jurnal j, jbsfina.jurnaldetail jd, rekakun rk
+	     WHERE p.replid = '$idpembayaran'
+		   AND p.idjurnal = j.replid
+		   AND j.replid = jd.idjurnal
+		   AND jd.koderek = rk.kode
+		   AND rk.kategori = 'HARTA'";
+$defrekkas = FetchSingle($sql);
 
 $sql = "SELECT c.nopendaftaran, b.besar, b.lunas, p.idbesarjttcalon, c.nama, p.idjurnal, p.jumlah, date_format(p.tanggal, '%d-%m-%Y') as tanggal, 
                p.keterangan, pn.nama as namapenerimaan, pn.rekkas, pn.rekpendapatan, pn.rekpiutang, pn.info1 AS rekdiskon,
@@ -96,18 +106,38 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$alasan = CQ($_REQUEST['alasan']);
 	$petugas = getUserName();
 	
+	$selrekkas = $_REQUEST['rekkas']; // selected rekening kas
+	
 	if ($jbayar == $besar && $jdiskon == $besardiskon) 
 	{
 		//--------------------------------------------------------------
 		// Hanya mengubah informasi pembayaran tanpa mengubah besarnya  
 		// -------------------------------------------------------------
 		
-		$sql = "UPDATE penerimaanjttcalon SET tanggal='$tcicilan', keterangan='$kcicilan', 
-		        alasan='$alasan', petugas = '$petugas' WHERE replid=$idpembayaran";
+		BeginTrans();
+		$success = true;
+		
+		$sql = "UPDATE penerimaanjttcalon
+				   SET tanggal='$tcicilan', keterangan='$kcicilan', 
+					   alasan='$alasan', petugas = '$petugas'
+				 WHERE replid=$idpembayaran";
 		$result = QueryDb($sql);
 		
-		if ($result) 
+		// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+		$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+		if ($success && $rekkas != $selrekkas)
 		{
+			$sql = "UPDATE jurnaldetail
+					   SET koderek='$selrekkas'
+					 WHERE idjurnal='$idjurnal'
+					   AND koderek='$rekkas'
+					   AND kredit=0";
+			QueryDbTrans($sql, $success);	
+		}
+		
+		if ($success) 
+		{
+			CommitTrans();
 			CloseDb();
 			echo  "<script language='javascript'>";
 			echo  "opener.refresh();";
@@ -117,9 +147,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 		} 
 		else 
 		{
+			RollbackTrans();
 			CloseDb();
 			echo  "<script language='javascript'>";
-			echo  "alert('Gagal mengubah data');";
+			echo  "alert('Gagal mengubah data!');";
 			echo  "</script>";
 			exit();
 		}
@@ -162,9 +193,14 @@ if (1 == (int)$_REQUEST['issubmit'])
 					if ($row[0] == $idpembayaran)
 						break;
 				}
-				$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan calon siswa $namasiswa ($nis)";
+				$ketjurnal = "Pembayaran ke-$cicilan $namapenerimaan calon siswa $namasiswa ($nis)";
 				$lunas = 0;
 			}
+			
+			// Ambil kode rekening dari jurnal bukan dari datapenerimaan
+			$rekkas = AmbilKodeRekJurnal($idjurnal, "HARTA", $idpenerimaan);
+			$rekpiutang = AmbilKodeRekJurnal($idjurnal, "PIUTANG", $idpenerimaan);
+			$rekdiskon = AmbilKodeRekJurnal($idjurnal, "DISKON", $idpenerimaan);
 				
 			BeginTrans();
 			$success = true;
@@ -189,6 +225,12 @@ if (1 == (int)$_REQUEST['issubmit'])
 			if ($success)
 			{
 				$sql = "UPDATE jurnaldetail SET debet='$jbayar' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
+				QueryDbTrans($sql, $success);	
+			}
+			
+			if ($success && $rekkas != $selrekkas)
+			{
+				$sql = "UPDATE jurnaldetail SET koderek='$selrekkas' WHERE idjurnal='$idjurnal' AND koderek='$rekkas' AND kredit=0";
 				QueryDbTrans($sql, $success);	
 			}
 			
@@ -238,11 +280,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 				echo  "<script language='javascript'>";
 				echo  "alert('Gagal menyimpan data!);";
 				echo  "</script>";
-			}
-		}
-	}
-}
-
+			} // if ($success)
+		} // if ($totalcicilan + $totaldiskon + $jbayar + $jdiskon > $besarjtt)	
+	} // if ($jbayar == $besar && $jdiskon == $besardiskon)
+} // if (1 == (int)$_REQUEST['issubmit'])  
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -259,7 +300,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 <script src="script/tooltips.js" language="javascript"></script>
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
@@ -294,7 +335,7 @@ function validasiAngka()
 		document.getElementById('jcicilan').focus();
 		return false;
 	}
-	else if(angka < 0)
+	else if(parseInt(angka) < 0)
 	{
 		alert ('Besar cicilan tidak boleh negatif!');
 		document.getElementById('jcicilan').focus();
@@ -309,12 +350,20 @@ function validasiAngka()
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
-	else if(diskon < 0)
+	else if(parseInt(diskon) < 0)
 	{
 		alert ('Besar diskon tidak boleh negatif!');
 		document.getElementById('jdiskon').focus();
 		return false;
 	}
+	
+	if (parseInt(diskon) > parseInt(angka))
+	{
+		alert ('Besar diskon tidak boleh lebih besar daripada besar cicilan!');
+		document.getElementById('jdiskon').focus();
+		return false;
+	}
+	
 	return true;
 }
 
@@ -402,6 +451,26 @@ function CalculatePay()
 			<input type="text" name="jbayar" id="jbayar" readonly="readonly" value="<?=$jbayar?>" style="background-color: #CCCCCC"/>
         </td>
     </tr>
+	<tr>
+        <td><strong>Rek. Kas</strong></td>
+        <td colspan="2">
+			<select name="rekkas" id="rekkas" style="width: 200px">
+<?              OpenDb();
+                $sql = "SELECT kode, nama
+                          FROM jbsfina.rekakun
+                         WHERE kategori = 'HARTA'
+                         ORDER BY nama";        
+                $res = QueryDb($sql);
+                while($row = mysql_fetch_row($res))
+                {
+                    $sel = $row[0] == $defrekkas ? "selected" : "";
+                    echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+                }
+                CloseDb();
+                ?>                
+            </select>
+		</td>
+    </tr>	
     <tr>
         <td><strong>Tanggal</strong></td>
         <td>

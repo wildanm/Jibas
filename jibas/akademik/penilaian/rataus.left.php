@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -105,9 +105,10 @@ if (isset($_REQUEST['nis']))
 </table>
 </div>
 <div>
-<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
-  <tr>
-    <td height="25" align="center" class="headerlink2" style="cursor:default">Pelajaran</td>
+<strong>Pelajaran:</strong>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table" style="border-collapse: collapse; border-width: 1px; border-color: #f5f5f5;">
+  <tr style="height: 2px;">
+    <td></td>
   </tr>
 <?
 $sql = "SELECT DISTINCT p.replid, n.nis, u.idkelas, p.nama FROM ujian u, pelajaran p, nilaiujian n WHERE u.idpelajaran = p.replid AND u.idkelas = '$kls' AND u.replid = n.idujian AND n.nis='$nis' ORDER BY p.nama";

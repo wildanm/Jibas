@@ -3,7 +3,7 @@
  * JIBAS Education Community 
  * Jaringan Informasi Bersama Antar Sekolah 
  *  
- * @version: 3.0 (January 09, 2013) 
+ * @version: 18.0 (August 01, 2019) 
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
@@ -24,7 +24,7 @@
 /* Direktori tempat penyimpanan file-file FileSharing
    Direktori slashes di sistem operasi Linux menggunakan /
    sedangkan di Windows bisa menggunakan \\ dan /   */
-$FILESHARE_UPLOAD_DIR = "C:/YIM/JIBAS/xampp/htdocs/filesharing/";
+$FILESHARE_UPLOAD_DIR = "C:\\YIM\\JIBAS\\xampp\\htdocs\\filesharing\\";
  
 /* Alamat web based dari direktori tempat penyimpanan file-file FileSharing 
    PERHATIAN:

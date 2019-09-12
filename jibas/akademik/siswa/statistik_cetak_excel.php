@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -25,6 +25,7 @@ require_once('../include/sessioninfo.php');
 require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
+
 /**/
 header('Content-Type: application/vnd.ms-excel'); //IE and Opera  
 header('Content-Type: application/x-msexcel'); // Other browsers  
@@ -38,13 +39,11 @@ $departemen=$_REQUEST['departemen'];
 $dasar = $_REQUEST['dasar'];
 $judul = $_REQUEST['judul'];
 
-$str = array("'","+");
-$str_replace = array("\'","x123x");	
+$str_search = array("'","+", "`");
+$str_replace = array("\'", "x123x", "'");
 
-$query1 = str_replace($str_replace, $str, $_REQUEST['sql']);
+$query1 = str_replace($str_search, $str_replace, $_REQUEST['sql']);
 $result1 = QueryDb($query1);
-//echo "XXXXXXXXX ".$query1;
-
 ?>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">

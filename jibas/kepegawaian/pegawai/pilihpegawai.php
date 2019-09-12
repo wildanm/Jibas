@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -93,12 +93,23 @@ if (strlen($nip) > 0 || strlen($nama) > 0 || $all == 1)
 </tr>
 <?
 	if ($all == 1) 
-		$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama FROM pegawai ORDER BY nama";
+		$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama
+				  FROM pegawai
+				 WHERE aktif = 1 
+				 ORDER BY nama";
 	else
 		if (strlen($nama) > 0)
-			$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama FROM pegawai WHERE nama LIKE '%$nama%' ORDER BY nama";
+			$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama
+					  FROM pegawai
+					 WHERE nama LIKE '%$nama%'
+					   AND aktif = 1
+					 ORDER BY nama";
 		elseif (strlen($nip) > 0)
-			$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama FROM pegawai WHERE nip LIKE '%$nip%' ORDER BY nama";
+			$sql = "SELECT nip, TRIM(CONCAT(IFNULL(gelarawal, ''), ' ' , nama, ' ', IFNULL(gelarakhir,''))) AS fnama
+					  FROM pegawai
+					 WHERE nip LIKE '%$nip%'
+					   AND aktif = 1
+					 ORDER BY nama";
 	OpenDb();
 	$result = QueryDb($sql);
 	$cnt = 0;

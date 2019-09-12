@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -75,7 +75,7 @@ function semua() {
 </script>
 </head>
 
-<body onload="document.getElementById('departemen').focus()">
+<body onload="document.getElementById('departemen').focus()" style="background-color: #f5f5f5;">
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
 <tr>
@@ -96,7 +96,7 @@ function semua() {
 
 <? 
 	OpenDb();
-	$sql = "SELECT replid,nama,aktif FROM pelajaran WHERE departemen = '$departemen' ORDER BY nama ASC, aktif DESC";    
+	$sql = "SELECT replid,nama,aktif,kode FROM pelajaran WHERE departemen = '$departemen' ORDER BY nama ASC, aktif DESC";
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {
 ?>
@@ -107,13 +107,13 @@ function semua() {
 <tr>
 	<td>
     
-	<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
+	<table class="tab" id="table" border="1" style="border-collapse:collapse; border-width: 1px; border-color: #f5f5f5;" width="100%" align="left" bordercolor="#000000">
     <!-- TABLE CONTENT -->
     
     <tr height="30">    	
-    	<td width="4%" class="header" align="center">No</td>
+    	<td width="15%" class="header" align="center">Kode</td>
         <td width="*" class="header" align="center">Pelajaran</td>
-        <td width="10%" class="header" align="center">Status</td>
+        <td width="12%" class="header" align="center">Status</td>
     </tr>
     
      <?
@@ -123,8 +123,8 @@ function semua() {
 		while ($row = @mysql_fetch_array($result)) {
 	?>
     <tr height="25">   	
-       	<td align="center"><?=++$cnt ?></td>
-        <td align="center" onclick="tampil(<?=$row['replid']?>)" style="cursor:pointer">
+       	<td align="left"><?=$row['kode'] ?></td>
+        <td align="left" onclick="tampil(<?=$row['replid']?>)" style="cursor:pointer">
         <u><b><?=$row['nama']?></b></u>
         <!--<a href="guru_content.php?id=<?=$row['replid']?>&departemen=<?=$departemen?>&aktif=<?=$aktif?>" target = "isi" ><?=$row['nama']?></a>--></td>
         <td align="center"><? if ($row['aktif'] == 1) 

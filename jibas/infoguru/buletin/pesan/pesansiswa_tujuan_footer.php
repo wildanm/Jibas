@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -79,8 +79,7 @@ function cek_all() {
   <tr>
     <th width="18%" height="30" class="header" scope="row">No</th>
     <td width="3%" height="30" class="header"><input type="checkbox" name="cek" id="cek" onClick="cek_all()" title="Pilih semua" onMouseOver="showhint('Pilih semua', this, event, '120px')"/></td>
-    <td width="26%" height="30" class="header">NIS</td>
-    <td width="53%" height="30" class="header">Nama</td>
+    <td width="*" height="30" class="header">Nama</td>
   </tr>
   <? 
 			OpenDb();
@@ -92,9 +91,11 @@ function cek_all() {
    <tr>
     <th height="25" scope="row"><?=$cnt?></th>
     <td height="25"><input type="checkbox" name="ceknis<?=$cnt?>" id="ceknis<?=$cnt?>"/></td>
-    <td height="25"><?=$row['nis']?><input type="hidden" name="nis<?=$cnt?>" id="nis<?=$cnt?>" value="<?=$row['nis']?>"/>
-      <input type="hidden" name="kirimin<?=$cnt?>" id="kirimin<?=$cnt?>"/></td>
-    <td height="25"><?=$row['nama']?></td>
+    <td height="25">
+		<?=$row['nis']?><br>
+		<strong><?=$row['nama']?></strong>
+		<input type="hidden" name="nis<?=$cnt?>" id="nis<?=$cnt?>" value="<?=$row['nis']?>"/>
+		<input type="hidden" name="kirimin<?=$cnt?>" id="kirimin<?=$cnt?>"/></td>
   </tr>
   <? 
   $cnt++;

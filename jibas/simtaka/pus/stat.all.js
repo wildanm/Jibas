@@ -1,4 +1,5 @@
-function chg(){
+function chg()
+{
 	var perpustakaan=document.getElementById('perpustakaan').value;
 	var BlnAwal = document.getElementById('BlnAwal').value;
 	var ThnAwal = document.getElementById('ThnAwal').value;
@@ -6,7 +7,9 @@ function chg(){
 	var ThnAkhir = document.getElementById('ThnAkhir').value;
 	document.location.href = "stat.all.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir;
 }
-function show(){
+
+function show()
+{
 	var perpustakaan = document.getElementById('perpustakaan').value;
 	var BlnAwal = document.getElementById('BlnAwal').value;
 	var ThnAwal = document.getElementById('ThnAwal').value;
@@ -15,9 +18,12 @@ function show(){
 	document.location.href = "stat.all.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir+"&ShowState=true";
 }
 
-function ViewList(waktu){
+function ViewList(waktu)
+{
+	var idperpustakaan = document.getElementById('perpustakaan').value;
+	
 	show_wait("ListInfo");
-	sendRequestText("GetAllList.php", showList, "waktu="+waktu);					
+	sendRequestText("GetAllList.php", showList, "idperpustakaan="+idperpustakaan+"&waktu="+waktu);					
 }
 
 function showList(x) {

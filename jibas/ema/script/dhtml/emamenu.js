@@ -7,10 +7,13 @@ stm_aix("p1i1","p1i0",[0,"Statistik Kesiswaan","","",-1,-1,0,"siswa/stat.php"],0
 stm_aix("p1i2","p1i0",[0,"Statistik Nilai Rapor Siswa","","",-1,-1,0,"siswa/statnilai.php"],0,2);
 stm_aix("p1i3","p1i0",[0,"Rata-rata Nilai Siswa","","",-1,-1,0,"siswa/rataus.top.php"],0,2);
 stm_ep();
-stm_aix("p0i1","p0i0",[0,"Kepegawaian "]);
+stm_aix("p0i1","p0i0",[0,"Kepegawaian ","","",-1,-1,0,"kepegawaian.php","content","","","","",0,0,0,"","",0,0]);
 stm_bpx("p2","p1",[]);
-stm_aix("p2i0","p1i0",[0,"Laporan Presensi Guru","","",-1,-1,0,"pegawai/lappengajar.php","content","","","","",0,0,0,"","",0,0,0,0,1,"#515151",0,"#becfbe",0,"","",0,0,0,0,"#E6EFF9","#000000"]);
+stm_aix("p2i0","p1i0",[0,"Laporan Presensi Mangajar","","",-1,-1,0,"k/lappengajar.php","content","","","","",0,0,0,"","",0,0,0,0,1,"#515151",0,"#becfbe",0,"","",0,0,0,0,"#E6EFF9","#000000"]);
 stm_aix("p2i1","p2i0",[0,"Statistik Kepegawaian","","",-1,-1,0,"pegawai/statpegawai.php"]);
+stm_aix("p2i2","p2i0",[0,"Daftar Urut Kepangkatan","","",-1,-1,0,"pegawai/duk_pangkat.php"]);
+stm_aix("p2i3","p2i0",[0,"Laporan Presensi Harian","","",-1,-1,0,"pegawai/lap_harian.php"]);
+stm_aix("p2i4","p2i0",[0,"Laporan Presensi Kegiatan","","",-1,-1,0,"pegawai/lap_kegiatan.php"]);
 stm_ep();
 stm_aix("p0i2","p0i0",[0,"Keuangan     "]);
 stm_bpx("p3","p1",[1,4,0,0,0,5,0,7]);

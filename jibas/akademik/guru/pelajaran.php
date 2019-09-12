@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -230,7 +230,11 @@ function change_baris() {
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql = "SELECT replid,kode,nama,sifat,keterangan,aktif FROM pelajaran WHERE departemen='$departemen' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";  
+	$sql = "SELECT p.replid, p.kode, p.nama, p.sifat, p.keterangan, p.aktif, k.kelompok 
+              FROM pelajaran p, kelompokpelajaran k
+             WHERE p.idkelompok = k.replid
+               AND p.departemen = '$departemen' 
+             ORDER BY $urut $urutan LIMIT " . (int)$page * (int)$varbaris . ", $varbaris";
 	$result = QueryDb($sql);
 	if (@mysql_num_rows($result) > 0){
 ?>
@@ -248,11 +252,12 @@ function change_baris() {
     <!-- TABLE CONTENT -->
     <tr height="30" align="center" class="header">
     	<td width="4%">No</td>
-        <td width="8%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('kode','<?=$urutan?>')">Singkatan <?=change_urut('kode',$urut,$urutan)?></td>
-        <td width="25%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('nama','<?=$urutan?>')">Nama <?=change_urut('nama',$urut,$urutan)?></td>
-        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('sifat','<?=$urutan?>')">Sifat <?=change_urut('sifat',$urut,$urutan)?></td>
+        <td width="8%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('p.kode','<?=$urutan?>')">Singkatan <?=change_urut('p.kode',$urut,$urutan)?></td>
+        <td width="25%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('p.nama','<?=$urutan?>')">Nama <?=change_urut('p.nama',$urut,$urutan)?></td>
+        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('p.sifat','<?=$urutan?>')">Sifat <?=change_urut('p.sifat',$urut,$urutan)?></td>
+        <td width="15%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('k.kelompok','<?=$urutan?>')">Kelompok Pelajaran <?=change_urut('k.kelompok',$urut,$urutan)?></td>
         <td width="*" >Keterangan</td> 
-        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('aktif','<?=$urutan?>')">Status <?=change_urut('aktif',$urut,$urutan)?></td>
+        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" onClick="change_urut('p.aktif','<?=$urutan?>')">Status <?=change_urut('p.aktif',$urut,$urutan)?></td>
         <?	//if (SI_USER_LEVEL() != $SI_USER_STAFF) { ?>
         <td width="8%">&nbsp;</td>
         <?	//} ?>
@@ -277,6 +282,7 @@ function change_baris() {
 					echo 'Tambahan';
 			?>		
         </td>
+        <td><?=$row['kelompok']?></td>
         <td><?=$row['keterangan']?></td> 
         <td align="center">
 <?		if (SI_USER_LEVEL() == $SI_USER_STAFF) {  

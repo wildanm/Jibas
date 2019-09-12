@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -45,16 +45,65 @@ if ($idkategori == "CSWJB" || $idkategori == "CSSKR")
 <script src="script/SpryValidationSelect.js" type="text/javascript"></script>
 <link href="script/SpryValidationSelect.css" rel="stylesheet" type="text/css" />
 <script src="script/ajax.js" type="text/javascript"></script>
+<script src="script/jquery-1.9.0.js" type="text/javascript"></script>
 <script language="javascript">
 
 function pilih(id) {	
 	parent.content.location.href = "pembayaran_decide.php?id="+id+"&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&idtahunbuku=<?=$idtahunbuku?>&status=<?=$status?>";		
 }
 
+function scanBarcode(e)
+{
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode != 13)
+        return;
+
+    var kode = $.trim($('#txBarcode').val());
+    if (kode.length == 0)
+        return;
+
+    var data = "idkategori=<?=$idkategori?>&departemen=<?=$departemen?>&kode=" + kode;
+
+    $('#spScanInfo').html("");
+
+    $.ajax({
+        url: "library/scanbarcode.ajax.php",
+        type: 'GET',
+        data: data,
+        success: function (response)
+        {
+            $('#txBarcode').val('');
+
+            var data = $.parseJSON(response);
+            if (data.status == "1")
+            {
+                parent.content.location.href = "pembayaran_decide.php?id="+data.userid+"&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&idtahunbuku=<?=$idtahunbuku?>&status=<?=$status?>";
+            }
+            else
+            {
+                $('#spScanInfo').html(data.message);
+                parent.content.location.href = "blank_pembayaran.php";
+            }
+        },
+        error: function (xhr, response, error)
+        {
+            alert(xhr.responseText);
+        }
+    });
+}
+
+$( document ).ready(function() {
+    setTimeout(function () {
+        $('#txBarcode').focus();
+    }, 300);
+
+});
+
+
 </script>
 </head>
 
-<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" style="background-color:#FFFFFF">
+<body leftmargin="0" topmargin="0" marginheight="0" marginwidth="0" style="background-color:#FFFFFF" onclick="document.getElementById('txBarcode').value = ''">
 <input type="hidden" id="idtahunbuku" value="<?=$idtahunbuku ?>" />
 <input type="hidden" id="idkategori" value="<?=$idkategori ?>" />
 <input type="hidden" id="idpenerimaan" value="<?=$idpenerimaan ?>" />
@@ -62,6 +111,25 @@ function pilih(id) {
 <table border="0" width="100%" align="center" cellspacing="2" cellpadding="2">
 <tr><td align="left">
  	<table border="0" cellpadding="2" bgcolor="#FFFFFF" cellspacing="0">
+    <tr>
+        <td align="left">
+            <fieldset>
+<?
+$info = "NIS";
+if ($idkategori == "CSWJB" || $idkategori == "CSSKR") $info = "No Calon Siswa";
+?>
+                <legend><strong>Scan Barcode <?=$info?>:</strong></legend>
+            <input name="txBarcode" id="txBarcode" type="text" style="width: 200px; font-size: 18px;"
+                   onfocus="this.style.background = '#27d1e5'"
+                   onblur="this.style.background = '#FFFFFF'"
+                   onkeyup="return scanBarcode(event)">
+            <br>
+            <span id="spScanInfo" name="spScanInfo" style="color: red"></span>
+            <br>
+            </fieldset>
+            <br>
+        </td>
+    </tr>
     <tr height="500">
     	<td valign="top" bgcolor="#FFFFFF">
         <div id="TabbedPanels1" class="TabbedPanels">
@@ -89,6 +157,7 @@ if (status == "Calon") {
 	sendRequestText("library/pilih_calonsiswa.php", show_panel0, "departemen=<?=$departemen?>");
 	sendRequestText("library/cari_calonsiswa.php", show_panel1, "departemen=<?=$departemen?>");
 } else {
+	
 	sendRequestText("library/pilih_siswa.php", show_panel0, "departemen=<?=$departemen?>");
 	sendRequestText("library/cari_siswa.php", show_panel1, "departemen=<?=$departemen?>");
 }

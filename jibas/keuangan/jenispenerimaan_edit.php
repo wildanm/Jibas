@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -47,7 +47,16 @@ if (isset($_REQUEST['simpan']))
 	{
 		$besar = $_REQUEST['besar'];
 		$besar = UnformatRupiah($besar);
-		$sql = "UPDATE datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',  rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', info1='$_REQUEST[norekdiskon]', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid=$id";
+		$smsinfo = isset($_REQUEST['smsinfo']) ? 1 : 0;
+		$sql = "UPDATE datapenerimaan
+				   SET nama='".CQ($_REQUEST['nama'])."',
+					   rekkas='$_REQUEST[norekkas]',
+					   rekpendapatan='$_REQUEST[norekpendapatan]',
+					   rekpiutang='$_REQUEST[norekpiutang]',
+					   info1='$_REQUEST[norekdiskon]',
+					   keterangan='".CQ($_REQUEST['keterangan'])."',
+					   info2='$smsinfo'
+				 WHERE replid=$id";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -78,6 +87,7 @@ $rekpendapatan = $row['rekpendapatan'];
 $rekpiutang = $row['rekpiutang'];
 $rekdiskon = $row['info1'];
 $keterangan = $row['keterangan'];
+$smsinfo = (int)$row['info2'];
 
 if (isset($_REQUEST['nama']))
 	$nama = $_REQUEST['nama'];
@@ -104,6 +114,38 @@ $sql = "SELECT nama FROM rekakun WHERE kode = '$rekdiskon'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namarekdiskon = $row[0];
+
+// ========================================================
+// CHECK WHETHER THIS DATA HAS BEEN USED?
+$idIsUsed = false;
+
+$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.besarjtt WHERE idpenerimaan = '$id' LIMIT 1)";
+$idIsUsed = (1 == (int)FetchSingle($sql));
+
+if (!$idIsUsed)
+{
+	$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.besarjttcalon WHERE idpenerimaan = '$id' LIMIT 1)";
+	$idIsUsed = (1 == (int)FetchSingle($sql));
+}
+
+if (!$idIsUsed)
+{
+	$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.penerimaaniuran WHERE idpenerimaan = '$id' LIMIT 1)";
+	$idIsUsed = (1 == (int)FetchSingle($sql));
+}
+
+if (!$idIsUsed)
+{
+	$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.penerimaaniurancalon WHERE idpenerimaan = '$id' LIMIT 1)";
+	$idIsUsed = (1 == (int)FetchSingle($sql));
+}
+
+if (!$idIsUsed)
+{
+	$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.penerimaanlain WHERE idpenerimaan = '$id' LIMIT 1)";
+	$idIsUsed = (1 == (int)FetchSingle($sql));
+}
+// ========================================================
 
 CloseDb();
 
@@ -227,43 +269,68 @@ function panggil(elem)
     <tr>
         <td align="left"><strong>Rek. Kas</strong></td>
         <td align="left">
-			<input type="text" name="rekkas" id="rekkas" value="<?=$rekkas . " " . $namarekkas ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(1,'HARTA');return focusNext('rekpendapatan', event)" onClick="cari_rek(1,'HARTA')" onFocus="panggil('rekkas')">&nbsp;
-			<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="text" name="rekkas" id="rekkas" value="<?=$rekkas . " " . $namarekkas ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onFocus="panggil('rekkas')">&nbsp;
+<?			if (!$idIsUsed) { ?>			
+				<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>						
 			<input type="hidden" name="norekkas" id="norekkas"  value="<?=$rekkas ?>" />
         </td>
     </tr>
     <tr>
         <td align="left"><strong>Rek. Pendapatan</strong></td>
         <td align="left">
-			<input type="text" name="rekpendapatan" id="rekpendapatan" value="<?=$rekpendapatan  . " " . $namarekpendapatan ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onKeyPress="cari_rek(2,'PENDAPATAN');return focusNext('rekpiutang', event)" onClick="cari_rek(2,'PENDAPATAN')" onFocus="panggil('rekpendapatan')">&nbsp;
-			<a href="#" onClick="JavaScript:cari_rek(2,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="text" name="rekpendapatan" id="rekpendapatan" value="<?=$rekpendapatan  . " " . $namarekpendapatan ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onFocus="panggil('rekpendapatan')">&nbsp;
+<?			if (!$idIsUsed) { ?>						
+				<a href="#" onClick="JavaScript:cari_rek(2,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>						
 			<input type="hidden" name="norekpendapatan" id="norekpendapatan" value="<?=$rekpendapatan ?>" />
         </td>
     </tr>
     <tr>
         <td align="left"><strong>Rek. Piutang</strong></td>
         <td align="left">
-			<input type="text" name="rekpiutang" id="rekpiutang" value="<?=$rekpiutang . " " . $namarekpiutang ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onKeyPress="cari_rek(3,'PIUTANG');return focusNext('rekdiskon', event)" onClick="cari_rek(3,'PIUTANG')" onFocus="panggil('rekpiutang')">&nbsp;
-			<a href="#" onClick="JavaScript:cari_rek(3,'PIUTANG')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="text" name="rekpiutang" id="rekpiutang" value="<?=$rekpiutang . " " . $namarekpiutang ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30" onFocus="panggil('rekpiutang')">&nbsp;
+<?			if (!$idIsUsed) { ?>						
+				<a href="#" onClick="JavaScript:cari_rek(3,'PIUTANG')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>						
 			<input type="hidden" name="norekpiutang" id="norekpiutang" value="<?=$rekpiutang ?>" />
         </td>
     </tr>
 	<tr>
         <td align="left"><strong>Rek. Diskon</strong></td>
         <td align="left">
-			<input type="text" name="rekdiskon" id="rekdiskon" value="<?=$rekdiskon  . " " . $namarekdiskon ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onKeyPress="cari_rek(4,'PENDAPATAN');return focusNext('keterangan', event)" onClick="cari_rek(4,'PENDAPATAN')" onFocus="panggil('rekdiskon')">&nbsp;
-			<a href="#" onClick="JavaScript:cari_rek(4,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+			<input type="text" name="rekdiskon" id="rekdiskon" value="<?=$rekdiskon  . " " . $namarekdiskon ?>" readonly style="background-color:#CCCC99" maxlength="100" size="30"  onFocus="panggil('rekdiskon')">&nbsp;
+<?			if (!$idIsUsed) { ?>						
+				<a href="#" onClick="JavaScript:cari_rek(4,'PENDAPATAN')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>						
 			<input type="hidden" name="norekdiskon" id="norekdiskon" value="<?=$rekdiskon ?>" />
         </td>
     </tr>
     <tr>
         <td align="left" valign="top">Keterangan</td>
-        <td align="left"><textarea name="keterangan" id="keterangan" rows="3" cols="40" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')" ><?=$keterangan ?></textarea></td>
+        <td align="left"><textarea name="keterangan" id="keterangan" rows="2" cols="40" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')" ><?=$keterangan ?></textarea></td>
+    </tr>
+	<tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td align="left">
+			<input type='checkbox' id='smsinfo' name='smsinfo' <? if ($smsinfo == 1) echo "checked"; ?> >&nbsp;Kirim SMS Informasi Pembayaran
+		</td>
     </tr>
     <tr>
         <td colspan="2" align="center">
         	<input class="but" type="submit" value="Simpan" name="simpan" id="simpan" onFocus="panggil('simpan')" >
-            <input class="but" type="button" value="Tutup" onClick="window.close();">
+            <input class="but" type="button" value="Tutup" onClick="window.close();"><br>
+<?			if ($idIsUsed) {
+				echo "<font style='color:#666'>* Kode rekening Jenis Penerimaan ini tidak dapat diubah karena telah digunakan dalam transaksi</font>";
+			} ?>						
         </td>
     </tr>
     </table>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -189,10 +189,19 @@ function show(id){
 </table>
     </td>
     <td align="left" valign="top">
+    <div align="center" style="width: 140px;">
     <a href="guru/aspeknilai.php" style="text-decoration:none;" onMouseOver="showhint('Aspek Penilaian', this, event, '100px')">
-    <img src="images/ico/settings.png" height="60" alt="" border="0"><br>
-    <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold">Aspek Penilaian</font>
+        <img src="images/ico/aspek.png" height="60" alt="" border="0"><br>
+        <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold">Aspek Penilaian</font>
     </a>
+    </div>
+    <br><br>
+    <div align="center" style="width: 140px;">
+    <a href="guru/kelompokpelajaran.php" style="text-decoration:none;" onMouseOver="showhint('Kelompok Pelajaran', this, event, '100px')">
+        <img src="images/ico/kelompok.png" height="60" alt="" border="0"><br>
+        <font style="font-family:Verdana, Geneva, sans-serif; font-size:11px; color:#000; font-weight:bold">Kelompok Pelajaran</font>
+    </a>
+    </div>
     </td>
   </tr>
 </table>  

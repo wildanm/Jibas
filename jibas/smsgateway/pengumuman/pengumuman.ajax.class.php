@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,17 +21,15 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class PengumumanAjax{
-	function OnStart(){
-		//echo "<pre>";
-		//print_r($_REQUEST);
-		//echo "</pre>";
+class PengumumanAjax
+{
+	function OnStart()
+	{
 		$op = $_REQUEST['op'];
-		//echo $op;
+		
 		//Pilih Pegawai
 		$bag = $_REQUEST['Bagian'];
-		//echo $bag;
-		
+				
 		//Cari Pegawai
 		$NIP 	= $_REQUEST['NIP'];
 		$Nama 	= $_REQUEST['Nama'];
@@ -42,8 +40,16 @@ class PengumumanAjax{
 		$tkt 	= $_REQUEST['tkt'];
 		$kls 	= $_REQUEST['kls'];
 		
+		//Pilih Calon Siswa
+		$dep 	= $_REQUEST['dep'];
+		$proses	= $_REQUEST['proses'];
+		$kelompok = $_REQUEST['kelompok'];
+				
 		//Cari Siswa
 		$NIS 	= $_REQUEST['NIS'];
+		
+		//Cari Calon Siswa
+		$NoCS 	= $_REQUEST['NoCS'];
 		
 		//Source
 		$Source = $_REQUEST['Source'];
@@ -55,7 +61,10 @@ class PengumumanAjax{
 		$this->tkt = $tkt;
 		$this->kls = $kls;
 		$this->NIS = $NIS;
+		$this->NoCS = $NoCS;
 		$this->Source = $Source;
+		$this->proses = $proses;
+		$this->kelompok = $kelompok;
 		
 		if ($op=='GetTablePegawai')
 			$this->GetTablePegawai();
@@ -67,35 +76,52 @@ class PengumumanAjax{
 			$this->GetFilterSiswa();
 		if ($op=='GetFilterOrtu')
 			$this->GetFilterOrtu();
-
 		if ($op=='GetPegawai')
-			$this->GetPegawai();			
+			$this->GetPegawai();
+		
+		if ($op == "GetProsesCalonSiswa")
+			$this->GetProsesCalonSiswa("CmbProsesCS", "ChgCmbProsesCS()");
+		if ($op == "GetProsesOrtuCalonSiswa")
+			$this->GetProsesCalonSiswa("CmbProsesOrtuCS", "ChgCmbProsesOrtuCS()");	
+		if ($op == "GetKelompokCalonSiswa")
+			$this->GetKelompokCalonSiswa("CmbKelompokCS", "ChgCmbKelompokCS()");
+		if ($op == "GetKelompokOrtuCalonSiswa")
+			$this->GetKelompokCalonSiswa("CmbKelompokOrtuCS", "ChgCmbKelompokOrtuCS()");	
+		if ($op == 'GetTableCalonSiswa')
+			$this->GetTableCalonSiswa();
+		if ($op == 'GetTableOrtuCalonSiswa')
+			$this->GetTableOrtuCalonSiswa();	
 	}
-	function GetTableSiswa(){
+	
+	function GetTableSiswa()
+	{
 		global $db_name_akad;
-		global $db_name_sdm;
-		global $db_name_fina;
-		global $db_name_user;
+		
 		$Nama = $this->Nama;
 		$kls = $this->kls;
 		$NIS = $this->NIS;
 		$Source = $this->Source;
 		?>
-		<link href="style/style.css" rel="stylesheet" type="text/css" />
-		
 		<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="TableSis">
-		  <tr class="Header">
+		<tr class="Header">
 			<td width='50'>No</td>
 			<td width="100">NIS</td>
             <td>Nama</td>
 			<td width="100">HP Siswa</td>
 			<td><input type="checkbox" id="CheckAllSiswa"></td>
-		  </tr>
-		  <?
-			if ($Source=='Pilih'){
-				$sql = "SELECT nis, nama, hpsiswa, pinsiswa FROM $db_name_akad.siswa WHERE aktif=1 AND idkelas='$kls' ";
-			} else {
-				$sql = "SELECT nis, nama, hpsiswa, pinsiswa FROM $db_name_akad.siswa WHERE replid>0 ";
+		</tr>
+<?			if ($Source=='Pilih')
+			{
+				$sql = "SELECT nis, nama, hpsiswa, pinsiswa
+						  FROM $db_name_akad.siswa
+						 WHERE aktif=1
+						   AND idkelas='$kls'";
+			}
+			else
+			{
+				$sql = "SELECT nis, nama, hpsiswa, pinsiswa
+						  FROM $db_name_akad.siswa
+						 WHERE aktif = 1";
 				if ($NIS!="" && $NIS!="NIS Siswa")
 					$sql .= " AND nis LIKE '%$NIS%'";
 				if ($Nama!="" && $Nama!="Nama Siswa")
@@ -104,42 +130,220 @@ class PengumumanAjax{
 			$sql .= "  ORDER BY nama";	
 			$res = QueryDb($sql);
 			$num = @mysql_num_rows($res);
-			if ($num>0){
+			if ($num>0)
+			{
 				$cnt=1;
-				while ($row = @mysql_fetch_array($res)){
-		  ?>
-		  <tr>
-			<td align="center" class="td"><?=$cnt?></td>
-			<td class="td" align="center"><?=$row['nis']?></td>
-            <td class="td" align="left"><?=$row['nama']?></td>
-			<td class="td" align="left"><?=$row['hpsiswa']?></td>
-			<td class="td" align="center">
-			<? if (strlen($row['hpsiswa'])>0){ ?>
-			<!--span style="cursor:pointer" align="center" class="Link" onclick="InsertNewReceipt2('<?=$row['hpsiswa']?>','<?=$row['nama']?>','<?=$row['nis']?>')"  />Pilih</span-->
-			<input type="checkbox" class="checkboxsiswa" hp="<?=$row['hpsiswa']?>" nama="<?=$row['nama']?>" nip="<?=$row['nis']?>" pin="<?=$row['pinsiswa']?>">
-			<? } ?>
-			</td>
-		  </tr>
-		  <?
-				$cnt++;
-				}
-			} else {
+				while ($row = @mysql_fetch_array($res))
+				{
+					$hp = trim($row['hpsiswa']);
+					if (strlen($hp) < 7)
+						continue;
+					if (substr($hp, 0, 1) == "#")
+						continue;
 			?>
-		  <tr>
-			<td colspan="5" class="Ket" align="center">Tidak ada data</td>
-		  </tr>
-		  <?
+			<tr>
+				<td align="center" class="td"><?=$cnt?></td>
+				<td class="td" align="center"><?=$row['nis']?></td>
+				<td class="td" align="left"><?=$row['nama']?></td>
+				<td class="td" align="left"><?=$hp?></td>
+				<td class="td" align="center">
+					<input type="checkbox" class="checkboxsiswa" hp="<?=$hp?>" nama="<?=$row['nama']?>"
+						   nip="<?=$row['nis']?>" pin="<?=$row['pinsiswa']?>">
+				</td>
+			</tr>
+<?				$cnt++;
+				}
 			}
-				?>
+			else
+			{
+			?>
+			<tr>
+				<td colspan="5" class="Ket" align="center">Tidak ada data</td>
+			</tr>
+<?			}	?>
 		</table>
         <?
 	}
 	
-	function GetTableOrtu(){
+	function GetTableCalonSiswa()
+	{
 		global $db_name_akad;
-		global $db_name_sdm;
-		global $db_name_fina;
-		global $db_name_user;
+		
+		$Nama = $this->Nama;
+		$kelompok = $this->kelompok;
+		$NoCS = $this->NoCS;
+		$Source = $this->Source; ?>
+		
+		<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="TableCSis">
+		<tr class="Header">
+			<td width='50'>No</td>
+			<td width='120'>No.Pendaftaran</td>
+			<td>Nama</td>
+	        <td>HP Calon Siswa</td>
+	        <td><input type="checkbox" id="CheckAllCalonSiswa"></td>
+		</tr>
+<?		if ($Source == 'Pilih')
+		{
+			$sql = "SELECT nopendaftaran, nama, hpsiswa, info3
+					  FROM $db_name_akad.calonsiswa
+					 WHERE aktif = 1
+					   AND idkelompok='$kelompok'";
+		}
+		else
+		{
+			$sql = "SELECT nopendaftaran, nama, hpsiswa, info3
+					  FROM $db_name_akad.calonsiswa
+					 WHERE aktif = 1";
+			if ($NoCS != "" && $NoCS != "No Calon Siswa")
+				$sql .= " AND nopendaftaran LIKE '%$NoCS%'";
+			if ($Nama != "" && $Nama != "Nama Calon Siswa")
+				$sql .= " AND nama LIKE '%$Nama%'";	
+		}
+		$sql .= "  ORDER BY nama";
+		
+		//echo "$sql";
+		$res = QueryDb($sql);
+		$num = @mysql_num_rows($res);
+		if ($num > 0)
+		{
+			$cnt = 1;
+			while ($row = @mysql_fetch_array($res))
+			{
+				$hp = trim($row['hpsiswa']);
+				if (strlen($hp) < 7)
+					continue;
+				if (substr($hp, 0, 1) == "#")
+					continue; ?>
+			<tr>
+				<td align="center" class="td"><?=$cnt?></td>
+				<td class="td" align="center"><?=$row['nopendaftaran']?></td>
+				<td class="td" align="left"><?=$row['nama']?></td>
+				<td class="td" align="left"><?=$hp?></td>
+				<td class="td" align="center">
+					<input type="checkbox" class="checkboxcalonsiswa"
+						   hp="<?=$hp?>" nama="<?=$row['nama']?>"
+						   nip="<?=$row['nopendaftaran']?>" pin="<?=$row['info3']?>">
+				</td>
+			</tr>
+			
+<?			$cnt++;
+			}
+		}
+		else
+		{	?>
+			<tr>
+				<td colspan="5" class="Ket" align="center">Tidak ada data</td>
+			</tr>
+<?			}	?>
+		</table>
+        <?
+	}
+	
+	function GetTableOrtuCalonSiswa()
+	{
+		global $db_name_akad;
+		
+		$Nama = $this->Nama;
+		$kelompok = $this->kelompok;
+		$NoCS = $this->NoCS;
+		$Source = $this->Source; ?>
+		
+		<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="TableOrCS">
+		<tr class="Header">
+			<td width='50'>No</td>
+			<td width='120'>No.Pendaftaran</td>
+			<td>Nama Calon Siswa</td>
+			<td>Nama Ortu Calon Siswa</td>
+	        <td>HP Ortu Calon Siswa</td>
+	        <td><input type="checkbox" id="CheckAllOrtuCS"></td>
+		</tr>
+<?		if ($Source == 'Pilih')
+		{
+			$sql = "SELECT nopendaftaran, nama, namaayah, hportu, info1, info2, info3
+					  FROM $db_name_akad.calonsiswa
+					 WHERE aktif = 1
+					   AND idkelompok='$kelompok'";
+		}
+		else
+		{
+			$sql = "SELECT nopendaftaran, nama, namaayah, hportu, info1, info2, info3
+					  FROM $db_name_akad.calonsiswa
+					 WHERE aktif = 1";
+			if ($NoCS != "" && $NoCS != "No Calon Siswa")
+				$sql .= " AND nopendaftaran LIKE '%$NoCS%'";
+			if ($Nama != "" && $Nama != "Nama Calon Siswa")
+				$sql .= " AND nama LIKE '%$Nama%'";	
+		}
+		$sql .= "  ORDER BY nama";
+		
+		//echo "$sql";
+		$res = QueryDb($sql);
+		$num = @mysql_num_rows($res);
+		if ($num > 0)
+		{
+			$cnt = 1;
+			while ($row = @mysql_fetch_array($res))
+			{
+				$n = 0;  
+				$hparr = array();
+					
+				$temp = trim($row['hportu']);
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+				{
+					$hparr[$n] = $temp;
+					$n += 1;
+				}
+					
+				$temp = trim($row['info1']);  
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+				{
+					$hparr[$n] = $temp;
+					$n += 1;
+				}
+					  
+				$temp = trim($row['info2']);    
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+					$hparr[$n] = $temp;
+					
+				$namaortu = $row['namaayah'];
+				if (strlen($row['namaayah']) == 0)
+					$namaortu = "Ortu " . $row['nama'];
+				
+				$nama = $row['nama'];	
+					
+				for($j = 0; $j < count($hparr); $j++)
+				{
+					$hp = $hparr[$j]; ?>
+					<tr>
+					    <td align="center" class="td"><?=$cnt?></td>
+					    <td class="td" align="center"><?=$row['nopendaftaran']?></td>
+					    <td class="td" ><?=$nama?></td>
+						<td class="td" ><?=$namaortu?></td>
+					    <td class="td"><?=$hp?></td>
+					    <td class="td" align="center">
+					        <input type="checkbox" class="checkboxortucs" hp="<?=$hp?>"
+					               nama="Ortu <?=$nama?>" nip="<?=$row['nopendaftaran']?>" pinayah="<?=$row['info3']?>"
+					               pinibu="<?=$row['info3']?>" pin="<?=$row['info3']?>">
+					    </td>			
+					</tr>
+<?					$cnt++;	
+				} // end for
+			} // end while 
+		}
+		else
+		{	?>
+			<tr>
+				<td colspan="5" class="Ket" align="center">Tidak ada data</td>
+			</tr>
+<?			}	?>
+		</table>
+        <?
+	}
+	
+	function GetTableOrtu()
+	{
+		global $db_name_akad;
+				
 		$Nama = $this->Nama;
 		$kls = $this->kls;
 		$NIS = $this->NIS;
@@ -151,14 +355,18 @@ class PengumumanAjax{
 		  <tr class="Header">
 			<td width='50'>No</td>
 			<td width='100'>NIS</td>
-			<td>Nama</td>
-			<td>No. HP Ortu</td>
+			<td>Nama Siswa</td>
+			<td>Nama Ortu Siswa</td>
+			<td>HP Ortu Siswa</td>
 			<td><input type="checkbox" id="CheckAllOrtu"></td>
 		  </tr>
 		  <?
-			if ($Source=='Pilih'){
+			if ($Source=='Pilih')
+			{
 				$sql = "SELECT * FROM $db_name_akad.siswa WHERE aktif=1 AND idkelas='$kls'";
-			} else {
+			}
+			else
+			{
 				$sql = "SELECT * FROM $db_name_akad.siswa WHERE replid>0";
 				if ($NIS!="" && $NIS!="NIS Siswa")
 					$sql .= " AND nis LIKE '%$NIS%'";
@@ -169,30 +377,55 @@ class PengumumanAjax{
 			//echo $sql;
 			$res = QueryDb($sql);
 			$num = @mysql_num_rows($res);
-			if ($num>0){
-				$cnt=1;
-				while ($row = @mysql_fetch_array($res)){
-		  ?>
-		  <tr>
-			<td align="center" class="td"><?=$cnt?></td>
-			<td class="td" align='center'><?=$row['nis']?></td>
-			<td class="td"><?=$row['nama']?></td>
-			<td class="td"><?=$row['hportu']?></td>
-			<td class="td" align="center">
-			  <? 
-			  if (strlen($row['hportu'])>0){ 
-			  $nama = $row['namaayah'];
-			  if (strlen($row['namaayah'])==0)
-				  $nama = $row['nama'];
-			  ?>
-			<!--span style="cursor:pointer" align="center" class="Link" onclick="InsertNewReceipt2('<?=$row['hportu']?>','<?=$nama?>','<?=$row['nis']?>')"  />Pilih</span-->
-			<input type="checkbox" class="checkboxortu" hp="<?=$row['hportu']?>" nama="<?=$nama?>" nip="<?=$row['nis']?>" pinayah="<?=$row['pinortu']?>" pinibu="<?=$row['pinortuibu']?>">
-			<? } ?>
-			</td>
-		  </tr>
-		  <?
-				$cnt++;
-				}
+			if ($num>0)
+			{
+				$cnt = 1;
+				while ($row = @mysql_fetch_array($res))
+				{
+					$n = 0;
+					$hparr = array();
+					
+					$temp = trim($row['hportu']);
+					if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+					{
+						$hparr[$n] = $temp;
+						$n += 1;
+					}
+				
+					$temp = trim($row['info1']);  
+					if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+					{
+						$hparr[$n] = $temp;
+						$n += 1;
+					}
+				  
+					$temp = trim($row['info2']);    
+					if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+						$hparr[$n] = $temp;
+						
+					$namaortu = $row['namaayah'];
+					if (strlen($row['namaayah']) == 0)
+						$namaortu = $row['nama'];
+					
+					$nama = $row['nama'];
+					
+					for($j = 0; $j < count($hparr); $j++)
+					{
+						$hp = $hparr[$j]; ?>	
+						<tr>
+							<td align="center" class="td"><?=$cnt?></td>
+							<td class="td" align='center'><?=$row['nis']?></td>
+							<td class="td"><?=$nama?></td>
+							<td class="td"><?=$namaortu?></td>
+							<td class="td"><?=$hp?></td>
+							<td class="td" align="center">
+								<input type="checkbox" class="checkboxortu" hp="<?=$hp?>" nama="Ortu <?=$nama?>" nip="<?=$row['nis']?>"
+									   pinayah="<?=$row['pinsiswa']?>" pinibu="<?=$row['pinsiswa']?>">
+							</td>
+						</tr>
+<?						$cnt++;
+					} // end for
+				} // end while
 			} else {
 			?>
 		  <tr>
@@ -205,30 +438,75 @@ class PengumumanAjax{
         <?
 	}
 
-	function GetFilterSiswa(){
+	function GetFilterSiswa()
+	{
 		global $db_name_akad;
 		global $db_name_sdm;
 		global $db_name_fina;
 		global $db_name_user;
 		
-		$dep = $this->dep;
+		$dep = $this->dep; ?>
 		
-		?>
-				<select id="CmbKlsSis" name="CmbKlsSis" class="Cmb" onchange="ChgCmbKlsSis()">
-					<?
-					$sql = "SELECT k.replid,k.kelas FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
-						   "WHERE k.aktif=1 AND ta.aktif=1 AND ti.aktif=1 AND k.idtahunajaran=ta.replid AND k.idtingkat=ti.replid ".
-						   "AND ta.departemen='$dep' AND ti.departemen='$dep' ORDER BY k.kelas"; 
-					$res = QueryDb($sql);
-					while ($row = @mysql_fetch_row($res)){
-						if ($kls=="")
-							$kls=$row[0];
-					?>
-				<option value="<?=$row[0]?>" <?=StringIsSelected($row[0],$kls)?>><?=$row[1]?></option>
-					<?
-					}
-					?>
-				</select>
+		<select id="CmbKlsSis" name="CmbKlsSis" class="Cmb" onchange="ChgCmbKlsSis()">
+<?		$sql = "SELECT k.replid,k.kelas
+				  FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta
+				 WHERE k.aktif=1
+				   AND ta.aktif=1
+				   AND ti.aktif=1
+				   AND k.idtahunajaran=ta.replid
+				   AND k.idtingkat=ti.replid
+				   AND ta.departemen='$dep'
+				   AND ti.departemen='$dep'
+				 ORDER BY k.kelas"; 
+		$res = QueryDb($sql);
+		while ($row = @mysql_fetch_row($res))
+		{
+			if ($kls == "")
+				$kls = $row[0];	?>
+			<option value="<?=$row[0]?>" <?=StringIsSelected($row[0],$kls)?>><?=$row[1]?></option>
+<?		}	?>
+		</select>
+        <?
+	}
+	
+	function GetProsesCalonSiswa($elname, $actname)
+	{
+		global $db_name_akad;
+		
+		$dep = $this->dep; ?>
+		
+		<select id="<?=$elname?>" name="<?=$elname?>" class="Cmb" onchange="<?=$actname?>">
+<?		$sql = "SELECT replid, proses
+				  FROM $db_name_akad.prosespenerimaansiswa
+				 WHERE departemen = '$dep'
+				   AND aktif = 1
+				 ORDER BY proses"; 
+		$res = QueryDb($sql);
+		while ($row = @mysql_fetch_row($res))
+		{	?>
+            <option value="<?=$row[0]?>"><?=$row[1]?></option>
+<?		}	?>
+		</select>
+        <?
+	}
+	
+	function GetKelompokCalonSiswa($elname, $actname)
+	{
+		global $db_name_akad;
+		
+		$proses = $this->proses ?>
+		
+		<select id="<?=$elname?>" name="<?=$elname?>" class="Cmb" onchange="<?=$actname?>">
+<?		$sql = "SELECT replid, kelompok
+                  FROM $db_name_akad.kelompokcalonsiswa
+		  	     WHERE idproses = '$proses'
+				 ORDER BY kelompok"; 
+        $res = QueryDb($sql);
+		while ($row = @mysql_fetch_row($res))
+        {	?>
+            <option value="<?=$row[0]?>"><?=$row[1]?></option>
+<?		}	?>
+		</select>
         <?
 	}
 

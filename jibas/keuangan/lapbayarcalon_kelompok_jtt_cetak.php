@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 17 (May 10, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -49,8 +49,8 @@ $kelompok = -1;
 if (isset($_REQUEST['kelompok']))
 	$kelompok = (int)$_REQUEST['kelompok'];
 	
-if (isset($_REQUEST['statuslunas']))
-	$statuslunas = (int)$_REQUEST['statuslunas'];
+if (isset($_REQUEST['lunas']))
+	$statuslunas = (int)$_REQUEST['lunas'];
 
 OpenDb();
 

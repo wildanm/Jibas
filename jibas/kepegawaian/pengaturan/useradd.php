@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -58,7 +58,7 @@ if (isset($_REQUEST['simpan']))
 			if ($num_cek == 0)
 			{
 				$sql_login="INSERT INTO jbsuser.login SET login='$_REQUEST[nip]', password='$pass', aktif=1";
-				QueryDbTrans($sql_login, &$success);		
+				QueryDbTrans($sql_login, $success);		
 			}		
 				
 			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', tingkat=1, modul='SIMPEG', keterangan='".CQ($_REQUEST['keterangan'])."'";
@@ -69,13 +69,13 @@ if (isset($_REQUEST['simpan']))
 			if ($num_cek == 0)
 			{
 				$sql_login="INSERT INTO jbsuser.login SET login='$_REQUEST[nip]', password='$pass', aktif=1";
-				QueryDbTrans($sql_login, &$success);		
+				QueryDbTrans($sql_login, $success);		
 			}			
 			
 			$sql_hakakses="INSERT INTO jbsuser.hakakses SET login='$_REQUEST[nip]', tingkat=2, modul='SIMPEG', keterangan='".CQ($_REQUEST['keterangan'])."'";
 		}
 		if ($success)	
-			QueryDbTrans($sql_hakakses, &$success);
+			QueryDbTrans($sql_hakakses, $success);
 	}
 	
 	if ($success)

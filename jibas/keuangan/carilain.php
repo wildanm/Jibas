@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -42,7 +42,7 @@ $page=0;
 if (isset($_REQUEST['page']))
 	$page = $_REQUEST['page'];
 	
-$hal=0;
+$hal = 0;
 if (isset($_REQUEST['hal']))
 	$hal = $_REQUEST['hal'];	
 	
@@ -66,8 +66,12 @@ if ($op == "12134892y428442323x423") {
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript">
-function refresh() {
-	document.location.href = "carilain.php";	
+function refresh()
+{
+	var hal = document.getElementById('hal').value;
+	var varbaris=document.getElementById("varbaris").value;
+	
+	document.location.href = "carilain.php?flag=<?=$flag?>&urutan=DESC&page=<?=$page?>&hal="+hal+"&varbaris="+varbaris;
 }
 
 function del(id) {
@@ -111,6 +115,20 @@ function change_urut(urut,urutan) {
 	document.location.href = "carilain.php?flag=<?=$flag?>&urutan="+urutan+"&urut="+urut+"&page=<?=$page?>&hal=<?=$hal?>&varbaris="+varbaris;
 
 }
+
+function change_hal() {			
+	var hal = document.getElementById('hal').value;
+	var varbaris=document.getElementById("varbaris").value;
+	
+	document.location.href = "carilain.php?flag=<?=$flag?>&urutan=DESC&page=<?=$page?>&hal="+hal+"&varbaris="+varbaris;
+}
+
+function change_baris() {			
+	var hal = 0;
+	var varbaris=document.getElementById("varbaris").value;
+	
+	document.location.href = "carilain.php?flag=<?=$flag?>&urutan=DESC&page=<?=$page?>&hal="+hal+"&varbaris="+varbaris;
+}
 </script>
 </head>
 
@@ -141,7 +159,9 @@ function change_urut(urut,urutan) {
 	$total = ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	
-	$sql = "SELECT replid AS id, nama, keterangan FROM pemohonlain ORDER BY nama LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+	$offset = (int)$hal*(int)$varbaris;
+	
+	$sql = "SELECT replid AS id, nama, keterangan FROM pemohonlain ORDER BY nama LIMIT $offset,$varbaris";
 	$akhir = ceil($jumlah/5)*5;	
 	$result = QueryDb($sql);
 	
@@ -176,14 +196,14 @@ function change_urut(urut,urutan) {
         <td width="6%">&nbsp;</td>
 	</tr>
 <? 	
-	if ($page==0)
+	if ($hal==0)
 		$no = 0;
 	else 
-		$no = (int)$page*(int)$varbaris;
+		$no = (int)$hal*(int)$varbaris;
 
 	while ($row = mysql_fetch_array($result)) { ?>
     <tr >
-    	<td align="center"  onClick="pilih('<?=$row[id]?>','<?=$row[nama]?>')" style="cursor:pointer"><?=++$no ?></td>
+    	<td align="center"  onClick="pilih('<?=$row[id]?>','<?=$row[nama]?>')" style="cursor:pointer"><?= ++$no ?></td>
         <td  onClick="pilih('<?=$row[id]?>','<?=$row[nama]?>')" style="cursor:pointer"><?=$row['nama'] ?></td>
         <td  onClick="pilih('<?=$row[id]?>','<?=$row[nama]?>')" style="cursor:pointer"><?=$row['keterangan'] ?></td>
         <?  if (getLevel() != 2) { ?>

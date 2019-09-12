@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -52,6 +52,8 @@ if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
 if (isset($_REQUEST['kelas']))
 	$kelas = $_REQUEST['kelas'];
+if (isset($_REQUEST['jenis']))
+    $jenis = $_REQUEST['jenis'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/aTR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -77,8 +79,12 @@ function change_dep()
 }
 
 function tampil(nis) 
-{	
-	parent.komentar_content.location.href="komentar_content.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&nis="+nis;
+{
+    var jenis = document.getElementById('jenis').value;
+    if (jenis == 0)
+        parent.komentar_content.location.href="komentar.pel.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&nis="+nis;
+    else
+        parent.komentar_content.location.href="komentar.sos.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&nis="+nis;
 }
 
 function change_urut(urut,urutan) 
@@ -115,6 +121,7 @@ function change_urut(urut,urutan)
 <input type="hidden" name="tahunajaran" id="tahunajaran" value="<?=$tahunajaran ?>" />
 <input type="hidden" name="pelajaran" id="pelajaran" value="<?=$pelajaran ?>" />
 <input type="hidden" name="kelas" id="kelas" value="<?=$kelas ?>" />
+<input type="hidden" name="jenis" id="jenis" value="<?=$jenis ?>" />
 <? 
 	OpenDb();		
 	$sql = "SELECT DISTINCT k.replid, s.nis, s.nama, k.komentar 
@@ -134,16 +141,12 @@ function change_urut(urut,urutan)
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
 <tr>
-    <td align="left" valign="top" colspan="2">       
-	<table border="1" width="100%" id="table" class="tab" bordercolor="#000000" >
-	<tr>		
-		<td width="3%" height="30" align="center" class="header">No</td>
-		<td height="30" onMouseOver="background='../style/formbg2agreen.gif';height=30;" 
-        	onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" style="cursor:pointer;" 
-            onClick="change_urut('nama','<?=$urutan?>')">
-            <div align="center" class="style1"><strong><span class="style3">Siswa</span></strong></div>
-        </td>
-	</tr>
+    <td align="left" valign="top" colspan="2">
+    <strong>Pilih Siswa:</strong><br>
+	<table border="1" width="100%" id="table" class="tab" bordercolor="#000000" style="border-collapse: collapse; border-width: 1px; border-color: #f5f5f5;">
+    <tr style="height: 1px;">
+        <td colspan="2"></td>
+    </tr>
 <? 	while ($row = @mysql_fetch_array($result)) 
 	{	?>
     <tr>        			
@@ -151,7 +154,8 @@ function change_urut(urut,urutan)
 		<?=$cnt?>
         </td>
   		<td height="25" onclick="tampil('<?=$row[nis]?>')" style="cursor:pointer" title="Klik untuk menampilkan komentar rapor <?=$row['nama']?>">
-		<?=$row['nis']?><br /><?=$row['nama']?>
+		<i><?=$row['nis']?></i><br />
+        <strong><?=$row['nama']?></strong>
         </td>
     </tr>
 <?	$cnt++;

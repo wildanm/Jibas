@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 17 (May 10, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -88,6 +88,12 @@ $sql = "SELECT DISTINCT b.replid AS id, b.besar, b.lunas, b.keterangan, d.nama
           FROM besarjtt b, penerimaanjtt p, datapenerimaan d 
 		   WHERE p.idbesarjtt = b.replid AND b.idpenerimaan = d.replid AND b.nis='$nis' AND b.info2='$idtahunbuku'
 			  AND p.tanggal BETWEEN '$tanggal1' AND '$tanggal2' ORDER BY nama";
+
+$totalbesarwjb = 0;
+$totalbayarwjb = 0;
+$totaldiskonwjb = 0;
+$totalsisawjb = 0;
+
 $result = QueryDb($sql);
 while ($row = mysql_fetch_array($result))
 {
@@ -102,18 +108,30 @@ while ($row = mysql_fetch_array($result))
 	$pembayaran = $row[0] + $row[1];
 	$diskon = $row[1];
 	$sisa = $besar - $pembayaran;
+
+    $totalbesarwjb += $besar;
+    $totalbayarwjb += $pembayaran;
+    $totaldiskonwjb += $diskon;
+    $totalsisawjb += $sisa;
 	
-	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaanjtt WHERE idbesarjtt='$idbesarjtt' ORDER BY tanggal DESC LIMIT 1";
+	$sql = "SELECT p.jumlah, DATE_FORMAT(p.tanggal, '%d-%b-%Y') AS ftanggal, p.info1, j.nokas
+			  FROM penerimaanjtt p, jurnal j
+			 WHERE p.idjurnal = j.replid
+			   AND p.idbesarjtt = '$idbesarjtt'
+			 ORDER BY p.tanggal DESC
+			 LIMIT 1";
 	$result2 = QueryDb($sql);
 	$byrakhir = 0;
 	$dknakhir = 0;
 	$tglakhir = "";
+	$nojurnal = "";
 	if (mysql_num_rows($result2))
 	{
 		$row2 = mysql_fetch_row($result2);
 		$byrakhir = $row2[0];
 		$tglakhir = $row2[1];
 		$dknakhir = $row2[2];
+		$nojurnal = $row2[3];
 	};	?>
     <tr height="35">
         <td colspan="4" bgcolor="#99CC00"><font size="2" face="Arial"><strong><em><?=$namapenerimaan?></em></strong></font></td>
@@ -132,7 +150,7 @@ while ($row = mysql_fetch_array($result))
       <?=$pembayaran ?>
       </font></td>
       <td bgcolor="#FFFFFF" align="center" valign="top" rowspan="3"><font size="2" face="Arial">
-      <?=$byrakhir . "<br><i>" . $tglakhir . "</i><br>" . $dknakhir ?> 
+      <?=$byrakhir . "<br><i>" . $tglakhir . "</i><br>(diskon " . $dknakhir .")<br>$nojurnal" ?> 
       </font></td>
       <td bgcolor="#FFFFFF" align="left" valign="top" rowspan="3"><font size="2" face="Arial">
       <?=$keterangan ?>
@@ -156,6 +174,8 @@ while ($row = mysql_fetch_array($result))
 <? 
 } //while iuran wajib
 
+$totalbayarskr = 0;
+
 $sql = "SELECT DISTINCT p.idpenerimaan, d.nama 
           FROM penerimaaniuran p, datapenerimaan d, jurnal j
 		   WHERE p.idpenerimaan = d.replid AND j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku'
@@ -167,6 +187,7 @@ while ($row = mysql_fetch_array($result)) {
 	
 	$sql = "SELECT SUM(jumlah) FROM penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis'";
 	$pembayaran = FetchSingle($sql);
+    $totalbayarskr += $pembayaran;
 
 	$sql = "SELECT jumlah, DATE_FORMAT(tanggal, '%d-%b-%Y') AS ftanggal FROM penerimaaniuran WHERE idpenerimaan='$idpenerimaan' AND nis='$nis' ORDER BY tanggal DESC LIMIT 1";
 	$result2 = QueryDb($sql);
@@ -201,6 +222,47 @@ while ($row = mysql_fetch_array($result)) {
 <?
 } //while iuran sukarela
 ?>
+</table>
+
+<br><br>
+<font style="font-size: 16px;">REKAPITULASI PEMBAYARAN</font>
+<table border="0" width="900">
+<tr>
+    <td width="50%" align="left" valign="top">
+        <table border="1" style="border-width: 1px; border-collapse: collapse;" cellpadding="5">
+        <tr>
+            <td colspan="2" style="background-color: #87c7f4; font-size: 14px;">Iuran Wajib Siswa</td>
+        </tr>
+        <tr>
+            <td width="240" align="left" style="background-color: #e6f5ff">Total Semua Besar Bayaran</td>
+            <td width="140" align="right"><?=($totalbesarwjb)?></td>
+        </tr>
+        <tr>
+            <td align="left" style="background-color: #e6f5ff">Total Semua Pembayaran</td>
+            <td align="right"><?=($totalbayarwjb)?></td>
+        </tr>
+        <tr>
+            <td align="left" style="background-color: #e6f5ff">Total Semua Diskon</td>
+            <td align="right"><?=($totaldiskonwjb)?></td>
+        </tr>
+        <tr>
+            <td align="left" style="background-color: #e6f5ff">Total Semua Sisa Tagihan</td>
+            <td align="right"><?=($totalsisawjb)?></td>
+        </tr>
+        </table>
+    </td>
+    <td width="50%" align="left" valign="top">
+        <table border="1" style="border-width: 1px; border-collapse: collapse;" cellpadding="5">
+        <tr>
+            <td colspan="2" style="background-color: #87c7f4; font-size: 14px;">Iuran Sukarela Siswa</td>
+        </tr>
+        <tr>
+            <td width="240" align="left" style="background-color: #e6f5ff">Total Semua Pembayaran</td>
+            <td width="140" align="right"><?=($totalbayarskr)?></td>
+        </tr>
+        </table>
+    </td>
+</tr>
 </table>
 
 <?

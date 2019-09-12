@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -20,7 +20,7 @@
  * 
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
-<frameset rows = "14%, *" border="1" frameborder="yes" framespacing = "yes">
-    <frame src = "ujian_rpp_kelas_header.php" name ="header" scrolling="no" style="border:1; border-bottom-color:#000000; border-bottom-style:solid" />
+<frameset rows = "12%, *" border="1" frameborder="0" framespacing = "0">
+    <frame src = "ujian_rpp_kelas_header.php" name ="header" scrolling="no" style="border:1px; border-bottom-color:#000000; border-bottom-style:solid" />
     <frame src = "blank_rppkelas.php" name = "footer" />
     </frameset><noframes></noframes>

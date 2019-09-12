@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -28,7 +28,6 @@ require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/theme.php');
 require_once('include/sessioninfo.php');
-require_once('library/openthinksas.jibas.php');
 
 $idkategori = $_REQUEST['idkategori'];
 $departemen = $_REQUEST['departemen'];
@@ -46,8 +45,16 @@ if (isset($_REQUEST['simpan']))
 	else
 	{
 		$besar = $_REQUEST['besar'];
+		$smsinfo = isset($_REQUEST['smsinfo']) ? 1 : 0;
 		$besar = UnformatRupiah($besar);
-		$sql = "INSERT INTO datapenerimaan SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]', idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]', rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]', info1='$_REQUEST[norekdiskon]', keterangan='".CQ($_REQUEST['keterangan'])."', aktif=1";
+		$sql = "INSERT INTO datapenerimaan
+				   SET nama='".CQ($_REQUEST['nama'])."', rekkas='$_REQUEST[norekkas]',
+				       idkategori='$_REQUEST[idkategori]', departemen='$_REQUEST[departemen]',
+					   rekpendapatan='$_REQUEST[norekpendapatan]', rekpiutang='$_REQUEST[norekpiutang]',
+					   info1='$_REQUEST[norekdiskon]',
+					   keterangan='".CQ($_REQUEST['keterangan'])."',
+					   aktif=1,
+					   info2='$smsinfo'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -179,11 +186,7 @@ function panggil(elem)
     </tr>
     <tr>
         <td align="left"><strong>Departemen</strong></td>
-        <td align="left">
-          <?php OpenDb();?>
-          <input type="text" name="departemen_openthinksas" id="departemen_openthinksas" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=getDepartemenInOpenThinkSAS($departemen) ?>">
-          <?php CloseDb();?>
-          <input type="hidden" name="departemen" id="departemen" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=$departemen ?>">
+        <td align="left"><input type="text" name="departemen" id="departemen" maxlength="100" size="30" readonly style="background-color:#CCCC99" value="<?=$departemen ?>">
         </td>
     </tr>
     <tr>
@@ -220,7 +223,13 @@ function panggil(elem)
     </tr>
     <tr>
         <td align="left" valign="top">Keterangan</td>
-        <td align="left"><textarea name="keterangan" id="keterangan" rows="3" cols="40" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$_REQUEST['keterangan']?></textarea></td>
+        <td align="left"><textarea name="keterangan" id="keterangan" rows="2" cols="40" onKeyPress="return focusNext('simpan', event)" onFocus="panggil('keterangan')"><?=$_REQUEST['keterangan']?></textarea></td>
+    </tr>
+	<tr>
+        <td align="left" valign="top">&nbsp;</td>
+        <td align="left">
+			<input type='checkbox' id='smsinfo' name='smsinfo'>&nbsp;Kirim SMS Informasi Pembayaran
+		</td>
     </tr>
     <tr>
         <td colspan="2" align="center">

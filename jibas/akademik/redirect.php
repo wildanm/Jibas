@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -34,13 +34,18 @@ require_once('include/db_functions.php');
 OpenDb();
     
 $username = trim($_POST[username]);
-if ($username == "jibas") 
-	$username = "landlord";
-	
+if ($username == "jibas") $username = "landlord";
 $password = trim($_POST[password]);
 
+$username = str_replace("'", "\'", $username);
+$username = str_replace("--", " ", $username);
+$login = $username;
+$username = "'$username'";
+
+$password = str_replace("'", "\'", $password);
+
 $user_exists = false;
-if ($username == "landlord")
+if ($login == "landlord")
 {
 	$sql_la = "SELECT password FROM jbsuser.landlord";
 	$result_la = QueryDb($sql_la);
@@ -61,7 +66,10 @@ if ($username == "landlord")
 }
 else
 {
-	$sql = "SELECT p.aktif FROM jbsuser.login l, jbssdm.pegawai p WHERE l.login=p.nip AND l.login='$username' ";
+	$sql = "SELECT p.aktif 
+              FROM jbsuser.login l, jbssdm.pegawai p 
+             WHERE l.login = p.nip 
+               AND l.login = $username";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_array($result);
 	$jum = mysql_num_rows($result);
@@ -78,14 +86,21 @@ else
 		}
 		else
 		{
-			$query = "SELECT login,password FROM jbsuser.login WHERE login = '$username'  ".
-					 "AND password='".md5($password)."'";
+			$query = "SELECT login,password 
+                        FROM jbsuser.login 
+                       WHERE login = $username
+					     AND password= '" . md5($password) . "'";
 			$result = QueryDb($query) or die(mysql_error());
 			$row = mysql_fetch_array($result);
 			$num = mysql_num_rows($result);
 			if($num != 0)
 			{
-				$query2 = "SELECT h.departemen as departemen, h.tingkat as tingkat, p.nama as nama, h.theme as tema FROM jbsuser.hakakses h, jbssdm.pegawai p WHERE h.login = '$username' AND p.nip=h.login AND h.modul='SIMAKA' AND p.aktif=1";
+				$query2 = "SELECT h.departemen as departemen, h.tingkat as tingkat, p.nama as nama, h.theme as tema 
+                             FROM jbsuser.hakakses h, jbssdm.pegawai p 
+                            WHERE h.login = $username 
+                              AND p.nip=h.login 
+                              AND h.modul='SIMAKA' 
+                              AND p.aktif=1";
 				$result2 = QueryDb($query2) or die(mysql_error());
 				$result4 = QueryDb($query2) or die(mysql_error());
 				$row2 = mysql_fetch_array($result2);
@@ -100,7 +115,7 @@ else
 						$i++;
 					}
 					
-					$_SESSION['login'] = $row[login];
+					$_SESSION['login'] = $login;
 					$_SESSION['namasimaka'] = $row2[nama];
 					$_SESSION['tingkatsimaka'] = $row2[tingkat];
 					$_SESSION['temasimaka'] = $row2[tema];
@@ -131,10 +146,10 @@ if (!$user_exists)
 }
 else
 {
-	if ($username=="landlord")
+	if ($login == "landlord")
     	$query = "UPDATE jbsuser.landlord SET lastlogin=NOW() WHERE password='".md5($password)."'";
     else
-		$query = "UPDATE jbsuser.hakakses SET lastlogin=NOW() WHERE login='$username' AND modul = 'SIMAKA'";
+		$query = "UPDATE jbsuser.hakakses SET lastlogin=NOW() WHERE login = $username AND modul = 'SIMAKA'";
 	$result = queryDb($query);
 	?>
     <script language="JavaScript">

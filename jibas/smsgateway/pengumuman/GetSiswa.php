@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -52,9 +52,9 @@ OpenDb();
 				<div id="DivCmbKelas">
 					<select id="CmbKlsSis" name="CmbKlsSis" class="Cmb" onchange="ChgCmbKlsSis()">
 						<?
-						$sql = "SELECT k.replid,k.kelas FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
+						$sql = "SELECT DISTINCT k.replid, CONCAT(ti.tingkat, ' - ', k.kelas) FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
 							   "WHERE k.aktif=1 AND ta.aktif=1 AND ti.aktif=1 AND k.idtahunajaran=ta.replid AND k.idtingkat=ti.replid ".
-							   "AND ta.departemen='$dep' AND ti.departemen='$dep' ORDER BY k.kelas"; 
+							   "AND ta.departemen='$dep' AND ti.departemen='$dep' ORDER BY ti.urutan, k.kelas";
 						$res = QueryDb($sql);
 						while ($row = @mysql_fetch_row($res)){
 						if ($kls=="")
@@ -110,20 +110,25 @@ OpenDb();
 		$sql = "SELECT * FROM $db_name_akad.siswa WHERE aktif=1 AND idkelas='$kls' ORDER BY nama";
 		$res = QueryDb($sql);
 		$num = @mysql_num_rows($res);
-		if ($num>0){
+		if ($num>0)
+		{
 			$cnt=1;
-			while ($row = @mysql_fetch_array($res)){
+			while ($row = @mysql_fetch_array($res))
+			{
+				$hp = trim($row['hpsiswa']);
+				if (strlen($hp) < 7)
+				  continue;
+				if (substr($hp, 0, 1) == "#")
+				  continue;
 	  ?>
       <tr>
         <td align="center" class="td"><?=$cnt?></td>
         <td class="td" align="center"><?=$row['nis']?></td>
 		<td class="td" ><?=$row['nama']?></td>
-        <td class="td"><?=$row['hpsiswa']?></td>
+        <td class="td"><?=$hp?></td>
         <td class="td" align="center">
-        <? if (strlen($row['hpsiswa'])>0){ ?>
-        <!--<span style="cursor:pointer" align="center" class="Link" onclick="InsertNewReceipt2('<?=$row['hpsiswa']?>','<?=$row['nama']?>','<?=$row['nis']?>')"  />Pilih</span>-->
-		<input type="checkbox" class="checkboxsiswa" hp="<?=$row['hpsiswa']?>" nama="<?=$row['nama']?>" nip="<?=$row['nis']?>"  pin="<?=$row['pinsiswa']?>">
-        <? } ?>
+		  <input type="checkbox" class="checkboxsiswa" hp="<?=$hp?>" nama="<?=$row['nama']?>" nip="<?=$row['nis']?>"
+				 pin="<?=$row['pinsiswa']?>">
         </td>
       </tr>
       <?
@@ -142,3 +147,6 @@ OpenDb();
     </td>
   </tr>
 </table>
+<?
+CloseDb();
+?>

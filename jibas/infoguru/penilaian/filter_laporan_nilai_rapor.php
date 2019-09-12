@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -95,7 +95,12 @@ function show(){
     var tahun = document.filter_laporan_rapor.idtahun.value;
     var semester = document.filter_laporan_rapor.semester.value;
     var kelas = document.filter_laporan_rapor.kelas.value;
-   // var nip = document.filter_laporan_rapor.nip.value;	
+    var dd1 = document.filter_laporan_rapor.dd1.value;
+    var mm1 = document.filter_laporan_rapor.mm1.value;
+    var yy1 = document.filter_laporan_rapor.yy1.value;
+    var dd2 = document.filter_laporan_rapor.dd2.value;
+    var mm2 = document.filter_laporan_rapor.mm2.value;
+    var yy2 = document.filter_laporan_rapor.yy2.value;
     
     if(departemen.length == 0) {
         alert("Departemen tidak boleh kosong");
@@ -127,15 +132,48 @@ function show(){
         document.filter_laporan_rapor.kelas.focus();
         return false;
     }
-	/*else if(nip.length == 0) {
-        alert("Guru tidak boleh kosong");
-        document.filter_laporan_rapor.nip.value = "";
-        document.filter_laporan_rapor.nip.focus();
+    else if(dd1.length === 0) {
+        alert("Tanggal tidak boleh kosong");
+        document.filter_laporan_rapor.dd1.value = "";
+        document.filter_laporan_rapor.dd1.focus();
         return false;
-    }*/
-    else {
-	//alert ('HARIAN='+harian+' PEL='+pelajaran);
-        parent.footer.location.href="laporan_nilai_rapor_footer.php?departemen="+departemen+"&tingkat="+tingkat+"&tahunajaran="+tahun+"&semester="+semester+"&kelas="+kelas+"&harian="+harian+"&pelajaran="+pelajaran;//+"&nip="+nip;
+    }
+    else if(mm1.length === 0) {
+        alert("Bulan tidak boleh kosong");
+        document.filter_laporan_rapor.mm1.value = "";
+        document.filter_laporan_rapor.mm1.focus();
+        return false;
+    }
+    else if(yy1.length === 0) {
+        alert("Tahun tidak boleh kosong");
+        document.filter_laporan_rapor.yy1.value = "";
+        document.filter_laporan_rapor.yy1.focus();
+        return false;
+    }
+    else if(dd2.length === 0) {
+        alert("Tanggal tidak boleh kosong");
+        document.filter_laporan_rapor.dd2.value = "";
+        document.filter_laporan_rapor.dd2.focus();
+        return false;
+    }
+    else if(mm2.length === 0) {
+        alert("Bulan tidak boleh kosong");
+        document.filter_laporan_rapor.mm2.value = "";
+        document.filter_laporan_rapor.mm2.focus();
+        return false;
+    }
+    else if(yy2.length === 0) {
+        alert("Tahun tidak boleh kosong");
+        document.filter_laporan_rapor.yy2.value = "";
+        document.filter_laporan_rapor.yy2.focus();
+        return false;
+    }
+    else
+    {
+        var tglmulai = yy1 + "-" + mm1 + "-" + dd1;
+        var tglakhir = yy2 + "-" + mm2 + "-" + dd2;
+
+        parent.footer.location.href="laporan_nilai_rapor_footer.php?departemen="+departemen+"&tingkat="+tingkat+"&tahunajaran="+tahun+"&semester="+semester+"&kelas="+kelas+"&harian="+harian+"&pelajaran="+pelajaran+"&tglmulai="+tglmulai+"&tglakhir="+tglakhir;
     }
 }
 </script>
@@ -175,8 +213,8 @@ if (!isset($_POST['lihat'])) {
             ?>
             <input type="hidden" name="semester" value="<?=$row_s[replid]?>">
 			<input type="text" size="21" value="<?=$row_s[semester]?>" readonly class="disabled">			</td>
-            <td align="left" valign="bottom" width="72" rowspan="3"><img src="../images/ico/view.png" width="48" height="48" border="0" onClick="show()" style="cursor:pointer;"></td>
-          <td align="right" valign="top" width="398" rowspan="3">
+            <td align="left" valign="middle" width="72" rowspan="4"><img src="../images/ico/view.png" width="48" height="48" border="0" onClick="show()" style="cursor:pointer;"></td>
+          <td align="right" valign="top" width="398" rowspan="4">
           <font size="4" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#ffcc66">&nbsp;</font>&nbsp;<font size="4" face="Verdana, Arial, Helvetica, sans-serif" color="Gray">Nilai Rapor Siswa</font><br />
             <a href="../penilaian.php?flag=1" target="framecenter"> <font size="1" color="#000000"><b>Penilaian</b></font></a>&nbsp>&nbsp <font size="1" color="#000000"><b>Nilai Rapor Siswa</b></font>          </td>
         </tr>
@@ -246,16 +284,56 @@ if (!isset($_POST['lihat'])) {
             <td><strong>Tahun Ajaran</strong></td>
             <td>
                 <input type="hidden" name="idtahun" value="<?echo $replid;?>">
-                <input type="text" name="tahun" size="22" value="<?echo $tahun;?>" readonly class="disabled">            </td>
+                <input type="text" name="tahun" size="22" value="<?echo $tahun;?>" readonly class="disabled">
+            </td>
             <td><strong>Presensi</strong></td>
 			<td><input type="checkbox" name="harian" id="harian" >			  Harian&nbsp;			  <input type="checkbox" name="pelajaran" id="pelajaran" >Pelajaran</td>
-          </tr>
+        </tr>
+        <tr>
+            <td><strong>Tanggal Presensi</strong></td>
+            <td colspan="3">
+<?php
+                $sql = "SELECT YEAR(tglmulai) AS yy1, MONTH(tglmulai) AS mm1, DAY(tglmulai) as dd1,
+                               YEAR(tglakhir) AS yy2, MONTH(tglakhir) AS mm2, DAY(tglakhir) as dd2
+                         FROM jbsakad.tahunajaran 
+                        WHERE replid='$replid'";
+                $res = QueryDb($sql);
+                $row = @mysql_fetch_array($res);
+                $yy1 = $row[0];
+                $mm1 = $row[1];
+                $dd1 = $row[2];
+                $yy2 = $row[3];
+                $mm2 = $row[4];
+                $dd2 = $row[5];
+
+                echo CreateSelect("dd1", 1, 31, $dd1, 50); echo "-";
+                echo CreateSelect("mm1", 1, 12, $mm1, 50); echo "-";
+                echo CreateSelect("yy1", $yy1, $yy2, $yy1, 80); echo " s/d ";
+                echo CreateSelect("dd2", 1, 31, $dd2, 50); echo "-";
+                echo CreateSelect("mm2", 1, 12, $mm2, 50); echo "-";
+                echo CreateSelect("yy2", $yy1, $yy2, $yy2, 80);
+                ?>
+            </td>
+        </tr>
     </table>
     </form>
 
 <?
 }
 CloseDb();
+
+function CreateSelect($name, $min, $max, $value, $width)
+{
+    $select = "<select name='$name' id='$name' style='width: $width px' onChange='change_sel4()'>";
+    for($i = $min; $i <= $max; $i++)
+    {
+        $sel = $i == $value ? "selected" : "";
+        $select .= "<option value='$i' $sel>$i</option>";
+    }
+    $select .= "</select>";
+
+    return $select;
+}
 ?>
 
 </body>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -205,18 +205,18 @@ class Pengumuman{
                   <ul class="TabbedPanelsTabGroup">
                     <li class="TabbedPanelsTab" tabindex="0">Pegawai</li>
                     <li class="TabbedPanelsTab" tabindex="0">Siswa</li>
-                    <li class="TabbedPanelsTab" tabindex="0">Orang Tua</li>
+					<li class="TabbedPanelsTab" tabindex="0">Ortu Siswa</li>
+					<li class="TabbedPanelsTab" tabindex="0">Calon Siswa</li>
+					<li class="TabbedPanelsTab" tabindex="0">Ortu Calon Siswa</li>
                     <li class="TabbedPanelsTab" tabindex="0">Lainnya</li>
                   </ul>
                   <div class="TabbedPanelsContentGroup" style="height:203px; overflow:auto; width:100%; overflow-x:hidden">
-                    <div class="TabbedPanelsContent" id="TabPegawai">
-                    </div>
-                    <div class="TabbedPanelsContent" id="TabSiswa">
-                    </div>
-                    <div class="TabbedPanelsContent" id="TabOrtu">
-                    </div>
-                    <div class="TabbedPanelsContent" id="TabLainnya" style="padding:10px" align='center'>
-                    </div>
+                    <div class="TabbedPanelsContent" id="TabPegawai"></div>
+                    <div class="TabbedPanelsContent" id="TabSiswa"></div>
+                    <div class="TabbedPanelsContent" id="TabOrtu"></div>
+					<div class="TabbedPanelsContent" id="TabCalonSiswa"></div>
+					<div class="TabbedPanelsContent" id="TabOrtuCS"></div>
+                    <div class="TabbedPanelsContent" id="TabLainnya" style="padding:10px" align='center'></div>
                   </div>
                 </div>
                 <!--
@@ -266,35 +266,64 @@ class Pengumuman{
     <?
 	}
 	
-	function OnFinish(){
-	?>
+	function OnFinish()
+	{	?>
     <script type="text/javascript">
 	<!--
-	var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
-	ShowWait('TabPegawai');
-	sendRequestText('GetPegawai.php',ShowPegawai,'');
-	ShowWait('TabSiswa');
-	sendRequestText('GetSiswa.php',ShowSiswa,'');
-	ShowWait('TabLainnya');
-	sendRequestText('GetLainnya.php',ShowLainnya,'');
-	ShowWait('TabOrtu');
-	sendRequestText('GetOrtu.php',ShowOrtu,'');
-	function ShowPegawai(x){
-		document.getElementById('TabPegawai').innerHTML = x;
-		Tables('TablePeg', 1, 0);
-	}
-	function ShowSiswa(x){
-		document.getElementById('TabSiswa').innerHTML = x;
-		Tables('TableSis', 1, 0);
-	}
-	function ShowLainnya(x){
-		document.getElementById('TabLainnya').innerHTML = x;
-	}
-	function ShowOrtu(x){
-		document.getElementById('TabOrtu').innerHTML = x;
-		Tables('TableOr', 1, 0);
-	}
-	//TableSis
+		var TabbedPanels1 = new Spry.Widget.TabbedPanels("TabbedPanels1");
+		
+		ShowWait('TabPegawai');
+		sendRequestText('GetPegawai.php',ShowPegawai,'');
+		
+		ShowWait('TabSiswa');
+		sendRequestText('GetSiswa.php',ShowSiswa,'');
+		
+		ShowWait('TabCalonSiswa');
+		sendRequestText('GetCalonSiswa.php',ShowCalonSiswa,'');
+		
+		ShowWait('TabLainnya');
+		sendRequestText('GetLainnya.php',ShowLainnya,'');
+		
+		ShowWait('TabOrtu');
+		sendRequestText('GetOrtu.php',ShowOrtu,'');
+		
+		ShowWait('TabOrtuCS');
+		sendRequestText('GetOrtuCS.php',ShowOrtuCS,'');
+		
+		function ShowPegawai(x)
+		{
+			document.getElementById('TabPegawai').innerHTML = x;
+			Tables('TablePeg', 1, 0);
+		}
+		
+		function ShowSiswa(x)
+		{
+			document.getElementById('TabSiswa').innerHTML = x;
+			Tables('TableSis', 1, 0);
+		}
+		
+		function ShowCalonSiswa(x)
+		{
+			document.getElementById('TabCalonSiswa').innerHTML = x;
+			Tables('TabCalonSiswa', 1, 0);
+		}
+		
+		function ShowLainnya(x)
+		{
+			document.getElementById('TabLainnya').innerHTML = x;
+		}
+		
+		function ShowOrtu(x)
+		{
+			document.getElementById('TabOrtu').innerHTML = x;
+			Tables('TableOr', 1, 0);
+		}
+		
+		function ShowOrtuCS(x)
+		{
+			document.getElementById('TabOrtuCS').innerHTML = x;
+			Tables('TableOrCS', 1, 0);
+		}
 	//-->
 	</script>
     <?

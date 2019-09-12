@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -353,7 +353,7 @@ $lastdate = $row[0];
             WHERE jd.koderek = ra.kode AND ra.kategori = 'HARTA' AND jd.kredit > 0 
             AND jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
-                WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
+                WHERE j.sumber <> 'saldoawal' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
                 AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'UTANG' AND jd.debet > 0)";
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
@@ -372,7 +372,7 @@ $lastdate = $row[0];
             WHERE jd.koderek = ra.kode AND ra.kategori = 'HARTA' AND jd.debet > 0 
             AND jd.idjurnal IN (
                 SELECT jd.idjurnal FROM jurnaldetail jd, jurnal j, rekakun ra 
-                WHERE jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
+                WHERE j.sumber <> 'saldoawal' AND jd.idjurnal = j.replid AND jd.koderek = ra.kode AND j.tanggal BETWEEN '$firstdate' 
                 AND '$tanggal2' AND j.idtahunbuku = '$idtahunbuku' AND ra.kategori = 'UTANG' AND jd.kredit > 0)";
     $result = QueryDb($sql);
     $row = mysql_fetch_row($result);
@@ -457,8 +457,10 @@ $lastdate = $row[0];
     // echo  $sql;		
     $result = QueryDb($sql);
     $totalinvest = 0;
+	$subinvest = 0;
     while($row = mysql_fetch_row($result)) {
         $invest = (float)$row[1];
+		$subinvest += $invest;
     ?>
     <tr height="25">
         <td width="20">&nbsp;</td>
@@ -474,7 +476,7 @@ $lastdate = $row[0];
         <td width="120" align="right">&nbsp;</td>
         <td width="120" align="right"><font size="2"><strong>
     <?	
-	$totalinvest = $totalmodalterima + $totalmodalambil + $invest;
+	$totalinvest = $totalmodalterima + $totalmodalambil + $subinvest;
 	echo  FormatRupiah($totalinvest) ?></strong></font></td>
     </tr>
     

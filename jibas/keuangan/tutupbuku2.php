@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -47,6 +47,7 @@ $tawal = $_REQUEST['tawal'];
 $awalan = CQ($_REQUEST['awalan']);
 $rekre = $_REQUEST['rekre'];
 $keterangan = CQ($_REQUEST['keterangan']);
+$idpetugas = getIdUser();
 $petugas = getUserName();
 
 $errmsg = "";
@@ -173,7 +174,7 @@ if (isset($_REQUEST['lanjut']))
 		// Simpan ke jurnal
 		$idjurnal = 0;
 		if ($success)
-			$success = SimpanJurnal($idtahunbaru, $tawal, "Saldo Awal Tahun Buku $tahunbuku Dept $dept", $nokas, "", $petugas, "saldoawal", $idjurnal);
+			$success = SimpanJurnal($idtahunbaru, $tawal, "Saldo Awal Tahun Buku $tahunbuku Dept $dept", $nokas, "", $idpetugas, $petugas, "saldoawal", $idjurnal);
 		
 		// Save Aktiva
 		for($i = 0; $success && $i < count($aktiva); $i++)

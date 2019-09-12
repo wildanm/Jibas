@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -28,38 +28,58 @@ class CPustaka
 		$op = $_REQUEST[op];
 		if ($op == "Gtytc6yt665476d6")
 		{
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
-			$res = QueryDb($sql);
-			$numdel = @mysql_num_rows($res);
+		    $idpustaka = $_REQUEST['replid'];
+		    $idperpus = $_REQUEST['perpustakaan'];
 
-			$sql = "SELECT * FROM pustaka WHERE replid='$_REQUEST[replid]'";
-			$res = QueryDb($sql);
-			$row = @mysql_fetch_array($res);
-			$idkatalog = $row[katalog];
+		    $sqlperpus = "";
+		    if ($idperpus != -1)
+                $sqlperpus = "AND perpustakaan = $idperpus";
 
-			$sql = "SELECT * FROM katalog WHERE replid='$idkatalog'";
+			$sql = "SELECT COUNT(*) 
+                      FROM daftarpustaka 
+                     WHERE pustaka='$idpustaka' 
+                           $sqlperpus";
 			$res = QueryDb($sql);
-			$row = @mysql_fetch_array($res);
-			$counter = $row[counter];
+			$row = mysql_fetch_row($res);
+			$numdel = $row[0];
+
+			$sql = "SELECT katalog 
+                      FROM pustaka 
+                     WHERE replid='$idpustaka'";
+			$res = QueryDb($sql);
+			$row = mysql_fetch_array($res);
+			$idkatalog = $row['katalog'];
+
+			$sql = "SELECT counter 
+                      FROM katalog 
+                     WHERE replid = '$idkatalog'";
+            $res = QueryDb($sql);
+            $row = mysql_fetch_row($res);
+			$counter = $row[0];
+
+            $sql = "DELETE FROM daftarpustaka 
+                     WHERE pustaka='$idpustaka' 
+                           $sqlperpus";
+            QueryDb($sql);
 
 			$diff = $counter - $numdel;
-
-			$sql = "UPDATE katalog SET counter=$diff WHERE replid='$idkatalog'";
-			$res = QueryDb($sql);
-			
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
-			$res = QueryDb($sql);
-			$numdel = @mysql_num_rows($res);
-
-			$sql = "DELETE FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan='$_REQUEST[perpustakaan]'";
+			$sql = "UPDATE katalog 
+                       SET counter=$diff 
+                     WHERE replid='$idkatalog'";
 			QueryDb($sql);
 
-			$sql = "SELECT * FROM daftarpustaka WHERE pustaka='$_REQUEST[replid]' AND perpustakaan<>'$_REQUEST[perpustakaan]'";
-			$res = QueryDb($sql);
-			if (@mysql_num_rows($res)==0)
+			$sql = "SELECT COUNT(*) 
+                      FROM daftarpustaka 
+                     WHERE pustaka='$idpustaka' 
+                           $sqlperpus";
+            $res = QueryDb($sql);
+            $row = mysql_fetch_row($res);
+			$count = $row[0];
+			if ($count == 0)
 			{
-				$sql = "DELETE FROM pustaka WHERE replid='$_REQUEST[replid]'";
-				QueryDb($sql);	
+				$sql = "DELETE FROM pustaka 
+                         WHERE replid='$idpustaka'";
+				QueryDb($sql);
 			}
 		}
 		
@@ -133,14 +153,16 @@ class CPustaka
 
         	
         </div><br />
-        <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
+        <table width="100%" border="1" cellspacing="0" cellpadding="4" id="table">
           <tr class="header" height="30">
-            <td height="30" align="center">No</td>
-            <td height="30" align="center">Judul</td>
-            <td height="30" align="center">Jumlah Tersedia</td>
-            <td height="30" align="center">Jumlah Dipinjam</td>
-            <td align="center">&nbsp;</td>
-            <td height="30" align="center">&nbsp;</td>
+            <td width='4%' align="center">No</td>
+			<td width='15%' align="center">Katalog</td>
+            <td width='*' align="center">Judul</td>
+            <td width='7%' align="center">Jumlah Tersedia</td>
+            <td width='7%' align="center">Jumlah Dipinjam</td>
+            <td width='7%' align="center">Cetak Label &amp; Barcode</td>
+			<td width='7%' align="center">Tambah / Hapus Pustaka</td>
+            <td width='10%' align="center">&nbsp;</td>
           </tr>
           <?
 		  $filter="";
@@ -152,7 +174,7 @@ class CPustaka
 		  //$pagenum = @mysql_num_rows($result);
 		  $pagenum = ceil(mysql_num_rows($result)/(int)$this->numlines);
 
-		  $sql = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+		  $sql = "SELECT p.replid, p.judul, p.katalog  FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  $result = QueryDb($sql);
 		  $num = @mysql_num_rows($result);
 		  if ($num>0){
@@ -160,28 +182,51 @@ class CPustaka
 				$cnt=1;
 			  else
 				$cnt=$this->page*$this->numlines+1;	
-			  while ($row = @mysql_fetch_row($result)){
-			  $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter AND d.status=0"));
-			  $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter AND d.status=1"));
+			  while ($row = @mysql_fetch_row($result))
+			  {
+				$kode = "";
+				$katalog = "";
+				$sql = "SELECT kode, nama FROM katalog WHERE replid = $row[2]";
+				$res = QueryDb($sql);
+				if (mysql_num_rows($res) > 0)
+				{
+					$row2 = mysql_fetch_row($res);
+					$kode = $row2[0];
+					$katalog = $row2[1];
+				}
+				$rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter AND d.status=0"));
+				$rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter AND d.status=1"));
 			  ?>
-			  <tr>
-				<td height="25" align="center"><?=$cnt?></td>
-				<td height="25"><div class="tab_content"><?=stripslashes($row[1])?></div></td>
-				<td height="25" align="center"><?=$rtersedia?></td>
-				<td height="25" align="center"><?=$rdipinjam?></td>
-				<td align="center" bgcolor="#FFFFFF">
-					<a title="Lihat Detail" href="javascript:lihat(<?=$row[0]?>)"><img src="../img/ico/lihat.png" width="16" height="16" border="0" /></a>&nbsp;
-					<a title="Cetak Label" href="javascript:cetak_nomor('<?=$row[0]?>','<?=$this->perpustakaan?>')"><img src="../img/ico/print1.png" width="16" height="16" border="0" /></a>
+			  <tr height='25'>
+				<td align="center"><?=$cnt?></td>
+				<td align="left"><?=$kode . " - " . $katalog?></td>
+				<td ><div class="tab_content"><?=stripslashes($row[1])?></div></td>
+				<td align="center"><?=$rtersedia?></td>
+				<td align="center"><?=$rdipinjam?></td>
+				<td align="center">
+					<a title="Cetak Label" href="javascript:cetak_nomor('<?=$row[0]?>','<?=$this->perpustakaan?>')">
+						<img src="../img/barcode.png" height="18" border="0" />
+					</a>
 				</td>
-				<td height="25" align="center" bgcolor="#FFFFFF">
-               	  <table width="35" border="0" cellspacing="2" cellpadding="0">
-                      <tr>
-                        <td align="center"><a href="javascript:ubah('<?=$row[0]?>','daftar','','','')"><img src="../img/ico/ubah.png" width="16" height="16" border="0" /><a href="javascript:hapus(<?=$row[0]?>)"></td>
-                        <? if (SI_USER_LEVEL()!=2){ ?>
-						<td align="center"><a href="javascript:hapus(<?=$row[0]?>)"><img src="../img/ico/hapus.png" width="16" height="16" border="0" /></a></td>
-						<? } ?>
-					  </tr>
-                  </table>
+				<td align="center">
+					<a title="Penambahan dan Pengurangan Pustaka" href="javascript:aturpustaka('<?=$row[0]?>', '<?=$this->perpustakaan?>')">
+						<img src="../img/book.png" height="18" border="0" />
+					</a>
+				</td>
+				<td height="25" align="center">               	  
+					<a title="Lihat Detail" href="javascript:lihat(<?=$row[0]?>)">
+						<img src="../img/ico/lihat.png" width="16" height="16" border="0" />
+					</a>
+					&nbsp;
+					<a href="javascript:ubah('<?=$row[0]?>','daftar','','','')">
+						<img src="../img/ico/ubah.png" width="16" height="16" border="0" />
+					</a>
+					&nbsp;
+                    <? if (SI_USER_LEVEL()!=2) { ?>
+					<a href="javascript:hapus(<?=$row[0]?>)">
+						<img src="../img/ico/hapus.png" width="16" height="16" border="0" />
+					</a>
+					<? } ?>
                 </td>
 			  </tr>
 			  <?
@@ -225,22 +270,6 @@ class CPustaka
 				</select>
                 <input <?=$disnext?> type="button" class="cmbfrm2" name="next" value=" >> " onClick="change_page('<?=(int)$this->page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">
 				dari <?=$pagenum?> halaman
-				
-				<? 
-			 // Navigasi halaman berikutnya dan sebelumnya
-				?>       
-					
-					<?
-					/*for($a=0;$a<$pagenum;$a++){
-						if ($this->page==$a){
-							echo "<font face='verdana' color='red' size='4'><strong>".($a+1)."</strong></font> "; 
-						} else { 
-							echo "<a href='#' onClick=\"change_page('".$a."')\"><font face='verdana' color='green'>".($a+1)."</font></a> "; 
-						}
-							 
-					}*/
-					?>
-					
 				</td>
 			</tr>
 		</table>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -24,60 +24,79 @@
 require_once('../../inc/config.php');
 require_once('../../inc/db_functions.php');
 require_once('../../inc/common.php');
+
 OpenDb();
-$idpustaka=$_REQUEST[idpustaka];
-$from=$_REQUEST[from];
-$to=$_REQUEST[to];
-$sql = "SELECT p.idanggota, p.tglpinjam FROM $db_name_perpus.pinjam p, $db_name_perpus.daftarpustaka d, $db_name_perpus.pustaka pu WHERE p.tglpinjam BETWEEN '$from' AND '$to' AND pu.replid = '$idpustaka' AND p.kodepustaka=d.kodepustaka AND d.pustaka=pu.replid";
+
+$idperpustakaan = -1;
+if (isset($_REQUEST['idperpustakaan']))
+  $idperpustakaan = (int)$_REQUEST['idperpustakaan'];
+
+$filter="";
+if ($idperpustakaan != -1)
+  $filter=" AND d.perpustakaan=".$idperpustakaan;
+			
+$idpustaka = $_REQUEST[idpustaka];
+$from = $_REQUEST[from];
+$to = $_REQUEST[to];
+$sql = "SELECT IF(p.nis IS NOT NULL, p.nis, IF(p.nip IS NOT NULL, p.nip, p.idmember)) AS idanggota, p.tglpinjam, p.info1
+	      FROM jbsperpus.pinjam p, jbsperpus.daftarpustaka d, jbsperpus.pustaka pu
+		 WHERE p.tglpinjam BETWEEN '$from' AND '$to'
+		   AND pu.replid = '$idpustaka'
+		   AND p.kodepustaka = d.kodepustaka $filter
+		   AND d.pustaka=pu.replid
+		 ORDER BY tglpinjam DESC  ";
 $result = QueryDb($sql);
 //echo $sql;
-$cnt=1;
 ?>
-<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab">
-  <tr>
-    <td height="25" align="center" class="header">No</td>
-    <td height="25" align="center" class="header">Peminjam</td>
-    <td height="25" align="center" class="header">Tgl Pinjam</td>
-    <td height="25" align="center" class="header">&nbsp;</td>
+<table width="100%" border="1" cellspacing="0" cellpadding="5" class="tab">
+<tr height="25">
+  <td width='5%' align="center" class="header">No</td>
+  <td width='14%' align="center" class="header">Tgl Pinjam</td>
+  <td width='*' align="center" class="header">Peminjam</td>
+</tr>
+<?
+$cnt = 1;
+while ($row = @mysql_fetch_row($result))
+{ ?>
+  <tr height="20">
+	<td align="center"><?=$cnt?></td>
+	<td align="center"><?=LongDateFormat($row[1])?></td>
+	<td align="left">
+	  <font style='font-size: 9px'><?=$row[0]?></font><br>
+	  <font style='font-size: 11px; font-weight: bold;'><?=GetMemberName($row[0], $row[2])?></font>
+	  </td>
   </tr>
-  <? while ($row = @mysql_fetch_row($result)) { ?>
-  <tr>
-    <td height="20" align="center"><?=$cnt?></td>
-    <td height="20">&nbsp;<?=$row[0]." - ".GetMemberName($row[0])?></td>
-    <td height="20" align="center"><?=LongDateFormat($row[1])?></td>
-    <td height="20" align="center">
-        <!--<a href="javascript:ViewDetail('<?=$idpustaka?>')"><img src="../../img/ico/lihat.png" width="16" height="16" border="0" /></a>-->
-    </td>
-  </tr>
-  <? $cnt++; ?>
-  <? } ?>
+<?
+  $cnt++;
+}
+CloseDb();
+?>
 </table>
 <?
-function GetMemberName($idanggota){
-	global $db_name_akad;
-	global $db_name_sdm;
-	global $db_name_perpus;
-	$sql1 = "SELECT nama FROM $db_name_akad.siswa WHERE nis='$idanggota'";
-	$result1 = QueryDb($sql1);
-	if (@mysql_num_rows($result1)>0){
-		$row1 = @mysql_fetch_array($result1);
-		return $row1[nama];
-	} else {
-		$sql2 = "SELECT nama FROM $db_name_sdm.pegawai WHERE nip='$idanggota'";
-		$result2 = QueryDb($sql2);
-		if (@mysql_num_rows($result2)>0){
-			$row2 = @mysql_fetch_array($result2);
-			return $row2[nama];
-		} else {
-			$sql3 = "SELECT nama FROM $db_name_perpus.anggota WHERE noregistrasi='$idanggota'";
-			$result3 = QueryDb($sql3);
-			if (@mysql_num_rows($result3)>0){
-				$row3 = @mysql_fetch_array($result3);
-				return $row3[nama];
-			} else {
-				return "Tanpa Nama";
-			}
-		}
+function GetMemberName($idanggota, $jenisanggota)
+{
+	if ($jenisanggota == "siswa")
+	{
+		$sql = "SELECT nama
+				  FROM jbsakad.siswa
+				 WHERE nis = '$idanggota'";
 	}
+	elseif ($jenisanggota == "pegawai")
+	{
+		$sql = "SELECT nama
+				  FROM jbssdm.pegawai
+				 WHERE nip = '$idanggota'";
+	}
+	else
+	{
+		$sql = "SELECT nama
+				  FROM jbsperpus.anggota
+				 WHERE noregistrasi = '$idanggota'";
+	}
+	$res = QueryDb($sql);
+	$row = mysql_fetch_row($res);
+	$namaanggota = $row[0];
+	
+	return $namaanggota;
 }
 ?>

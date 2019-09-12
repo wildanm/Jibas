@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -56,6 +56,7 @@ class PegawaiInput
     public $keterangan = "";
     public $pns = 1;
     public $bagian = "Akademik";
+    public $idtambahan = "";
     
     public function __construct()
     {
@@ -96,6 +97,7 @@ class PegawaiInput
         $this->keterangan = CQ($_REQUEST['txKeterangan']);
         $this->pns = $_REQUEST['rbPNS'];
         $this->bagian = $_REQUEST['rbBagian'];
+        $this->idtambahan = $_REQUEST['idtambahan'];
         
         if (!isset($_REQUEST['rbPNS']))
             $this->pns = "PNS";
@@ -167,6 +169,82 @@ class PegawaiInput
             $sql = "INSERT INTO jbssdm.peglastdata SET nip='$this->nip'";
             QueryDbTrans($sql, $success);
 		}
+
+        if ($success && strlen($this->idtambahan) > 0)
+        {
+            if (strpos($this->idtambahan, ",") === false)
+                $arridtambahan = array($this->idtambahan);
+            else
+                $arridtambahan = explode(",", $this->idtambahan);
+
+            // READ WARNING IMAGE
+            $warnimg = "../images/warningimg.jpg";
+            $fh = fopen($warnimg,"r");
+            $warnsize = filesize($warnimg);
+            $warnfile = addslashes(fread($fh, $warnsize));
+            $warntype = "image/jpeg";
+            $warnname = "warning.jpg";
+            fclose($fh);
+
+            for($i = 0; $success && $i < count($arridtambahan); $i++)
+            {
+                $replid = $arridtambahan[$i];
+
+                $param = "jenisdata-$replid";
+                if (!isset($_REQUEST[$param]))
+                    continue;
+
+                $jenis = $_REQUEST[$param];
+                if ($jenis == 1 || $jenis == 3)
+                {
+                    $param = "tambahandata-$replid";
+                    if (!isset($_REQUEST[$param]))
+                        continue;
+
+                    $teks = $_REQUEST[$param];
+                    $teks = CQ($teks);
+
+                    $sql = "INSERT INTO jbssdm.tambahandatapegawai
+                               SET nip = '$this->nip', idtambahan = '$replid', jenis = '$jenis', teks = '$teks'";
+                    QueryDbTrans($sql, $success);
+                }
+                else if ($jenis == 2)
+                {
+                    $param = "tambahandata-$replid";
+                    if (!isset($_FILES[$param]))
+                        continue;
+
+                    $file = $_FILES[$param];
+                    $tmpfile = $file['tmp_name'];
+
+                    if (strlen($tmpfile) != 0)
+                    {
+                        if (filesize($tmpfile) <= 256000)
+                        {
+                            $fh = fopen($tmpfile, "r");
+                            $datafile = addslashes(fread($fh, filesize($tmpfile)));
+                            fclose($fh);
+
+                            $namefile = $file['name'];
+                            $typefile = $file['type'];
+                            $sizefile = $file['size'];
+                        }
+                        else
+                        {
+                            $datafile = $warnfile;
+                            $namefile = $warnname;
+                            $typefile = $warntype;
+                            $sizefile = $warnsize;
+                        }
+
+                        $sql = "INSERT INTO jbssdm.tambahandatapegawai
+                                   SET nip = '$this->nip', idtambahan = '$replid', jenis = '2', 
+                                       filedata = '$datafile', filename = '$namefile', filemime = '$typefile', filesize = '$sizefile'";
+                        QueryDbTrans($sql, $success);
+                    }
+                }
+            }
+        }
         
         if ($success)
         {

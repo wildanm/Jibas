@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -29,7 +29,6 @@ require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
 require_once('library/departemen.php');
 require_once('include/errorhandler.php');
-require_once('library/openthinksas.jibas.php');
 
 if (getLevel() == 2)
 { ?>
@@ -173,21 +172,23 @@ function change_page(page) {
 	document.location.href = "jenispenerimaan.php?page="+page+"&varbaris="+varbaris+"&hal="+page+"&idkategori="+idkategori+"&departemen="+departemen;
 }
 
-function change_hal() {
+function change_hal()
+{
 	var hal = document.getElementById("hal").value;
 	var varbaris=document.getElementById("varbaris").value;
-	//var idkategori = document.getElementById('idkategori').value;
+	var idkategori = document.getElementById('idkategori').value;
 	var departemen = document.getElementById('departemen').value;
 		
-	document.location.href="jenispenerimaan.php?page="+hal+"&hal="+hal+"&varbaris="+varbaris+"&departemen="+departemen;//&idkategori="+idkateogri+"
+	document.location.href="jenispenerimaan.php?page="+hal+"&hal="+hal+"&varbaris="+varbaris+"&departemen="+departemen+"&idkategori="+idkategori;
 }
 
-function change_baris() {
-	//var idkategori = document.getElementById('idkategori').value;
+function change_baris()
+{
+	var idkategori = document.getElementById('idkategori').value;
 	var departemen = document.getElementById('departemen').value;
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href="jenispenerimaan.php?varbaris="+varbaris+"&departemen="+departemen;//&idkategori="+idkateogri+"
+	document.location.href="jenispenerimaan.php?varbaris="+varbaris+"&departemen="+departemen+"&idkategori="+idkategori;
 }
 </script>
 </head>
@@ -222,7 +223,7 @@ function change_baris() {
     	<td width="15%" rowspan="2">&nbsp;</td>
         <td width="12%"><strong>Kategori&nbsp;</strong></td>
         <td width="20%">
-        <select name="idkategori" id="idkategori" onChange="change_jenis()" style="width:200px" onKeyPress="return focusNext('departemen', event)">
+        <select name="idkategori" id="idkategori" onChange="change_jenis();" style="width:200px" onKeyPress="return focusNext('departemen', event);">
 <?		$sql = "SELECT kode, kategori FROM kategoripenerimaan ORDER BY urutan";
 		OpenDb();
 		$result = QueryDb($sql);
@@ -244,7 +245,7 @@ function change_baris() {
 			if ($departemen == "")
 				$departemen = $value; ?>
         <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?> >
-        <?=getDepartemenInOpenThinkSAS($value) ?>
+        <?=$value ?>
         </option>
         <?		} ?>
       	</select></td> 
@@ -278,7 +279,8 @@ function change_baris() {
         <td class="header" width="5%">No</td>
         <td class="header" width="15%">Nama</td>        
         <td class="header" width="30%">Kode Rekening</td>
-        <td class="header" width="*">Keterangan</td>        
+        <td class="header" width="*">Keterangan</td>
+		<td class="header" width="100">Kirim SMS</td>
         <td class="header" width="100">&nbsp;</td>
 	</tr>
 <?	
@@ -318,6 +320,12 @@ function change_baris() {
 		<strong>Diskon:</strong> <?=$row[info1] . " " . $namarekdiskon ?><br />
         </td>
         <td><?=$row['keterangan'] ?></td>
+		<td align="center">
+		<?	if ($row['info2'] == 1)
+				echo "<img src='images/ico/checka.png' title='kirim'>";
+			else
+				echo "&nbsp;"; ?>
+		</td>
         <td align="center">
 <?      
 		$img = "aktif.png"; 
@@ -327,8 +335,8 @@ function change_baris() {
 			$pesan = "Status Tidak Aktif!"; 
 		} 
 ?>		
-        	<a href="#" onClick="set_aktif(<?=$row['replid'] ?>, <?=$row['aktif'] ?>)"><img src="images/ico/<?=$img ?>" border="0" onMouseOver="showhint('<?=$pesan?>', this, event, '80px')"/></a>&nbsp;|&nbsp;
-        	<a href="#" onClick="newWindow('jenispenerimaan_edit.php?id=<?=$row['replid']?>&departemen=<?=$row['departemen'] ?>&idkategori=<?=$row['idkategori']?>', 'UbahJenisPenerimaan','500','395','resizable=1,scrollbars=1,status=0,toolbar=0')"><img src="images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Penerimaan!', this, event, '80px')"/></a>&nbsp;|&nbsp;
+        	<a href="#" onClick="set_aktif(<?=$row['replid'] ?>, <?=$row['aktif'] ?>)"><img src="images/ico/<?=$img ?>" border="0" onMouseOver="showhint('<?=$pesan?>', this, event, '80px')"/></a>&nbsp;
+        	<a href="#" onClick="newWindow('jenispenerimaan_edit.php?id=<?=$row['replid']?>&departemen=<?=$row['departemen'] ?>&idkategori=<?=$row['idkategori']?>', 'UbahJenisPenerimaan','500','395','resizable=1,scrollbars=1,status=0,toolbar=0')"><img src="images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Penerimaan!', this, event, '80px')"/></a>&nbsp;
         	<a href="#" onClick="hapus(<?=$row['replid'] ?>)"><img src="images/ico/hapus.png" border="0" onMouseOver="showhint('Hapus Penerimaan!', this, event, '80px')"/></a>   	
         </td>
     </tr>
@@ -367,25 +375,7 @@ function change_baris() {
         <? } ?>
      	</select>
 	  	dari <?=$total?> halaman
-		
-		<? 
-     // Navigasi halaman berikutnya dan sebelumnya
-        ?>
         </td>
-    	<!--td align="center">
-    <input <?=$disback?> type="button" class="but" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">
-		<?
-		/*for($a=0;$a<$total;$a++){
-			if ($page==$a){
-				echo  "<font face='verdana' color='red'><strong>".($a+1)."</strong></font> "; 
-			} else { 
-				echo  "<a href='#' onClick=\"change_page('".$a."')\">".($a+1)."</a> "; 
-			}
-				 
-	    }*/
-		?>
-	     <input <?=$disnext?> type="button" class="but" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">
- 		</td-->
         <td width="30%" align="right">Jumlah baris per halaman
       	<select name="varbaris" id="varbaris" onChange="change_baris()">
         <? 	for ($m=5; $m <= $akhir; $m=$m+5) { ?>

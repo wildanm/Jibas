@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -46,14 +46,28 @@ if ($menu=="akademik")
     <td  style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="pelajaran.php" target="framecenter" onmouseover="pelajaran.src='images/icon_menu/pelajaran_on.png'" name="pelajaran" id="pelajaran" onmouseout="pelajaran.src='images/icon_menu/pelajaran.png'"><img src="images/icon_menu/pelajaran.png" name="pelajaran" width="30" height="30" border="0" id="pelajaran"/><br>
     <span class="iconTitle">Pelajaran</span></a></div></td>
     <? } ?>
-	
+
     <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="penilaian.php" target="framecenter" onmouseover="penilaian.src='images/icon_menu/penilaian_on.png'" name="penilaian" id="penilaian" onmouseout="penilaian.src='images/icon_menu/penilaian.png'"><img src="images/icon_menu/penilaian.png" name="penilaian" width="30" height="30" border="0" id="penilaian"/><br>
     <span class="iconTitle">Penilaian</span></a></div></td>
+
+    <? if (SI_USER_LEVEL()!=0){ ?>
+      <td style="padding-right:15px">
+          <div align="center">
+              <a style="text-decoration:none;" href="exim.php" target="framecenter" onmouseover="exim.src='images/icon_menu/exim_on.png'"
+                 name="exim" id="exim" onmouseout="exim.src='images/icon_menu/exim.png'">
+                  <img src="images/icon_menu/exim.png" name="exim" width="30" height="30" border="0" id="exim"/><br>
+                  <span class="iconTitle">Ekspor &amp; Impor</span>
+              </a>
+          </div>
+      </td>
+    <? } ?>
     
     <? if (SI_USER_LEVEL()!=0){ ?>
 	<td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="presensi.php" target="framecenter" onmouseover="presensi.src='images/icon_menu/presensi_on.png'" name="presensi" id="presensi" onmouseout="presensi.src='images/icon_menu/presensi.png'"><img src="images/icon_menu/presensi.png" name="presensi" width="30" height="30" border="0" id="presensi"/><br>
     <span class="iconTitle">Presensi</span></a></div></td>
     <? } ?>
+
+
     <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="siswa/siswa.php" target="framecenter" onmouseover="infosiswa.src='images/icon_menu/infosiswa_on.png'" name="infosiswa" id="infosiswa" onmouseout="infosiswa.src='images/icon_menu/infosiswa.png'"><img src="images/icon_menu/infosiswa.png" name="infosiswa" width="30" height="30" border="0" id="infosiswa"/><br>
     <span class="iconTitle">Info&nbsp;Siswa</span></a></div></td>
 
@@ -70,7 +84,7 @@ if ($menu=="buletin"){
 <table border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="home.php" target="framecenter" onmouseover="info.src='images/icon_menu/info_on.png'" name="info" id="info" onmouseout="info.src='images/icon_menu/info.png'"><img src="images/icon_menu/info.png" name="info" width="30" height="30" border="0" id="info"/><br>
-    <span class="iconTitle">Notifikasi</span></a></div></td>
+    <span class="iconTitle">Beranda</span></a></div></td>
 
     <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="buletin/rubriksekolah/beritasekolah.php" target="framecenter" onmouseover="rubrik.src='images/icon_menu/rubrik_on.png'" name="rubrik" id="rubrik" onmouseout="rubrik.src='images/icon_menu/rubrik.png'"><img src="images/icon_menu/rubrik.png" name="rubrik" width="30" height="30" border="0" id="rubrik"/><br>
     <span class="iconTitle">Berita Sekolah</span></a></div></td>
@@ -95,6 +109,11 @@ if ($menu=="buletin"){
     <? } ?>
      <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="buletin/filesharing/main.php" target="framecenter" onmouseover="filesharing.src='images/icon_menu/fileshare_on.png'" name="filesharing" id="filesharing" onmouseout="filesharing.src='images/icon_menu/fileshare.png'"><img src="images/icon_menu/fileshare.png" name="filesharing" width="30" height="30" border="0" id="filesharing"/><br>
     <span class="iconTitle">File Sharing</b></font></a></div></td>
+	 
+	<? if (SI_USER_LEVEL() != 0){ ?>
+    <td style="padding-right:15px"><div align="center"><a style="text-decoration:none;" href="buletin/surat/daftarsurat.main.php" target="framecenter" onmouseover="surat.src='images/icon_menu/surat_on.png'" name="surat" id="surat" onmouseout="surat.src='images/icon_menu/surat.png'"><img src="images/icon_menu/surat.png" name="surat" width="30" height="30" border="0" id="pesan"/><br>
+    <span class="iconTitle">Kotak Surat</span></a></div></td>
+    <? } ?>
   </tr>
 </table>
 <? } ?>

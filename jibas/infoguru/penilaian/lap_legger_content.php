@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -49,7 +49,7 @@ $pelajaran = $_REQUEST['pelajaran'];
 <script src="../script/SpryTabbedPanels.js" type="text/javascript"></script>
 </head>
 
-<body leftmargin="0" topmargin="0">
+<body leftmargin="15" topmargin="15">
 <?
 OpenDb();
 

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -56,6 +56,10 @@ if (isset($_REQUEST['harian']))
 	$harian = $_REQUEST['harian'];
 if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
+if (isset($_REQUEST['tglmulai']))
+    $tglmulai = $_REQUEST['tglmulai'];
+if (isset($_REQUEST['tglakhir']))
+    $tglakhir = $_REQUEST['tglakhir'];
 	
 $sql1 = "SELECT kelas FROM jbsakad.kelas WHERE replid='$kelas'";
 $result1 = QueryDb($sql1);
@@ -91,10 +95,7 @@ function refresh()
 
 function tampil(nis) 
 {	
-	if (<?=$naspek?> > 2)
-		parent.laporan_rapor_content.location.href="laporan_nilai_content_row.php?departemen=<?=$departemen?>&semester=<?=$semester?>&prespel=<?=$pelajaran?>&harian=<?=$harian?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&nis="+nis;
-	else		
-		parent.laporan_rapor_content.location.href="laporan_nilai_content.php?departemen=<?=$departemen?>&semester=<?=$semester?>&prespel=<?=$pelajaran?>&harian=<?=$harian?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&nis="+nis;
+    parent.laporan_rapor_content.location.href="laporan_nilai_content.php?departemen=<?=$departemen?>&semester=<?=$semester?>&prespel=<?=$pelajaran?>&harian=<?=$harian?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&tglmulai=<?=$tglmulai?>&tglakhir=<?=$tglakhir?>&nis="+nis;
 }
 
 function change_urut(urut,urutan) 
@@ -104,15 +105,12 @@ function change_urut(urut,urutan)
 	else 
 		urutan="asc";
 
-	document.location.href="laporan_nilai_rapor_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&urut="+urut+"&urutan="+urutan;
+	document.location.href="laporan_nilai_rapor_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&kelas=<?=$kelas?>&tglmulai=<?=$tglmulai?>&tglakhir=<?=$tglakhir?>&urut="+urut+"&urutan="+urutan;
 }
 
 function cetak_rapor_kelas() 
 {
-	if (<?=$naspek?> > 2)
-		newWindow('cetak_rapor_kelas_row.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&harian=<?=$harian?>&prespel=<?=$pelajaran?>&kelas=<?=$kelas?>','CetakFormKomentarNilaiRaporSiswa',760,850,'resizable=1,scrollbars=1,status=0,toolbar=0');
-	else
-		newWindow('cetak_rapor_kelas.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&harian=<?=$harian?>&prespel=<?=$pelajaran?>&kelas=<?=$kelas?>','CetakFormKomentarNilaiRaporSiswa',760,850,'resizable=1,scrollbars=1,status=0,toolbar=0');
+	document.location.href = 'cetak_rapor_kelas.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&harian=<?=$harian?>&prespel=<?=$pelajaran?>&kelas=<?=$kelas?>&tglmulai=<?=$tglmulai?>&tglakhir=<?=$tglakhir?>';
 }
 </script>
 <style type="text/css">
@@ -127,7 +125,7 @@ function cetak_rapor_kelas()
 </style>
 </head>
 
-<body topmargin="0" leftmargin="0">
+<body topmargin="5" leftmargin="5" style="background-color: #f5f5f5">
 <form name="main" method="post" action="komentar_footer.php" enctype="multipart/form-data">
 <input type="hidden" name="departemen" id="departemen" value="<?=$departemen ?>" />
 <input type="hidden" name="semester" id="semester" value="<?=$semester ?>" />
@@ -145,14 +143,15 @@ function cetak_rapor_kelas()
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
 <tr height="30" bgcolor="#CCCCCC">
-  <td align="center" colspan="2" valign="middle"><input class="but" type="button" name="cetak" id="cetak" value="Cetak Rapor Kelas <?=$row1['kelas']?>" onclick="cetak_rapor_kelas();" /></td>
+  <td align="center" colspan="2" valign="middle">
+      <input class="but" style="height: 30px; width: 180px;" type="button" name="cetak" id="cetak" value="Cetak Rapor Kelas <?=$row1['kelas']?>" onclick="cetak_rapor_kelas();" />
+  </td>
 </tr>
 </table><br />
 
-<table border="1" width="100%" id="table" class="tab" bordercolor="#000000">
-    <tr>		
-        <td width="3%" height="30" align="center" class="header">No</td>
-        <td height="30" class="header"><div align="center" class="style1"><strong><span class="style3">Siswa</span></strong></div></td>
+<table border="1" width="100%" id="table" class="tab" bordercolor="#000000" style="border-collapse: collapse; border-width: 1px; border-color: #f5f5f5;">
+    <tr style="visibility: hidden; border-width: 0px; border-collapse: collapse; height: 0px;">
+        <td colspan="2"></td>
     </tr>
     <? while ($row = @mysql_fetch_array($result)) {	?>
     <tr>        			

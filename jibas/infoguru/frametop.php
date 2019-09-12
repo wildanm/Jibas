@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,12 +27,14 @@ require_once("include/db_functions.php");
 require_once("include/config.php");
 require_once("include/theme.php");
 
-$menu="";
+$menu = "";
 if (isset($_REQUEST['menu']))
-	$menu=$_REQUEST['menu'];
-$content="";
+	$menu = $_REQUEST['menu'];
+	
+$content = "";
 if (isset($_REQUEST['content']))
-	$content=$_REQUEST['content'];	
+	$content = $_REQUEST['content'];
+	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,31 +58,31 @@ function chating_euy()
 function home()
 {
 	document.location.reload();
-	parent.framecenter.location.href="home.php";
+	//parent.framecenter.location.href="home.php";
 }
 
 function akademik()
 {
 	sendRequestText("get_content.php", show_content, "menu=akademik");
-	parent.framecenter.location.href="home.php";
+	//parent.framecenter.location.href="home.php";
 }
 
 function kepegawaian()
 {
 	sendRequestText("get_content.php", show_content, "menu=kepegawaian");
-	parent.framecenter.location.href = "home.php";
+	//parent.framecenter.location.href = "home.php";
 }
 
 function buletin()
 {
 	sendRequestText("get_content.php", show_content, "menu=buletin");
-	parent.framecenter.location.href="home.php";
+	//parent.framecenter.location.href="home.php";
 }
 
 function pengaturan()
 {
 	sendRequestText("get_content.php", show_content, "menu=pengaturan");
-	parent.framecenter.location.href="home.php";
+	//parent.framecenter.location.href="home.php";
 }
 
 function logout()
@@ -133,7 +135,9 @@ function ganti()
 	<td height="15" colspan="2" background="<?=GetThemeDir()?>InfoGuru_02.png">
 		<span style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">
 	    <a href="javascript:buletin();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Buletin</a>&nbsp;
-	    <a href="javascript:akademik();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Akademik</a>&nbsp;
+<?		if (SI_USER_GROUP() == "Akademik" || SI_USER_GROUP() == "Admin") { ?>
+		    <a href="javascript:akademik();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Akademik</a>&nbsp;
+<? 		} ?>
 <? 		if (SI_USER_LEVEL() != 0) { ?>
 			<a href="javascript:kepegawaian();" style="font-family:Verdana; color:#FFFFFF; font-size:10px; font-weight:bold; text-decoration:none">Kepegawaian</a>&nbsp;
 <?		} ?>			

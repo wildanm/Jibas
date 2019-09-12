@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -29,6 +29,7 @@ require_once('include/rupiah.php');
 require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
 require_once('library/jurnal.php');
+require_once('library/smsmanager.func.php');
 
 $idkategori = $_REQUEST['idkategori'];
 $idpenerimaan = (int)$_REQUEST['idpenerimaan'];
@@ -38,15 +39,23 @@ $errmsg = $_REQUEST['errmsg'];
 
 OpenDb();
 
+// -- ambil nama penerimaan -------------------------------
+$sql = "SELECT nama, rekkas, info2 FROM datapenerimaan WHERE replid = '$idpenerimaan'";
+$row = FetchSingleRow($sql);
+$namapenerimaan = $row[0];
+$defrekkas = $row[1];
+$smsinfo = (int)$row[2];
+
 if (1 == (int)$_REQUEST['issubmit']) 
 {	
 	$jbayar = UnformatRupiah($_REQUEST['besar']);
-		
 	$tbayar = $_REQUEST['tbayar'];
 	$tbayar = MySqlDateFormat($tbayar);
-	$kbayar = CQ($_REQUEST['keterangan']);
-	$kbayar = urlencode($kbayar);
+	$kbayar = $_REQUEST['keterangan'];
+	$kbayar = CQ($kbayar);
+	$idpetugas = getIdUser();
 	$petugas = getUserName();
+	$smsinfo = isset($_REQUEST['smsinfo']) ? 1 : 0;
 	
 	//Ambil nama penerimaan
 	$namapenerimaan = "";
@@ -67,6 +76,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 		$rekpendapatan = $row[2];
 		$rekpiutang = $row[3];
 	}
+	
+	// rek kas from selected value
+	if (isset($_REQUEST['rekkas']) && strlen(trim($_REQUEST['rekkas'])) > 0)
+		$rekkas = trim($_REQUEST['rekkas']);
 	
 	//Ambil nama siswa
 	$namasiswa = "";
@@ -104,20 +117,49 @@ if (1 == (int)$_REQUEST['issubmit'])
 	BeginTrans();
 
 	//Simpan ke jurnal
+	$ketsms = "pembayaran $namapenerimaan";
 	$ketjurnal = "Pembayaran $namapenerimaan tanggal $_REQUEST[tbayar] siswa $namasiswa ($nis)";
 	$idjurnal = 0;
-	$success = SimpanJurnal($idtahunbuku, $tbayar, $ketjurnal, $nokas, "", $petugas, "penerimaaniuran", $idjurnal);
+	$success = SimpanJurnal($idtahunbuku, $tbayar, $ketjurnal, $nokas, "", $idpetugas, $petugas, "penerimaaniuran", $idjurnal);
 	
 	//Simpan ke jurnaldetail
-	if ($success) $success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jbayar);
-	if ($success) $success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
+	if ($success)
+		$success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jbayar);
+	if ($success)
+		$success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
 	
-	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid=$idtahunbuku";
-	QueryDbTrans($sql, $success);
+	if ($success)
+	{
+		//increment cacah di tahunbuku
+		$sql = "UPDATE tahunbuku
+				   SET cacah=cacah+1
+				 WHERE replid=$idtahunbuku";
+		QueryDbTrans($sql, $success);
+	}
 	
-	$sql = "INSERT INTO penerimaaniuran SET idpenerimaan='$idpenerimaan', nis='$nis', idjurnal='$idjurnal', jumlah='$jbayar', tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
-	QueryDbTrans($sql, $success);
+	if ($success)
+	{
+		$sql = "INSERT INTO penerimaaniuran
+				   SET idpenerimaan='$idpenerimaan', nis='$nis', idjurnal='$idjurnal', jumlah='$jbayar',
+					   tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
+		QueryDbTrans($sql, $success);
+	}
+	
+	// -- Kirim SMS Informasi Pembayaran Siswa
+	if ($success && $smsinfo == 1)
+	{
+		$sql = "SELECT departemen
+				  FROM jbsfina.tahunbuku
+				 WHERE replid = '$idtahunbuku'";
+		$departemen = FetchSingle($sql);
+		
+		CreateSMSPaymentInfo('SISPAY',
+							 $departemen, $nis, $namasiswa,
+							 RegularDateFormat($tbayar),
+							 FormatRupiah($jbayar),
+							 $ketsms,
+							 $success);
+	}
 	
 	if ($success) 
 		CommitTrans();
@@ -127,13 +169,14 @@ if (1 == (int)$_REQUEST['issubmit'])
 ?>	<script language="javascript">
 		document.location.href="pembayaran_iuran.php?r=<?=rand(10000, 99999)?>&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&nis=<?=$nis?>&idtahunbuku=<?=$idtahunbuku?>";
 	</script>
-<?	
+<?	exit();
 }
 
 //Muncul pertama kali
-$sql = "SELECT s.replid, nama, telponsiswa as telpon, hpsiswa as hp, kelas, alamatsiswa as alamattinggal, tingkat 
-		FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
-		WHERE s.idkelas = k.replid AND k.idtingkat = t.replid AND nis = '$nis'";
+$sql = "SELECT s.replid, nama, telponsiswa as telpon, hpsiswa as hp, kelas, alamatsiswa as alamattinggal,
+			   tingkat, s.keterangan
+		  FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
+		  WHERE s.idkelas = k.replid AND k.idtingkat = t.replid AND nis = '$nis'";
 	
 $result = QueryDb($sql);
 if (mysql_num_rows($result) == 0) 
@@ -151,6 +194,7 @@ else
 	$namakelas = $row['kelas'];
 	$namatingkat = $row['tingkat'];
 	$alamattinggal = $row['alamattinggal'];
+	$keterangansiswa = $row['keterangan'];
 }
 	
 $sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
@@ -178,7 +222,7 @@ if (isset($_REQUEST['keterangan']))
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
 <script type="text/javascript" src="script/calendar-setup.js"></script>
-<script language="javascript" src="script/rupiah.js" type="application/javascript"></script>
+<script language="javascript" src="script/rupiah2.js" type="application/javascript"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script language="javascript" src="script/tables.js" ></script>
 <script language="javascript" src="script/tooltips.js"></script>
@@ -193,7 +237,8 @@ function ValidateSubmit()
 	var isok = 	validateEmptyText('besar','Jumlah Pembayaran') &&
 		   		validasiAngka() &&
 		   		validateEmptyText('tbayar','Tanggal Pembayaran') && 
-		   		validateMaxText('keterangan', 255, 'Keterangan Pembayaran');	
+		   		validateMaxText('keterangan', 255, 'Keterangan Pembayaran') &&
+				confirm('Data sudah benar?');	
 				
 	document.getElementById('issubmit').value = isok ? 1 : 0;
 	
@@ -218,7 +263,7 @@ function validasiAngka() {
 		document.getElementById('besar').focus();
 		return false;
 	}
-	else if (angka <= 0)
+	else if (parseInt(angka) <= 0)
 	{
 		alert ('Jumlah pembayaran harus positif!');
 		document.getElementById('besar').focus();
@@ -281,7 +326,7 @@ function focusNext(elemName, evt) {
    	</tr>
     <tr>
     	<td width="265" valign="top">        	
-			<fieldset style="background:url(images/bttable400.png);height:240px">
+			<fieldset style="background:url(images/bttable400.png);height:260px">
             <legend></legend>
             <table border="0" cellpadding="2" cellspacing="2" align="center">
                     
@@ -298,6 +343,23 @@ function focusNext(elemName, evt) {
                 	<input type="hidden" name="angkabesar" id="angkabesar" value="<?=$besar ?>" />
                 </td>
             </tr>
+			<tr>
+                <td><strong>Rek Kas</strong></td>
+                <td colspan="2">
+					<select name="rekkas" id="rekkas" style="width: 140px">
+<?              		$sql = "SELECT kode, nama
+								  FROM jbsfina.rekakun
+								 WHERE kategori = 'HARTA'
+								 ORDER BY nama";        
+						$res = QueryDb($sql);
+						while($row = mysql_fetch_row($res))
+						{
+							$sel = $row[0] == $defrekkas ? "selected" : "";
+							echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+						}  ?>                
+					</select>
+                </td>
+            </tr>
             <tr>
                 <td><strong>Tanggal</strong></td>
                 <td>
@@ -310,7 +372,9 @@ function focusNext(elemName, evt) {
                 <td valign="top">Keterangan</td>
             </tr>
             <tr>
-                <td colspan="3"><textarea id="keterangan" name="keterangan" rows="3" cols="35" onKeyPress="return focusNext('simpan', event)" <?=$dis?> style="width:225px; height:50px"><?=$keterangan ?></textarea>
+                <td colspan="3">
+					<textarea id="keterangan" name="keterangan" rows="2" cols="35" onKeyPress="return focusNext('smsinfo', event)" <?=$dis?> style="width:225px; height:50px"><?=$keterangan ?></textarea><br>
+					<input type='checkbox' id='smsinfo' name='smsinfo' <? if ($smsinfo == 1) echo "checked"?> >&nbsp;Kirim SMS Informasi Pembayaran
                 </td>
             </tr> 
             <tr>
@@ -323,7 +387,7 @@ function focusNext(elemName, evt) {
         </td>
         <td valign="top">
 			
-            <fieldset style="background:url(images/bttable400.png);height:240px">
+            <fieldset style="background:url(images/bttable400.png);height:260px">
             <legend></legend>
             <table border="0" width="100%" cellpadding="2" cellspacing="2">
             <tr height="25">
@@ -357,16 +421,21 @@ function focusNext(elemName, evt) {
                 <td><strong><?=$telpon ?></strong></td>
             </tr>
             
-            <tr height="95">
+            <tr>
                 <td valign="top"><strong>Alamat</strong></td>
                 <td valign="top"><strong>:</strong></td>
-                <td colspan="2" valign="top" height="76"><strong>
+                <td colspan="2" valign="top"><strong>
                   <?=$alamattinggal ?>
                 </strong></td>
             </tr>
-            <!--<tr>
-                <td>&nbsp;</td>
-            </tr>           -->
+			
+			<tr >
+                <td valign="top"><strong>Keterangan</strong></td>
+                <td valign="top"><strong>:</strong></td>
+                <td colspan="2" valign="top">
+                  <?= $keterangansiswa ?>
+                </td>
+            </tr>
             
             </table>            
             </fieldset>
@@ -374,9 +443,16 @@ function focusNext(elemName, evt) {
 		</td>
   	</tr>
 <?  
-	$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas 
-	          FROM penerimaaniuran p, jurnal j 
-				WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND p.idpenerimaan = '$idpenerimaan' AND p.nis = '$nis'
+	$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas,
+				   jd.koderek AS rekkas, ra.nama AS namakas
+	          FROM penerimaaniuran p, jurnal j, jurnaldetail jd, rekakun ra 
+			 WHERE j.replid = p.idjurnal
+			   AND j.replid = jd.idjurnal
+			   AND jd.koderek = ra.kode
+			   AND j.idtahunbuku = '$idtahunbuku'
+			   AND p.idpenerimaan = '$idpenerimaan'
+			   AND p.nis = '$nis'
+			   AND ra.kategori = 'HARTA'
 			ORDER BY p.tanggal, p.replid";
 	
 	$result = QueryDb($sql);    
@@ -398,8 +474,9 @@ function focusNext(elemName, evt) {
             <table class="tab" id="table" border="0" style="border-collapse:collapse" width="100%" align="center">
             <tr height="30" align="center">
                 <td class="header" width="5%">No</td>
-                <td class="header" width="20%">No. Jurnal/Tgl</td>
-                <td class="header" width="21%">Jumlah</td>
+                <td class="header" width="15%">No. Jurnal/Tgl</td>
+				<td class="header" width="15%">Rek. Kas</td>
+                <td class="header" width="15%">Jumlah</td>
                 <td class="header" width="*">Keterangan</td>
                 <td class="header" width="12%">Petugas</td>
                 <td class="header">&nbsp;</td>
@@ -414,6 +491,7 @@ function focusNext(elemName, evt) {
             <tr height="25">
                 <td align="center"><?=++$cnt?></td>
                 <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
+				<td align="left"><?= $row['rekkas'] . " " . $row['namakas']  ?> </td>
                 <td align="right"><?=FormatRupiah($row['jumlah'])?></td>
                 <td align="left"><?=$row['keterangan'] ?></td>
                 <td align="center"><?=$row['petugas'] ?></td>
@@ -428,7 +506,7 @@ function focusNext(elemName, evt) {
             }
             ?>
             <tr height="35">
-                <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
+                <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
                 <td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
                 <td bgcolor="#996600" colspan="3">&nbsp;</td>
             </tr>

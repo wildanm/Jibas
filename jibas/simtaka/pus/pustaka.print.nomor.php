@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -25,6 +25,11 @@
 require_once('../inc/common.php');
 require_once('../inc/config.php');
 require_once('../inc/db_functions.php');
+include_once('../lib/barcode/html/include/function.php');
+
+define('IN_CB', true);
+registerImageKey('code', 'BCGcode39');
+
 OpenDb();
 $replid=$_REQUEST[replid];
 
@@ -46,7 +51,7 @@ if ($filter!=""){
 } else {
 	$nama = "<i>(Semua)</i>";
 }
-$sql = "SELECT kodepustaka FROM daftarpustaka WHERE pustaka='$replid' $filter";
+$sql = "SELECT kodepustaka, info1 FROM daftarpustaka WHERE pustaka='$replid' $filter";
 //echo $sql;
 $result = QueryDb($sql);
 $jum = @mysql_num_rows($result);
@@ -64,54 +69,71 @@ $jum = @mysql_num_rows($result);
     <tr>
         <td align="left" valign="top">
         	<div align="center">
+				
             <table width="100%" border="0" cellspacing="1" cellpadding="1">
-              <tr>
+            <tr>
                 <td width="4%" align="right" valign="top"><strong class="news_title2">Pepustakaan&nbsp;:</strong></td>
                 <td width="96%" class="nav_title" align="left"><?=$nama?></td>
-              </tr>
-              <tr>
+            </tr>
+            <tr>
                 <td width="4%" align="right" valign="top"><strong class="news_title2">Judul&nbsp;:</strong></td>
                 <td width="96%" class="nav_title" align="left"><?=$judul?></td>
-              </tr>
+            </tr>
             </table>
 
              
             </div><br />
-            <?// include("../lib/headercetak.php") ?>
-            
-            <!--<center>
-              <font size="4"><strong>NOMOR PUSTAKA</strong></font><br /> </center><br /><br />
-            
-            <br />
-            -->
-            <table border="0" cellspacing="5" cellpadding="5">
-              
-                    <? $i=1; ?>
-                    <? while($row = @mysql_fetch_row($result)){ ?>
-                    <?
-                    if ($i==1 || $i%8==1)
-                        echo "<tr>";
-                    $kode = split('/',$row[0]);
-                    ?>
-                    <td width="90">
-                    <!--<div style="margin-bottom:5px;margin-top:5px;margin-left:5px;margin-right:5px; width:50px">-->
-                        <table width="80" border="1" cellspacing="0" cellpadding="0" class="tab2">
-                            <tr height="30"><td align="center"><?=$kode[0]?></td></tr>
-                            <tr height="30"><td align="center"><?=$kode[1]?></td></tr>
-                            <tr height="30"><td align="center"><?=$kode[2]?></td></tr>
-                            <tr height="30"><td align="center"><?=$kode[3]?></td></tr>
-                        </table>
-                    <!--</div>-->
-                    </td>
-                    <?
-                    if ($i%8==0)
-                        echo "</tr>";
-                    ?>
-                    <? 	$i++; ?>
-                    <?	}	?>
+<? 			$i = 1;
+			$cellcnt = 1;
+			while($row = @mysql_fetch_row($result))
+			{
+				if ($cellcnt == 1 || $cellcnt % 9 == 1)
+					echo "<table border='0' width='99%' cellspacing='0' cellpadding='5'>";
+					
+                if ($i == 1 || $i % 3 == 1)
+                    echo "<tr>";
+						
+				$kode = split('/',$row[0]);
+				$barcode = $row[1];	?>
                 
-              </tr>
-            </table>
+				<td width="33%" align="center" >
+						
+					<table border='1' cellpadding='2' style='border-width: 1px; border-style: dashed; border-collapse: collapse'>
+					<tr style='border-width: 1px; border-style: dashed; border-collapse: collapse'>
+						<td align='center'>
+							<font style='font-size: 12px;'><?= $row[0] ?></font><br><br>
+							<table width="200" border="1" cellspacing="0" cellpadding="0" class="tab2">
+								<tr height="30"><td align="center" style='font-size: 32px'><?=$kode[0]?></td></tr>
+								<tr height="30"><td align="center" style='font-size: 32px'><?=$kode[1]?></td></tr>
+								<tr height="30"><td align="center" style='font-size: 32px'><?=$kode[2]?></td></tr>
+								<tr height="30"><td align="center" style='font-size: 32px'><?=$kode[3]?></td></tr>
+							</table>
+							<br><br>
+						</td>
+					</tr>	
+					<tr style='border-width: 1px; border-style: dashed; border-collapse: collapse'>
+						<td align='center'>
+							<font style='font-size: 12px;'><?= $row[0] ?></font><br><br>
+							<img width='160' src="../lib/barcode/html/image.php?code=BCGcode39&filetype=JPEG&dpi=96&thickness=30&scale=2&rotation=0&font_family=Arial.ttf&font_size=8&text=<?= $barcode ?>">
+							<br><br>								
+						</td>
+					</tr>		
+					</table>
+                    
+                </td>
+
+<?              if ($i % 3 == 0)
+                    echo "</tr>";
+				
+				if ($cellcnt % 9 == 0)
+                    echo "</table><br><br><br><br><br><br><br>";
+					
+				$i++;
+				
+				$cellcnt += 1;
+				
+			}	?>
+            
         </td>
     </tr>
 </table>

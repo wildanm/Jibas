@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,14 +21,14 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-require_once("../../inc/config.php");
-require_once("../../inc/rupiah.php");
-require_once("../../inc/db_functions.php");
-require_once("class/jpgraph.php");
-require_once("class/jpgraph_pie.php");
-require_once("class/jpgraph_pie3d.php");
-require_once("class/jpgraph_bar.php");
-require_once("class/jpgraph_line.php");
+require_once("../inc/config.php");
+require_once("../inc/rupiah.php");
+require_once("../inc/db_functions.php");
+require_once("../lib/class/jpgraph.php");
+require_once("../lib/class/jpgraph_pie.php");
+require_once("../lib/class/jpgraph_pie3d.php");
+require_once("../lib/class/jpgraph_bar.php");
+require_once("../lib/class/jpgraph_line.php");
 
 class ChartFactory {
 	var $bulan = array('Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agt','Sep','Okt','Nop','Des');

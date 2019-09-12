@@ -7,6 +7,7 @@ function chg(){
 	var ThnAkhir = document.getElementById('ThnAkhir').value;
 	document.location.href = "stat.pinjam.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir+"&Limit="+Limit;
 }
+
 function show(){
 	var perpustakaan = document.getElementById('perpustakaan').value;
 	var Limit = document.getElementById('Limit').value;
@@ -17,15 +18,19 @@ function show(){
 	document.location.href = "stat.pinjam.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir+"&Limit="+Limit+"&ShowState=true";
 }
 
-function ViewList(idanggota){
+function ViewList(jenisanggota, idanggota)
+{
+	var idperpustakaan = document.getElementById('perpustakaan').value;
+
 	var BlnAwal = document.getElementById('BlnAwal').value;
 	var ThnAwal = document.getElementById('ThnAwal').value;
 	var BlnAkhir = document.getElementById('BlnAkhir').value;
 	var ThnAkhir = document.getElementById('ThnAkhir').value;
 	var from = ThnAwal+'-'+BlnAwal+'-01';
 	var to = ThnAkhir+'-'+BlnAkhir+'-31';
+	
 	show_wait("ListInfo");
-	sendRequestText("GetBorrowerList.php", showList, "idanggota="+idanggota+"&from="+from+"&to="+to);					
+	sendRequestText("GetBorrowerList.php", showList, "idperpustakaan="+idperpustakaan+"&jenisanggota="+jenisanggota+"&idanggota="+idanggota+"&from="+from+"&to="+to);					
 }
 
 function showList(x) {

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -64,12 +64,16 @@ if (isset($_REQUEST['urutan']))
 <script language="javascript" src="../script/tables.js"></script>
 <script language="javascript" src="../script/tools.js"></script>
 <script language="javascript">
-function refresh() {
+function refresh_after_add() {
 	var departemen = document.getElementById('departemen').value;
 	var jenis= document.getElementById('jenis').value;
 	var cari= document.getElementById('cari').value;
 	
 	document.location.href = "siswa_cari_footer.php?departemen="+departemen+"&jenis="+jenis+"&cari="+cari;	
+}
+
+function refresh() {
+	refresh_after_add();
 }
 
 function change_urutan(urut,urutan) {
@@ -129,6 +133,11 @@ function change_baris() {
 	
 	document.location.href="siswa_cari_footer.php?departemen="+departemen+"&jenis="+jenis+"&cari="+cari+"&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris;
 }
+
+function edit(replid, departemen, tahunajaran, tingkat, kelas )
+{
+	newWindow('siswa_edit.php?replid='+replid+'&departemen='+departemen+'&tahunajaran='+tahunajaran+'&kelas='+kelas+'&tingkat='+tingkat, 'UbahSiswa','825','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+}
 </script>
 </head>
 <body leftmargin="0" topmargin="0">
@@ -141,12 +150,39 @@ function change_baris() {
 <input type="hidden" name="jenis" id="jenis" value="<?=$jenis?>">
 <?
 	OpenDb();
-	if ($jenis!="kondisi" && $jenis!="status" && $jenis!="agama" && $jenis!="suku" && $jenis!="darah") {
-		$sql_tot = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, s.nisn from jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t WHERE s.$jenis LIKE '%$cari%' AND k.replid=s.idkelas AND k.idtingkat=t.replid AND t.departemen='$departemen' ORDER BY $urut $urutan"; 
-		$sql_siswa = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, t.tingkat, s.nisn from jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t WHERE s.$jenis LIKE '%$cari%' AND k.replid=s.idkelas AND k.idtingkat=t.replid AND t.departemen='$departemen' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
-	} else { 
-		$sql_tot = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, s.nisn from jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t WHERE s.$jenis ='$cari' AND k.replid=s.idkelas AND k.idtingkat=t.replid AND t.departemen='$departemen' ORDER BY $urut $urutan"; 
-		$sql_siswa = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, t.tingkat, s.nisn from jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t WHERE s.$jenis = '$cari' AND k.replid=s.idkelas AND k.idtingkat=t.replid AND t.departemen='$departemen' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+	if ($jenis!="kondisi" && $jenis!="status" && $jenis!="agama" && $jenis!="suku" && $jenis!="darah")
+	{
+		$sql_tot = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, s.nisn, k.idtingkat, k.idtahunajaran
+					  FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+					 WHERE s.$jenis LIKE '%$cari%'
+					   AND k.replid=s.idkelas
+					   AND k.idtingkat=t.replid
+					   AND t.departemen='$departemen'
+					 ORDER BY $urut $urutan"; 
+		$sql_siswa = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, t.tingkat, s.nisn, k.idtingkat, k.idtahunajaran
+						FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+					   WHERE s.$jenis LIKE '%$cari%'
+					     AND k.replid=s.idkelas
+						 AND k.idtingkat=t.replid
+						 AND t.departemen='$departemen'
+					   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+	}
+	else
+	{ 
+		$sql_tot = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, s.nisn, k.idtingkat, k.idtahunajaran
+					  FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+					 WHERE s.$jenis ='$cari'
+					   AND k.replid=s.idkelas
+					   AND k.idtingkat=t.replid
+					   AND t.departemen='$departemen'
+					 ORDER BY $urut $urutan"; 
+		$sql_siswa = "SELECT s.replid, s.nis, s.nama, s.idkelas, k.kelas, s.tmplahir, s.tgllahir, s.statusmutasi, s.aktif, s.alumni, t.tingkat, s.nisn, k.idtingkat, k.idtahunajaran
+						FROM jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t
+					   WHERE s.$jenis = '$cari'
+					     AND k.replid=s.idkelas
+						 AND k.idtingkat=t.replid
+						 AND t.departemen='$departemen'
+					   ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
 	}
 	
 	$result_tot = QueryDb($sql_tot);
@@ -222,9 +258,10 @@ function change_baris() {
 		}
 		?></td>
     	<td align="center">
-        <!--<a href="#" onclick="newWindow('siswa_cari_detail.php?nis=<?=$nis?>&departemen=<?=$departemen?>','TampilSiswa',790,650,'resizable=1,scrollbars=1,status=0,toolbar=0')" >-->
-        <a href="#" onclick="newWindow('../library/detail_siswa.php?replid=<?=$row_siswa[replid]?>','TampilSiswa',790,610,'resizable=1,scrollbars=1,status=0,toolbar=0')" >
-        <img src="../images/ico/lihat.png" border="0" onmouseover="showhint('Lihat detail!', this, event, '50px')" /></a></td>
+			<a href="JavaScript:edit(<?=$row_siswa[replid]?>, '<?=$departemen?>', <?= $row_siswa[idtahunajaran] ?>, <?= $row_siswa[idtingkat] ?>, <?= $row_siswa[idkelas] ?>)" /><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Data Siswa!', this, event, '80px')"/></a>&nbsp;
+			<a href="#" onclick="newWindow('../library/detail_siswa.php?replid=<?=$row_siswa[replid]?>','TampilSiswa',790,610,'resizable=1,scrollbars=1,status=0,toolbar=0')" >
+			<img src="../images/ico/lihat.png" border="0" onmouseover="showhint('Lihat detail!', this, event, '50px')" /></a>
+		</td>
   	</tr>
   	<?		$cnt_siswa++;
 		}

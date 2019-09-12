@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -121,14 +121,14 @@ function excel() {
 function change_page(page) {
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href = "carijurnal_content.php?departemen=<?=$departemen?>&idtahunbuku=<?=$idtahunbuku?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>&keyword=<?=$keyword?>&kriteria=<?=$kriteria?>&page="+page+"&hal="+page+"&varbaris="+varbaris;
+	document.location.href = "carijurnal_content.php?departemen=<?=$departemen?>&idtahunbuku=<?=$idtahunbuku?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>&keyword=<?=$keyword?>&kriteria=<?=$kriteria?>&page="+page+"&hal="+page+"&varbaris="+varbaris+"&urut=<?=$urut?>&urutan=<?=$urutan?>";
 }
 
 function change_hal() {
 	var hal = document.getElementById("hal").value;
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href="carijurnal_content.php?departemen=<?=$departemen?>&idtahunbuku=<?=$idtahunbuku?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>&kriteria=<?=$kriteria?>&keyword=<?=$keyword?>&page="+hal+"&hal="+hal+"&varbaris="+varbaris;
+	document.location.href="carijurnal_content.php?departemen=<?=$departemen?>&idtahunbuku=<?=$idtahunbuku?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>&kriteria=<?=$kriteria?>&keyword=<?=$keyword?>&page="+hal+"&hal="+hal+"&varbaris="+varbaris+"&urut=<?=$urut?>&urutan=<?=$urutan?>";
 }
 
 function change_baris() {

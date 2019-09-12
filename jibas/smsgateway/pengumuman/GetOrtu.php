@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -53,9 +53,9 @@ OpenDb();
             	<div id="DivCmbKelasOrtu">
 					<select id="CmbKlsOrtu" name="CmbKlsOrtu" class="Cmb" onchange="ChgCmbKlsOrtu()">
 						<?
-						$sql = "SELECT k.replid,k.kelas FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
+						$sql = "SELECT DISTINCT k.replid, CONCAT(ti.tingkat, ' - ', k.kelas) FROM $db_name_akad.kelas k, $db_name_akad.tingkat ti, $db_name_akad.tahunajaran ta ".
 							   "WHERE k.aktif=1 AND ta.aktif=1 AND ti.aktif=1 AND k.idtahunajaran=ta.replid AND k.idtingkat=ti.replid ".
-							   "AND ta.departemen='$dep' AND ti.departemen='$dep' ORDER BY k.kelas"; 
+							   "AND ta.departemen='$dep' AND ti.departemen='$dep' ORDER BY ti.urutan, k.kelas";
 						$res = QueryDb($sql);
 						while ($row = @mysql_fetch_row($res)){
 						if ($kls=="")
@@ -103,38 +103,68 @@ OpenDb();
       <tr class="Header">
         <td width='50'>No</td>
         <td width='100'>NIS</td>
-		<td>Nama</td>
-        <td>No. HP Ortu</td>
+		<td>Nama Siswa</td>
+		<td>Nama Ortu Siswa</td>
+        <td>HP Ortu Siswa</td>
         <td><input type="checkbox" id="CheckAllOrtu"></td>
       </tr>
-      <?
-		$sql = "SELECT * FROM $db_name_akad.siswa WHERE aktif=1 AND idkelas='$kls' ORDER BY nama";
+<?		$sql = "SELECT nis, nama, namaayah, hportu, info1, info2, pinortu, pinortuibu, pinsiswa
+				  FROM $db_name_akad.siswa
+				 WHERE aktif=1
+				   AND idkelas='$kls'
+				 ORDER BY nama";
 		$res = QueryDb($sql);
 		$num = @mysql_num_rows($res);
-		if ($num>0){
-			$cnt=1;
-			while ($row = @mysql_fetch_array($res)){
-	  ?>
-      <tr>
-        <td align="center" class="td"><?=$cnt?></td>
-        <td class="td" align="center"><?=$row['nis']?></td>
-		<td class="td" ><?=$row['nama']?></td>
-        <td class="td"><?=$row['hportu']?></td>
-        <td class="td" align="center">
-		  <? 
-		  if (strlen($row['hportu'])>0){
-		  $nama = $row['namaayah'];
-		  if (strlen($row['namaayah'])==0)
-			  $nama = $row['nama'];
-		  ?>
-        <!--<span style="cursor:pointer" align="center" class="Link" onclick="InsertNewReceipt2('<?=$row['hportu']?>','<?=$nama?>','<?=$row['nama']?>')"  />Pilih</span>-->
-		<input type="checkbox" class="checkboxortu" hp="<?=$row['hportu']?>" nama="<?=$nama?>" nip="<?=$row['nis']?>" pinayah="<?=$row['pinortu']?>" pinibu="<?=$row['pinortuibu']?>">
-        <? } ?>
-        </td>
-      </tr>
-      <?
-			$cnt++;
-			}
+		if ($num > 0)
+		{
+			$cnt = 1;
+			while ($row = @mysql_fetch_array($res))
+			{
+				$n = 0;  
+				$hparr = array();
+				
+				$temp = trim($row['hportu']);
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+				{
+				  $hparr[$n] = $temp;
+				  $n += 1;
+				}
+				
+				$temp = trim($row['info1']);  
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+				{
+				  $hparr[$n] = $temp;
+				  $n += 1;
+				}
+				  
+				$temp = trim($row['info2']);    
+				if (strlen($temp) >= 7 && substr($temp, 0, 1) != "#")
+				  $hparr[$n] = $temp;
+				
+				$namaortu = $row['namaayah'];
+				if (strlen($row['namaayah']) == 0)
+				  $namaortu = $row['nama'];  
+				
+				$nama = $row['nama'];
+				
+				for($j = 0; $j < count($hparr); $j++)
+				{
+					$hp = $hparr[$j]; ?>
+					<tr>
+					  <td align="center" class="td"><?=$cnt?></td>
+					  <td class="td" align="center"><?=$row['nis']?></td>
+					  <td class="td" ><?=$nama?></td>
+					  <td class="td" ><?=$namaortu?></td>
+					  <td class="td"><?=$hp?></td>
+					  <td class="td" align="center">
+						<input type="checkbox" class="checkboxortu" hp="<?=$hp?>"
+							   nama="Ortu <?=$nama?>" nip="<?=$row['nis']?>" pinayah="<?=$row['pinsiswa']?>"
+							   pinibu="<?=$row['pinsiswa']?>">
+					  </td>			
+					</tr>
+<?					$cnt++;	
+				} // end for 			
+			} // end while
 		} else {
 		?>
       <tr>
@@ -148,3 +178,6 @@ OpenDb();
     </td>
   </tr>
 </table>
+<?
+CloseDb();
+?>

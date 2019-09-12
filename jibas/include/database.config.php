@@ -3,7 +3,7 @@
  * JIBAS Education Community 
  * Jaringan Informasi Bersama Antar Sekolah 
  *  
- * @version: 3.0 (January 09, 2013) 
+ * @version: 18.0 (August 01, 2019) 
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
@@ -23,13 +23,13 @@
 <?
 
 /* Alamat basis data MySQL JIBAS */
-$db_host='localhost';
+$db_host='localhost:3434';
 
 /* User basis data MySQL JIBAS */
-$db_user='jibas';
+$db_user='rootbr';
 
 /* Password basis data MySQL JIBAS */
-$db_pass='rahasia';
+$db_pass='kebersamaan';
 
 /* Basis data default JIBAS */
 $db_name='jbsakad';

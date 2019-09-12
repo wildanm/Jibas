@@ -1,10 +1,11 @@
 $(document).ready(function () {
     $(document).bgStretcher({
-        images: ['../images/background07.jpg'], imageWidth: 1680, imageHeight: 1050
+        images: b_bgList, imageWidth: 1680, imageHeight: 1050, nextSlideDelay: b_bgDelay
     });
     
     setTimeout(resizeVTab, 10);
     setTimeout(pageLoader, 10);
+	
 });
 
 // ON STARTED UP
@@ -40,13 +41,16 @@ resizeVTab = function() {
 }
 
 pageLoader = function() {
+	
     loadBeranda();
-    loadBeritaSekolah();
     loadInfoSiswa();
-    loadKalender();
-    loadJadwalGuru();
-    loadJadwalKelas();
     loadPegawai();
+	loadPsb();
+	loadJadKal();
+	loadMading();
+	loadInfoSekolah();
+	loadPerpustakaan();
+	
 }
 
 loadBeranda = function() {
@@ -59,52 +63,12 @@ loadBeranda = function() {
     })
 }
 
-loadBeritaSekolah = function() {
-    $.ajax({
-        url : 'berita/berita.php',
-        type: 'get',
-        success : function(html) {
-            $('#content-pane-b').html(html);
-        }
-    })
-}
-
 loadInfoSiswa = function() {
     $.ajax({
         url : 'infosiswa/infosiswa.php',
         type: 'get',
         success : function(html) {
             $('#content-pane-c').html(html);
-        }
-    })
-}
-
-loadKalender = function() {
-    $.ajax({
-        url : 'kalender/kalender.php',
-        type: 'get',
-        success : function(html) {
-            $('#content-pane-d').html(html);
-        }
-    })
-}
-
-loadJadwalGuru = function() {
-    $.ajax({
-        url : 'jadwalguru/jadwalguru.php',
-        type: 'get',
-        success : function(html) {
-            $('#content-pane-e').html(html);
-        }
-    })
-}
-
-loadJadwalKelas = function() {
-    $.ajax({
-        url : 'jadwalkelas/jadwalkelas.php',
-        type: 'get',
-        success : function(html) {
-            $('#content-pane-f').html(html);
         }
     })
 }
@@ -123,3 +87,57 @@ loadPegawai = function() {
         }
     })
 }
+
+loadPsb = function() {
+    $.ajax({
+        url : 'psb/psb.php',
+        type: 'get',
+        success : function(html) {
+            $('#content-pane-h').html(html);
+        }
+    })
+}
+
+loadJadKal = function() {
+    $.ajax({
+        url : 'jadkal/jadkal.php',
+        type: 'get',
+        success : function(html) {
+            $('#content-pane-i').html(html);
+        }
+    })
+}
+
+loadMading = function() {
+    $.ajax({
+        url : 'mading/mading.php',
+        type: 'get',
+        success : function(html) {
+            $('#content-pane-j').html(html);
+			mad_InitMading();
+        }
+    })
+}
+
+loadInfoSekolah = function() {
+    $.ajax({
+        url : 'infosekolah/infosekolah.php',
+        type: 'get',
+        success : function(html) {
+            $('#content-pane-b').html(html);
+			ifse_InitInfoSekolah();
+        }
+    })
+}
+
+loadPerpustakaan = function() {
+    $.ajax({
+        url : 'pustaka/pustaka.php',
+        type: 'get',
+        success : function(html) {
+            $('#content-pane-k').html(html);
+			ptka_InitPustaka();
+        }
+    })
+}
+

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -49,14 +49,14 @@ function tampil(id,nip) {
 
 </script>
 </head>
-<body topmargin="0">
+<body topmargin="5" leftmargin="5">
 	<?
 	OpenDb();
 	$sql = "SELECT d.departemen,pg.nama FROM guru g, pelajaran p, departemen d,jbssdm.pegawai pg WHERE g.idpelajaran = p.replid AND d.departemen = p.departemen AND g.nip ='$_REQUEST[nip]' AND pg.nip=g.nip GROUP BY d.departemen ORDER BY d.urutan";	
 	
 	$result = QueryDb($sql);
 	if (@mysql_num_rows($result)>0){
-		echo "<div align='center'><strong>Pelajaran yang diajar oleh guru ".$_REQUEST['nama']."</strong><br></div>";
+		echo "<div align='left'><strong>Pelajaran yang diajar oleh guru ".$_REQUEST['nama']."</strong><br></div>";
 		$count = 0;
 		while ($row = @mysql_fetch_row($result)) {				
 		$count++;
@@ -78,7 +78,7 @@ function tampil(id,nip) {
 		while ($row1 = @mysql_fetch_array($result1)) {
 	?>
     <tr>   	
-       	<td align="center" height="25" onclick="tampil('<?=$row1[1]?>','<?=$_REQUEST['nip']?>')" style="cursor:pointer">
+       	<td align="left" height="25" onclick="tampil('<?=$row1[1]?>','<?=$_REQUEST['nip']?>')" style="cursor:pointer">
         <u><b><?=$row1[0]?></b></u>
 		</td>
     </tr>

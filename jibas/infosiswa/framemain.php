@@ -21,7 +21,7 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <title>JIBAS InfoSiswa</title>
-<link rel="SHORTCUT ICON" href="images/jibas.ico">
+<link rel="SHORTCUT ICON" href="images/jibas2015.ico">
 <frameset rows="87,*,27" border="0" frameborder="0" framespacing="0">
 	<frame name="frametop" src="frametop.php" noresize="noresize" scrolling="no" />
     <frameset cols="20,*,17" border="0" frameborder="0" framespacing="0">

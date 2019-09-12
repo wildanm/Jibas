@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -40,66 +40,78 @@ $dasarpenilaian = $_REQUEST[dasarpenilaian];
 // end include file ===============================================================================
 
 OpenDb();
-		$a=0;
-		$sql	=	"SELECT MIN(nilaiangka) as nmin, MAX(nilaiangka) AS nmax ".
-					"FROM nap n, aturannhb a, infonap i, kelas k ".
-					"WHERE n.idaturan = a.replid ".
-					"AND a.idtingkat = '$tingkat' ".
-					"AND a.idpelajaran = '$pelajaran' ".
-					"AND a.dasarpenilaian = '$dasarpenilaian' ".
-					"AND n.idinfo = i.replid ".
-					"AND i.idpelajaran = '$pelajaran' ".
-					"AND i.idsemester = '$semester' ".
-					"AND i.idkelas = k.replid ".
-					"AND k.idtahunajaran = '$tahunajaran' ".
-					"AND k.idtingkat = '$tingkat' ";	
-		//echo $sql;
-		$result=Querydb($sql);
-		$row = @mysql_fetch_array($result);
+
+$a = 0;
+					
+$sql = "SELECT MIN(nilaiangka) as nmin, MAX(nilaiangka) AS nmax
+		  FROM nap n, infonap i, aturannhb a, kelas k
+		 WHERE n.idinfo = i.replid
+		   AND n.idaturan = a.replid
+		   AND i.idkelas = k.replid
+		   AND a.dasarpenilaian = '$dasarpenilaian'
+		   AND i.idpelajaran = '$pelajaran'
+		   AND i.idsemester = '$semester'
+		   AND k.idtahunajaran = '$tahunajaran'
+		   AND k.idtingkat = '$tingkat'";			
+//echo $sql;
+$result = Querydb($sql);
+$row = @mysql_fetch_array($result);
 		
-		if(($row[nmin] >= 0) AND ($row[nmax] <= 10)){
-			$dasar = '1'; //satuan
-		}else{
-			$dasar = '10'; //satuan
-		}
+if ($row[nmin] >= 0 && $row[nmax] <= 10)
+	$dasar = '1'; //satuan
+else
+	$dasar = '10'; //satuan
 		
-		$rentang = array(9*$dasar,8*$dasar,7*$dasar,6*$dasar,5*$dasar,4*$dasar,3*$dasar,2*$dasar,1*$dasar);
+$rentang = array(9*$dasar, 8*$dasar, 7*$dasar,
+				 6*$dasar, 5*$dasar, 4*$dasar,
+				 3*$dasar, 2*$dasar, 1*$dasar, 0);
+					
+$sql = "SELECT SUM(IF(nilaiangka >= $rentang[0],1,0)) as j1,
+			   SUM(IF(nilaiangka>=$rentang[1] AND nilaiangka<$rentang[0],1,0)) as j2,
+			   SUM(IF(nilaiangka>=$rentang[2] AND nilaiangka<$rentang[1],1,0)) as j3,
+			   SUM(IF(nilaiangka>=$rentang[3] AND nilaiangka<$rentang[2],1,0)) as j4,
+			   SUM(IF(nilaiangka>=$rentang[4] AND nilaiangka<$rentang[3],1,0)) as j5,
+			   SUM(IF(nilaiangka>=$rentang[5] AND nilaiangka<$rentang[4],1,0)) as j6,
+			   SUM(IF(nilaiangka>=$rentang[6] AND nilaiangka<$rentang[5],1,0)) as j7,
+			   SUM(IF(nilaiangka>=$rentang[7] AND nilaiangka<$rentang[6],1,0)) as j8,
+			   SUM(IF(nilaiangka>=$rentang[8] AND nilaiangka<$rentang[7],1,0)) as j9,
+			   SUM(IF(nilaiangka>=$rentang[9] AND nilaiangka<$rentang[8],1,0)) as j10
+		  FROM nap n, aturannhb a, infonap i, kelas k
+		 WHERE n.idaturan = a.replid
+		   AND n.idinfo = i.replid
+		   AND i.idkelas = k.replid
+		   AND a.dasarpenilaian = '$dasarpenilaian'
+		   AND i.idpelajaran = '$pelajaran'
+		   AND i.idsemester = '$semester'
+		   AND k.idtahunajaran = '$tahunajaran'
+		   AND k.idtingkat = '$tingkat'";
+		   
+$result = QueryDb($sql);
+
+$lab = "";
+if(mysql_num_rows($result) == 0)
+{
+	$data[$a] = 0;	
+}
+else
+{
+	$num = 9;
+	for($i = 0; $i < 10; $i++)
+	{
+		$lab[$i] = ">= " . ($num * $dasar);
+		$num -= 1;
+	}
+	
+	//$lab = array(">=90",">=80",">=70",">=60",">=50",">=40",">=30",">=20",">=10");
+	while($fetch = @mysql_fetch_array($result))
+	{			
+		$data = array($fetch[j1], $fetch[j2], $fetch[j3],
+					  $fetch[j4], $fetch[j5], $fetch[j6],
+					  $fetch[j7], $fetch[j8], $fetch[j9], $fetch[j10]);
+	}
+}
 		
-		$query = "SELECT SUM(IF(nilaiangka >= $rentang[0],1,0)) as j1, ".
-		         "SUM(IF(nilaiangka>=$rentang[1] AND nilaiangka<$rentang[0],1,0)) as j2, ".
-				 "SUM(IF(nilaiangka>=$rentang[2] AND nilaiangka<$rentang[1],1,0)) as j3, ".
-				 "SUM(IF(nilaiangka>=$rentang[3] AND nilaiangka<$rentang[2],1,0)) as j4, ".
-				 "SUM(IF(nilaiangka>=$rentang[4] AND nilaiangka<$rentang[3],1,0)) as j5, ".
-				 "SUM(IF(nilaiangka>=$rentang[5] AND nilaiangka<$rentang[4],1,0)) as j6, ".
-				 "SUM(IF(nilaiangka>=$rentang[6] AND nilaiangka<$rentang[5],1,0)) as j7, ".
-				 "SUM(IF(nilaiangka>=$rentang[7] AND nilaiangka<$rentang[6],1,0)) as j8, ".
-				 "SUM(IF(nilaiangka<$rentang[8],1,0)) as j9 ".
-				 "FROM nap n, aturannhb a, infonap i, kelas k ".
-				 "WHERE n.idaturan = a.replid ".
-					"AND a.idtingkat = '$tingkat' ".
-					"AND a.idpelajaran = '$pelajaran' ".
-					"AND a.dasarpenilaian = '$dasarpenilaian' ".
-					"AND n.idinfo = i.replid ".
-					"AND i.idpelajaran = '$pelajaran' ".
-					"AND i.idsemester = '$semester' ".
-					"AND i.idkelas = k.replid ".
-					"AND k.idtahunajaran = '$tahunajaran' ".
-					"AND k.idtingkat = '$tingkat' ";	
-		//echo $query;
-		$result=Querydb($query) or die(mysql_error());
-		
-		if(mysql_num_rows($result)==0){
-				$data[$a]=0;	
-		}else{
-			
-				$lab=array(">=90",">=80",">=70",">=60",">=50",">=40",">=30",">=20",">=10");
-				while($fetch=@mysql_fetch_array($result)){			
-					$data = array($fetch[j1],$fetch[j2],$fetch[j3],$fetch[j4],$fetch[j5],$fetch[j6],$fetch[j7],$fetch[j8],$fetch[j9]);
-				}
-			
-		}
-		
-		$color = array('#cd9b9b','#7d26cd','#8b1c62','#b03060','#faf0e6','#ff69b4','#d2d2d2','#7fff00','#00bfff','#ff1493','#6e8b3d','#b8860b','#00ffff','#dcdcdc','#00c5cd','#a52a2a');
+$color = array('#cd9b9b','#7d26cd','#8b1c62','#b03060','#faf0e6','#ff69b4','#d2d2d2','#7fff00','#00bfff','#ff1493','#6e8b3d','#b8860b','#00ffff','#dcdcdc','#00c5cd','#a52a2a');
 
 	//=====================================================
 	$graph = new Graph(550,275,"auto");
@@ -140,4 +152,6 @@ OpenDb();
 	//Menamplikan ke browser
 	$graph->Stroke();
 
+	
+CloseDb();
 ?>

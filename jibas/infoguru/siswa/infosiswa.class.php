@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -67,12 +67,14 @@ class CInfoSiswa
         echo "<option value='PROFIL' " . StringIsSelected($this->reporttype, "PROFIL") . ">Data Pribadi</option>";
         echo "<option value='PRESENSIHARIAN' " . StringIsSelected($this->reporttype, "PRESENSIHARIAN") . ">Presensi Harian</option>";
 		echo "<option value='PRESENSIPELAJARAN' " . StringIsSelected($this->reporttype, "PRESENSIPELAJARAN") . ">Presensi Pelajaran</option>";
+		echo "<option value='PRESENSIKEGIATAN' " . StringIsSelected($this->reporttype, "PRESENSIKEGIATAN") . ">Presensi Kegiatan</option>";
         echo "<option value='NILAI' " . StringIsSelected($this->reporttype, "NILAI") . ">Nilai</option>";
 		echo "<option value='RAPOR' " . StringIsSelected($this->reporttype, "RAPOR") . ">Rapor</option>";
 		echo "<option value='PERPUSTAKAAN' " . StringIsSelected($this->reporttype, "PERPUSTAKAAN") . ">Perpustakaan</option>";
 		echo "<option value='CATSISWA' " . StringIsSelected($this->reporttype, "CATSISWA") . ">Catatan Siswa</option>";
 		echo "<option value='CATPPEL' " . StringIsSelected($this->reporttype, "CATPPEL") . ">Catatan Presensi Pelajaran</option>";
 		echo "<option value='CATPHAR' " . StringIsSelected($this->reporttype, "CATPHAR") . ">Catatan Presensi Harian</option>";
+        echo "<option value='CBE' " . StringIsSelected($this->reporttype, "CBE") . ">Computer Based Exam</option>";
         echo "</select>";
     }
     
@@ -92,6 +94,8 @@ class CInfoSiswa
 			require_once("infosiswa.presensiharian.php");
 		elseif ($this->reporttype == "PRESENSIPELAJARAN")
 			require_once("infosiswa.presensipelajaran.php");
+		elseif ($this->reporttype == "PRESENSIKEGIATAN")
+			require_once("infosiswa.presensikegiatan.php");		
 		elseif ($this->reporttype == "NILAI")
 			require_once("infosiswa.nilai.php");
 		elseif ($this->reporttype == "RAPOR")
@@ -103,6 +107,8 @@ class CInfoSiswa
 		elseif ($this->reporttype == "CATPPEL")
 			require_once("infosiswa.catatanpelajaran.php");
 		elseif ($this->reporttype == "CATPHAR")
-			require_once("infosiswa.catatanharian.php");			
+			require_once("infosiswa.catatanharian.php");
+        elseif ($this->reporttype == "CBE")
+            require_once("infosiswa.cbe.php");
 	}
 }

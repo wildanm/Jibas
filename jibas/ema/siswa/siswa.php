@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -37,9 +37,11 @@ $S->OnStart();
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
+<script src="../script/jquery-1.9.1.js" type="text/javascript"></script>
 <script src="../script/ajax.js" type="text/javascript"></script>
 <script src="siswaui.js" type="text/javascript"></script>
-<script src="infosiswa.js" type="text/javascript"></script>
+<script src="infosiswa2.js" type="text/javascript"></script>
+<script src="infosiswa.cbe.js" type="text/javascript"></script>
 <script src="../script/SpryAssets/SpryTabbedPanels.js" type="text/javascript"></script>
 <link href="../script/SpryAssets/SpryTabbedPanels.css" rel="stylesheet" type="text/css">
 <link href="../style/style.css" rel="stylesheet" type="text/css" />

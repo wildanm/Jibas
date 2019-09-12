@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -35,7 +35,6 @@ header('Content-Type: application/x-msexcel'); // Other browsers
 header('Content-Disposition: attachment; filename=Laporan_Transaksi.xls');
 header('Expires: 0');  
 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-
 
 $tanggal1 = "";
 if (isset($_REQUEST['tanggal1']))
@@ -107,7 +106,10 @@ if (isset($_REQUEST['idtahunbuku']))
 </tr>
 <?
 OpenDb();
-$sql = "SELECT nokas, date_format(tanggal, '%d-%b-%Y') AS tanggal, petugas, transaksi, keterangan, debet, kredit FROM transaksilog WHERE departemen='$departemen' AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND idtahunbuku = '$idtahunbuku'";
+$sql = "SELECT nokas, date_format(tanggal, '%d-%b-%Y') AS tanggal, petugas, transaksi, keterangan, debet, kredit 
+          FROM transaksilog 
+         WHERE departemen='$departemen' AND tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND idtahunbuku = '$idtahunbuku'
+         ORDER BY nokas DESC";
 $result = QueryDb($sql);
 $cnt = 0;
 $totaldebet = 0;

@@ -1,223 +1,310 @@
 <?
-/**[N]**
- * JIBAS Education Community
- * Jaringan Informasi Bersama Antar Sekolah
- * 
- * @version: 3.0 (January 09, 2013)
- * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
- * 
- * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- **[N]**/ ?>
-<?
-require_once('include/common.php');
-require_once('include/sessioninfo.php');
-require_once('include/config.php');
-require_once('include/db_functions.php');
 require_once("include/sessionchecker.php");
-
-if (SI_USER_ID()!="LANDLORD" && SI_USER_ID()!="landlord"){
-$x=date('G');
-if ($x>=00 && $x<10)
-	$salam = "Pagi";
-if ($x>=10 && $x<15)
-	$salam = "Siang";
-if ($x>=15 && $x<18)
-	$salam = "Sore";
-if ($x>=18 && $x<=23)
-	$salam = "Malam";
+require_once("include/sessioninfo.php");
+require_once("include/config.php");
+require_once("include/db_functions.php");
+require_once("include/common.php");
+require_once("include/compatibility.php");
+require_once("library/datearith.php");
+require_once("home.config.php");
+require_once("home.func.php");
 
 OpenDb();
-$sql1="SELECT YEAR(tanggal) as thn,MONTH(tanggal) as bln,DAY(tanggal) as tgl,replid,judul,abstrak FROM jbsvcr.beritaguru ORDER BY replid DESC LIMIT 0,".$VAR_BERITA_GURU;
-$result1=QueryDb($sql1);
-//$row1=@mysql_fetch_array($result1);
-$namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","Nopember","Desember");	
-$tglberita=$row1['tgl']." ".$namabulan[$row1['bln']-1]." ".$row1['thn'];
-$sql2="SELECT * FROM jbsvcr.tujuanpesan t, jbsvcr.pesan p WHERE t.idpenerima='".SI_USER_ID()."' AND t.baru=1 AND t.idpesan=p.replid ORDER BY t.replid DESC";
-//echo $sql2;
-$result2=QueryDb($sql2);
-$row2=@mysql_fetch_array($result2);
-if (@mysql_num_rows($result2)>0){
-$pesanbaru = "Ada <font color=\"red\">".@mysql_num_rows($result2)."</font> pesan baru yang belum dibaca !";
-			 //"<br>Masuk ke Kotak Masuk";
-} else {
-$pesanbaru = "Tidak ada pesan baru !";
-}
-$sql_bs="SELECT YEAR(tanggal) as thn,MONTH(tanggal) as bln,DAY(tanggal) as tgl,replid,judul,abstrak FROM jbsvcr.beritasiswa ORDER BY replid DESC LIMIT 0,".$VAR_BERITA_SISWA;
-$result_bs=QueryDb($sql_bs);
-
-
-
-$sqlcatatan="SELECT * FROM jbsvcr.catatansiswa c, jbsakad.siswa s WHERE c.nis=s.nis ORDER BY tanggal DESC LIMIT 0,".$VAR_CATATAN_SISWA;
-$result_cttan=QueryDb($sqlcatatan);
-
-}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
-<link href="style/style.css" rel="stylesheet" type="text/css" />
-<script language="javascript" src="script/tools.js"></script>
-<style type="text/css">
-<!--
-.style1 {color: #666666}
-.style3 {
-	font-size: 14px;
-	font-weight: bold;
-}
-.style4 {
-	color: #333333;
-	font-style: italic;
-}
--->
-</style>
-<script language="javascript">
-function bacaberita(replid){
-	//parent.frametop.buletin();
-	//document.location.href="bacaberitaguru.php?replid="+replid;
-	newWindow('buletin/beritaguru/bacaberitaguru.php?replid='+replid,'BacaBeritanyaGuru',738,525,'scrollbars=1');
-	
-}
-function bacaberitasiswa(replid){
-	//parent.frametop.buletin();
-	//document.location.href="buletin/beritasiswa/bacaberitasiswa.php?replid="+replid;
-	newWindow('buletin/beritasiswa/bacaberitasiswa.php?replid='+replid,'BacaBeritanyaSiswa',738,525,'scrollbars=1');
-	
-}
-function autoload(){
-	//parent.frametop.buletin();
-	setTimeout("get_fresh();", 180000);
-	//document.location.href="buletin/beritasiswa/bacaberitasiswa.php?replid="+replid;
-}
-function get_fresh(){
-	document.location.href="home.php";
-}
-</script>
+<link type="text/css" rel="stylesheet" href="home.css" />      	
+<link type="text/css" rel="stylesheet" href="style/style.css" />      
+<link type="text/css" rel="stylesheet" href="script/themes/base/jquery.ui.all.css" />      
+<script src="script/jquery-1.9.1.js"></script>
+<script src="script/jquery-ui-1.10.3.custom.min.js"></script>
+<script src="script/tools.js"></script>
+<script src="home.js"></script>
+<script src="home.config.js"></script>	
 </head>
-<body onload="autoload();" style="background-color:#FFFFFF;">
-<?
-if (SI_USER_ID()!="LANDLORD" && SI_USER_ID()!="landlord"){
-?>
-<div>
-<div align="right">
-	<font color="#666666">Selamat <?=$salam?>, <?=SI_USER_NAME()?><br /></font>
-</div>
-</div>
-<table width="100%" border="0" cellspacing="5" >
-  <tr>
-    <td width="46%" valign="top" scope="row">
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-      <tr>
-        <td><div align="left" style="padding-bottom:10px"> <span style="background-color:#FF9900;color:#FF9900; font-size:18px">&nbsp;</span>&nbsp;<span style="color:#999999; font-size:14px; font-weight:bold">Pesan  Baru</span> </div>
-              <div align="left"> <span style="color:#999999">
-                <?=$pesanbaru?>
-                </span>
-                  <div align="left" style="padding-top:5px"><img src="images/ico/arr1.gif" />&nbsp;&nbsp;<a href="buletin/pesan/pesan.php" target="framecenter" class="style4" onclick="parent.frametop.buletin();">Masuk ke Kotak Pesan</a></div>
-              </div></td>
-      </tr>
-      <tr>
-        <td style="padding-top:20px">
-        <div align="left" style="padding-bottom:10px"> <span style="background-color:#FF9900;color:#FF9900; font-size:18px">&nbsp;</span>&nbsp;<span style="color:#999999; font-size:14px; font-weight:bold">Berita Guru Terbaru</span> </div>
-              <div align="left">
-                <table cellspacing="1" cellpadding="1">
-                  <?
-                      while ($row1=@mysql_fetch_array($result1)){
-                      $tglberita=$row1['tgl']." ".$namabulan[$row1['bln']-1]." ".$row1['thn'];
-                      ?>
-                  <tr>
-                    <td><span class="style1"> <em>
-                      <?=$tglberita?>
-                      </em> <br />
-                      <font color="#3C859C" size="-2">
-                        <?=$row1[judul]?>
-                    </font>
-                      <?=$row1[abstrak]?>
-                      </span>
-                        <div align="right"><img src="images/ico/arr1.gif" />&nbsp;&nbsp;<a href="#" class="style4" onclick="bacaberita('<?=$row1[replid]?>')" >Baca Selengkapnya</a></div></td>
-                  </tr>
-                  <tr>
-                    <td style="background-image:url(images/box_hr1.gif); background-repeat:repeat-x">&nbsp;</td>
-                  </tr>
-                  <? } ?>
-                </table>
-              </div></td>
-      </tr>
-    </table>
-    </td>
-    <td valign="top">
-    <table>
-    <tr>
-        <td ><div align="left" style="padding-bottom:10px"> <span style="background-color:#FF9900;color:#FF9900; font-size:18px">&nbsp;</span>&nbsp;<span style="color:#999999; font-size:14px; font-weight:bold">
-          <?=$VAR_CATATAN_SISWA?>
-          Catatan Siswa Terbaru</span> </div>
-              <div align="left">
-                <table cellspacing="1" cellpadding="1">
-                  <?
-                      while ($row_cttan=@mysql_fetch_array($result_cttan)){
-                      ?>
-                  <tr>
-                    <td><span class="style1"> <em>
-                      <?=ShortDateFormat($row_cttan[tanggal])?>
-                      </em> <br />
-                      <font color="#022cfe" size="-2"><?=$row_cttan[nis]?> - <?=$row_cttan[nama]?>
-                    </font><br />
-                      <font color="#3C859C" size="-2">
-                        <?=$row_cttan[judul]?>
-                    </font>
-                      <?=$row_cttan[catatan]?>
-                    </span> </td>
-                  </tr>
-                  <tr>
-                    <td style="background-image:url(images/box_hr1.gif); background-repeat:repeat-x">&nbsp;</td>
-                  </tr>
-                  <?
-                      } ?>
-                </table>
-              </div></td>
-      </tr>
-      <tr>
-        <td style="padding-top:20px"><div align="left" style="padding-bottom:10px"> <span style="background-color:#FF9900;color:#FF9900; font-size:18px">&nbsp;</span>&nbsp;<span style="color:#999999; font-size:14px; font-weight:bold">Berita Siswa Terbaru</span> </div>
-              <div align="left">
-                <table cellpadding="1" cellspacing="1" width="100%">
-                  <?
-                      while ($row_bs=@mysql_fetch_array($result_bs)){
-                      $tglberita_bs=$row_bs['tgl']." ".$namabulan[$row_bs['bln']-1]." ".$row_bs['thn'];
-                      ?>
-                  <tr>
-                    <td><span class="style1"> <em>
-                      <?=$tglberita_bs?>
-                      </em> <br />
-                      <font color="#3C859C" size="-2">
-                        <?=$row_bs[judul]?>
-                    </font>
-                      <?=$row_bs[abstrak]?>
-                      </span>
-                        <div align="right"><img src="images/ico/arr1.gif" />&nbsp;&nbsp;<a href="#" class="style4" onclick="bacaberitasiswa('<?=$row_bs[replid]?>')" >Baca Selengkapnya</a></div></td>
-                  </tr>
-                  <tr>
-                    <td style="background-image:url(images/box_hr1.gif); background-repeat:repeat-x">&nbsp;</td>
-                  </tr>
-                  <? } ?>
-                </table>
-              </div></td>
-      </tr>
-    </table>
-    </td>
-  </tr>
-</table>
-<? } ?>
+<body marginheight='0' marginwidth='0' leftmargin='0' topmargin='0'>
+	
+<div id="pesanDialogBox"></div>
+<div id="agendaDialogBox"></div>
+<div id="bdayDialogBox"></div>
+<div id="notesDialogBox"></div>
+<div id="beritaSekolahDialogBox"></div>
+<div id="beritaGuruDialogBox"></div>
+<div id="beritaSiswaDialogBox"></div>
+
+<table id='tabMain' border='0' cellpadding='0' cellspacing='0' width='100%'>
+<tr>
+<td width='*' align='left' valign='top'>
+	<table border='0' cellpadding='0'>
+	<tr>
+		<td width='5'>&nbsp;</td>
+		<td align='left'>
+<?			ShowImageUser() ?>				
+		</td>
+		<td align='left'>
+			<font style='color: #444; font-size: 12px'>Selamat <?= GetTimeState() ?></font><br>
+			<font style='color: black; font-size: 24px'><?= SI_USER_NAME() ?></font><br>
+			<font style='color: #999; font-size: 10px'><?= SI_USER_ID() ?></font>
+		</td>
+	</tr>
+	</table> 
+
+	
+	<table border='0' cellpadding='0' cellspacing='5' width='100%' style='height: 25px'>
+	<tr>
+		<td align='top' valign='top' width='33%'>
+			
+			<table border='0' cellpadding='5' width='100%' style='height: 210px'>
+			<tr height='25'>
+				<td align='left' valign='middle' style='background-color: #400080; color: #fff; font-weight: bold;'>
+				BERITA SEKOLAH
+				&nbsp;&nbsp;
+				<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshListBeritaSekolah()'>muat ulang</a>]</font>
+				</td>
+			</tr>
+			<tr style='background-color: #e6ccff; height: 195px'>
+				<td align='left' valign='top'>
+					<div id='divBeritaSekolah' style='overflow: auto; height: 195px;'>
+						
+						<input type='hidden' id='maxListBSekolahTs' value='0'>
+						<table id='tabListBSekolah' width='100%' cellspacing='7' cellpadding='0'>
+						<tbody>
+							
+						</tbody>
+						<tfoot>
+		
+						</tfoot>
+						</table>
+						
+					</div>
+				</td>
+			</tr>
+			</table>
+			
+		</td>
+		<td align='top' valign='top' width='33%'>
+			
+			<table border='0' cellpadding='5' width='100%' style='height: 210px'>
+			<tr height='26'>
+				<td align='left' valign='middle' style='background-color: #004000; color: #fff; font-weight: bold;'>
+				BERITA GURU
+				&nbsp;&nbsp;
+				<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshListBeritaGuru()'>muat ulang</a>]</font>
+				</td>
+			</tr>
+			<tr style='background-color: #e1ffe1; height: 195px;'>
+				<td align='left' valign='top'>
+					<div id='divBeritaGuru' style='overflow: auto; height: 195px;'>
+						
+						<input type='hidden' id='maxListBGuruTs' value='0'>
+						<table id='tabListBGuru' width='100%' cellspacing='7' cellpadding='0'>
+						
+						<tbody>
+							
+						</tbody>
+						<tfoot>
+		
+						</tfoot>
+						</table>
+						
+					</div>
+				</td>
+			</tr>
+			</table>
+			
+		</td>
+		<td align='top' valign='top' width='33%'>
+			
+			<table border='0' cellpadding='5' width='100%' style='height: 210px'>
+			<tr height='26'>
+				<td align='left' valign='middle' style='background-color: #808000; color: #fff; font-weight: bold;'>
+				BERITA SISWA
+				&nbsp;&nbsp;
+				<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshListBeritaSiswa()'>muat ulang</a>]</font>
+				</td>
+			</tr>
+			<tr style='background-color: #ffffec; height: 195px'>
+				<td align='left' valign='top'>
+					<div id='divBeritaSiswa' style='overflow: auto; height: 195px;'>
+						
+						<input type='hidden' id='maxListBSiswaTs' value='0'>
+						<table id='tabListBSiswa' width='100%' cellspacing='7' cellpadding='0'>
+						<tbody>
+							
+						</tbody>
+						<tfoot>
+		
+						</tfoot>
+						</table>
+						
+					</div>
+				</td>
+			</tr>
+			</table>
+			
+		</td>
+	</tr>	
+	</table>
+		
+	<table border='0' cellpadding='5' width='99%' align='center' style='height: 230px'>
+	<tr height='26'>
+		<td align='left' valign='middle' style='background-color: #400000; color: #fff; font-weight: bold;'>
+		SURAT MASUK/KELUAR
+		&nbsp;&nbsp;
+		Jenis: <select id='jenissurat' onchange='changeJenisSurat()' onkeyup='changeJenisSurat()'>
+			<option value='ALL'>(Semua)</option>
+			<option value='IN'>Surat Masuk</option>
+			<option value='OUT'>Surat Keluar</option>
+		</select>
+		&nbsp;&nbsp;
+		<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshSurat()'>muat ulang</a>]</font>
+		</td>
+	</tr>
+	<tr style='background-color: #efefef; height: 215px'>
+		<td align='left' valign='top'>
+			<div id='divSurat' style='overflow: auto; ; height: 215px'>
+				
+				<input type='hidden' id='minListSuratTs' value='0'>
+				<table id='tabListSurat' border='1'
+					   style='border-width: 1px; border-color: #bbb; border-collapse: collapse;'
+					   width='100%' cellspacing='0' cellpadding='2'>
+				<thead>
+					<tr height='22'>
+						<td align='center' valign='middle' class='header' width='15%'>Tanggal/Nomor</td>
+						<td align='center' valign='middle' class='header' width='*'>Perihal/Kategori</td>
+						<td align='center' valign='middle' class='header' width='7%'>Jumlah<br>Berkas</td>
+						<td align='center' valign='middle' class='header' width='16%'>Sumber</td>
+						<td align='center' valign='middle' class='header' width='16%'>Tujuan</td>
+						<td align='center' valign='middle' class='header' width='10%'>Komentar</td>
+						<td align='center' valign='middle' class='header' width='3%'>&nbsp;</td>
+					</tr>
+				</thead>
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+				</table>
+						
+			</div>
+		</td>
+	</tr>
+	</table>
+	
+</td>
+<td width='300' align='left' valign='top'
+	style='background-color: #e6f2ff;'>
+	
+	<table id='secInfo1' border='0' cellpadding='0' width='100%'>
+	<tr height='16'>
+		<td align='left' valign='top' style='background-color: #004080; color: #fff; font-weight: bold;'>
+		PESAN
+		&nbsp;&nbsp;
+		<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshListPesan()'>muat ulang</a>]</font>
+		</td>
+	</tr>
+	<tr>
+		<td align='left' valign='top'>
+			<div id='divSecInfo1' style='overflow: auto;'>
+				<input type='hidden' id='minListPesanId' value='0'>
+				<table id='tabListPesan' width='100%' cellspacing='7' cellpadding='0'>
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+				</table>
+			</div>
+		</td>
+	</tr>
+	</table>
+	
+	<table id='secInfo2' border='0' cellpadding='0' width='100%'>
+	<tr height='16'>
+		<td align='left' valign='top' style='background-color: #004080; color: #fff; font-weight: bold;'>
+		AGENDA
+		&nbsp;&nbsp;
+		<font style='color: #80ff00;'>[<a href='#' style='color: #fff; font-weight: normal;' onclick='refreshListAgenda()'>muat ulang</a>]</font>
+		</td>
+	</tr>
+	<tr>
+		<td align='left' valign='top'>
+			<div id='divSecInfo2' style='overflow: auto;'>
+				<input type='hidden' id='maxListAgendaTs' value='0'>
+				<table id='tabListAgenda' width='100%' cellspacing='7' cellpadding='0'>
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+				</table>
+			</div>
+		</td>
+	</tr>
+	</table>
+	
+	<table id='secInfo3' border='0' cellpadding='0' width='100%'>
+	<tr height='16'>
+		<td align='left' valign='top' style='background-color: #004080; color: #fff; font-weight: bold;'>
+		CATATAN SISWA
+		</td>
+	</tr>
+	<tr>
+		<td align='left' valign='top'>
+			<div id='divSecInfo3' style='overflow: auto;'>
+				<input type='hidden' id='minListNotesId' value='0'>
+<?				echo "Departemen: ";
+				ShowCbDepartemen("departemen", "changeDepartemen()"); ?>					
+				<table id='tabListNotes' width='100%' cellspacing='7' cellpadding='0'>
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+				</table>
+			</div>
+		</td>
+	</tr>
+	</table>
+	
+	<table id='secInfo4' border='0' cellpadding='0' width='100%'>
+	<tr height='16'>
+		<td align='left' valign='top' style='background-color: #004080; color: #fff; font-weight: bold;'>
+		ULANG TAHUN
+		</td>
+	</tr>
+	<tr>
+		<td align='left' valign='top'>
+			<div id='divSecInfo4' style='overflow: auto;'>
+				<table id='tabListBirthday' width='100%' cellspacing='7' cellpadding='0'>
+				<thead>
+					Tanggal:
+					<span id='divCbTahun'><? ShowCbTahun(); ?></span>
+					<span id='divCbBulan'><? ShowCbBulan(); ?></span>
+					<span id='divCbTanggal'><? ShowCbTanggal(); ?></span><br>
+					<span id='debug'></span>
+				</thead>	
+				<tbody>
+					
+				</tbody>
+				<tfoot>
+
+				</tfoot>
+				</table>
+			</div>
+		</td>
+	</tr>
+	</table>
+</td>	
+</tr>	
+</table>	
 </body>
 </html>
+<?
+CloseDb();
+?>

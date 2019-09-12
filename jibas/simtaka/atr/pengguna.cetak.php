@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -26,6 +26,7 @@ require_once('../inc/common.php');
 require_once('../inc/config.php');
 require_once('../inc/db_functions.php');
 require_once('../lib/GetHeaderCetak.php');
+
 OpenDb();
 $departemen='yayasan';
 ?>
@@ -46,57 +47,79 @@ $departemen='yayasan';
 <center><font size="4"><strong>DATA PENGGUNA</strong></font><br /> </center><br /><br />
 
 <br />
-		<?
-		$sql = "SELECT h.login, h.aktif, h.lastlogin, h.departemen, h.tingkat, h.keterangan FROM ".get_db_name('user').".hakakses h, ".get_db_name('user').".login l WHERE h.modul='SIMTAKA' AND l.login=h.login";
-		$result = QueryDb($sql);
-		$num = @mysql_num_rows($result);
-		?>
-		<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
-          <tr>
-            <td height="30" align="center" class="header">NIP</td>
-            <td height="30" align="center" class="header">Nama</td>
-            <td align="center" class="header">Tingkat</td>
-            <td align="center" class="header">Perpustakaan</td>
-			<td align="center" class="header">Keterangan</td>
-		  </tr>
-          <?
-		  if ($num>0){
-			  while ($row=@mysql_fetch_row($result)){
-			  $sql = "SELECT nama FROM ".get_db_name('sdm').".pegawai WHERE nip='$row[0]'";
-			  $res = QueryDb($sql);
-			  $r = @mysql_fetch_row($res);
-			  $namapeg = $r[0];
-			  if ($row[4]==2){
-				  $sql = "SELECT nama FROM perpustakaan WHERE replid='$row[3]'";
-				  $res = QueryDb($sql);
-				  $r = @mysql_fetch_row($res);
-				  $namaperpus = $r[0];
-				  $namatingkat = "Staf Perpustakaan";
-			  } else {
-			  	  $namaperpus = "<i>Semua</i>";
-				  $namatingkat = "Manajer Perpustakaan";
-			  }
-			  ?>
-			  <tr>
-				<td height="25" align="center"><?=$row[0]?></td>
-				<td height="25" align="center"><div class="tab_content"><?=$namapeg?></div></td>
-				<td align="center"><?=$namatingkat?></td>
-				<td align="center"><?=$namaperpus?></td>
-				<td align="center"><?=$row[5]?></td>
-			  </tr>
-			  <?
-			  }
-		  } else {
-		  ?>
-          <tr>
-            <td height="25" colspan="7" align="center" class="nodata">Tidak ada data</td>
-          </tr>
-		  <?
-		  }
-		  ?>	
-        </table>
+<?
+$sql = "SELECT h.login, h.aktif, h.lastlogin, h.departemen, h.tingkat, h.keterangan, h.info1 AS idperpustakaan
+		  FROM ".get_db_name('user').".hakakses h, ".get_db_name('user').".login l
+		 WHERE h.modul='SIMTAKA'
+		   AND l.login=h.login";
+$result = QueryDb($sql);
+$num = @mysql_num_rows($result);
+?>
+<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
+<tr height="30" >
+  <td width='4%' align="center" class="header">No</td>
+  <td width='10%' align="center" class="header">NIP</td>
+  <td width='15%' align="center" class="header">Nama</td>
+  <td width='15%' align="center" class="header">Tingkat</td>
+  <td width='15%' align="center" class="header">Perpustakaan</td>
+  <td width='15%' align="center" class="header">Departemen</td>
+  <td width='*' align="center" class="header">Keterangan</td>
+</tr>
+<?
+if ($num > 0)
+{
+  $cnt = 0;
+  while ($row=@mysql_fetch_row($result))
+  {
+	$cnt += 1;
+	
+	$sql = "SELECT nama
+		      FROM ".get_db_name('sdm').".pegawai
+			 WHERE nip='$row[0]'";
+	$res = QueryDb($sql);
+	$r = @mysql_fetch_row($res);
+	$namapeg = $r[0];
+	
+	if ($row[4]==2)
+	{
+		$sql = "SELECT nama FROM perpustakaan WHERE replid='$row[6]'";
+		$res = QueryDb($sql);
+		$r = @mysql_fetch_row($res);
+		$namaperpus = $r[0];
+		$namatingkat = "Staf Perpustakaan";
+	}
+	else
+	{
+		$namaperpus = "<i>Semua</i>";
+		$namatingkat = "Manajer Perpustakaan";
+	} ?>
+	<tr height="25">
+	  <td align="center"><?=$cnt?></td>
+	  <td align="left"><?=$row[0]?></td>
+	  <td align="left"><?=$namapeg?></td>
+	  <td align="left"><?=$namatingkat?></td>
+	  <td align="left"><?=$namaperpus?></td>
+	  <td align="center"><?=$row[3]?></td>
+	  <td align="left"><?=$row[5]?></td>
+	</tr>
+<?
+  } //while
+}
+else
+{
+  ?>
+  <tr>
+	<td height="25" colspan="7" align="center" class="nodata">Tidak ada data</td>
+  </tr>
+<?
+}
+?>	
+</table>
 </td></tr></table>
 </body>
+<?
+CloseDb();
+?>
 <script language="javascript">
 window.print();
 </script>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -127,6 +127,7 @@ function change_penerimaan() {
 }
 
 function show_pembayaran() {
+    var departemen = document.getElementById('departemen').value;
 	var idtahunbuku = document.getElementById('idtahunbuku').value;
 	var idkategori = document.getElementById('idkategori').value;
 	var idpenerimaan = document.getElementById('idpenerimaan').value;
@@ -152,9 +153,9 @@ function show_pembayaran() {
 		return false;
 	}
 	if (idkategori == "CSWJB")
-		parent.content.location.href = "lapbayarcalon_nunggak_jtt.php?idtahunbuku="+idtahunbuku+"&idpenerimaan="+idpenerimaan+"&telat="+telat+"&tanggal="+tanggal+"&kelompok="+kelompok;
+		parent.content.location.href = "lapbayarcalon_nunggak_jtt.php?departemen="+departemen+"&idtahunbuku="+idtahunbuku+"&idpenerimaan="+idpenerimaan+"&telat="+telat+"&tanggal="+tanggal+"&kelompok="+kelompok;
 	else
-		parent.content.location.href = "lapbayarcalon_nunggak_skr.php?idtahunbuku="+idtahunbuku+"&idpenerimaan="+idpenerimaan+"&telat="+telat+"&tanggal="+tanggal+"&kelompok="+kelompok;
+		parent.content.location.href = "lapbayarcalon_nunggak_skr.php?departemen="+departemen+"&idtahunbuku="+idtahunbuku+"&idpenerimaan="+idpenerimaan+"&telat="+telat+"&tanggal="+tanggal+"&kelompok="+kelompok;
 }
 
 function focusNext(elemName, evt) {

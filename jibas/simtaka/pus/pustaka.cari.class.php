@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -78,11 +78,18 @@ class CPustaka{
 		</select>
 		<?
 	}
-	function Get_Kategori_Content($kat){
+	
+	function Get_Kategori_Content($kat)
+	{
 		$this->keywords = $_REQUEST[keywords];
-		$sql = "SELECT * FROM $kat ORDER BY replid";
-		$result = QueryDb($sql);
-		?>
+		
+		if ($kat == "rak")
+			$ob = "rak";
+		else
+			$ob = "nama";
+			
+		$sql = "SELECT * FROM $kat ORDER BY $ob";
+		$result = QueryDb($sql); ?>
 		<select name="keywords" class="cmbfrm" id="keywords" onchange="chg_key()">
 			<?
 			while ($row = @mysql_fetch_array($result)){
@@ -122,7 +129,7 @@ class CPustaka{
             	<div style="margin-left:3px">
                     <table width="100%" border="0" cellspacing="5" cellpadding="0">
                       <tr>
-                        <td>
+                        <td width='30%'>
                             <select name="kategori" class="cmbfrm" id="kategori" onchange="chg_kat()">
                                 <option value="judul" <?=StringIsSelected($this->kategori,'judul')?> >Judul</option>
                                 <option value="rak" <?=StringIsSelected($this->kategori,'rak')?> >Rak</option>
@@ -138,7 +145,7 @@ class CPustaka{
                             $this->Get_Kategori_Content($this->kategori);
                         } else {
                         ?>
-							<input name="keywords" type="text" class="inputtxt" id="keywords" value="<?=$this->keywords?>" />
+							<input name="keywords" type="text" style='width: 240px' class="inputtxt" id="keywords" value="<?=$this->keywords?>" />
                         <?
                         }
                         ?></td>
@@ -155,14 +162,16 @@ class CPustaka{
         <?
 		if (isset($_REQUEST[cari])){
 		?>
-        <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
+        <table width="100%" border="1" cellspacing="0" cellpadding="4" id="table">
           <tr class="header" height="30">
-            <td height="30" align="center">No</td>
-            <td height="30" align="center">Judul</td>
-            <td height="30" align="center">Jumlah Tersedia</td>
-            <td height="30" align="center">Jumlah Dipinjam</td>
-            <td align="center">&nbsp;</td>
-            <td height="30" align="center">&nbsp;</td>
+            <td width='4%' align="center">No</td>
+			<td width='15%' align="center">Katalog</td>
+            <td width='*' align="center">Judul</td>
+            <td width='7%' align="center">Jumlah Tersedia</td>
+            <td width='7%' align="center">Jumlah Dipinjam</td>
+            <td width='7%' align="center">Cetak Label &amp; Barcode</td>
+			<td width='7%' align="center">Tambah / Hapus Pustaka</td>
+            <td width='10%' align="center">&nbsp;</td>
           </tr>
           <?
 
@@ -182,24 +191,24 @@ class CPustaka{
 		  if ($kategori=='keteranganfisik')
 			  $filter = "AND p.keteranganfisik LIKE '%$keywords%' ";
 		  
-		  $sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter2 $filter GROUP BY d.pustaka ORDER BY p.judul ";
-		  $sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter2 $filter GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+		  $sql1 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter2 $filter GROUP BY d.pustaka ORDER BY p.judul ";
+		  $sql2 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid $filter2 $filter GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 
 		  if ($kategori=='rak'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, rak r, katalog k WHERE d.pustaka=p.replid $filter2 AND r.replid='$keywords' AND p.katalog=k.replid AND k.rak=r.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }
 		  if ($kategori=='katalog'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, katalog k WHERE d.pustaka=p.replid $filter2 AND k.replid='$keywords' AND p.katalog=k.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }	
           if ($kategori=='penerbit'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, penerbit pb WHERE d.pustaka=p.replid $filter2 AND pb.replid='$keywords' AND p.penerbit=pb.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 	      }
 		  if ($kategori=='penulis'){
-				$sql1 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul ";
-				$sql2 = "SELECT p.replid, p.judul FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
+				$sql1 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul ";
+				$sql2 = "SELECT p.replid, p.judul, p.katalog FROM pustaka p, daftarpustaka d, penulis pn WHERE d.pustaka=p.replid $filter2 AND pn.replid='$keywords' AND p.penulis=pn.replid GROUP BY d.pustaka ORDER BY p.judul LIMIT ".(int)$this->page*(int)$this->numlines.",".$this->numlines;
 		  }
 		  //echo $sql1;
 		  $result = QueryDb($sql1);
@@ -210,31 +219,55 @@ class CPustaka{
 		  $num = @mysql_num_rows($result);
 		  if ($num>0){
 			  $cnt=1;
-			  while ($row = @mysql_fetch_row($result)){
-			  $rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=0"));
-			  $rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=1"));
+			  while ($row = @mysql_fetch_row($result))
+			  {
+				$kode = "";
+				$katalog = "";
+				$sql = "SELECT kode, nama FROM katalog WHERE replid = $row[2]";
+				$res = QueryDb($sql);
+				if (mysql_num_rows($res) > 0)
+				{
+					$row2 = mysql_fetch_row($res);
+					$kode = $row2[0];
+					$katalog = $row2[1];
+				}
+				
+				$rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=0"));
+				$rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka='$row[0]' $filter2 AND d.status=1"));
 			  //echo "SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=0"."<br>";
 			  //$rdipinjam = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=0"));
 			  //$rtersedia = @mysql_num_rows(QueryDb("SELECT * FROM daftarpustaka d WHERE d.pustaka=$row[0] AND d.perpustakaan=".$this->perpustakaan." AND d.status=1"));
 			  ?>
-			  <tr>
-				<td height="25" align="center"><?=$cnt?></td>
-				<td height="25"><div class="tab_content"><?=stripslashes($row[1])?></div></td>
-				<td height="25" align="center"><?=$rtersedia?></td>
-				<td height="25" align="center"><?=$rdipinjam?></td>
-				<td align="center" bgcolor="#FFFFFF">
-					<a title="Lihat Detail" href="javascript:lihat(<?=$row[0]?>)"><img src="../img/ico/lihat.png" width="16" height="16" border="0" /></a>&nbsp;
-					<a title="Cetak Label" href="javascript:cetak_nomor('<?=$row[0]?>','<?=$this->perpustakaan?>')"><img src="../img/ico/print1.png" width="16" height="16" border="0" /></a>
+			  <tr height='25'>
+				<td align="center"><?=$cnt?></td>
+				<td align="left"><?=$kode . " - " . $katalog?></td>
+				<td><div class="tab_content"><?=stripslashes($row[1])?></div></td>
+				<td align="center"><?=$rtersedia?></td>
+				<td align="center"><?=$rdipinjam?></td>
+				<td align="center">
+					<a title="Cetak Label" href="javascript:cetak_nomor('<?=$row[0]?>','<?=$this->perpustakaan?>')">
+						<img src="../img/ico/print1.png" height="18" border="0" />
+					</a>
 				</td>
-				<td height="25" align="center" bgcolor="#FFFFFF">
-               	  <table width="35" border="0" cellspacing="2" cellpadding="0">
-                      <tr>
-                        <td align="center"><a href="javascript:ubah('<?=$row[0]?>','cari','<?=$this->perpustakaan?>','<?=$kategori?>','<?=$keywords?>')"><img src="../img/ico/ubah.png" width="16" height="16" border="0" /></a></td>
-                        <? if (SI_USER_LEVEL()!=2){ ?>
-						<td><a href="javascript:hapus(<?=$row[0]?>)"><img src="../img/ico/hapus.png" width="16" height="16" border="0" /></a></td>
-						<? } ?>
-                      </tr>
-                  </table>
+				<td align="center">
+					<a title="Penambahan dan Pengurangan Pustaka" href="javascript:aturpustaka('<?=$row[0]?>', '<?=$this->perpustakaan?>')">
+						<img src="../img/book.png" height="18" border="0" />
+					</a>
+				</td>
+				<td align="center">
+					<a title="Lihat Detail" href="javascript:lihat(<?=$row[0]?>)">
+						<img src="../img/ico/lihat.png" width="16" height="16" border="0" />
+					</a>
+					&nbsp;
+					<a href="javascript:ubah('<?=$row[0]?>','daftar','','','')">
+						<img src="../img/ico/ubah.png" width="16" height="16" border="0" />
+					</a>
+					&nbsp;
+                    <? if (SI_USER_LEVEL() != 2) { ?>
+					<a href="javascript:hapus(<?=$row[0]?>)">
+						<img src="../img/ico/hapus.png" width="16" height="16" border="0" />
+					</a>
+					<? } ?>
                 </td>
 			  </tr>
 			  <?

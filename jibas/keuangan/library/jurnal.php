@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,13 +21,17 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-function SimpanJurnal($idtahunbuku, $tanggal, $transaksi, $nokas, $keterangan, $petugas, $sumber, &$idjurnal) 
+function SimpanJurnal($idtahunbuku, $tanggal, $transaksi, $nokas, $keterangan, $idpetugas, $petugas, $sumber, &$idjurnal) 
 {
 	//Simpan ke jurnal
 	$success = 0;
 	
-	$sql = "INSERT INTO jurnal SET idtahunbuku=$idtahunbuku,tanggal='$tanggal',transaksi='$transaksi',nokas='$nokas',keterangan='$keterangan',petugas='$petugas', sumber='$sumber'";
-	//echo  "$sql<br>";
+	$idpetugas_value = $idpetugas == "landlord" ? "NULL" : "'$idpetugas'"; 
+	
+	$sql = "INSERT INTO jurnal
+			   SET idtahunbuku=$idtahunbuku, tanggal='$tanggal', transaksi='$transaksi',
+				   nokas='$nokas', keterangan='$keterangan',
+				   idpetugas=$idpetugas_value, petugas='$petugas', sumber='$sumber'";
 	$result = QueryDbTrans($sql, $success);
 	
 	$idjurnal = 0;
@@ -51,9 +55,76 @@ function SimpanDetailJurnal($idjurnal, $align, $koderek, $jumlah)
 		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',debet=$jumlah";
 	else
 		$sql = "INSERT INTO jurnaldetail SET idjurnal=$idjurnal,koderek='$koderek',kredit=$jumlah";
-	//echo  "$sql<br>";		
 	QueryDbTrans($sql, $success);
 	
 	return $success;
+}
+
+// $kateakun bisa HARTA, PENDAPATAN, DISKON, PIUTANG
+function AmbilKodeRekJurnal($idjurnal, $kateakun, $idpenerimaan)
+{
+	$kategori = ($kateakun == "DISKON") ? "PENDAPATAN" : $kateakun;
+	
+	if ($kateakun == "PENDAPATAN")
+	{
+		$sql = "SELECT koderek
+				  FROM jbsfina.jurnaldetail jd, jbsfina.rekakun rk
+				 WHERE jd.koderek = rk.kode
+				   AND jd.idjurnal = '$idjurnal'
+				   AND rk.kategori = '$kategori'
+				   AND jd.debet = 0
+				   AND jd.kredit > 0";
+	}
+	elseif ($kateakun == "DISKON")
+	{
+		$sql = "SELECT koderek
+				  FROM jbsfina.jurnaldetail jd, jbsfina.rekakun rk
+				 WHERE jd.koderek = rk.kode
+				   AND jd.idjurnal = '$idjurnal'
+				   AND rk.kategori = '$kategori'
+				   AND jd.debet > 0
+				   AND jd.kredit = 0";
+	}
+	else
+	{
+		$sql = "SELECT koderek
+				  FROM jbsfina.jurnaldetail jd, jbsfina.rekakun rk
+				 WHERE jd.koderek = rk.kode
+				   AND jd.idjurnal = '$idjurnal'
+				   AND rk.kategori = '$kategori'";
+	}
+	
+	$res = QueryDb($sql);
+	if (mysql_num_rows($res) == 0)
+	{
+		if ($kateakun == "HARTA")
+			$colname = "rekkas";
+		elseif ($kateakun == "PIUTANG")
+			$colname = "rekpiutang";
+		elseif ($kateakun == "PENDAPATAN")
+			$colname = "rekpendapatan";
+		elseif ($kateakun == "DISKON")
+			$colname = "info1";
+			
+		$sql = "SELECT $colname
+				  FROM jbsfina.datapenerimaan
+				 WHERE replid = '$idpenerimaan'";
+		//echo "$sql";		 
+		$res = QueryDb($sql);
+		if (mysql_num_rows($res) > 0)
+		{
+			$row = mysql_fetch_row($res);
+			return $row[0];
+		}
+		else
+		{
+			return "";
+		}
+	}
+	else
+	{
+		$row = mysql_fetch_row($res);
+		return $row[0];
+	}
 }
 ?>

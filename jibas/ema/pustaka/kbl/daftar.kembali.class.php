@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,20 +21,21 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CDaftarKembali{
-	function OnStart(){
+class CDaftarKembali
+{
+	function OnStart()
+	{
 		$op=$_REQUEST[op];
-		if ($op=="del"){
-			$sql = "DELETE FROM $db_name_perpus.format WHERE replid='$_REQUEST[id]'";
-			QueryDb($sql);
-		}
+	
 		$this->kriteria='all';
 		if (isset($_REQUEST[kriteria]))
 			$this->kriteria=$_REQUEST[kriteria];
+			
 		if ($this->kriteria=='nip')
 			$this->statuspeminjam=0;
 		elseif ($this->kriteria=='nis')
 			$this->statuspeminjam=1;
+			
 		$this->noanggota = $_REQUEST[noanggota];
 		$this->nama = $_REQUEST[nama];
 		$sqlDate="SELECT DAY(now()),MONTH(now()),YEAR(now())";
@@ -50,179 +51,248 @@ class CDaftarKembali{
 		if (isset($_REQUEST[denda]))
 			$this->denda=$_REQUEST[denda];
 	}
-	function OnFinish(){
+	
+	function OnFinish()
+	{
 		?>
 		<script language='JavaScript'>
 			Tables('table', 1, 0);
 		</script>
 		<?
     }
-    function Content(){
+	
+    function Content()
+	{
 		global $db_name_perpus;
+		
 		$sql = "SELECT DATE_FORMAT(now(),'%Y-%m-%d')";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
 		$now = $row[0];
+		
 		if ($this->kriteria=='all')
-			$sql = "SELECT * FROM $db_name_perpus.pinjam WHERE status=2 ORDER BY tglpinjam";
+			$sql = "SELECT *
+					  FROM jbsperpus.pinjam
+					 WHERE status=2
+					 ORDER BY tglditerima DESC
+					 LIMIT 100";
 		elseif ($this->kriteria=='tglpinjam')
-			$sql = "SELECT *,replid FROM $db_name_perpus.pinjam WHERE status=2 AND tglpinjam BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglpinjam";
+			$sql = "SELECT *, replid
+					  FROM jbsperpus.pinjam
+					 WHERE status=2
+					   AND tglpinjam BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."'
+					 ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='tglkembali')
-			$sql = "SELECT *,replid FROM $db_name_perpus.pinjam WHERE status=2 AND tglkembali BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."' ORDER BY tglpinjam";
+			$sql = "SELECT *, replid
+				      FROM jbsperpus.pinjam
+					 WHERE status=2
+					   AND tglkembali BETWEEN '".MySqlDateFormat($this->tglAwal)."' AND '".MySqlDateFormat($this->tglAkhir)."'
+					 ORDER BY tglditerima DESC";
 		elseif ($this->kriteria=='nip' || ($this->kriteria=='nis'))
-			$sql = "SELECT *,replid FROM $db_name_perpus.pinjam WHERE status=2 AND idanggota='$this->noanggota' AND tglkembali<='".$now."' ORDER BY tglpinjam";
-		elseif ($this->kriteria=='denda'){
+			$sql = "SELECT *, replid
+					  FROM jbsperpus.pinjam
+					 WHERE status=2
+					   AND (nis = '$this->noanggota' OR nip = '$this->noanggota')
+					   AND tglkembali<='".$now."'
+					 ORDER BY tglditerima DESC";
+		elseif ($this->kriteria=='denda')
+		{
 			if ($this->denda==0)
-				$sql = "SELECT *,p.replid AS replid FROM $db_name_perpus.pinjam p,$db_name_perpus.denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda='0' ORDER BY p.tglpinjam";
+				$sql = "SELECT *, p.replid AS replid
+						  FROM jbsperpus.pinjam p, jbsperpus.denda d
+						 WHERE p.status=2
+						   AND p.replid=d.idpinjam
+						   AND d.denda='0'
+						 ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==1)
-				$sql = "SELECT *,p.replid AS replid FROM $db_name_perpus.pinjam p,$db_name_perpus.denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<5000 ORDER BY p.tglpinjam";
+				$sql = "SELECT *, p.replid AS replid
+						  FROM jbsperpus.pinjam p, jbsperpus.denda d
+						 WHERE p.status=2
+						   AND p.replid=d.idpinjam
+						   AND d.denda>0
+						   AND d.denda<5000
+						 ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==2)
-				$sql = "SELECT *,p.replid AS replid FROM $db_name_perpus.pinjam p,$db_name_perpus.denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>0 AND d.denda<10000 ORDER BY p.tglpinjam";
+				$sql = "SELECT *, p.replid AS replid
+				          FROM jbsperpus.pinjam p, jbsperpus.denda d
+						 WHERE p.status=2
+						   AND p.replid=d.idpinjam
+						   AND d.denda>0
+						   AND d.denda<10000
+						 ORDER BY p.tglditerima DESC";
 			elseif ($this->denda==3)
-				$sql = "SELECT *,p.replid AS replid FROM $db_name_perpus.pinjam p,$db_name_perpus.denda d WHERE p.status=2 AND p.replid=d.idpinjam AND d.denda>10000 ORDER BY p.tglpinjam";			
+				$sql = "SELECT *, p.replid AS replid
+						  FROM jbsperpus.pinjam p, jbsperpus.denda d
+						 WHERE p.status=2
+						   AND p.replid=d.idpinjam
+						   AND d.denda>10000
+						 ORDER BY p.tglditerima DESC";			
 		}
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
 		?>
-		<link href="../../style/style.css" rel="stylesheet" type="text/css">
         <div class="filter">
         <table width="100%" border="0" cellpadding="2" cellspacing="2">
-          <tr>
+        <tr>
             <td width="9%">Tampilkan&nbsp;berdasarkan</td>
             <td width="91%">
             <select name="kriteria" id="kriteria" onchange="chgKrit()" class='cmbfrm'>
-           	  <option value="all" <?=StringIsSelected('all',$this->kriteria)?> >Semua Pengembalian</option>
-              <option value="tglpinjam" <?=StringIsSelected('tglpinjam',$this->kriteria)?>>Tanggal Peminjaman</option>
-              <option value="tglkembali" <?=StringIsSelected('tglkembali',$this->kriteria)?>>Jadwal Pengembalian</option>
-           	  <option value="nis" <?=StringIsSelected('nis',$this->kriteria)?>>NIS Siswa</option>
-              <option value="nip" <?=StringIsSelected('nip',$this->kriteria)?>>NIP Pegawai</option>
-              <option value="denda" <?=StringIsSelected('denda',$this->kriteria)?>>Denda</option>
+				<option value="all" <?=StringIsSelected('all',$this->kriteria)?> >100 Pengembalian Terakhir</option>
+				<option value="tglpinjam" <?=StringIsSelected('tglpinjam',$this->kriteria)?>>Tanggal Peminjaman</option>
+				<option value="tglkembali" <?=StringIsSelected('tglkembali',$this->kriteria)?>>Jadwal Pengembalian</option>
+				<option value="nis" <?=StringIsSelected('nis',$this->kriteria)?>>NIS Siswa</option>
+				<option value="nip" <?=StringIsSelected('nip',$this->kriteria)?>>NIP Pegawai</option>
+				<option value="denda" <?=StringIsSelected('denda',$this->kriteria)?>>Denda</option>
             </select>
             </td>
-          </tr>
-          <? if ($this->kriteria!='all'){ ?>
-		  <? if ($this->kriteria=='tglpinjam' ||$this->kriteria=='tglkembali' ) { ?>
-          <tr id="tgl">
-            <td align="right">Periode</td>
-          <td>
-                <table width="100%" border="0" cellpadding="0">
-                  <tr>
-                    <td valign="bottom"><input class="inptxt" name="tglAwal" id="tglAwal" type="text" value="<?=$this->tglAwal?>" style="width:100px" readonly="readonly" />&nbsp;<a href="javascript:TakeDate('tglAwal')" >&nbsp;<img src="../../img/ico/calendar.png" width="16" height="16" border="0" /></a>&nbsp;&nbsp;s.d.&nbsp;&nbsp;<input class="inptxt" name="tglAkhir" id="tglAkhir" type="text" value="<?=$this->tglAkhir?>"  style="width:100px" readonly="readonly"/><a href="javascript:TakeDate('tglAkhir')" >&nbsp;<img src="../../img/ico/calendar.png" width="16" height="16" border="0" /></a>&nbsp;&nbsp;<em>*dd-mm-yyyy</em></td>
-                  </tr>
-                </table>
-            </td>
-          </tr>
-          <? } ?>
-          <? if ($this->kriteria=='nis' || $this->kriteria=='nip' ) { ?>
-          <tr id="nis">
-            <td align="right"><?=strtoupper($this->kriteria)?></td>
-          <td>
-                <input type="hidden" id="statuspeminjam" value="<?=$this->statuspeminjam?>" />
-                <input type="text" class="inptxt-small-text" name="noanggota" id="noanggota" readonly="readonly"  onclick="cari()" value="<?=$this->noanggota?>" style="width:150px" />
-                &nbsp;
-<input id="nama" class="inptxt-small-text" name="nama" type="text" readonly="readonly"  onclick="cari()" value="<?=$this->nama?>" size="50" style="width:200px"/>
-                &nbsp;
-                <a href="javascript:cari()"><img src="../../img/ico/cari.png" width="16" height="16" border="0" /> </a>
-            </td>
-          </tr>
-          <? } ?>
-          <? if ($this->kriteria=='denda') { ?>
-          <tr id="nis">
-            <td align="right">Besar Denda</td>
-          	<td>
-           	  <select name="denda" id="denda" onchange="chgDenda()" >
-               	<option value="0" <?=StringIsSelected('0',$this->denda)?>>Tanpa Denda</option>
-                <option value="1" <?=StringIsSelected('1',$this->denda)?>>< Rp 5.000</option>
-                <option value="2" <?=StringIsSelected('2',$this->denda)?>>< Rp 10.000</option>
-               	<option value="3" <?=StringIsSelected('3',$this->denda)?>>> Rp 10.000</option>
-              </select>	    
-          	</td>
-          </tr>
-          <? } ?>
-          <? } ?>
+        </tr>
+<? 		if ($this->kriteria!='all')
+		{
+			if ($this->kriteria=='tglpinjam' ||$this->kriteria=='tglkembali' )
+			{ ?>
+			<tr id="tgl">
+				<td align="right">Periode</td>
+				<td>
+					<table width="100%" border="0" cellpadding="0">
+					<tr>
+						<td valign="bottom"><input class="inptxt" name="tglAwal" id="tglAwal" type="text" value="<?=$this->tglAwal?>" style="width:100px" readonly="readonly" />&nbsp;<a href="javascript:TakeDate('tglAwal')" >&nbsp;<img src="../../img/ico/calendar.png" width="16" height="16" border="0" /></a>&nbsp;&nbsp;s.d.&nbsp;&nbsp;<input class="inptxt" name="tglAkhir" id="tglAkhir" type="text" value="<?=$this->tglAkhir?>"  style="width:100px" readonly="readonly"/><a href="javascript:TakeDate('tglAkhir')" >&nbsp;<img src="../../img/ico/calendar.png" width="16" height="16" border="0" /></a>&nbsp;&nbsp;<em>*dd-mm-yyyy</em></td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+<? 			}
+
+			if ($this->kriteria=='nis' || $this->kriteria=='nip' )
+			{ ?>
+			<tr id="nis">
+				<td align="right"><?=strtoupper($this->kriteria)?></td>
+				<td>
+					<input type="hidden" id="statuspeminjam" value="<?=$this->statuspeminjam?>" />
+					<input type="text" class="inptxt-small-text" name="noanggota" id="noanggota" readonly="readonly"  onclick="cari()" value="<?=$this->noanggota?>" style="width:150px" />
+					&nbsp;
+					<input id="nama" class="inptxt-small-text" name="nama" type="text" readonly="readonly"  onclick="cari()" value="<?=$this->nama?>" size="50" style="width:200px"/>
+					&nbsp;
+					<a href="javascript:cari()"><img src="../../img/ico/cari.png" width="16" height="16" border="0" /> </a>
+				</td>
+			</tr>
+<? 			}
+
+			if ($this->kriteria=='denda')
+			{ ?>
+			<tr id="nis">
+				<td align="right">Besar Denda</td>
+				<td>
+					<select name="denda" id="denda" onchange="chgDenda()" >
+						<option value="0" <?=StringIsSelected('0',$this->denda)?>>Tanpa Denda</option>
+						<option value="1" <?=StringIsSelected('1',$this->denda)?>>< Rp 5.000</option>
+						<option value="2" <?=StringIsSelected('2',$this->denda)?>>< Rp 10.000</option>
+						<option value="3" <?=StringIsSelected('3',$this->denda)?>>> Rp 10.000</option>
+					</select>	    
+				</td>
+			</tr>
+<? 			}
+		} ?>
         </table>
         </div>
+		
       	<div class="funct" align="right" style="padding-bottom:5px">
         	<a href="javascript:getFresh()"><img src="../../img/ico/refresh.png" border="0">&nbsp;Refresh</a>&nbsp;&nbsp;
 			<a href="javascript:cetak()"><img src="../../img/ico/print1.png" border="0">&nbsp;Cetak</a>&nbsp;&nbsp;        
         </div>
+		
         <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
-          <tr>
-            <td height="30" align="center" class="header"> Anggota</td>
-            <td height="30" align="center" class="header">Kode Pustaka</td>
-            <td height="30" align="center" class="header">Tgl Pinjam</td>
-            <td height="30" align="center" class="header">Tgl Kembali</td>
-            <td align="center" class="header"> Tanggal Pengembalian</td>
-            <? if($this->kriteria=='denda') { ?>
-            <td align="center" class="header">Denda</td>
-            <? } ?>
-            <td height="30" align="center" class="header">Keterangan</td>
-          </tr>
-          <?
-		  if ($num>0){
-			  while ($row=@mysql_fetch_array($result)){
-			  $sqlDenda = "SELECT * FROM $db_name_perpus.denda WHERE idpinjam='$row[replid]'";
-			  $resultDenda = QueryDb($sqlDenda);
-			  $rowDenda = @mysql_fetch_array($resultDenda);
-			  $this->idanggota = $row[idanggota];
-			  $NamaAnggota = $this->GetMemberName();
-			  ?>
-			  <tr style="color:<?=$color?>; <?=$weight?>">
-				<td height="25" align="left"><?=$row[idanggota]?> - <?=$this->GetMemberName();?></td>
-				<td height="25" align="center"><?=$row[kodepustaka]?></td>
-				<td height="25" align="center"><?=LongDateFormat($row[tglpinjam])?></td>
-				<td height="25" align="center"><?=LongDateFormat($row[tglkembali])?></td>
-				<td align="center"><?=LongDateFormat($row[tglditerima])?></td>
-				<? if ($this->kriteria=='denda') { ?>
-                <td align="center"><div style="padding-right:5px"><?=FormatRupiah($rowDenda[denda])?></div></td>
-				<? } ?>
-                <td height="25" align="center"><?=$row[keterangan]?></td>
-		  </tr>
-			  <?
-			  }
-		  } else {
-		  ?>
-          <tr>
-            <td height="25" colspan="7" align="center" class="nodata">Tidak ada data</td>
-          </tr>
-		  <?
-		  }
-		  ?>	
+        <tr height="30">
+			<td width='4%' align="center" class="header">No</td>
+			<td width='10%' align="center" class="header">Tanggal<br>Pengembalian</td>
+			<td width='10%' align="center" class="header">Jadwal Kembali</td>
+			<td width='10%' align="center" class="header">Tanggal Pinjam</td>
+            <td width='15%' align="center" class="header">Anggota</td>
+            <td width='*' align="center" class="header">Kode Pustaka</td>            
+            <td width='8%' align="center" class="header">Denda</td>
+            <td width='10%' align="center" class="header">Keterangan</td>
+        </tr>
+<?	  	if ($num>0)
+		{
+			$cnt = 0;
+			
+			while ($row=@mysql_fetch_array($result))
+			{
+				$cnt += 1;
+				
+				$sql = "SELECT denda
+						  FROM jbsperpus.denda
+						 WHERE idpinjam='$row[replid]'";
+				$res2 = QueryDb($sql);
+				$row2 = @mysql_fetch_array($res2);
+				$denda = $row2['denda'];
+				
+				$kodepustaka = $row['kodepustaka'];
+				$sql = "SELECT p.judul
+						  FROM jbsperpus.daftarpustaka dp, jbsperpus.pustaka p
+						 WHERE dp.pustaka = p.replid
+						   AND dp.kodepustaka = '$kodepustaka'";
+				$res2 = QueryDb($sql);
+				$row2 = @mysql_fetch_array($res2);
+				$judul = $row2['judul'];
+				
+				$this->idanggota = $row[idanggota];
+				$this->jenisanggota = $row[info1];
+				
+				$NamaAnggota = $this->GetMemberName();  ?>
+				
+				<tr height="25" style="color:<?=$color?>; <?=$weight?>">
+					<td align='center'><?=$cnt?></td>
+					<td align="center"><?=LongDateFormat($row[tglditerima])?></td>
+					<td align="center"><?=LongDateFormat($row[tglkembali])?></td>
+					<td align="center"><?=LongDateFormat($row[tglpinjam])?></td>
+					<td align="left">
+						<font style='font-size: 9px'><?=$row[idanggota]?></font><br>
+						<font style='font-size: 11px; font-weight: bold;'><?=$this->GetMemberName()?></font>
+					</td>
+					<td align="left">
+						<font style='font-size: 9px'><?=$kodepustaka?></font><br>
+						<font style='font-size: 11px; font-weight: bold;'><?=$judul?></font>
+					</td>
+					<td align="right"><?=FormatRupiah($denda)?></td>
+					<td align="center"><?=$row[keterangan]?></td>
+				</tr>
+<?		  	}
+		}
+		else
+		{  ?>
+			<tr>
+				<td height="25" colspan="7" align="center" class="nodata">Tidak ada data</td>
+			</tr>
+<?	  	}  ?>	
         </table>
-
         <?
 	}
-	function GetMemberName(){
-		global $db_name_akad;
-		global $db_name_sdm;
-		global $db_name_perpus;
-		$idanggota = $this->idanggota;
-		//return ($idanggota);
-		$sql1 = "SELECT nama FROM $db_name_akad.siswa WHERE nis='$idanggota'";
-		$result1 = QueryDb($sql1);
-		if (@mysql_num_rows($result1)>0){
-			$row1 = @mysql_fetch_array($result1);
-			return $row1[nama];
-			//return $sql1;
-		} else {
-			$sql2 = "SELECT nama FROM $db_name_sdm.pegawai WHERE nip='$idanggota'";
-			$result2 = QueryDb($sql2);
-			if (@mysql_num_rows($result2)>0){
-				$row2 = @mysql_fetch_array($result2);
-				return $row2[nama];
-				//return $sql2;
-			} else {
-				$sql3 = "SELECT nama FROM $db_name_perpus.anggota WHERE noregistrasi='$idanggota'";
-				$result3 = QueryDb($sql3);
-				if (@mysql_num_rows($result3)>0){
-					$row3 = @mysql_fetch_array($result3);
-					//return $sql3;
-					return $row3[nama];
-				} else {
-					return "Tanpa Nama";
-				}
-			}
+	
+	function GetMemberName()
+	{
+		if ($this->jenisanggota == "siswa")
+		{
+			$sql = "SELECT nama
+					  FROM jbsakad.siswa
+					 WHERE nis = '$this->idanggota'";
 		}
+		elseif ($this->jenisanggota == "pegawai")
+		{
+			$sql = "SELECT nama
+					  FROM jbssdm.pegawai
+					 WHERE nip = '$this->idanggota'";
+		}
+		else
+		{
+			$sql = "SELECT nama
+					  FROM jbsperpus.anggota
+					 WHERE noregistrasi = '$this->idanggota'";
+		}
+		$res = QueryDb($sql);
+		$row = mysql_fetch_row($res);
+		$namaanggota = $row[0];
+		
+		return $namaanggota;
 	}
 }
 ?>

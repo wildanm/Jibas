@@ -1,4 +1,5 @@
-function chg(){
+function chg()
+{
 	var perpustakaan=document.getElementById('perpustakaan').value;
 	var Limit = document.getElementById('Limit').value;
 	var BlnAwal = document.getElementById('BlnAwal').value;
@@ -7,7 +8,9 @@ function chg(){
 	var ThnAkhir = document.getElementById('ThnAkhir').value;
 	document.location.href = "stat.pustaka.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir+"&Limit="+Limit;
 }
-function show(){
+
+function show()
+{
 	var perpustakaan = document.getElementById('perpustakaan').value;
 	var Limit = document.getElementById('Limit').value;
 	var BlnAwal = document.getElementById('BlnAwal').value;
@@ -17,7 +20,9 @@ function show(){
 	document.location.href = "stat.pustaka.php?perpustakaan="+perpustakaan+"&BlnAwal="+BlnAwal+"&ThnAwal="+ThnAwal+"&BlnAkhir="+BlnAkhir+"&ThnAkhir="+ThnAkhir+"&Limit="+Limit+"&ShowState=true";
 }
 
-function ViewList(replid){
+function ViewList(replid)
+{
+	var idperpustakaan = document.getElementById('perpustakaan').value;
 	var BlnAwal = document.getElementById('BlnAwal').value;
 	var ThnAwal = document.getElementById('ThnAwal').value;
 	var BlnAkhir = document.getElementById('BlnAkhir').value;
@@ -25,7 +30,7 @@ function ViewList(replid){
 	var from = ThnAwal+'-'+BlnAwal+'-01';
 	var to = ThnAkhir+'-'+BlnAkhir+'-31';
 	show_wait("ListInfo");
-	sendRequestText("GetPustakaList.php", showList, "idpustaka="+replid+"&from="+from+"&to="+to);					
+	sendRequestText("GetPustakaList.php", showList, "idperpustakaan="+idperpustakaan+"&idpustaka="+replid+"&from="+from+"&to="+to);					
 }
 
 function showList(x) {

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -34,13 +34,19 @@ session_name("jbsinfosiswa");
 session_start();
     
 $username = trim($_POST[username]);
-if ($username == "jibas") 
-	$username = "landlord";
+if ($username == "jibas") $username = "landlord";
 $password = trim($_POST[password]);
+
+$username = str_replace("'", "\'", $username);
+$username = str_replace("--", " ", $username);
+$login = $username;
+$username = "'$username'";
+
+$password = str_replace("'", "\'", $password);
 
 $user_exists = false;
 
-if ($username == "landlord")
+if ($login == "landlord")
 {
 	$sql_la = "SELECT password FROM jbsuser.landlord";
 	$result_la = QueryDb($sql_la) or die(mysql_error());
@@ -54,7 +60,7 @@ if ($username == "landlord")
 		$user_exists = true;
 	}
 } 
-elseif ($username=="adminsiswa")
+elseif ($username=="'adminsiswa'")
 {
 	$sql_la = "SELECT password FROM jbsuser.adminsiswa";
 	$result_la = QueryDb($sql_la) or die(mysql_error());
@@ -70,13 +76,16 @@ elseif ($username=="adminsiswa")
 } 
 else 
 {
-	$query = "SELECT p.nis as nis,p.nama as nama, p.panggilan as panggilan FROM jbsakad.siswa p WHERE p.nis = '$username' AND p.pinsiswa='$password'";
+	$query = "SELECT p.nis as nis,p.nama as nama, p.panggilan as panggilan 
+                FROM jbsakad.siswa p 
+               WHERE p.nis = $username 
+                 AND p.pinsiswa='$password'";
 	$result = QueryDb($query) or die(mysql_error());
 	$row = mysql_fetch_array($result);
 	$num = mysql_num_rows($result);
 	if($num != 0) 
 	{
-		$_SESSION['login'] = $row[nis];
+		$_SESSION['login'] = $login;
 		$_SESSION['nama'] = $row[nama];
 		$_SESSION['panggilan'] = $row[panggilan];
 		$user_exists = true;
@@ -94,20 +103,20 @@ if (!$user_exists)
 }
 else
 {
-	if ($username=="landlord")
+	if ($login == "landlord")
 	{
 		$query = "UPDATE jbsuser.landlord SET lastlogin=NOW() WHERE password='".md5($password)."'";
     } 
-	elseif ($username=="adminsiswa")
+	elseif ($username=="'adminsiswa'")
 	{
 		$query = "UPDATE jbsuser.adminsiswa SET lastlogin=NOW() WHERE password='".md5($password)."'";
     } 
 	else 
 	{
-		$sql = "SELECT * FROM jbsuser.hakakses WHERE modul='INFOSISWA' AND login='$username'";
+		$sql = "SELECT * FROM jbsuser.hakakses WHERE modul='INFOSISWA' AND login=$username";
 		$result = QueryDb($sql);
 		$num=@mysql_num_rows($result);
-		$query = "UPDATE jbsuser.hakaksesinfosiswa SET lastlogin=NOW() WHERE nis='$username'";
+		$query = "UPDATE jbsuser.hakaksesinfosiswa SET lastlogin=NOW() WHERE nis=$username";
 	}
 	$result = QueryDb($query);
 	?>

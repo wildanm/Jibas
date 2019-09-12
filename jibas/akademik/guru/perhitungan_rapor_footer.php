@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -55,7 +55,7 @@ function tampil(id,nip) {
 
 </script>
 </head>
-<body>
+<body topmargin="5" leftmargin="5">
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
 
@@ -66,7 +66,7 @@ $result = QueryDb($sql);
 $cnt = 0;
 if ((@mysql_num_rows($result))>0){
 ?>
-		<div align="center"><strong>Pelajaran yang diajar oleh guru<br /><?=$_REQUEST['nama']?></strong></div></strong><br />
+		<div align="left"><strong>Pelajaran yang diajar oleh guru<br /><?=$_REQUEST['nama']?></strong></div></strong><br />
 	<?
 	while ($row = @mysql_fetch_array($result)) {
 		$departemen=$row[0];
@@ -84,7 +84,7 @@ if ((@mysql_num_rows($result))>0){
 			$nama_pelajaran=$row2[0];
 		?>
 		<tr>
-        	<td align="center" height="25" onclick="tampil('<?=$row2[2]?>','<?=$_REQUEST['nip']?>','<?=$departemen?>')" style="cursor:pointer"><u><b><?=$nama_pelajaran?></b></u>           
+        	<td align="left" height="25" onclick="tampil('<?=$row2[2]?>','<?=$_REQUEST['nip']?>','<?=$departemen?>')" style="cursor:pointer"><u><b><?=$nama_pelajaran?></b></u>
             </td>
         </tr>
 		<?

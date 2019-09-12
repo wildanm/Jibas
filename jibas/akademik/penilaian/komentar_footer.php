@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -45,6 +45,8 @@ if (isset($_REQUEST['pelajaran']))
 if (isset($_REQUEST['kelas']))
 	$kelas = $_REQUEST['kelas'];
 
+if (isset($_REQUEST['jenis']))
+    $jenis = $_REQUEST['jenis'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/aTR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -67,8 +69,9 @@ if (isset($_REQUEST['kelas']))
 </style>
 </head>
 
-<frameset cols="25%,*" border="0" frameborder="no">
-<frame src="komentar_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>">
-<frame src="blank_komentar_content.php" name="komentar_content" id="komentar_content" style="border:1; border-color-:#000000; border-left-style:solid">
+<frameset cols="250,*" border="0" frameborder="0" framespacing="0">
+<frame src="komentar_menu.php?departemen=<?=$departemen?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&jenis=<?=$jenis?>"
+       style="border:0px;">
+<frame src="blank_komentar_content.php" name="komentar_content" id="komentar_content" style="border:0px;">
 </frameset>
 </html>

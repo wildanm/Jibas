@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -25,6 +25,8 @@ require_once('../inc/config.php');
 require_once('../inc/common.php');
 require_once('../inc/db_functions.php');
 require_once('pinjam.class.php');
+require_once('pinjam.config.php');
+
 OpenDb();
 $P = new CPinjam();
 $P->OnStart();
@@ -38,10 +40,52 @@ $P->OnStart();
 <link href="../sty/style.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="../scr/tables.js"></script>
 <script type="text/javascript" src="../scr/tools.js"></script>
-<script language="javascript" src="../scr/jquery/jquery-1.2.6.js"></script>
+<script language="javascript" src="../scr/jquery-1.9.0.js"></script>
 <script language="javascript" src="../scr/jquery/jquery.autocomplete.js"></script>
+<script type="text/javascript" src="pinjam2.js"></script>
+<script type="text/javascript">
+function scanBarcode(e)
+{
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+    if (keycode != 13)
+        return;
 
-<script type="text/javascript" src="pinjam.js"></script>
+    var kode = $.trim($('#txBarcode').val());
+    if (kode.length == 0)
+        return;
+
+    var data = "kode="+kode;
+
+    $('#spScanInfo').html("");
+
+    $.ajax({
+        url: "../pjm/scanbarcode.php",
+        type: 'GET',
+        data: data,
+        success: function (response)
+        {
+            var data = $.parseJSON(response);
+
+            if (data.status == "1")
+            {
+                var status = data.usertype;
+                var noanggota = kode;
+                var nama = data.username;
+
+                document.location.href = "../pjm/pinjam.php?op=newuser&state="+status+"&noanggota="+noanggota+"&nama="+nama;
+            }
+            else
+            {
+                $('#spScanInfo').html(data.message);
+            }
+        },
+        error: function (xhr, response, error)
+        {
+            alert(xhr.responseText);
+        }
+    });
+}
+</script>
 </head>
 
 <body>

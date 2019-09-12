@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -61,7 +61,7 @@ function pilih(id,nama_dep,nama_pel) {
 </script>
 </head>
 
-<body onload="document.getElementById('departemen').focus()">
+<body onload="document.getElementById('departemen').focus()" style="background-color: #f5f5f5;">
 
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
@@ -90,16 +90,18 @@ function pilih(id,nama_dep,nama_pel) {
 	</table>  <br />
         <br />	
 <?	OpenDb();
-	$sql = "SELECT replid,nama,departemen FROM pelajaran WHERE departemen = '$departemen' ORDER BY nama";    
+	$sql = "SELECT replid,nama,departemen,kode FROM pelajaran WHERE departemen = '$departemen' ORDER BY nama";
 	$result = QueryDb($sql);
 	if (@mysql_num_rows($result)>0){
 ?>
-	<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
+    <br><br>
+    <strong>Pelajaran:</strong>
+	<table class="tab" id="table" border="1" style="border-collapse:collapse; border-width: 1px; border-color: #f5f5f5;" width="100%" align="left" bordercolor="#000000">
     <!-- TABLE CONTENT -->
     
-    <tr height="30">    	
-    	<td width="4%" class="header" align="center">No</td>
-        <td width="96%" class="header" align="center">Pelajaran</td>
+    <tr style="height: 2px;">
+    	<td width="15%"></td>
+        <td width="*"></td>
     </tr>
     
      <?
@@ -108,8 +110,8 @@ function pilih(id,nama_dep,nama_pel) {
 		while ($row = @mysql_fetch_array($result)) {
 	?>
     <tr height="25" onClick="pilih('<?=$row[0]?>','<?=$row[2]?>','<?=$row[1]?>')" style="cursor:pointer;">   	
-       	<td align="center"><?=++$cnt ?></td>
-        <td align="center"><a href="Javascript:pilih('<?=$row[0]?>','<?=$row[2]?>','<?=$row[1]?>')"><?=$row[1]?></a></td>
+       	<td align="left"><?=$row[3]?></td>
+        <td align="left"><a href="Javascript:pilih('<?=$row[0]?>','<?=$row[2]?>','<?=$row[1]?>')"><?=$row[1]?></a></td>
             
     </tr>
 <?	} 

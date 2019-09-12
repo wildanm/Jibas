@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,6 +27,7 @@ require_once('../include/db_functions.php');
 
 $ERRMSG = "";
 
+$op = $_REQUEST['op'];
 $password = trim($_REQUEST['password']);
 
 if (strlen($password) == 0)
@@ -50,13 +51,9 @@ if ($ndata == 0)
 
 require_once("beranda.session.php");
 $_SESSION['isadminlogin'] = true;
+
+if ($op == "edit")
+    require_once("beranda.editor.php");
+else
+    require_once("beranda.changebg.php");
 ?>
-<script>
-    $.ajax({
-        url : 'beranda/beranda.editor.php',
-        type: 'get',
-        success : function(html) {
-            $('#b_main').html(html);
-        }
-    })    
-</script>

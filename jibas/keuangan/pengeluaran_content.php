@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -65,6 +65,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$tanggal = MySqlDateFormat($tanggal);
 	$jumlah = $_REQUEST['jumlah'];
 	$jumlah = UnformatRupiah($jumlah);
+	$idpetugas = getIdUser();
 	$petugas = getUserName();
 	$namapemohon = $_REQUEST['namapemohon'];
 	$idjurnal = 0;	
@@ -91,7 +92,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 
 	//Simpan ke jurnal
 	$idjurnal = 0;
-	$success = SimpanJurnal($idtahunbuku, $tanggal, $keperluan, $nokas, "", $petugas, "pengeluaran", $idjurnal);
+	$success = SimpanJurnal($idtahunbuku, $tanggal, $keperluan, $nokas, "", $idpetugas, $petugas, "pengeluaran", $idjurnal);
 	
 	//Simpan ke jurnaldetail
 	if ($success) $success = SimpanDetailJurnal($idjurnal, "D", $rekdebet, $jumlah);
@@ -167,7 +168,7 @@ $namapengeluaran = $row[0];
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript">
 function ValidateSubmit() 
 {

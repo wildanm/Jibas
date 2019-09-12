@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -106,7 +106,12 @@ $row = mysql_fetch_array($result);
         <td class="headerlong">Rata-rata Siswa</td>
         <td class="headerlong">Nilai Akhir <?=$row['jenisujian']?></td>
     </tr>
-<?	$sql_get_nis = "SELECT nis,nama,aktif,idkelas FROM jbsakad.siswa WHERE idkelas = $kelas ORDER BY nama";
+<?	$sql_get_nis = "SELECT nis,nama,aktif,idkelas
+					  FROM jbsakad.siswa
+					 WHERE idkelas = $kelas
+					   AND aktif = 1
+					   AND alumni = 0
+					 ORDER BY nama";
     $result_get_nis=QueryDb($sql_get_nis);
     $cntsiswa=1;
     while ($row_get_nis=@mysql_fetch_row($result_get_nis))

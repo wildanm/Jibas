@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -87,7 +87,7 @@ function excel()
     <br />
     <table class="tab" id="table" border="1" width="100%" align="left" cellpadding="5" cellspacing="0" bordercolor="#000000">
     <tr height="30" align="center">
-        <td class="header" width="4%">No</td>
+        <td class="header" width="3%">No</td>
         <td class="header" width="10%">Status Data</td>
         <td class="header" width="10%">Tanggal</td>
         <td class="header" width="15%">Keterangan</td>
@@ -122,11 +122,11 @@ function excel()
         if ($cnt % 2 == 0) 
 		  { ?>
     <tr>
-        <td rowspan="4" align="center" bgcolor="#CCCC66"><strong><?=++$no ?></strong></td>
-        <td colspan="6" align="left" bgcolor="#CCCC66"><font size="2"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></font></td>
+        <td rowspan="4" align="center" bgcolor="#ededed"><strong><?=++$no ?></strong></td>
+        <td colspan="6" align="left" style="background-color: #3994c6; color: #ffffff;"><font size="2"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></font></td>
     </tr>
     <tr>
-        <td colspan="6" bgcolor="#E5E5E5">
+        <td colspan="6" style="background-color: #e5fdff;">
             <table cellpadding="0" cellspacing="0" style="border-collapse:collapse" width="100%" >
             <tr>
                 <td width="30%"><strong>No. Jurnal : </strong><?=$row['nokas'] ?>

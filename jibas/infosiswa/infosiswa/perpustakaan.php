@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -24,35 +24,46 @@
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/common.php');
+
 OpenDb();
-$idanggota=$_REQUEST[nis];
-$sql = "SELECT pu.judul, p.tglpinjam, pu.replid, p.tglkembali,p.status,p.tglditerima FROM jbsperpus.pinjam p, jbsperpus.daftarpustaka d, jbsperpus.pustaka pu WHERE p.idanggota = '$idanggota' AND p.kodepustaka=d.kodepustaka AND d.pustaka=pu.replid AND p.status<>'0'";
+$idanggota = $_REQUEST[nis];
+$sql = "SELECT pu.judul, DATE_FORMAT(p.tglpinjam, '%d-%b-%Y'), pu.replid,
+			   DATE_FORMAT(p.tglkembali, '%d-%b-%Y'), p.status,
+			   DATE_FORMAT(p.tglditerima, '%d-%b-%Y'), d.kodepustaka
+	      FROM jbsperpus.pinjam p, jbsperpus.daftarpustaka d, jbsperpus.pustaka pu
+		 WHERE p.nis = '$idanggota'
+		   AND p.kodepustaka=d.kodepustaka
+		   AND d.pustaka=pu.replid
+		   AND p.status <> '0'
+		 ORDER BY p.tglpinjam DESC";
 $result = QueryDb($sql);
 $cnt=1;
 ?>
 <div style="height:15px">&nbsp;</div>
 <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab">
-  <tr>
-    <td height="25" align="center" class="header">No</td>
-    <td height="25" align="center" class="header">Judul Pustaka</td>
-    <td height="25" align="center" class="header">Tgl Pinjam</td>
-    <td height="25" align="center" class="header">Tgl Kembali</td>
-    <td align="center" class="header">Status</td>
+  <tr height="25">
+    <td width='5%' align="center" class="header">No</td>
+	<td width='*' align="center" class="header">Judul Pustaka</td>
+	<td width='15%' align="center" class="header">Tanggal<br>Pinjam</td>
+	<td width='15%' align="center" class="header">Jadwal<br>Kembali</td>
+	<td width='15%' align="center" class="header">Tanggal Kembali</td>
   </tr>
   <? if (@mysql_num_rows($result)>0) { ?>
   <? while ($row = @mysql_fetch_row($result)) { ?>
   <tr>
     <td height="20" align="center"><?=$cnt?></td>
-    <td height="20"><div style="padding-left:5px;"><?=$row[0]?></div></td>
+    <td height="20">
+	  <font style='font-style: italic; font-size: 9px'><?=$row[6]?></font><br>
+	  <font style='font-weight: bold; font-size: 11px'><?=$row[0]?></font>
+	</td>
     <td height="20" align="center"><?=ShortDateFormat($row[1])?></td>
     <td height="20" align="center"><?=ShortDateFormat($row[3])?></td>
     <td align="center">
-	<?
-    if ($row[4]=='1')
-		echo "<span style='color:#FF3300;font-weight:bold'>Belum dikembalikan</span>";
-	elseif ($row[4]=='2')
-		echo "Sudah dikembalikan pada<br>".ShortDateFormat($row[5]);		
-	?>    </td>
+<?	  if ($row[4]=='1')
+	  	echo "-";
+	  elseif ($row[4]=='2')
+	  	echo $row[5]; ?>
+	</td>
   </tr>
   <? $cnt++; ?>
   <? } ?>
@@ -62,3 +73,6 @@ $cnt=1;
   </tr>
   <? } ?>
 </table>
+<?
+CloseDb();
+?>

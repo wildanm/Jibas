@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -39,12 +39,15 @@ if ($op=="bzux834hx8x7x934983xihxf084")
 	$result=QueryDb($sql);
 	CloseDb();
 }
+
 $bulan="";
 if (isset($_REQUEST['bulan']))
 	$bulan=$_REQUEST['bulan'];
+	
 $tahun="";
 if (isset($_REQUEST['tahun']))
 	$tahun=$_REQUEST['tahun'];
+	
 $idguru=SI_USER_ID();
 $varbaris=10;
 $page=0;
@@ -167,7 +170,7 @@ function chg_title_color(id,stat){
 		  
 
 		  $sql1="SELECT b.replid as replid, b.judul as judul, DATE_FORMAT(b.tanggal, '%e %b %Y') as tanggal,
-						TIME_FORMAT(b.tanggal, '%H:%i') as waktu, b.abstrak as abstrak, b.isi as isi, b.idpengirim as idpengirim
+						TIME_FORMAT(b.tanggal, '%H:%i') as waktu, b.abstrak as abstrak, b.isi as isi, b.idpengirim as idpengirim, b.idguru
 				   FROM jbsvcr.beritasiswa b 
 				  WHERE MONTH(b.tanggal)='$bulan' AND YEAR(b.tanggal)='$tahun' ORDER BY replid DESC LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 		 
@@ -215,7 +218,7 @@ function chg_title_color(id,stat){
               </tr>
               <tr>
               	<td colspan="2" align="right">
-              		<? if ($row1[idpengirim]==$idguru){ ?>
+              		<? if ($row1[idguru]==$idguru){ ?>
                         <img src="../../images/ico/ubah.png" border="0" onclick="ubah('<?=$row1[replid]?>','<?=$page?>')" style="cursor:pointer;" title="Ubah Berita ini !" />&nbsp;<img src="../../images/ico/hapus.png" border="0" onclick="hapus('<?=$row1[replid]?>','<?=$page?>')" style="cursor:pointer;" title="Hapus Berita ini !" />
 	                <? } ?>              	</td>
               </tr>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -109,18 +109,7 @@ function change_dep() {
 	document.location.href = "lap_pelajaran_menu.php?departemen="+departemen+"&nis="+nis+"&nis_awal="+nis_awal;
 	parent.isi.location.href = "blank_lap_pelajaran.php";
 }
-/*
-function change() {
-	var nis = document.getElementById("nis").value;
-	var nis_awal = document.getElementById("nis_awal").value;
-	var departemen = document.getElementById("departemen").value;
-	var tahunajaran = document.getElementById("tahunajaran").value;
-	var kelas = document.getElementById("kelas").value;
-	
-	document.location.href = "lap_pelajaran_menu.php?departemen="+departemen+"&kelas="+kelas+"&tahunajaran="+tahunajaran+"&nis="+nis+"&nis_awal="+nis_awal;
-	parent.isi.location.href = "blank_lap_pelajaran.php";
-}
-*/
+
 function change_kls() {
 	var nis = document.getElementById("nis").value;
 	var nis_awal = document.getElementById("nis_awal").value;

@@ -373,3 +373,35 @@ function cetak(panel){
 	newWindow(addr, 'CetakData','800','650','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
+function pk_changeBulan()
+{
+	var bulan = document.getElementById('pk_cbBulan').value;
+	var tahun = document.getElementById('pk_cbTahun').value;
+	var param = "bulan="+bulan+"&tahun="+tahun;
+	
+	show_wait("infosiswa.content");      
+    sendRequestText('infosiswa.presensikegiatan.php', showInfoSiswaContent, param);  
+}
+
+var pk_divDetail_Target = "";
+function pk_showDetail(cnt, idkegiatan)
+{
+	var bulan = document.getElementById('pk_cbBulan').value;
+	var tahun = document.getElementById('pk_cbTahun').value;
+	var param = "idkegiatan="+idkegiatan+"&bulan="+bulan+"&tahun="+tahun+"&cnt="+cnt;
+	
+	pk_divDetail_Target = "pk_divDetail_" + cnt;
+	show_wait(pk_divDetail_Target);      
+    sendRequestText('infosiswa.presensikegiatan.detail.php', showDetailPresensiKegiatan, param);  
+}
+
+function showDetailPresensiKegiatan(html)
+{
+	document.getElementById(pk_divDetail_Target).innerHTML = html;
+}
+
+function pk_closeDetail(cnt, idkegiatan)
+{
+	var ahref = "<a href='#' onclick='pk_showDetail(" + cnt + "," + idkegiatan + ")' style='color: blue; font-weight: normal;'>detail</a>";
+	document.getElementById("pk_divDetail_" + cnt).innerHTML = ahref;
+}

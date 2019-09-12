@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -61,41 +61,47 @@ $namabulan = array("Januari","Februari","Maret","April","Mei","Juni","Juli","Agu
 Periode : <?=$namabulan[$bulan-1]?> <?=$tahun?><br>
 Guru : <?=SI_USER_NAME()?><br><br>
 <table width="100%" border="1" cellspacing="0">
-  <tr>
-    <th height="30" class="header" scope="row">Tanggal</th>
-    <td height="30" class="header">Agenda</td>
-    
+  <tr height='30'>
+	<td width='14%' align='center' class="header">Tanggal</td>
+    <td width='*' class="header">Agenda</td>
   </tr>
-  <?
+<?
   OpenDb();
-  $sql="SELECT tanggal FROM jbsvcr.agenda WHERE idguru='".SI_USER_ID()."' AND YEAR(tanggal)='$tahun' AND MONTH(tanggal)='$bulan' GROUP BY tanggal";
-  $result=QueryDb($sql);
-  if (@mysql_num_rows($result)>0){
-  while ($row=@mysql_fetch_array($result)){
   
-  ?>
-  <tr>
-    <th height="25" scope="row" valign="middle"><?=LongDateFormat($row['tanggal'])?></th>
-    <? 
-	$sql1="SELECT * FROM jbsvcr.agenda WHERE idguru='".SI_USER_ID()."' AND tanggal='$row[tanggal]'";
-  	$result1=QueryDb($sql1);
-	$i=0;
-	while ($row1=@mysql_fetch_array($result1)){
-		$judul[$i]=$row1['judul'];
-		$replid[$i]=$row1['replid'];	
-	$i++;
-	}
-	?>
-    <td height="25" align="left">
-	<? 
-	for ($x=0;$x<=$i-1;$x++){
-		?>
-		<img title="Ubah !" src="../../images/ico/titik.png" border="0" height="10" width="10"/>&nbsp;<?=$judul[$x]?><br>
-		<?
-	}
-	?>
-    </td>
-    
+  $sql = "SELECT tanggal
+		    FROM jbsvcr.agenda
+		   WHERE idguru = '".SI_USER_ID()."'
+		     AND YEAR(tanggal) = '$tahun'
+			 AND MONTH(tanggal) = '$bulan'
+		   GROUP BY tanggal";
+  $result = QueryDb($sql);
+  if (@mysql_num_rows($result)>0)
+  {
+	$cnt = 0;  
+	while ($row=@mysql_fetch_array($result))
+	{ ?>
+	  <tr>
+<? 		$sql1 = "SELECT *
+			       FROM jbsvcr.agenda
+				  WHERE idguru = '".SI_USER_ID()."'
+				    AND tanggal = '$row[tanggal]'";
+		$result1=QueryDb($sql1);
+		$i = 0;
+		while ($row1=@mysql_fetch_array($result1))
+		{
+		  $judul[$i] = $row1['judul'];
+		  $komentar[$i] = $row1['komentar'];	
+		  $i++;
+		} ?>
+		<td align='center'><?=LongDateFormat($row['tanggal'])?></td>
+		<td height="25" align="left">
+<? 	  	for ($x=0;$x<=$i-1;$x++)
+		{	?>
+			<strong><?=$judul[$x]?></strong><br>
+			<?=$komentar[$x]?>
+			<hr style='border-color: #666; border-style: dashed;' width='50%' align='left'>
+<?	  	}	?>
+		</td>
   </tr>
   <? 
   } } else { ?>

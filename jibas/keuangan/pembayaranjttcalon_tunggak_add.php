@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -46,9 +46,11 @@ $row = FetchSingleRow($sql);
 $nama = $row[0];
 $no = $row[1];
 
-//// Ambil nama penerimaan
-$sql = "SELECT nama FROM datapenerimaan WHERE replid = '$idpenerimaan'";
-$namapenerimaan = FetchSingle($sql);
+// -- ambil nama penerimaan -------------------------------
+$sql = "SELECT nama, rekkas FROM datapenerimaan WHERE replid = '$idpenerimaan'";
+$row = FetchSingleRow($sql);
+$namapenerimaan = $row[0];
+$defrekkas = $row[1];
 
 $tanggal = date('d-m-Y');
 if (isset($_REQUEST['tcicilan']))
@@ -59,6 +61,7 @@ if (isset($_REQUEST['jcicilan']))
 	
 if (isset($_REQUEST['Simpan'])) 
 {
+	$idpetugas = getIdUser();
 	$petugas = getUserName();
 	$idbesarjtt = (int)$_REQUEST['idbesarjtt'];
 	$tcicilan = MySqlDateFormat($_REQUEST['tcicilan']);
@@ -66,14 +69,17 @@ if (isset($_REQUEST['Simpan']))
 	$jdiskon = UnformatRupiah($_REQUEST['jdiskon']);
 	$jbayar = $jcicilan - $jdiskon;
 	$kcicilan = CQ($_REQUEST['kcicilan']);
+	$rekkas = $_REQUEST['rekkas'];
 		
 	//// Ambil nama penerimaan
-	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang FROM datapenerimaan WHERE replid = '$idpenerimaan'";
+	$sql = "SELECT nama, rekkas, rekpendapatan, rekpiutang, info1
+			  FROM datapenerimaan WHERE replid = '$idpenerimaan'";
 	$row = FetchSingleRow($sql);
 	$namapenerimaan = $row[0];
-	$rekkas = $row[1];
+	//$rekkas = $row[1];
 	$rekpendapatan = $row[2];
 	$rekpiutang = $row[3];
+	$rekdiskon = $row[4];
 	
 	//// Ambil nama calon siswa
 	$sql = "SELECT nama, nopendaftaran FROM jbsakad.calonsiswa WHERE replid = '$replid'";
@@ -116,7 +122,7 @@ if (isset($_REQUEST['Simpan']))
 			$sql = "SELECT COUNT(replid) + 1 FROM penerimaanjtt WHERE idbesarjtt = '$idbesarjtt'";
 			$cicilan = FetchSingle($sql);
 			
-			$ketjurnal = "Pembayaran cicilan ke-$cicilan $namapenerimaan calon siswa $namasiswa ($no)";
+			$ketjurnal = "Pembayaran ke-$cicilan $namapenerimaan calon siswa $namasiswa ($no)";
 			$lunas = 0;
 		}
 		
@@ -134,7 +140,7 @@ if (isset($_REQUEST['Simpan']))
 
 		//// Simpan ke jurnal
 		$idjurnal = 0;
-		$success = SimpanJurnal($idtahunbuku_aktif, $tcicilan, $ketjurnal, $nokas, "", $petugas, "penerimaanjttcalon", $idjurnal);
+		$success = SimpanJurnal($idtahunbuku_aktif, $tcicilan, $ketjurnal, $nokas, "", $idpetugas, $petugas, "penerimaanjttcalon", $idjurnal);
 	
 		//-- Simpan ke jurnaldetail ------------------------------------------
 		if ($success) 
@@ -340,6 +346,26 @@ function CalculatePay()
         <td>Bayar</td>
         <td colspan="2">
 			<input type="text" name="jbayar" id="jbayar" readonly="readonly" style="background-color: #CCCCCC"/>
+        </td>
+    </tr>
+	<tr>
+        <td>Rek. Kas</td>
+        <td colspan="2">
+			<select name="rekkas" id="rekkas" style="width: 220px">
+<?              OpenDb();
+                $sql = "SELECT kode, nama
+                          FROM jbsfina.rekakun
+                         WHERE kategori = 'HARTA'
+                         ORDER BY nama";        
+                $res = QueryDb($sql);
+                while($row = mysql_fetch_row($res))
+                {
+                    $sel = $row[0] == $defrekkas ? "selected" : "";
+                    echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+                }
+                CloseDb();
+                ?>                
+            </select>
         </td>
     </tr>
     <tr>

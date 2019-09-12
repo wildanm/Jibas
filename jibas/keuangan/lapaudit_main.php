@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,8 +31,8 @@ if (getLevel() == 2) { ?>
     </script>
 <?  exit();
 } ?>   
-<frameset border="1" rows="80,*" frameborder="yes">
-	<frame name="header" src="lapaudit_header.php" scrolling="no" noresize="noresize" style="border:1; border-bottom-color:#000000; border-bottom-style:solid" />
+<frameset rows="80,*" frameborder="yes" border="0" framespacing="0" frameborder="0">
+	<frame name="header" src="lapaudit_header.php" scrolling="no" noresize="noresize" style="border:1px; border-bottom-color:#000000; border-bottom-style:solid" />
     <frame name="contentblank" src="lapaudit_blank.php" />
 	<!--<frameset border="1" cols="250,*" frameborder="no" framespacing="yes">
 		

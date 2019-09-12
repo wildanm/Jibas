@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -44,6 +44,10 @@ $sifat = "";
 if (isset($_REQUEST['sifat']))
 	$sifat = $_REQUEST['sifat'];
 
+$kelompok = "";
+if (isset($_REQUEST['kelompok']))
+    $kelompok = $_REQUEST['kelompok'];
+
 $keterangan = "";
 if (isset($_REQUEST['keterangan']))
 	$keterangan = CQ($_REQUEST['keterangan']);	
@@ -59,7 +63,7 @@ if (isset($_REQUEST['Simpan'])) {
 		CloseDb();
 		$ERROR_MSG = "Singkatan $kode sudah digunakan!";		
 	} else {
-		$sql = "INSERT INTO pelajaran SET kode='$kode',departemen='$departemen',nama='$nama',sifat='$sifat',keterangan='$keterangan'";
+		$sql = "INSERT INTO pelajaran SET kode='$kode',departemen='$departemen',nama='$nama',sifat='$sifat',keterangan='$keterangan',idkelompok='$kelompok'";
 		$result = QueryDb($sql);
 		CloseDb();
 	
@@ -156,6 +160,23 @@ function panggil(elem){
 	<td><strong>Sifat</strong></td>
     <td><input type="radio" name="sifat" value=1 checked="checked"/>&nbsp;Wajib&nbsp;
     	<input type="radio" name="sifat" value=0 />&nbsp;Tambahan&nbsp;
+    </td>
+</tr>
+<tr>
+    <td><strong>Kelompok</strong></td>
+    <td>
+        <select name="kelompok" id="kelompok">
+<?      OpenDb();
+        $sql = "SELECT replid, kelompok FROM kelompokpelajaran ORDER BY urutan";
+        $res = QueryDb($sql);
+        while($row = mysql_fetch_row($res))
+        {
+            $kode = $row[0];
+            $kelompok = $row[1];
+            echo "<option value='$kode'>$kelompok</option>";
+        }
+        CloseDb(); ?>
+        </select>
     </td>
 </tr>
 <tr>

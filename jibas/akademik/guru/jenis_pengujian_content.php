@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -86,7 +86,7 @@ function cetak(id) {
 </script>
 </head>
 
-<body topmargin="0" leftmargin="0">
+<body topmargin="5" leftmargin="5">
 
 <table border="0" width="100%" align="center">
 <!-- TABLE CENTER -->
@@ -130,6 +130,7 @@ function cetak(id) {
     </tr>
     </table>
     <br />
+    <font style="font-size: 19px; color: #333;"><?=$nama_pel?></font>
     <table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="center" bordercolor="#000000">
     <!-- TABLE CONTENT -->
     <tr height="30">

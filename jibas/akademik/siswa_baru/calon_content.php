@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -69,8 +69,17 @@ if ($op == "dw8dxn8w9ms8zs22")
 } 
 else if ($op == "xm8r389xemx23xb2378e23") 
 {
+    $sql = "SELECT nopendaftaran FROM calonsiswa WHERE replid = '$_REQUEST[replid]'";
+    $res = QueryDb($sql);
+    $row = mysql_fetch_row($res);
+    $no = $row[0];
+
+    $sql = "DELETE FROM tambahandatacalon WHERE nopendaftaran = '$no'";
+    QueryDb($sql);
+
 	$sql = "DELETE FROM calonsiswa WHERE replid = '$_REQUEST[replid]'"; 	
 	QueryDb($sql);
+
 	$page=0;
 	$hal=0;	?>
     <script>refresh_add();</script> 
@@ -113,6 +122,7 @@ function tambah() {
 	var proses = document.getElementById('proses').value;
 	var kelompok = document.getElementById('kelompok').value;
 	newWindow('calon_add.php?departemen='+departemen+'&proses='+proses+'&kelompok='+kelompok, 'TambahCalonSiswa','825','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+	//document.location.href = 'calon_add.php?departemen='+departemen+'&proses='+proses+'&kelompok='+kelompok;
 }
 
 function edit(replid){
@@ -254,8 +264,8 @@ function change_baris() {
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;
 	
-	$sql = "SELECT nopendaftaran,nama,c.sum1,c.sum2,c.ujian1,c.ujian2,c.ujian3,c.ujian4,c.ujian5,". 
-		   "c.aktif,c.replid, c.replidsiswa,c.nisn FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
+	$sql = "SELECT nopendaftaran,nama,c.sum1,c.sum2,c.ujian1,c.ujian2,c.ujian3,c.ujian4,c.ujian5,c.ujian6,c.ujian7,c.ujian8,c.ujian9,c.ujian10,". 
+		   "c.aktif,c.replid, c.replidsiswa,c.nisn,c.info3,c.pinsiswa FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
 		   "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		   "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan ".
 		   "LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
@@ -286,33 +296,46 @@ function change_baris() {
         </td>
    	</tr>
 	<tr>
-    	<td colspan="2" align="right" valign="bottom">
+    	<td colspan="2" align="left" valign="bottom">
         <br />
-        <a href="#" onClick="refresh()"><img src="../images/ico/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;&nbsp; 		
+		
+		<table border="0" width="88%">
+		<tr><td align="right">
+		<a href="#" onClick="refresh()"><img src="../images/ico/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;&nbsp; 		
         <a href="#" onClick="cetak_excel('<?=$urut?>','<?=$urutan?>')"><img src="../images/ico/excel.png" border="0" onMouseOver="showhint('Cetak dalam format Excel!', this, event, '80px')"/>&nbsp;Cetak Excel</a>&nbsp;&nbsp;
         <a href="JavaScript:cetak('<?=$urut?>','<?=$urutan?>')"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')"/>&nbsp;Cetak</a>&nbsp;&nbsp;
-	<?  if ($kapasitas > $isi) { ?>
-      <a href="JavaScript:tambah()"><img src="../images/ico/tambah.png" border="0" onMouseOver="showhint('Tambah Calon Siswa!', this, event, '50px')"/>&nbsp;Tambah Calon Siswa</a>
-    <?	} ?>
+<?  	if ($kapasitas > $isi) { ?>
+		<a href="JavaScript:tambah()"><img src="../images/ico/tambah.png" border="0" onMouseOver="showhint('Tambah Calon Siswa!', this, event, '50px')"/>&nbsp;Tambah Calon Siswa</a>
+<?		} ?>	
+		</td></tr>	
+		</table>
+        
     	</td>
   	</tr>
 	</table>   	
 	<br />
-	<table border="1" width="100%" id="table" class="tab" align="center" style="border-collapse:collapse" bordercolor="#000000">
+	<table border="1" width="1470" id="table" class="tab" align="center" style="border-collapse:collapse" bordercolor="#000000">
 	<tr class="header" height="30" align="center">		
-		<td width="4%" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">No</td>
-		<td width="11%" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nopendaftaran','<?=$urutan?>')" style="cursor:pointer;">No Daftar <?=change_urut('nopendaftaran', $urut, $urutan)?></td>
-		<td width="11%" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nisn','<?=$urutan?>')" style="cursor:pointer;">NISN <?=change_urut('nisn', $urut, $urutan)?></td>
-		<td width="*" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nama','<?=$urutan?>')" style="cursor:pointer;">Nama <?=change_urut('nama',$urut,$urutan)?></td>
-        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum1','<?=$urutan?>')" style="cursor:pointer;">Sumb#1 <?=change_urut('sum1',$urut,$urutan)?></td>
-        <td width="10%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum2','<?=$urutan?>')" style="cursor:pointer;">Sumb#2 <?=change_urut('sum2',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian1','<?=$urutan?>')" style="cursor:pointer;">Uji#1 <?=change_urut('ujian1',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian2','<?=$urutan?>')" style="cursor:pointer;">Uji#2 <?=change_urut('ujian2',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian3','<?=$urutan?>')" style="cursor:pointer;">Uji#3 <?=change_urut('ujian3',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian4','<?=$urutan?>')" style="cursor:pointer;">Uji#4 <?=change_urut('ujian4',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian5','<?=$urutan?>')" style="cursor:pointer;">Uji#5 <?=change_urut('ujian5',$urut,$urutan)?></td>
-		<td width="5%" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif"  onClick="change_urut('aktif','<?=$urutan?>')" style="cursor:pointer;">Status <?=change_urut('aktif',$urut,$urutan)?></td>
-	    <td width="12%" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">&nbsp;</td>
+		<td width="20" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">No</td>
+		<td width="100" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">&nbsp;</td>
+		<td width="120" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nopendaftaran','<?=$urutan?>')" style="cursor:pointer;">No Daftar <?=change_urut('nopendaftaran', $urut, $urutan)?></td>
+		<td width="60" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">PIN</td>
+		<td width="120" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nisn','<?=$urutan?>')" style="cursor:pointer;">NISN <?=change_urut('nisn', $urut, $urutan)?></td>
+		<td width="180" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('nama','<?=$urutan?>')" style="cursor:pointer;">Nama <?=change_urut('nama',$urut,$urutan)?></td>
+        <td width="100" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum1','<?=$urutan?>')" style="cursor:pointer;">Sumb#1 <?=change_urut('sum1',$urut,$urutan)?></td>
+        <td width="100" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum2','<?=$urutan?>')" style="cursor:pointer;">Sumb#2 <?=change_urut('sum2',$urut,$urutan)?></td>
+        <td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian1','<?=$urutan?>')" style="cursor:pointer;">Uji#1 <?=change_urut('ujian1',$urut,$urutan)?></td>
+        <td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian2','<?=$urutan?>')" style="cursor:pointer;">Uji#2 <?=change_urut('ujian2',$urut,$urutan)?></td>
+        <td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian3','<?=$urutan?>')" style="cursor:pointer;">Uji#3 <?=change_urut('ujian3',$urut,$urutan)?></td>
+        <td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian4','<?=$urutan?>')" style="cursor:pointer;">Uji#4 <?=change_urut('ujian4',$urut,$urutan)?></td>
+        <td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian5','<?=$urutan?>')" style="cursor:pointer;">Uji#5 <?=change_urut('ujian5',$urut,$urutan)?></td>
+		<td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian6','<?=$urutan?>')" style="cursor:pointer;">Uji#6 <?=change_urut('ujian6',$urut,$urutan)?></td>
+		<td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian7','<?=$urutan?>')" style="cursor:pointer;">Uji#7 <?=change_urut('ujian7',$urut,$urutan)?></td>
+		<td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian8','<?=$urutan?>')" style="cursor:pointer;">Uji#8 <?=change_urut('ujian8',$urut,$urutan)?></td>
+		<td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian9','<?=$urutan?>')" style="cursor:pointer;">Uji#9 <?=change_urut('ujian9',$urut,$urutan)?></td>
+		<td width="60" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian10','<?=$urutan?>')" style="cursor:pointer;">Uji#10 <?=change_urut('ujian10',$urut,$urutan)?></td>
+		<td width="50" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif"  onClick="change_urut('aktif','<?=$urutan?>')" style="cursor:pointer;">Status <?=change_urut('aktif',$urut,$urutan)?></td>
+	    <td width="50" rowspan="2" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif">&nbsp;</td>
 	</tr>
 <?		$sqlset = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = $proses";
 		$resset = QueryDb($sqlset);
@@ -332,15 +355,25 @@ function change_baris() {
 			$kdujian3 = $rowset['kdujian3']; //$nmujian3 = $rowset['nmujian3'];
 			$kdujian4 = $rowset['kdujian4']; //$nmujian4 = $rowset['nmujian4'];
 			$kdujian5 = $rowset['kdujian5']; //$nmujian5 = $rowset['nmujian5'];
+			$kdujian6 = $rowset['kdujian6'];
+			$kdujian7 = $rowset['kdujian7'];
+			$kdujian8 = $rowset['kdujian8'];
+			$kdujian9 = $rowset['kdujian9'];
+			$kdujian10 = $rowset['kdujian10'];
 		} ?>
     <tr class="header" height="30" align="center">		
-        <td width="7%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum1','<?=$urutan?>')" style="cursor:pointer;"><?=$kdsum1?> <?=change_urut('sum1',$urut,$urutan)?></td>
-        <td width="7%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum2','<?=$urutan?>')" style="cursor:pointer;"><?=$kdsum2?> <?=change_urut('sum2',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian1','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian1?> <?=change_urut('ujian1',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian2','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian2?> <?=change_urut('ujian2',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian3','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian3?> <?=change_urut('ujian3',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian4','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian4?> <?=change_urut('ujian4',$urut,$urutan)?></td>
-        <td width="5%" onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian5','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian5?> <?=change_urut('ujian5',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum1','<?=$urutan?>')" style="cursor:pointer;"><?=$kdsum1?> <?=change_urut('sum1',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('sum2','<?=$urutan?>')" style="cursor:pointer;"><?=$kdsum2?> <?=change_urut('sum2',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian1','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian1?> <?=change_urut('ujian1',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian2','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian2?> <?=change_urut('ujian2',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian3','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian3?> <?=change_urut('ujian3',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian4','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian4?> <?=change_urut('ujian4',$urut,$urutan)?></td>
+        <td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian5','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian5?> <?=change_urut('ujian5',$urut,$urutan)?></td>
+		<td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian6','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian6?> <?=change_urut('ujian6',$urut,$urutan)?></td>
+		<td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian7','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian7?> <?=change_urut('ujian7',$urut,$urutan)?></td>
+		<td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian8','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian8?> <?=change_urut('ujian8',$urut,$urutan)?></td>
+		<td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian9','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian9?> <?=change_urut('ujian9',$urut,$urutan)?></td>
+		<td onMouseOver="background='../style/formbg2agreen.gif';height=30;" onMouseOut="background='../style/formbg2.gif';height=30;" background="../style/formbg2.gif" onClick="change_urut('ujian10','<?=$urutan?>')" style="cursor:pointer;"><?=$kdujian10?> <?=change_urut('ujian10',$urut,$urutan)?></td>
 	</tr>
         
 <? 		if ($page==0)
@@ -363,8 +396,14 @@ function change_baris() {
 		?>	
 		<tr>        			
 			<td height="25" align="center"><?=$cnt?></td>
-			<td height="25" align="center"><?=$row["nopendaftaran"]?></td>
-			<td height="25" align="center"><?=$row["nisn"]?></td>
+			<td height="25" align="center">
+	            <a href="JavaScript:tampil(<?=$row["replid"] ?>)"><img src="../images/ico/lihat.png" border="0" onMouseOver="showhint('Detail Data Calon Siswa!', this, event, '80px')"/></a>&nbsp;
+	            <a href="JavaScript:cetak_detail(<?=$row["replid"] ?>)"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak Detail Data Calon Siswa!', this, event, '110px')"/></a>&nbsp; 
+	            <a href="JavaScript:edit(<?=$row["replid"] ?>)" ><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Calon Siswa!', this, event, '80px')"/></a>&nbsp;
+			</td>
+			<td height="25" align="left"><?=$row["nopendaftaran"]?></td>
+			<td height="25" align="left"><?=$row["pinsiswa"]?></td>
+			<td height="25" align="left"><?=$row["nisn"]?></td>
   			<td height="25" align="left"><?=$row["nama"]?></td>
             <td height="25" align="right"><?=FormatRupiah($row["sum1"])?></td>
             <td height="25" align="right"><?=FormatRupiah($row["sum2"])?></td>
@@ -373,6 +412,11 @@ function change_baris() {
             <td height="25" align="center"><?=$row["ujian3"]?></td>
             <td height="25" align="center"><?=$row["ujian4"]?></td>
             <td height="25" align="center"><?=$row["ujian5"]?></td>
+			<td height="25" align="center"><?=$row["ujian6"]?></td>
+			<td height="25" align="center"><?=$row["ujian7"]?></td>
+			<td height="25" align="center"><?=$row["ujian8"]?></td>
+			<td height="25" align="center"><?=$row["ujian9"]?></td>
+			<td height="25" align="center"><?=$row["ujian10"]?></td>
             <td height="25" align="center">
 <?		if (SI_USER_LEVEL() == $SI_USER_STAFF) {  
 			if ($row["aktif"] == 1) { ?> 
@@ -393,10 +437,6 @@ function change_baris() {
 		} //end if ?>        	
         	</td>
             <td height="25" align="center">
-			           
-            <a href="JavaScript:tampil(<?=$row["replid"] ?>)"><img src="../images/ico/lihat.png" border="0" onMouseOver="showhint('Detail Data Calon Siswa!', this, event, '80px')"/></a>&nbsp;
-            <a href="JavaScript:cetak_detail(<?=$row["replid"] ?>)"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak Detail Data Calon Siswa!', this, event, '110px')"/></a>&nbsp; 
-            <a href="JavaScript:edit(<?=$row["replid"] ?>)" ><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Calon Siswa!', this, event, '80px')"/></a>&nbsp;
      <? if (SI_USER_LEVEL() != $SI_USER_STAFF) {  ?>            
             <a href="JavaScript:hapus(<?=$row["replid"] ?>)" ><img src="../images/ico/hapus.png" border="0" onMouseOver="showhint('Hapus Data Calon Siswa!', this, event, '80px')"/></a>
 <?		} ?>
@@ -441,31 +481,12 @@ function change_baris() {
         <? } ?>
      	</select>
 	  	dari <?=$total?> halaman
-		
-		<? 
-     // Navigasi halaman berikutnya dan sebelumnya
-        ?>
         </td>
-    	<!--td align="center">
-    <input <?=$disback?> type="button" class="but" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">
-		<?
-		/*for($a=0;$a<$total;$a++){
-			if ($page==$a){
-				echo "<font face='verdana' color='red'><strong>".($a+1)."</strong></font> "; 
-			} else { 
-				echo "<a href='#' onClick=\"change_page('".$a."')\">".($a+1)."</a> "; 
-			}
-				 
-	    }*/
-		?>
-	     <input <?=$disnext?> type="button" class="but" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">
- 		</td-->
         <td width="30%" align="right">Jumlah baris per halaman
       	<select name="varbaris" id="varbaris" onChange="change_baris()">
         <? 	for ($m=10; $m <= 100; $m=$m+10) { ?>
         	<option value="<?=$m ?>" <?=IntIsSelected($varbaris,$m) ?>><?=$m ?></option>
-        <? 	} ?>
-       
+        <? 	} ?>      
       	</select></td>
     </tr>
     </table>	

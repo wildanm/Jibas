@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -34,13 +34,11 @@ require_once('../library/dpupdate.php');
 
 $NTT = new NumberToText();
 
-/**/
 header('Content-Type: application/vnd.ms-excel'); //IE and Opera  
 header('Content-Type: application/w-msword'); // Other browsers  
 header('Content-Disposition: attachment; filename=Nilai_Pelajaran.doc');
 header('Expires: 0');  
 header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-
 
 OpenDb();
 
@@ -535,7 +533,8 @@ mso-break-type:section-break'>
 								"AND info.idsemester='$semester' ".
 								"AND info.idkelas='$kelas' ".
 								"AND sis.nis='$row_siswa1[nis]' ".
-								"GROUP BY pel.nama";
+								"GROUP BY pel.nama";                      
+    
 	//echo $sql_get_pelajaran_komentar;
 	//exit;
 	$result_get_pelajaran_komentar=QueryDb($sql_get_pelajaran_komentar);
@@ -546,7 +545,8 @@ mso-break-type:section-break'>
                           WHERE k.nis='$row_siswa1[nis]'
                             AND i.idpelajaran='$row_get_pelajaran_komentar[replid]'
                             AND i.idsemester = '$semester'
-                            AND i.replid=k.idinfo";
+                            AND i.replid=k.idinfo
+                            AND i.idkelas = '$kelas'";
 	$result_get_komentar=QueryDb($sql_get_komentar);
 	$row_get_komentar=@mysql_fetch_row($result_get_komentar);
 	?>

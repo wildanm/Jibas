@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,36 +21,37 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-function GetDatePart($value, $part) {
+
+function GetDatePart($value, $part)
+{
 	$inf = split("-", $value);
 	$part = strtolower($part);
 	
-	/*
-	echo $value . "<br>";
-	echo count($inf) . "<br>";
-	for ($i = 0; $i < count($inf); $i++) 
-		echo $inf[$i] . "<br>";
-	exit();	*/
-	
-	if (count($inf) == 3) {
+	if (count($inf) == 3)
+	{
 		if ($part == "d")
 			return $inf[2];
 		elseif ($part == "m")
 			return $inf[1];
 		elseif ($part == "y")
 			return $inf[0];
-	} else {
+	}
+	else
+	{
 		return "";
 	}
 }
-function StringIsSelected($value, $comparer) {
+
+function StringIsSelected($value, $comparer)
+{
 	if ($value == $comparer) 
 		return "selected";
 	else
 		return "";
 }
 
-function IntIsSelected($value, $comparer) {
+function IntIsSelected($value, $comparer)
+{
 	$a = (int)$value;
 	$b = (int)$comparer;
 	
@@ -60,21 +61,24 @@ function IntIsSelected($value, $comparer) {
 		return "";
 }
 
-function StringIsChecked($value, $comparer) {
+function StringIsChecked($value, $comparer)
+{
 	if ($value == $comparer) 
 		return "checked";
 	else
 		return "";
 }
 
-function IntIsChecked($value, $comparer) {
+function IntIsChecked($value, $comparer)
+{
 	if ($value == $comparer) 
 		return "checked";
 	else
 		return "";
 }
 
-function RandStr($length) {
+function RandStr($length)
+{
 	$charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	$s = "";
 	while(strlen($s) < $length) 
@@ -82,7 +86,29 @@ function RandStr($length) {
 	return $s;		
 }
 
-function NamaBulan($bln) {
+function NamaHari($hari)
+{
+	switch($hari)
+	{
+		case 0:
+			return "Senin";
+		case 1:
+			return "Selasa";
+		case 2:
+			return "Rabu";
+		case 3:
+			return "Kamis";
+		case 4:
+			return "Jum'at";
+		case 5:
+			return "Sabtu";
+		default:
+			return "Minggu";
+	}
+}
+
+function NamaBulan($bln)
+{
 	if ($bln == 1)
 		return "Januari";
 	elseif ($bln == 2)
@@ -108,7 +134,9 @@ function NamaBulan($bln) {
 	elseif ($bln == 12)
 		return "Desember";		
 }
-function NamaBulanPdk($bln) {
+
+function NamaBulanPdk($bln)
+{
 	if ($bln == 1)
 		return "Jan";
 	elseif ($bln == 2)
@@ -135,7 +163,8 @@ function NamaBulanPdk($bln) {
 		return "Des";		
 }
 
-function NamaBulanH($Bln) {
+function NamaBulanH($Bln)
+{
     if ($Bln = 1) 
    		return "MUHARRAM";
     elseif ($Bln = 2)
@@ -162,7 +191,8 @@ function NamaBulanH($Bln) {
 		return "DZULHIJJAH";
 } 
 	
-function nilaibulan($bln) {
+function nilaibulan($bln)
+{
 	if ($bln == "Januari")
 		return '01';
 	elseif ($bln == "Februari")
@@ -189,9 +219,11 @@ function nilaibulan($bln) {
 		return '12';		
 }
 
-function rpad($string, $padchar, $length) {
+function rpad($string, $padchar, $length)
+{
 	$result = trim($string);
-	if (strlen($result) < $length) {
+	if (strlen($result) < $length)
+	{
 		$nzero = $length - strlen($result);
 		$zero = "";
 		for($i = 0; $i < $nzero; $i++)
@@ -201,27 +233,35 @@ function rpad($string, $padchar, $length) {
 	return $result;
 }
 
-function MySqlDateFormat($date) {
+function MySqlDateFormat($date)
+{
 	list($d, $m, $y) = split('[/.-]', $date); 
 	return "$y-$m-$d";
 }
 
-function RegularDateFormat($mysqldate) {
+function RegularDateFormat($mysqldate)
+{
 	list($y, $m, $d) = split('[/.-]', $mysqldate); 
 	return "$d-$m-$y";
 }
 
-function LongDateFormat($mysqldate) {
+function LongDateFormat($mysqldate)
+{
 	list($y, $m, $d) = split('[/.-]', $mysqldate); 
 	return "$d ". NamaBulan($m) ." $y";
 }
-function ShortDateFormat($mysqldate) {
+
+function ShortDateFormat($mysqldate)
+{
 	list($y, $m, $d) = split('[/.-]', $mysqldate); 
 	return "$d ". NamaBulanPdk($m) ." $y";
 }
-function change_urut($a, $b, $c) {	
+
+function change_urut($a, $b, $c)
+{
 	$s = "";
-	if ($a == $b) {
+	if ($a == $b)
+	{
 		if ($c == "ASC") 
 			$s = "<img src ='images/ico/desc.png'>";
 		else 
@@ -229,114 +269,141 @@ function change_urut($a, $b, $c) {
 	} 	
 	return $s;
 }
-function FormatMysqlDateBaru($f_x){
- $cek = strstr($f_x,"-");
- if( strlen($cek) == 0)
-  {
-   $f_y1= explode(' ', $f_x);
-   $f_y =  $f_y1[1];
-   $bulan = nilaibulan($f_y );
-   $lengkap = $f_y1[2]."-".$bulan."-".$f_y1[0] ;
-   return $lengkap ;
-  }else  {
-  $lengkap = MySqlDateFormat($f_x);
-     return $lengkap ;
 
-  }
+function FormatMysqlDateBaru($f_x)
+{
+	$cek = strstr($f_x,"-");
+	if( strlen($cek) == 0)
+	{
+		$f_y1= explode(' ', $f_x);
+		$f_y =  $f_y1[1];
+		$bulan = nilaibulan($f_y );
+		$lengkap = $f_y1[2]."-".$bulan."-".$f_y1[0] ;
+		return $lengkap ;
+	}
+	else
+	{
+		$lengkap = MySqlDateFormat($f_x);
+		return $lengkap ;
+	}
 }
+
 function tanggal($tanggal)
 {
- $las_tanggal=date("t");
-if($tanggal=="")
-{
-   $tanggal=date("d");
- }
+	$las_tanggal=date("t");
+	if($tanggal=="")
+	{
+		$tanggal=date("d");
+	}
+	
     for($i=1;$i<=$las_tanggal; $i++)
-  {
-    if($i==$tanggal)
 	{
-	  $sel="selected";
-	
-    }else{ 
-	  $sel="" ;
+		if($i==$tanggal)
+		{
+			$sel="selected";
+		}
+		else
+		{ 
+			$sel="" ;
+		}
+		echo "<option value='$i' $sel >$i </option>";
 	}
-   
-    echo "<option value='$i' $sel >$i </option>";
-  }
-  
 }
-function bulan($bulan)
- { 
- if($bulan==""){
-  $bulan=date("m");
- }
-  $bulan_a= array("01"=>"januari","02"=>"Februari","03"=>"maret","04"=>"april",
-  "05"=>"mei","06"=>"juni","07"=>"juli","08"=>"Agustus","09"=>"september","10"=>"oktober","11"=>"November","11"=>"desember");
 
-    foreach ($bulan_a as $key => $val) {
- 
-    if($key=="$bulan")
+function bulan($bulan)
+{ 
+	if($bulan=="")
 	{
-	  $sel="selected";
+		$bulan=date("m");
+	}
 	
-    }else{ 
-	  $sel="" ;
-	}
+	$bulan_a= array("01"=>"januari","02"=>"Februari","03"=>"maret","04"=>"april",
+				    "05"=>"mei","06"=>"juni","07"=>"juli","08"=>"Agustus","09"=>"september","10"=>"oktober","11"=>"November","11"=>"desember");
+
+    foreach ($bulan_a as $key => $val)
+	{
+		if($key=="$bulan")
+		{
+			$sel="selected";
+		}
+		else
+		{ 
+			$sel="" ;
+		}
    
-    echo "<option value='$key' $sel >$val </option>";
-	 
-   }
- }
- function tahun($tahun)
- {
-   if($tahun=="")
-    {
-    $tahun=date("Y");
-	 }
-   for($i=2005; $i<2030; $i++)
-    {
-	  if($i==$tahun)
-	  {
-	    $sel="selected";
-	    }else{ 
-	  $sel="" ;
-	  }
-       echo "<option value='$i' $sel >$i </option>";
+		echo "<option value='$key' $sel >$val </option>"; 
 	}
-  }
-  function resize_foto($file,$name) {
+}
+
+function tahun($tahun)
+{
+	if($tahun=="")
+    {
+		$tahun=date("Y");
+	}
+	
+	for($i=2005; $i<2030; $i++)
+    {
+		if($i==$tahun)
+		{
+			$sel="selected";
+	    }
+		else
+		{ 
+			$sel="" ;
+		}
+		echo "<option value='$i' $sel >$i </option>";
+	}
+}
+
+function resize_foto($file,$name)
+{
 	$src = imagecreatefromjpeg($file); 
 
 	$filename = $name;
 	list($width,$height)=getimagesize($file);
-	if ($width<$height){
+	if ($width<$height)
+	{
 		$newheight=170;
 		$newwidth=113;
-	} else if ($width>$height){
-		$newwidth=170;
-	$newheight=113;
 	}
+	else if ($width>$height)
+	{
+		$newwidth=170;
+		$newheight=113;
+	}
+	
 	$tmp=imagecreatetruecolor($newwidth,$newheight);
 	imagecopyresampled($tmp,$src,0,0,0,0,$newwidth,$newheight,$width,$height);
 	imagejpeg($tmp,$filename,100);
 	imagedestroy($src);
 	imagedestroy($tmp);
 }
-function LowRomeNumber($int){
-$r=array(i,ii,iii,iv,v,vi,vii,viii,ix,x,xi,xii,xiii,xiv,xv,xvi,xvii,xviii,xix,xx,xxi,xxii,xxiii,xxiv,xxv,xxvi,xxvii,xxviii,xxix,xxx);
-$int=(int)$int;
-	if ($int>0 && $int<=30){
+
+function LowRomeNumber($int)
+{
+	$r=array(i,ii,iii,iv,v,vi,vii,viii,ix,x,xi,xii,xiii,xiv,xv,xvi,xvii,xviii,xix,xx,xxi,xxii,xxiii,xxiv,xxv,xxvi,xxvii,xxviii,xxix,xxx);
+	$int=(int)$int;
+	if ($int>0 && $int<=30)
+	{
 		return $r[$int-1];
-	} else {
+	}
+	else
+	{
 		return "Out Of Range";
 	}
 }
-function Number2Alphabet($int){
-$r=array(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
-$int=(int)$int;
-	if ($int>0 && $int<=30){
+
+function Number2Alphabet($int)
+{
+	$r=array(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z);
+	$int=(int)$int;
+	if ($int>0 && $int<=30)
+	{
 		return $r[$int-1];
-	} else {
+	}
+	else
+	{
 		return "Out Of Range";
 	}
 }
@@ -356,10 +423,8 @@ function format_tgl($tanggal)
 	return $hasil;
 }
 
-function CQ($string){
-	$string = trim($string);
-	$string = str_replace("'","`",$string);
-	$string = str_replace('"','`',$string);
+function CQ($string)
+{
 	return $string;
 }
 

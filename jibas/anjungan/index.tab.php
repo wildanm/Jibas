@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -25,11 +25,12 @@
     <ul>
         <li><a href="#vtabs-content-a"><img src="images/home.png" border="0"></a></li>
         <li><a href="#vtabs-content-b"><img src="images/news.png" border="0"></a></li>
+        <li><a href="#vtabs-content-j"><img src="images/mading.png" border="0"></a></li>
         <li><a href="#vtabs-content-c"><img src="images/infosiswa.png" border="0"></a></li>
-        <li><a href="#vtabs-content-d"><img src="images/kalenderakademik.png" border="0"></a></li>
-        <li><a href="#vtabs-content-e"><img src="images/jadwalguru.png" border="0"></a></li>
-        <li><a href="#vtabs-content-f"><img src="images/jadwalkelas.png" border="0"></a></li>
+        <li><a href="#vtabs-content-i"><img src="images/jadkal.png" border="0"></a></li>
+        <li><a href="#vtabs-content-k"><img src="images/pustaka.png" border="0"></a></li>
         <li><a href="#vtabs-content-g"><img src="images/pegawai.png" border="0"></a></li>
+        <li><a href="#vtabs-content-h"><img src="images/psb.png" border="0"></a></li>
     </ul>
 </div>
 <div>
@@ -44,57 +45,85 @@
         </div>
         <table border="0" cellpadding="0" cellspacing="0" width="100%">
         <tr><td align="left">
-            <a href="#" style="color:blue; font-weight:normal; text-decoration:underline;" onclick="b_Edit()">Edit</a>
+            <a href="#" style="color:blue; font-weight:normal; text-decoration:underline;" onclick="b_Edit()">Edit</a>&nbsp;&nbsp;
+            <a href="#" style="color:blue; font-weight:normal; text-decoration:underline;" onclick="b_ChangeBackground()">Atur gambar latar</a>&nbsp;&nbsp;
         </td></tr>           
         </table>
     </div>
     <div id="#vtabs-content-b">
-        <table border="0" cellpadding="2" cellspacing="2" width="100%">
-        <tr><td align="right">
-            <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">BERITA SEKOLAH</font>
-        </td></tr>           
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="left" width="75%">
+<?              require_once("infosekolah/infosekolah.menu.php"); ?>
+            </td>
+            <td align="right" width="25%">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">INFO SEKOLAH</font>
+            </td>
+        </tr>
         </table>
-        <div id="content-pane-b" style="overflow: auto; background-color: transparent;">
+        <div id="content-pane-b" style="position: relative; overflow: auto; background-color: transparent;">
+            &nbsp;
+        </div>
+    </div>
+    <div id="#vtabs-content-j">
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td align="left" width="70%">
+<?              require_once("mading/mading.menu.php"); ?>
+            </td>
+            <td align="right" width="30%">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">MADING SISWA</font>
+            </td>
+        </tr>           
+        </table>
+        <div id="content-pane-j" style="position: relative; overflow: auto; background-color: transparent;">
             &nbsp;
         </div>
     </div>
     <div id="#vtabs-content-c">
         <table border="0" cellpadding="2" cellspacing="2" width="100%">
-        <tr><td align="right">
-            <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">INFORMASI SISWA</font>
-        </td></tr>           
+        <tr>
+            <td align="right">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">INFORMASI SISWA</font>
+            </td></tr>           
         </table>
         <div id="content-pane-c" style="overflow: auto; background-color: transparent">
             &nbsp;
         </div>
-    </div>
-    <div id="#vtabs-content-d">
-        <table border="0" cellpadding="2" cellspacing="2" width="100%">
-        <tr><td align="right">
-            <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">KALENDER AKADEMIK</font>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr><td align="left">
+            <a href="#" style="color:blue; font-weight:normal; text-decoration:underline;"
+               onclick="is_Pengaturan()">Pengaturan</a>&nbsp;&nbsp;
         </td></tr>           
         </table>
-        <div id="content-pane-d" style="overflow: auto; background-color: transparent">
+    </div>
+    <div id="#vtabs-content-i">
+        <table border="0" cellpadding="2" cellspacing="2" width="100%">
+        <tr>
+            <td align="left" width="50%">
+<?              require_once("jadkal/jadkal.menu.php"); ?>
+            </td>
+            <td align="right" width="50%">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">JADWAL & KALENDER AKADEMIK</font>
+            </td>
+        </tr>           
+        </table>
+        <div id="content-pane-i" style="overflow: auto; background-color: transparent">
             &nbsp;
         </div>
     </div>
-    <div id="#vtabs-content-e">
+    <div id="#vtabs-content-k">
         <table border="0" cellpadding="2" cellspacing="2" width="100%">
-        <tr><td align="right">
-            <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">JADWAL GURU</font>
-        </td></tr>           
+        <tr>
+            <td align="left" width="50%">
+<?              require_once("pustaka/pustaka.menu.php"); ?>
+            </td>
+            <td align="right" width="50%">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">PERPUSTAKAAN</font>
+            </td>
+        </tr>           
         </table>
-        <div id="content-pane-e" style="overflow: auto; background-color: transparent">
-            &nbsp;
-        </div>
-    </div>
-    <div id="#vtabs-content-f">
-        <table border="0" cellpadding="2" cellspacing="2" width="100%">
-        <tr><td align="right">
-            <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">JADWAL KELAS</font>
-        </td></tr>           
-        </table>
-        <div id="content-pane-f" style="overflow: auto; background-color: transparent">
+        <div id="content-pane-k" style="overflow: auto; background-color: transparent">
             &nbsp;
         </div>
     </div>
@@ -107,6 +136,26 @@
         <div id="content-pane-g" style="overflow: auto; background-color: transparent">
             &nbsp;
         </div>
+    </div>
+    <div id="#vtabs-content-h">
+        <table border="0" cellpadding="2" cellspacing="2" width="100%">
+        <tr>
+            <td align="left" width="80%">
+<?              require_once("psb/psb.menu.php"); ?>
+            </td>
+            <td align="right" width="20%">
+                <font style="font-family: Tahoma; font-size: 22px; color: #557d1d">PSB</font>
+            </td>
+        </tr>           
+        </table>
+        <div id="content-pane-h" style="overflow: auto; background-color: transparent">
+            &nbsp;
+        </div>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%">
+        <tr><td align="left">
+            <a href="#" style="color:blue; font-weight:normal; text-decoration:underline;" onclick="psb_Konfigurasi()">Konfigurasi</a>
+        </td></tr>           
+        </table>
     </div>	
 </div>
 </div>

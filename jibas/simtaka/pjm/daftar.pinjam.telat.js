@@ -1,11 +1,22 @@
-function kembalikan(kodepustaka){
+function kembalikan(kodepustaka)
+{
 	document.location.href = "../kbl/kembali.php?op=ViewPeminjaman&kodepustaka="+kodepustaka;
 }
-function chgKrit(){
+
+function perpanjang(kodepustaka)
+{
+	var addr = "pinjam.panjang.php?kodepustaka="+kodepustaka;
+	newWindow(addr, 'PerpanjangPinjam','450','250','resizable=1,scrollbars=1,status=0,toolbar=0')	
+}
+
+function chgKrit()
+{
 	var kriteria = document.getElementById('kriteria').value;
 		document.location.href = "daftar.pinjam.telat.php?kriteria="+kriteria;
 }
-function getFresh(){
+
+function getFresh()
+{
 	var kriteria = document.getElementById('kriteria').value;
 	//alert (kriteria);
 	if (kriteria=='nip' || kriteria=='nis')
@@ -14,16 +25,22 @@ function getFresh(){
 		var noanggota = document.getElementById('noanggota').value;
 		var nama = document.getElementById('nama').value;
 		document.location.href = "daftar.pinjam.telat.php?kriteria="+kriteria+"&statuspeminjam="+statuspeminjam+"&noanggota="+noanggota+"&nama="+nama;
-	} else if (kriteria=='tglkembali' || kriteria=='tglpinjam'){
+	}
+	else if (kriteria=='tglkembali' || kriteria=='tglpinjam')
+	{
 		var tglAwal = document.getElementById('tglAwal').value;
 		var tglAkhir = document.getElementById('tglAkhir').value;
 		document.location.href = "daftar.pinjam.telat.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
-	} else {
+	}
+	else
+	{
 		chgKrit();
 	}
 	
 }
-function cetak(){
+
+function cetak()
+{
 	var kriteria = document.getElementById('kriteria').value;
 	var addr;
 	if (kriteria=='nip' || kriteria=='nis')
@@ -31,17 +48,23 @@ function cetak(){
 		var statuspeminjam = document.getElementById('statuspeminjam').value;
 		var noanggota = document.getElementById('noanggota').value;
 		var nama = document.getElementById('nama').value;
-		addr = "daftar.pinjam.cetak.php?kriteria="+kriteria+"&statuspeminjam="+statuspeminjam+"&noanggota="+noanggota+"&nama="+nama;
-	} else if (kriteria=='tglkembali' || kriteria=='tglpinjam'){
+		addr = "daftar.pinjam.telat.cetak.php?kriteria="+kriteria+"&statuspeminjam="+statuspeminjam+"&noanggota="+noanggota+"&nama="+nama;
+	}
+	else if (kriteria=='tglkembali' || kriteria=='tglpinjam')
+	{
 		var tglAwal = document.getElementById('tglAwal').value;
 		var tglAkhir = document.getElementById('tglAkhir').value;
-		addr = "daftar.pinjam.cetak.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
-	} else {
-		addr = 'daftar.pinjam.cetak.php';
+		addr = "daftar.pinjam.telat.cetak.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
+	}
+	else
+	{
+		addr = 'daftar.pinjam.telat.cetak.php';
 	}
 	newWindow(addr, 'CetakDaftarPeminjaman','790','650','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function cari(){
+
+function cari()
+{
 	var status = document.getElementById('statuspeminjam').value;
 	var addr;
 	if (status=='0')
@@ -59,15 +82,21 @@ function cari(){
 		
 		newWindow(addr, 'CariPeminjam','523','425','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function acceptPegawai(noanggota,nama,flag){
+
+function acceptPegawai(noanggota,nama,flag)
+{
 	var kriteria = document.getElementById('kriteria').value;
 	document.location.href="../pjm/daftar.pinjam.telat.php?kriteria="+kriteria+"&noanggota="+noanggota+"&nama="+nama;
 }
-function TakeDate(elementid){
+
+function TakeDate(elementid)
+{
 	var addr = "../lib/cals.php?elementid="+elementid;
 	newWindow(addr, 'CariTanggal','338','216','resizable=0,scrollbars=0,status=0,toolbar=0')
 }
-function AcceptDate(date,elementid){
+
+function AcceptDate(date,elementid)
+{
 	document.getElementById(elementid).value=date;
 	var kriteria = document.getElementById('kriteria').value;
 	var tglAwal = document.getElementById('tglAwal').value;
@@ -75,3 +104,7 @@ function AcceptDate(date,elementid){
 	document.location.href="../pjm/daftar.pinjam.telat.php?kriteria="+kriteria+"&tglAwal="+tglAwal+"&tglAkhir="+tglAkhir;
 }
 
+function RefreshPage()
+{
+	location.reload();
+}

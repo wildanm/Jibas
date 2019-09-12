@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -29,48 +29,65 @@ $SI_USER_MANAGER = 1;
 $SI_USER_STAFF = 2;
 $STAFF_DEPT = $_SESSION['departemen'];
 
-function SI_USER_NAME() {
+function SI_USER_NAME()
+{
 	return $_SESSION['nama'];
 }
-function SI_USER_THEME() {
+
+function SI_USER_THEME()
+{
 	return $_SESSION['theme'];
 }
 
-function SI_USER_NICKNAME() {
+function SI_USER_NICKNAME()
+{
 	return $_SESSION['panggilan'];
 }
 
-function SI_USER_ID() {
+function SI_USER_ID()
+{
 	return $_SESSION['login'];
 }
 
-function SI_USER_LEVEL() {
-	switch ($_SESSION['tingkat']){
-	case 0:
+function SI_USER_LEVEL()
+{
+	switch ($_SESSION['tingkat'])
+	{
+		case 0:
 		{
-	global $SI_USER_LANDLORD;
-	return $SI_USER_LANDLORD;
-	break;
+			global $SI_USER_LANDLORD;
+			return $SI_USER_LANDLORD;
+			break;
 		}
 		case 1:
 		{
-	global $SI_USER_MANAGER;
-	return $SI_USER_MANAGER;
-	break;
+			global $SI_USER_MANAGER;
+			return $SI_USER_MANAGER;
+			break;
 		}
 		case 2:
 		{
-	global $SI_USER_STAFF;
-	return $SI_USER_STAFF;
-	break;
+			global $SI_USER_STAFF;
+			return $SI_USER_STAFF;
+			break;
 		}
 	}
 }
-function SI_USER_ACCESS() {
-	if ($_SESSION['tingkat']==2){
+
+function SI_USER_ACCESS()
+{
+	if ($_SESSION['tingkat'] == 2)
+	{
 		return $_SESSION['departemen'];
-	} else {
+	}
+	else
+	{
 		return "ALL";
 	}
+}
+
+function SI_USER_GROUP()
+{
+	return $_SESSION['bagian'];
 }
 ?>

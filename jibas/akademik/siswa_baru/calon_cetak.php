@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -82,20 +82,25 @@ $keterangan = $row['keterangan'];
     </tr>
 	</table>
 <br />
-<table border="1" width="100%" id="table" class="tab" bordercolor="#000000">
+<table border="1" width="1020" id="table" class="tab" bordercolor="#000000">
 <tr height="30">		
-	<td align="center" class="header" width="4%" rowspan="2">No</td>
-	<td align="center" class="header" width="11%" rowspan="2">No Pendaftaran</td>
-	<td align="center" class="header" width="5%" rowspan="2">NISN</td>
-	<td align="center" class="header" width="*" rowspan="2">Nama</td>
-    <td align="center" class="header" width="12%">Sumb#1</td>
-    <td align="center" class="header" width="12%">Sumb#22</td>
-    <td align="center" class="header" width="5%">Uji#1</td>
-	<td align="center" class="header" width="5%">Uji#2</td>
-    <td align="center" class="header" width="5%">Uji#3</td>
-    <td align="center" class="header" width="5%">Uji#4</td>
-    <td align="center" class="header" width="5%">Uji#5</td>
-    <td align="center" class="header" width="10%" rowspan="2">Status</td>   
+	<td align="center" class="header" width="20" rowspan="2">No</td>
+	<td align="center" class="header" width="100" rowspan="2">No Pendaftaran</td>
+	<td align="center" class="header" width="100" rowspan="2">NISN</td>
+	<td align="center" class="header" width="160" rowspan="2">Nama</td>
+    <td align="center" class="header" width="90">Sumb#1</td>
+    <td align="center" class="header" width="90">Sumb#22</td>
+    <td align="center" class="header" width="45">Uji#1</td>
+	<td align="center" class="header" width="45">Uji#2</td>
+    <td align="center" class="header" width="45">Uji#3</td>
+    <td align="center" class="header" width="45">Uji#4</td>
+    <td align="center" class="header" width="45">Uji#5</td>
+	<td align="center" class="header" width="45">Uji#6</td>
+	<td align="center" class="header" width="45">Uji#7</td>
+	<td align="center" class="header" width="45">Uji#8</td>
+	<td align="center" class="header" width="45">Uji#9</td>
+	<td align="center" class="header" width="45">Uji#10</td>
+    <td align="center" class="header" width="120" rowspan="2">Status</td>   
 </tr>
 <?		
 	$sqlset = "SELECT COUNT(replid) FROM settingpsb WHERE idproses = '$proses'";
@@ -116,6 +121,11 @@ $keterangan = $row['keterangan'];
 		$kdujian3 = $rowset['kdujian3']; //$nmujian3 = $rowset['nmujian3'];
 		$kdujian4 = $rowset['kdujian4']; //$nmujian4 = $rowset['nmujian4'];
 		$kdujian5 = $rowset['kdujian5']; //$nmujian5 = $rowset['nmujian5'];
+		$kdujian6 = $rowset['kdujian6'];
+		$kdujian7 = $rowset['kdujian7'];
+		$kdujian8 = $rowset['kdujian8'];
+		$kdujian9 = $rowset['kdujian9'];
+		$kdujian10 = $rowset['kdujian10'];
 	} ?>
 <tr height="30">		
     <td align="center" class="header"><?=$kdsum1?></td>
@@ -125,8 +135,13 @@ $keterangan = $row['keterangan'];
     <td align="center" class="header"><?=$kdujian3?></td>
     <td align="center" class="header"><?=$kdujian4?></td>
     <td align="center" class="header"><?=$kdujian5?></td>
+	<td align="center" class="header"><?=$kdujian6?></td>
+	<td align="center" class="header"><?=$kdujian7?></td>
+	<td align="center" class="header"><?=$kdujian8?></td>
+	<td align="center" class="header"><?=$kdujian9?></td>
+	<td align="center" class="header"><?=$kdujian10?></td>
 </tr>    
-<? 	$sql = "SELECT nopendaftaran,nama,asalsekolah,sum1,sum2,ujian1,ujian2,ujian3,ujian4,ujian5,". 
+<? 	$sql = "SELECT nopendaftaran,nama,asalsekolah,sum1,sum2,ujian1,ujian2,ujian3,ujian4,ujian5,ujian6,ujian7,ujian8,ujian9,ujian10,". 
 		   "c.aktif,c.replid,replidsiswa,c.nisn FROM calonsiswa c, kelompokcalonsiswa k, prosespenerimaansiswa p ".
 		   "WHERE c.idproses = '$proses' AND c.idkelompok = '$kelompok' AND k.idproses = p.replid ".
 		   "AND c.idproses = p.replid AND c.idkelompok = k.replid ORDER BY $urut $urutan ";
@@ -157,6 +172,11 @@ $keterangan = $row['keterangan'];
         <td height="25" align="center"><?=$row["ujian3"]?></td>
         <td height="25" align="center"><?=$row["ujian4"]?></td>
         <td height="25" align="center"><?=$row["ujian5"]?></td>
+		<td height="25" align="center"><?=$row["ujian6"]?></td>
+		<td height="25" align="center"><?=$row["ujian7"]?></td>
+		<td height="25" align="center"><?=$row["ujian8"]?></td>
+		<td height="25" align="center"><?=$row["ujian9"]?></td>
+		<td height="25" align="center"><?=$row["ujian10"]?></td>
         <td height="25" align="center">
 		<?	if ($row["aktif"] == 1) 
            		echo 'Aktif'.$siswa; 

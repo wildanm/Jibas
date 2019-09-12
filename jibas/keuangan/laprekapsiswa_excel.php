@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -213,6 +213,22 @@ $width = 1180 + $n_arrpen * 600;
 			$bcicilan = $row2[3];
 			$diskon = $row2[4];
 			$sisa = $besar - $jumlah;
+			if (0 == mysql_num_rows($res2))
+			{
+				$sql = "SELECT b.besar, b.cicilan
+					 	  FROM besarjtt b
+						 WHERE b.idpenerimaan = '$idpenerimaan' AND b.nis = '$nis' AND b.info2 = '$idtahunbuku'";
+				$res2 = QueryDb($sql);
+				if (0 != mysql_num_rows($res2))
+				{
+					$row2 = mysql_fetch_row($res2);
+					$besar = $row2[0];
+					$jumlah = 0;
+					$bcicilan = $row2[1];
+					$diskon = 0;
+					$sisa = $besar;		 
+				}
+			}
 			
 			$sql = "SELECT DATE_FORMAT(p.tanggal, '%d-%b-%Y') AS tanggal, p.jumlah, p.keterangan
 				      FROM besarjtt b, penerimaanjtt p 
@@ -237,7 +253,14 @@ $width = 1180 + $n_arrpen * 600;
 						
 			if ($sisa == 0)
 			{
-				echo  "<td style='background-color:$color'>&nbsp;</td><td style='background-color:$color'>&nbsp;</td><td style='background-color:$color'>&nbsp;</td><td style='background-color:$color'>&nbsp;</td><td style='background-color:$color2'>&nbsp;</td><td style='background-color:$color2'>&nbsp;</td><td style='background-color:$color2'>&nbsp;</td>";
+				echo  "<td style='background-color:$color'>&nbsp;</td>
+					   <td style='background-color:$color'>&nbsp;</td>
+					   <td style='background-color:$color'>&nbsp;</td>
+					   <td style='background-color:$color'>&nbsp;</td>
+					   <td style='background-color:$color'>&nbsp;</td>
+					   <td style='background-color:$color2'>&nbsp;</td>
+					   <td style='background-color:$color2'>&nbsp;</td>
+					   <td style='background-color:$color2'>&nbsp;</td>";
 			}
 			else
 			{	?>
@@ -258,7 +281,7 @@ $width = 1180 + $n_arrpen * 600;
 <?		for($i = 0; $i < $n_arrpen; $i++) 
 			for($j = 0; $j < 8; $j++)
 				if ($j < 5)
-					echo  "<td align='right' style='background-color:#3CF'>" . $arrtotal[$i * 7 + $j] . "</td>";	
+					echo  "<td align='right' style='background-color:#3CF'>" . $arrtotal[$i * 8 + $j] . "</td>";	
 				else
 					echo  "<td style='background-color:#3CF'>&nbsp</td>"; ?>
     </tr>

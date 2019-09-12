@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -38,27 +38,27 @@ class CPustakaEdit
 			}
 			else
 			{
-				$sql = "UPDATE perpustakaan SET nama='".CQ($_REQUEST['nama'])."', keterangan='".CQ($_REQUEST['keterangan'])."' WHERE replid='$_REQUEST[replid]'";
-				$result = QueryDb($sql);
-				
-				$sql = "UPDATE jbsumum.identitas SET perpustakaan='$_REQUEST[replid]' WHERE departemen='$_REQUEST[dep]'";
-				$result = QueryDb($sql);
+				$departemen = ($_REQUEST['dep'] == "--ALL--") ? "NULL" : "'" . $_REQUEST['dep'] . "'";
+				$sql = "UPDATE perpustakaan
+						   SET nama='" . $_REQUEST['nama'] . "',
+						       keterangan='" . $_REQUEST['keterangan'] . "',
+							   departemen=$departemen
+					     WHERE replid = '$_REQUEST[replid]'";
+				QueryDb($sql);
 
 				$this->success();
 			}
 		}
 		else
 		{
-			$sql = "SELECT * FROM perpustakaan WHERE replid='$_REQUEST[id]'";
+			$sql = "SELECT replid, nama, keterangan, IF(departemen IS NULL, '', departemen) AS departemen
+					  FROM perpustakaan
+					 WHERE replid = '$_REQUEST[id]'";
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_array($result);
-			$this->replid = $_REQUEST[id];
+			$this->replid = $row[replid];
 			$this->nama = $row[nama];
 			$this->keterangan = $row[keterangan];
-
-			$sql = "SELECT departemen FROM jbsumum.identitas WHERE perpustakaan='$this->replid'";
-			$result = QueryDb($sql);
-			$row = @mysql_fetch_array($result);
 			$this->dep = $row[departemen];
 		}
 	}
@@ -94,12 +94,13 @@ class CPustakaEdit
          <td>&nbsp;<strong>Departemen</strong></td>
          <td>
             <select id="dep" name="dep" class="cmbfrm2">
+				<option value='--ALL--' <?= StringIsSelected($this->dep, "") ?> >(Semua Departemen)</option>	
 <?				$sql = "SELECT departemen FROM jbsakad.departemen ORDER BY urutan ASC";
 				$res = QueryDb($sql);
 				while ($row = @mysql_fetch_row($res))
 				{
 					echo "<option value='".$row[0]."' ";
-					if ($this->dep==$row[0])
+					if ($this->dep == $row[0])
 						echo "Selected";	
 					echo ">".$row[0]."</option>";
 				}	?>

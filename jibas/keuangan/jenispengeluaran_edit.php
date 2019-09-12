@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -88,6 +88,14 @@ $sql = "SELECT nama FROM rekakun WHERE kode='$rekdebet'";
 $result = QueryDb($sql);
 $row = mysql_fetch_row($result);
 $namarekdebet = $row[0];
+
+// ========================================================
+// CHECK WHETHER THIS DATA HAS BEEN USED?
+$idIsUsed = false;
+
+$sql = "SELECT EXISTS(SELECT replid FROM jbsfina.pengeluaran WHERE idpengeluaran = '$id' LIMIT 1)";
+$idIsUsed = (1 == (int)FetchSingle($sql));
+// ========================================================
 
 CloseDb();
 
@@ -187,9 +195,12 @@ function panggil(elem){
         <td align="left"><strong>Rek. Kas</strong></td>
         <td align="left">
 			<input type="text" name="rekkredit" id="rekkredit" value="<?=$rekkredit . " " . $namarekkredit ?>"
-				readonly style="background-color:#CCCC99" onClick="cari_rek(1,'HARTA')" maxlength="100" size="30"
-				onKeyPress="cari_rek(1,'HARTA');return focusNext('rekdebet',event);" onFocus="panggil('rekkredit')">
-			&nbsp;<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+				readonly style="background-color:#CCCC99" maxlength="100" size="30" onFocus="panggil('rekkredit')">
+<?			if (!$idIsUsed) { ?>						
+				<a href="#" onClick="JavaScript:cari_rek(1,'HARTA')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>					
 			<input type="hidden" name="norekkredit" id="norekkredit"  value="<?=$rekkredit ?>" />
 		</td>
     </tr>
@@ -197,9 +208,12 @@ function panggil(elem){
         <td align="left"><strong>Rek. Beban</strong></td>
         <td align="left">
 			<input type="text" name="rekdebet" id="rekdebet" value="<?=$rekdebet  . " " . $namarekdebet ?>"
-				readonly style="background-color:#CCCC99" onClick="cari_rek(2,'BIAYA')" maxlength="100" size="30"
-				onKeyPress="cari_rek(2,'BIAYA');return focusNext('keterangan',event);" onFocus="panggil('rekdebet')">
-			&nbsp;<a href="#" onClick="JavaScript:cari_rek(2,'BIAYA')"><img src="images/ico/lihat.png" border="0" /></a>
+				readonly style="background-color:#CCCC99" maxlength="100" size="30"	onFocus="panggil('rekdebet')">
+<?			if (!$idIsUsed) { ?>						
+				<a href="#" onClick="JavaScript:cari_rek(2,'BIAYA')"><img src="images/ico/lihat.png" border="0" /></a>
+<?			} else {
+				echo "<font style='color:blue'>*</font>";
+			} ?>					
 			<input type="hidden" name="norekdebet" id="norekdebet" value="<?=$rekdebet ?>" />
 		</td>
     </tr>
@@ -210,7 +224,11 @@ function panggil(elem){
     <tr>
         <td colspan="2" align="center">
         	<input class="but" type="submit" value="Simpan" name="simpan" id="simpan" onFocus="panggil('simpan')">
-            <input class="but" type="button" value="Tutup" onClick="window.close();">        </td>
+            <input class="but" type="button" value="Tutup" onClick="window.close();"><br>
+<?			if ($idIsUsed) {
+				echo "<font style='color:#666'>* Kode rekening Jenis Pengeluaran ini tidak dapat diubah karena telah digunakan dalam transaksi</font>";
+			} ?>					
+		</td>
     </tr>
     </table>
     </form>

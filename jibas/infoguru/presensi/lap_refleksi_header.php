@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -98,22 +98,26 @@ OpenDb();
 <script language="javascript" src="../script/validasi.js"></script>
 <script language="javascript" src="../script/ajax.js"></script>
 <script language="javascript">
+
 var win = null;
-function newWindow(mypage,myname,w,h,features) {
-      var winl = (screen.width-w)/2;
-      var wint = (screen.height-h)/2;
-      if (winl < 0) winl = 0;
-      if (wint < 0) wint = 0;
-      var settings = 'height=' + h + ',';
-      settings += 'width=' + w + ',';
-      settings += 'top=' + wint + ',';
-      settings += 'left=' + winl + ',';
-      settings += features;
-      win = window.open(mypage,myname,settings);
-      win.window.focus();
+function newWindow(mypage,myname,w,h,features)
+{
+    var winl = (screen.width-w)/2;
+    var wint = (screen.height-h)/2;
+    if (winl < 0) winl = 0;
+    if (wint < 0) wint = 0;
+    
+    var settings = 'height=' + h + ',';
+    settings += 'width=' + w + ',';
+    settings += 'top=' + wint + ',';
+    settings += 'left=' + winl + ',';
+    settings += features;
+    win = window.open(mypage,myname,settings);
+    win.window.focus();
 }
 
-function tampil() {		
+function tampil()
+{		
 	var th2 = parseInt(document.getElementById('th2').value);
 	var bln2 = parseInt(document.getElementById('bln2').value);
 	var tgl2 = parseInt(document.main.tgl2.value);
@@ -128,26 +132,37 @@ function tampil() {
 	var departemen = document.getElementById('departemen').value;
 	var tingkat = document.getElementById('tingkat').value;
 
-	if (nip.length == 0){
+	if (nip.length == 0)
+    {
 		alert ('NIP guru tidak boleh kosong !');
 		return false;
-	} else if (tahunajaran.length == 0){
+	}
+    else if (tahunajaran.length == 0)
+    {
 		alert ('Tahun ajaran tidak boleh kosong !');
 		document.getElementById('tahunajaran').focus();
 		return false;
-	} else if (semester.length == 0){
+	}
+    else if (semester.length == 0)
+    {
 		alert ('Semester tidak boleh kosong !');
 		document.getElementById('semester').focus();
 		return false;
-	} else if (kelas.length == 0){
+	}
+    else if (kelas.length == 0)
+    {
 		alert ('Kelas tidak boleh kosong !');
 		document.getElementById('kelas').focus();
 		return false;
-	} else if (tgl1.length == 0) {	
+	}
+    else if (tgl1.length == 0)
+    {	
 		alert ('Tanggal awal tidak boleh kosong !');	
 		document.main.tgl1.focus();
 		return false;	
-	} else if (tgl2.length == 0) {	
+	}
+    else if (tgl2.length == 0)
+    {	
 		alert ('Tanggal akhir tidak boleh kosong !');	
 		document.main.tgl2.focus();
 		return false;	
@@ -156,14 +171,15 @@ function tampil() {
 	var validasi = validateTgl(tgl1,bln1,th1,tgl2,bln2,th2);
 	if (validasi)
 		parent.footer.location.href = "lap_refleksi_footer.php?pelajaran="+pelajaran+"&nip="+nip+"&semester="+semester+"&tgl1="+tgl1+"&bln1="+bln1+"&th1="+th1+"&tgl2="+tgl2+"&bln2="+bln2+"&th2="+th2+"&kelas="+kelas+"&departemen="+departemen+"&tingkat="+tingkat;
-	
 } 
 
-function panggil() {
+function panggil()
+{
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";
 }
 
-function change_departemen() {
+function change_departemen()
+{
 	var th2 = parseInt(document.getElementById('th2').value);
 	var bln2 = parseInt(document.getElementById('bln2').value);
 	var tgl2 = parseInt(document.main.tgl2.value);
@@ -172,13 +188,14 @@ function change_departemen() {
 	var tgl1 = parseInt(document.main.tgl1.value);	
 	var departemen = document.getElementById("departemen").value;
 	var nip = document.getElementById("nipguru").value;
-	var nama = document.getElementById("namaguru").value;
+	var nama = ""; //document.getElementById("namaguru").value;
 				
 	parent.header.location.href = "lap_refleksi_header.php?tgl1="+tgl1+"&bln1="+bln1+"&th1="+th1+"&tgl2="+tgl2+"&bln2="+bln2+"&th2="+th2+"&departemen="+departemen+"&nip="+nip+"&nama="+nama;	
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";			
 }
 
-function change_ajaran() {
+function change_ajaran()
+{
 	var th2 = parseInt(document.getElementById('th2').value);
 	var bln2 = parseInt(document.getElementById('bln2').value);
 	var tgl2 = parseInt(document.main.tgl2.value);
@@ -189,13 +206,14 @@ function change_ajaran() {
 	var tahunajaran = document.getElementById("tahunajaran").value;
 	var semester = document.getElementById("semester").value;
 	var nip = document.getElementById("nipguru").value;
-	var nama = document.getElementById("namaguru").value;
+	var nama = ""; //document.getElementById("namaguru").value;
 	
 	parent.header.location.href = "lap_refleksi_header.php?tgl1="+tgl1+"&bln1="+bln1+"&th1="+th1+"&tgl2="+tgl2+"&bln2="+bln2+"&th2="+th2+"&departemen="+departemen+"&semester="+semester+"&tahunajaran="+tahunajaran+"&nip="+nip+"&nama="+nama;	
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";	
 }
 
-function change_tingkat() {
+function change_tingkat()
+{
 	var th2 = parseInt(document.getElementById('th2').value);
 	var bln2 = parseInt(document.getElementById('bln2').value);
 	var tgl2 = parseInt(document.main.tgl2.value);
@@ -207,14 +225,14 @@ function change_tingkat() {
 	var semester = document.getElementById("semester").value;
 	var tingkat = document.getElementById("tingkat").value;
 	var nip = document.getElementById("nipguru").value;
-	var nama = document.getElementById("namaguru").value;
+	var nama = ""; //document.getElementById("namaguru").value;
 		
 	parent.header.location.href = "lap_refleksi_header.php?tgl1="+tgl1+"&bln1="+bln1+"&th1="+th1+"&tgl2="+tgl2+"&bln2="+bln2+"&th2="+th2+"&departemen="+departemen+"&semester="+semester+"&tahunajaran="+tahunajaran+"&tingkat="+tingkat+"&nip="+nip+"&nama="+nama;
-		
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";	
 }
 
-function change() {
+function change()
+{
 	var th2 = parseInt(document.getElementById('th2').value);
 	var bln2 = parseInt(document.getElementById('bln2').value);
 	var tgl2 = parseInt(document.main.tgl2.value);
@@ -222,7 +240,7 @@ function change() {
 	var bln1 = parseInt(document.getElementById('bln1').value);
 	var tgl1 = parseInt(document.main.tgl1.value);	
 	var nip = document.getElementById('nipguru').value;
-	var nama = document.getElementById('namaguru').value; 
+	var nama = ""; //document.getElementById('namaguru').value; 
 	var departemen=document.getElementById("departemen").value;
 	var tahunajaran=document.getElementById("tahunajaran").value;
 	var semester=document.getElementById("semester").value;
@@ -234,21 +252,23 @@ function change() {
 	parent.footer.location.href="blank_presensi_refleksi_mengajar.php";
 }
 
-function pegawai() {
+function pegawai()
+{
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";
 	newWindow('../library/guru.php?flag=0', 'Guru','600','600','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
-function acceptPegawai(nip, nama, flag, dep) {
+function acceptPegawai(nip, nama, flag, dep)
+{
 	document.location.href = "../presensi/lap_refleksi_header.php?departemen="+dep+"&nip="+nip+"&nama="+nama;
 	document.getElementById('nip').value = nip;
 	document.getElementById('nipguru').value = nip;
 	document.getElementById('nama').value = nama;
-	document.getElementById('namaguru').value = nama;
-	
+	document.getElementById('namaguru').value = nama;	
 }
 
-function change_tgl1() {
+function change_tgl1()
+{
 	var th1 = parseInt(document.getElementById('th2').value);
 	var bln1 = parseInt(document.getElementById('bln2').value);
 	var tgl1 = parseInt(document.main.tgl2.value);
@@ -263,7 +283,8 @@ function change_tgl1() {
 	sendRequestText("../library/gettanggal.php", show1, "tahun="+th+"&bulan="+bln+"&tgl="+tgl+"&namatgl="+namatgl+"&namabln="+namabln);	
 }
 
-function change_tgl2() {
+function change_tgl2()
+{
 	var th1 = parseInt(document.getElementById('th1').value);
 	var bln1 = parseInt(document.getElementById('bln1').value);
 	var tgl1 = parseInt(document.main.tgl1.value);
@@ -279,15 +300,18 @@ function change_tgl2() {
 	sendRequestText("../library/gettanggal.php", show2, "tahun="+th+"&bulan="+bln+"&tgl="+tgl+"&namatgl="+namatgl+"&namabln="+namabln);	
 }
 
-function show1(x) {
+function show1(x)
+{
 	document.getElementById("InfoTgl1").innerHTML = x;
 }
 
-function show2(x) {
+function show2(x)
+{
 	document.getElementById("InfoTgl2").innerHTML = x;
 }
 
-function focusNext(elemName, evt) {
+function focusNext(elemName, evt)
+{
 	evt = (evt) ? evt : event;
 	var charCode = (evt.charCode) ? evt.charCode :
 		((evt.which) ? evt.which : evt.keyCode);
@@ -300,7 +324,8 @@ function focusNext(elemName, evt) {
 	return true;
 }
 
-function panggil(elem){
+function panggil(elem)
+{
 	parent.footer.location.href = "blank_presensi_refleksi_mengajar.php";
 	var lain = new Array('departemen','tahunajaran','tingkat','semester','kelas','pelajaran','tgl1','bln1','th1','tgl2','bln2','th2');
 	for (i=0;i<lain.length;i++) {
@@ -322,17 +347,7 @@ function panggil(elem){
 <tr>	
 	<td rowspan="3" width="68%">
 	<table width = "100%" border = "0" height="100%">
-	<!--<tr>
-    	<td width="16%"><strong>Guru</strong></td>
-        <td colspan="3"><strong>
-    		<input name="nip" type="text" class="disabled" id="nip" value="<?=$_REQUEST['nip'] ?>" size="12" readonly onclick="pegawai();"/>
-    		<input type="hidden" name="nipguru" id="nipguru" value="<?=$_REQUEST['nip'] ?>"/>
-    		<input name="nama" type="text" class="disabled" id="nama" value="<?=$_REQUEST['nama'] ?>" size="45" readonly onclick="pegawai();"/>
-    		<input type="hidden" name="namaguru" id="namaguru" value="<?=$_REQUEST['nama'] ?>"/>
-			</strong>
-        	<a href="JavaScript:pegawai()"><img src="../images/ico/cari.png" border="0" /></a></td>
-    </tr>-->
-   <tr>
+    <tr>
 		<td><strong>Tahun Ajaran</strong></td>
     	<td width="35%"> 
     	<select name="departemen" id="departemen" onChange="change_departemen()" style="width:70px" onKeyPress="focusNext('tahunajaran',event)" onfocus="panggil('departemen')">

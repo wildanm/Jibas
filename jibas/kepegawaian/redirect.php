@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -38,8 +38,15 @@ if ($username == "jibas")
 	$username = "landlord";
 $password = trim($_POST[password]);
 
+$username = str_replace("'", "\'", $username);
+$username = str_replace("--", " ", $username);
+$login = $username;
+$username = "'$username'";
+
+$password = str_replace("'", "\'", $password);
+
 $user_exists = false;
-if ($username == "landlord")
+if ($username == "'landlord'")
 {
 	$sql_la = "SELECT password FROM jbsuser.landlord";
 	$result_la = QueryDb($sql_la);
@@ -59,7 +66,8 @@ else
 {
 	$sql = "SELECT p.aktif
 			  FROM jbsuser.login l, jbssdm.pegawai p
-			 WHERE l.login = p.nip AND l.login = '$username' ";
+			 WHERE l.login = p.nip 
+			   AND l.login = $username";
 	$result = QueryDb($sql);
 	$row = mysql_fetch_array($result);
 	$jum = mysql_num_rows($result);
@@ -77,7 +85,8 @@ else
 		else
 		{
 			$query = "SELECT login, password
-						FROM jbsuser.login WHERE login='$username'  
+						FROM jbsuser.login 
+					   WHERE login = $username  
 					     AND password='".md5($password)."'";
 			$result = QueryDb($query) or die(mysql_error());
 			$row = mysql_fetch_array($result);
@@ -86,7 +95,7 @@ else
 			{
 				$query2 = "SELECT h.departemen as departemen, h.tingkat as tingkat, p.nama as nama, h.theme as tema
 							 FROM jbsuser.hakakses h, jbssdm.pegawai p
-							WHERE h.login='$username'
+							WHERE h.login=$username
 							  AND p.nip=h.login
 							  AND h.modul='SIMPEG'
 							  AND p.aktif=1";
@@ -96,7 +105,7 @@ else
 				
 				if ($num2 > 0)
 				{
-					$_SESSION['login'] = $row['login'];
+					$_SESSION['login'] = $login;
 					$_SESSION['namasimpeg'] = $row2['nama'];
 					$_SESSION['tingkatsimpeg'] = $row2['tingkat'];
 					$_SESSION['temasimpeg'] = $row2['tema'];
@@ -122,10 +131,10 @@ if (!$user_exists)
 }
 else
 {
-	if ($username=="landlord")
+	if ($username=="'landlord'")
     	$query = "UPDATE jbsuser.landlord SET lastlogin=NOW() WHERE password='".md5($password)."'";
     else
-		$query = "UPDATE jbsuser.hakakses SET lastlogin=NOW() WHERE login='$username' AND modul = 'SIMPEG'";
+		$query = "UPDATE jbsuser.hakakses SET lastlogin=NOW() WHERE login=$username AND modul = 'SIMPEG'";
 	$result = queryDb($query);
 	?>
     <script language="JavaScript">

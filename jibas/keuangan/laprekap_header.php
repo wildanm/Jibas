@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -63,8 +63,12 @@ if (isset($_REQUEST['bln2']))
 if (isset($_REQUEST['thn2']))
 	$thn2 = (int)$_REQUEST['thn2'];	
 
-$n1 = JmlHari($bln1,$thn1);
-$n2 = JmlHari($bln2,$thn2);
+$n1 = JmlHari($bln1, $thn1);
+$n2 = JmlHari($bln2, $thn2);
+
+$idkategori = $_REQUEST['idkategori'];
+$laporan = $_REQUEST['laporan'];
+$dept = $_REQUEST['dept'];
 	
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -96,13 +100,29 @@ function show_pembayaran()
 	var tanggal2 = escape(thn2 + "-" + bln2 + "-" + tgl2);
 	var laporan = document.getElementById('laporan').value;
 	var dept = document.getElementById('departemen').value;
+	var petugas = document.getElementById('petugas').value;
 	
 	if (laporan == 1)
-		parent.contentblank.location.href = "laprekap_content.php?dept="+dept+"&tanggal1="+tanggal1+"&tanggal2="+tanggal2+"&idkategori="+idkategori;
+		parent.contentblank.location.href = "laprekap_content.php?dept="+dept+"&tanggal1="+tanggal1+"&tanggal2="+tanggal2+"&idkategori="+idkategori+"&petugas="+petugas;
 	else
-		parent.contentblank.location.href = "laprekapharian_content.php?dept="+dept+"&tanggal1="+tanggal1+"&tanggal2="+tanggal2+"&idkategori="+idkategori;
+		parent.contentblank.location.href = "laprekapharian_content.php?dept="+dept+"&tanggal1="+tanggal1+"&tanggal2="+tanggal2+"&idkategori="+idkategori+"&petugas="+petugas;
 }
 
+function change_date()
+{
+	var idkategori = document.getElementById('idkategori').value;
+	var tgl1 = parseInt(document.getElementById('tgl1').value);
+	var bln1 = parseInt(document.getElementById('bln1').value);
+	var thn1 = parseInt(document.getElementById('thn1').value);
+	var tgl2 = parseInt(document.getElementById('tgl2').value);
+	var bln2 = parseInt(document.getElementById('bln2').value);
+	var thn2 = parseInt(document.getElementById('thn2').value);
+	var laporan = document.getElementById('laporan').value;
+	var dept = document.getElementById('departemen').value;
+	
+	document.location.href = "laprekap_header.php?idkategori="+idkategori+"&tgl1="+tgl1+"&bln1="+bln1+"&thn1="+thn1+"&tgl2="+tgl2+"&bln2="+bln2+"&thn2="+thn2+"&laporan="+laporan+"&dept="+dept;
+	parent.contentblank.location.href ="laprekap_blank.php";
+}
 </script>
 </head>
 
@@ -121,8 +141,9 @@ function show_pembayaran()
 			
         $dep = getDepartemen(getAccess());
         foreach($dep as $value) 
-		{  ?>
-            <option value="<?=$value ?>"><?=$value ?></option>
+		{
+			$sel = $dept == $value ? "selected" : ""; ?>
+            <option value="<?=$value ?>" <?=$sel?>><?=$value ?></option>
         <? } ?>  
     	</select>&nbsp;<strong>Jenis</strong>&nbsp;
         <select name="idkategori" id="idkategori" style="width:188px;" onchange="change_sel()" >
@@ -140,7 +161,7 @@ function show_pembayaran()
     	<td><strong>Tanggal </strong></td>
        	<td width="10">
         	<div id="InfoTgl1">      
-            <select name="tgl1" id = "tgl1" onchange="change_sel()" >
+            <select name="tgl1" id = "tgl1" onchange="change_date()" >
             <option value="">[Tgl]</option>
             <? for($i = 1; $i <= $n1; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $tgl1) ?> > <?=$i ?></option>
@@ -149,12 +170,12 @@ function show_pembayaran()
          	</div>
      	</td>
         <td width="160">
-            <select name="bln1" id="bln1" onchange="change_sel()" >
+            <select name="bln1" id="bln1" onchange="change_date()" >
             <? for($i = 1; $i <= 12; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $bln1) ?> > <?=$bulan[$i] ?></option>
             <? } ?>
             </select>
-            <select name="thn1" id="thn1" onchange="change_sel()" >
+            <select name="thn1" id="thn1" onchange="change_date()" >
             <? for($i = $G_START_YEAR; $i <= $thn1+1; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $thn1) ?> > <?=$i ?></option>
             <? } ?>
@@ -162,7 +183,7 @@ function show_pembayaran()
        	</td>
         <td width="10">
          	<div id="InfoTgl2">
-        	<select name="tgl2" id="tgl2" onchange="change_sel()" >
+        	<select name="tgl2" id="tgl2" onchange="change_date()" >
             <option value="">[Tgl]</option>
 			<? for($i = 1; $i <= $n2; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $tgl2) ?> > <?=$i ?></option>
@@ -171,12 +192,12 @@ function show_pembayaran()
             </div>
         </td>
         <td>
-            <select name="bln2" id="bln2" onchange="change_sel()" >
+            <select name="bln2" id="bln2" onchange="change_date()" >
             <? for($i = 1; $i <= 12; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $bln2) ?> > <?=$bulan[$i] ?></option>
             <? } ?>
             </select>
-            <select name="thn2" id="thn2" onchange="change_sel()" >
+            <select name="thn2" id="thn2" onchange="change_date()" >
             <? for($i = $G_START_YEAR; $i <= $thn2+2; $i++) { ?>
                 <option value="<?=$i ?>" <?=IntIsSelected($i, $thn2) ?> > <?=$i ?></option>
             <? } ?>
@@ -187,15 +208,35 @@ function show_pembayaran()
     	<td width="15%"><strong>Laporan </strong></td>
         <td colspan="4">
         <select name="laporan" id="laporan" style="width:148px;" onchange="change_sel()" >
-        	<option value="1">Rekapitulasi Total</option>
-            <option value="2">Rekapitulasi Harian</option>
-        </select> 
+        	<option value="1" <?=IntIsSelected(1, $laporan)?>>Rekapitulasi Total</option>
+            <option value="2" <?=IntIsSelected(2, $laporan)?>>Rekapitulasi Harian</option>
+        </select>
+		&nbsp;&nbsp;
+		Petugas:
+		<select name="petugas" id="petugas" style="width:148px;" onchange="change_sel()" >
+			<option value="ALL">(Semua Petugas)</option>
+			<option value="landlord">Administrator JIBAS</option>
+<?			$sql = "SELECT p.nip, p.nama
+					  FROM jbsuser.hakakses h, jbssdm.pegawai p, jbsuser.login l
+					 WHERE h.modul = 'KEUANGAN'
+					   AND h.login = l.login
+					   AND l.login = p.nip
+					 ORDER BY p.nama";
+			$res = QueryDb($sql);
+			while($row = mysql_fetch_row($res))
+			{
+				echo "<option value='$row[0]'>$row[1]</option>";
+			} ?>			
+		</select>
         </td>
  	</tr>
     </table>
     </td>
 	<td width="*" rowspan="3" valign="middle">
-		<a href="#" onclick="show_pembayaran()"><img src="images/view.png" border="0" height="48"  width="48" id="tabel" onmouseover="showhint('Klik untuk menampilkan data laporan pembayaran per siswa!', this, event, '200px')"/></a>
+		<a href="#" onclick="show_pembayaran()">
+			<img src="images/view.png" border="0" height="48"  width="48" id="tabel"
+				 onmouseover="showhint('Klik untuk menampilkan data laporan pembayaran per siswa!', this, event, '200px')"/>
+		</a>
      </td>
 	<td width="40%" colspan="3" align="right" valign="top">
 	<font size="4" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#ffcc66">&nbsp;</font>&nbsp;<font size="4" face="Verdana, Arial, Helvetica, sans-serif" color="Gray">Laporan Rekapitulasi Penerimaan</font><br />

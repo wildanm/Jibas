@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -28,7 +28,6 @@ require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/theme.php');
 require_once('include/sessioninfo.php');
-require_once('library/openthinksas.jibas.php');
 
 $departemen = "";
 if (isset($_REQUEST['departemen']))
@@ -154,12 +153,7 @@ function panggil(elem){
 	<!-- TABLE CONTENT -->
     <tr>
         <td align="left"><strong>Departemen </strong></td>
-        <td align="left">
-          <?php OpenDb();?>
-          <input type="text" name="departemen_openthinksas" id="departemen_openthinksas" value="<?php echo getDepartemenInOpenThinkSAS($_REQUEST['departemen']);?>" readonly="readonly" maxlength="50" size="30" style="background-color:#CCCC99">
-          <?php CloseDb();?>
-          <input type="hidden" name="departemen" id="departemen" value="<?=$_REQUEST['departemen']?>" readonly="readonly" maxlength="50" size="30" style="background-color:#CCCC99">
-        </td>
+        <td align="left"><input type="text" name="departemen" id="departemen" value="<?=$_REQUEST['departemen']?>" readonly="readonly" maxlength="50" size="30" style="background-color:#CCCC99"></td>
     </tr>
     <tr>
         <td align="left"><strong>Nama</strong></td>

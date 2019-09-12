@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -26,8 +26,8 @@ $idkategori = $_REQUEST['idkategori'];
 $idpenerimaan = $_REQUEST['idpenerimaan'];
 $departemen = $_REQUEST['departemen'];
 ?>
-<frameset border="1" cols="31%,*" frameborder="1">
-	<frame name="siswa" src="pembayaran_siswa.php?idtahunbuku=<?=$idtahunbuku?>&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&departemen=<?=$departemen?>" scrolling="auto" style="border:1; border-right-color:#000000; border-right-style:solid"/>
+<frameset border="0" cols="31%,*" frameborder="1">
+	<frame name="siswa" src="pembayaran_siswa.php?idtahunbuku=<?=$idtahunbuku?>&idkategori=<?=$idkategori?>&idpenerimaan=<?=$idpenerimaan?>&departemen=<?=$departemen?>" scrolling="auto" style="border:1px; border-right-color:#000000; border-right-style:solid"/>
     	<!--<frame name="content" src="blank_pembayaran.php" scrolling="auto" style="border:1; border-left-color:#000000; border-left-style:solid" />-->
         <frame name="content" src="blank_pembayaran.php" scrolling="auto" />
 </frameset><noframes></noframes>

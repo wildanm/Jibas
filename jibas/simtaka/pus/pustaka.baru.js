@@ -99,8 +99,6 @@ function validate(count){
 		} 
 	}
 		
-		
-	
 	var acc=0;
 	var i=0;
 	while (i<count)
@@ -117,9 +115,13 @@ function validate(count){
 		} 
 	i++;
 	}
-	return advance_val(acc);
+	
+	return advance_val(acc) &&
+		   confirm('Data sudah benar?');
 }
-function advance_val(x){
+
+function advance_val(x)
+{
 	if (x==0)
 	{
 		alert ('Setidaknya ada 1 pustaka pada salah satu perpustakaan!');
@@ -131,17 +133,24 @@ function advance_val(x){
 		return true;
 	}
 }
+
 function tempel(sourceid,destid){
 	var x = document.getElementById(sourceid).value;
 	document.getElementById(destid).value=x;
 }
-function ManagePenulis(){
+
+function ManagePenulis()
+{
 	newWindow('../ref/penulis.add.php?flag=1', 'TambahPenulis','355','448','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function ManagePenerbit(){
+
+function ManagePenerbit()
+{
 	newWindow('../ref/penerbit.add.php?flag=1', 'TambahPenerbit','355','448','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function getfresh(id,lastid){
+
+function getfresh(id,lastid)
+{	
 	if (id=='penulis'){
 		show_wait("PenulisInfo");
 		sendRequestText("GetPenulis.php", showPenulis, "penulis="+lastid);

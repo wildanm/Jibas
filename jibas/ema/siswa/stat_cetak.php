@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -172,7 +172,7 @@ if ($departemen=='-1')
 		}
 		elseif ($kriteria == 8)
 		{
-			$xtitle = "Pekerjaan Ibu";
+			$xtitle = "Pekerjaan Ayah";
 			$ytitle = "Jumlah";
 			$sql = "SELECT s.pekerjaanayah, count(s.replid), s.pekerjaanayah AS XX FROM 
 					siswa s, angkatan a 
@@ -206,20 +206,17 @@ if ($departemen=='-1')
 		{
 			$xtitle = "Penghasilan (rupiah)";
 			$ytitle = "Jumlah";
-			$sql = "SELECT G, COUNT(nis), XX FROM (
-					  SELECT nis, IF(peng < 1000000, '< 1 juta',
-								  IF(peng >= 1000001 AND peng <= 2500000, '1 juta - 2,5 juta',
-								  IF(peng >= 2500001 AND peng <= 5000000, '2,5 juta - 5 juta',
-								  IF(peng >= 5000001 , '> 5 juta', 'Tidak Ada Data')))) AS G,
-								  IF(peng < 1000000, '1',
-								  IF(peng >= 1000001 AND peng <= 2500000, '2',
-								  IF(peng >= 2500001 AND peng <= 5000000, '3',
-								  IF(peng >= 5000001 , '4', '5')))) AS GG, 
-								  IF(peng < 1000000, '(s.penghasilanayah__s.penghasilanibu)<1000000',
-								  IF(peng >= 1000001 AND peng <= 2500000, '(s.penghasilanayah__s.penghasilanibu)>=1000001 AND (s.penghasilanayah__s.penghasilanibu)<=2500000',
-								  IF(peng >= 2500001 AND peng <= 5000000, '(s.penghasilanayah__s.penghasilanibu)>=2500001 AND (s.penghasilanayah__s.penghasilanibu)<=5000001',
-								  IF(peng >= 5000001 , '(s.penghasilanayah__s.penghasilanibu)>=5000001', '(s.penghasilanayah__s.penghasilanibu)=0')))) AS XX FROM
-						(SELECT s.nis, FLOOR(s.penghasilanibu + s.penghasilanayah) AS peng FROM siswa s, angkatan a WHERE a.aktif=1 AND s.aktif=1 $filter ) AS X) AS X GROUP BY G ORDER BY GG";
+			$sql = "SELECT G, COUNT(nis), G FROM (
+					  SELECT nis, IF(s.penghasilanibu + s.penghasilanayah < 1000000, '< 1 juta',
+								  IF(s.penghasilanibu + s.penghasilanayah >= 1000001 AND s.penghasilanibu + s.penghasilanayah <= 2500000, '1 juta - 2,5 juta',
+								  IF(s.penghasilanibu + s.penghasilanayah >= 2500001 AND s.penghasilanibu + s.penghasilanayah <= 5000000, '2,5 juta - 5 juta',
+								  IF(s.penghasilanibu + s.penghasilanayah >= 5000001 , '> 5 juta', 'Tidak Ada Data')))) AS G
+					    FROM siswa s, angkatan a
+					   WHERE a.aktif = 1
+					     AND s.aktif = 1
+						     $filter
+					) AS X 		 
+					GROUP BY G";
 		}
 		elseif ($kriteria == 13)
 		{
@@ -255,20 +252,17 @@ if ($departemen=='-1')
 		{
 			$xtitle = "Usia (tahun)";
 			$ytitle = "Jumlah";
-			$sql = "SELECT G, COUNT(nis), XX FROM (
-					  SELECT nis, IF(usia < 6, '<6',
-								  IF(usia >= 6 AND usia <= 12, '6-12',
-								  IF(usia >= 13 AND usia <= 15, '13-15',
-								  IF(usia >= 16 AND usia <= 18, '16-18','>18')))) AS G,
-								  IF(usia < 6, '1',
-								  IF(usia >= 6 AND usia <= 12, '2',
-								  IF(usia >= 13 AND usia <= 15, '3',
-								  IF(usia >= 16 AND usia <= 18, '4','5')))) AS GG, 
-								  IF(usia < 6, 'YEAR(now())__YEAR(s.tgllahir)<6',
-								  IF(usia >= 6 AND usia <= 12, 'YEAR(now())__YEAR(s.tgllahir)>=6 AND YEAR(now())__YEAR(s.tgllahir)<=12',
-								  IF(usia >= 13 AND usia <= 15, 'YEAR(now())__YEAR(s.tgllahir)>=13 AND YEAR(now())__YEAR(s.tgllahir)<=15',
-								  IF(usia >= 16 AND usia <= 18, 'YEAR(now())__YEAR(s.tgllahir)>=16 AND YEAR(now())__YEAR(s.tgllahir)<=18','YEAR(now())__YEAR(s.tgllahir)>=18')))) AS XX FROM
-						(SELECT nis, YEAR(now())-YEAR(s.tgllahir) AS usia FROM siswa s, angkatan a WHERE a.aktif=1 AND s.aktif=1 $filter ) AS X) AS X GROUP BY G ORDER BY GG";
+			$sql = "SELECT G, COUNT(nis), G FROM (
+					  SELECT nis, IF(YEAR(NOW()) - YEAR(s.tgllahir) < 6, '<6',
+								  IF(YEAR(NOW()) - YEAR(s.tgllahir) >= 6 AND YEAR(NOW()) - YEAR(s.tgllahir) <= 12, '6-12',
+								  IF(YEAR(NOW()) - YEAR(s.tgllahir) >= 13 AND YEAR(NOW()) - YEAR(s.tgllahir) <= 15, '13-15',
+								  IF(YEAR(NOW()) - YEAR(s.tgllahir) >= 16 AND YEAR(NOW()) - YEAR(s.tgllahir) <= 18, '16-18', '>18')))) AS G
+						FROM siswa s, angkatan a
+					   WHERE a.aktif = 1
+					     AND s.aktif = 1
+						     $filter
+					) AS X 		 
+					GROUP BY G";
 		}
 		
 		?>

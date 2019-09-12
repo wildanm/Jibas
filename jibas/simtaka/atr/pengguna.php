@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -25,6 +25,7 @@ require_once('../inc/config.php');
 require_once('../inc/sessioninfo.php');
 require_once('../inc/db_functions.php');
 require_once('pengguna.class.php');
+
 OpenDb();
 $P = new CPengguna();
 $P->OnStart();
@@ -35,20 +36,21 @@ $P->OnStart();
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
 <link href="../sty/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="../scr/jquery3/jquery-1.2.6.js"></script>
 <script type="text/javascript" src="../scr/tables.js"></script>
 <script type="text/javascript" src="../scr/tools.js"></script>
 <script type="text/javascript" src="pengguna.js"></script>
 </head>
 
 <body>
-	<div id="title" align="right">
-        <font style="color:#FF9900; font-size:30px;"><strong>.:</strong></font>
-      <font style="font-size:18px; color:#999999">Daftar Pengguna</font><br />
-        <a href="pengaturan.php" class="welc">Pengaturan</a><span class="welc"> > Daftar Pengguna</span><br /><br /><br />
-    </div>
+<div id="title" align="right">
+	<font style="color:#FF9900; font-size:30px;"><strong>.:</strong></font>
+	<font style="font-size:18px; color:#999999">Daftar Pengguna</font><br />
+	<a href="pengaturan.php" class="welc">Pengaturan</a><span class="welc"> > Daftar Pengguna</span><br /><br /><br />
+</div>
 <div id="content">
-      <?=$P->Content()?>
-    </div>
+    <?=$P->Content()?>
+</div>
 </body>
 <?=$P->OnFinish()?>
 </html>

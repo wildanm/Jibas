@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -111,72 +111,94 @@ $aspekket = $row2[0];
       <tr>
         <td align="center">
         <?
-                    $sql	=	"SELECT MIN(nilaiangka) as nmin, MAX(nilaiangka) AS nmax ".
-                                "FROM nap n, aturannhb a, infonap i, kelas k ".
-                                "WHERE n.idaturan = a.replid ".
-                                "AND a.idtingkat = '$tingkat' ".
-                                "AND a.idpelajaran = '$pelajaran' ".
-                                "AND a.dasarpenilaian = '$dasarpenilaian' ".
-                                "AND n.idinfo = i.replid ".
-                                "AND i.idpelajaran = '$pelajaran' ".
-                                "AND i.idsemester = '$semester' ".
-                                "AND i.idkelas = k.replid ".
-                                "AND k.idtahunajaran = '$tahunajaran' ".
-                                "AND k.idtingkat = '$tingkat' ";	
-                    //echo $sql;
-                    $result=Querydb($sql);
-                    $row = @mysql_fetch_array($result);
+		$sql = "SELECT MIN(nilaiangka) as nmin, MAX(nilaiangka) AS nmax
+				  FROM nap n, infonap i, aturannhb a, kelas k
+				 WHERE n.idinfo = i.replid
+				   AND n.idaturan = a.replid
+				   AND i.idkelas = k.replid
+				   AND a.dasarpenilaian = '$dasarpenilaian'
+				   AND i.idpelajaran = '$pelajaran'
+				   AND i.idsemester = '$semester'
+				   AND k.idtahunajaran = '$tahunajaran'
+				   AND k.idtingkat = '$tingkat'";
+				   
+        $result=Querydb($sql);
+        $row = @mysql_fetch_array($result);
                     
-                    if(($row[nmin] >= 0) AND ($row[nmax] <= 10)){
-                        $dasar = '1'; //satuan
-                    }else{
-                        $dasar = '10'; //satuan
-                    }
-                    
-                    $rentang = array(9*$dasar,8*$dasar,7*$dasar,6*$dasar,5*$dasar,4*$dasar,3*$dasar,2*$dasar,1*$dasar);
-                    $filter = array($rentang[0],$rentang[1].'_'.$rentang[0],$rentang[2].'_'.$rentang[1],$rentang[3].'_'.$rentang[2],$rentang[4].'_'.$rentang[3],$rentang[5].'_'.$rentang[4],$rentang[6].'_'.$rentang[5],$rentang[7].'_'.$rentang[6],$rentang[8]);
-					//print_r($filter);
-					$query = "SELECT SUM(IF(nilaiangka >= $rentang[0],1,0)) as j1, ".
-                             "SUM(IF(nilaiangka>=$rentang[1] AND nilaiangka<$rentang[0],1,0)) as j2, ".
-                             "SUM(IF(nilaiangka>=$rentang[2] AND nilaiangka<$rentang[1],1,0)) as j3, ".
-                             "SUM(IF(nilaiangka>=$rentang[3] AND nilaiangka<$rentang[2],1,0)) as j4, ".
-                             "SUM(IF(nilaiangka>=$rentang[4] AND nilaiangka<$rentang[3],1,0)) as j5, ".
-                             "SUM(IF(nilaiangka>=$rentang[5] AND nilaiangka<$rentang[4],1,0)) as j6, ".
-                             "SUM(IF(nilaiangka>=$rentang[6] AND nilaiangka<$rentang[5],1,0)) as j7, ".
-                             "SUM(IF(nilaiangka>=$rentang[7] AND nilaiangka<$rentang[6],1,0)) as j8, ".
-                             "SUM(IF(nilaiangka<$rentang[8],1,0)) as j9 ".
-                             "FROM nap n, aturannhb a, infonap i, kelas k ".
-                             "WHERE n.idaturan = a.replid ".
-                                "AND a.idtingkat = '$tingkat' ".
-                                "AND a.idpelajaran = '$pelajaran' ".
-                                "AND a.dasarpenilaian = '$dasarpenilaian' ".
-                                "AND n.idinfo = i.replid ".
-                                "AND i.idpelajaran = '$pelajaran' ".
-                                "AND i.idsemester = '$semester' ".
-                                "AND i.idkelas = k.replid ".
-                                "AND k.idtahunajaran = '$tahunajaran' ".
-                                "AND k.idtingkat = '$tingkat' ";	
-                    //echo $query;
-                    $result=Querydb($query) or die(mysql_error());
-                    $lab="";
-                    if(mysql_num_rows($result)==0){
-                            $data[$a]=0;	
-                    }else{
-                        
-                            $lab=array(">=90",">=80",">=70",">=60",">=50",">=40",">=30",">=20",">=10");
-                            while($fetch=@mysql_fetch_array($result)){			
-                                $data = array($fetch[j1],$fetch[j2],$fetch[j3],$fetch[j4],$fetch[j5],$fetch[j6],$fetch[j7],$fetch[j8],$fetch[j9]);
-                            }
-                        
-                    }
+		if ($row[nmin] >= 0 && $row[nmax] <= 10)
+			$dasar = '1'; //satuan
+		else
+			$dasar = '10'; //satuan
+			
+		//echo "dasar = $dasar<br>";	
+        $rentang = array(9*$dasar, 8*$dasar, 7*$dasar,
+						 6*$dasar, 5*$dasar, 4*$dasar,
+						 3*$dasar, 2*$dasar, 1*$dasar, 0);
+		
+        $filter = array($rentang[0],
+						$rentang[1].'_'.$rentang[0],
+						$rentang[2].'_'.$rentang[1],
+						$rentang[3].'_'.$rentang[2],
+						$rentang[4].'_'.$rentang[3],
+						$rentang[5].'_'.$rentang[4],
+						$rentang[6].'_'.$rentang[5],
+						$rentang[7].'_'.$rentang[6],
+						$rentang[8].'_'.$rentang[7],
+						$rentang[9].'_'.$rentang[8]);
+		
+		$sql = "SELECT SUM(IF(nilaiangka >= $rentang[0],1,0)) as j1,
+					   SUM(IF(nilaiangka>=$rentang[1] AND nilaiangka<$rentang[0],1,0)) as j2,
+					   SUM(IF(nilaiangka>=$rentang[2] AND nilaiangka<$rentang[1],1,0)) as j3,
+					   SUM(IF(nilaiangka>=$rentang[3] AND nilaiangka<$rentang[2],1,0)) as j4,
+					   SUM(IF(nilaiangka>=$rentang[4] AND nilaiangka<$rentang[3],1,0)) as j5,
+					   SUM(IF(nilaiangka>=$rentang[5] AND nilaiangka<$rentang[4],1,0)) as j6,
+					   SUM(IF(nilaiangka>=$rentang[6] AND nilaiangka<$rentang[5],1,0)) as j7,
+					   SUM(IF(nilaiangka>=$rentang[7] AND nilaiangka<$rentang[6],1,0)) as j8,
+					   SUM(IF(nilaiangka>=$rentang[8] AND nilaiangka<$rentang[7],1,0)) as j9,
+					   SUM(IF(nilaiangka>=$rentang[9] AND nilaiangka<$rentang[8],1,0)) as j10
+				  FROM nap n, aturannhb a, infonap i, kelas k
+				 WHERE n.idaturan = a.replid
+				   AND n.idinfo = i.replid
+				   AND i.idkelas = k.replid
+				   AND a.dasarpenilaian = '$dasarpenilaian'
+				   AND i.idpelajaran = '$pelajaran'
+				   AND i.idsemester = '$semester'
+				   AND k.idtahunajaran = '$tahunajaran'
+				   AND k.idtingkat = '$tingkat'";
+				   
+        //echo "$sql<br>";
+        $result = QueryDb($sql);
+		
+		$lab = "";
+        if(mysql_num_rows($result) == 0)
+		{
+            $data[$a] = 0;	
+        }
+		else
+		{
+			$num = 9;
+			for($i = 0; $i < 10; $i++)
+			{
+				$lab[$i] = ">= " . ($num * $dasar);
+				$num -= 1;
+			}
+			
+            //$lab = array(">=90",">=80",">=70",">=60",">=50",">=40",">=30",">=20",">=10");
+            while($fetch = @mysql_fetch_array($result))
+			{			
+                $data = array($fetch[j1], $fetch[j2], $fetch[j3],
+							  $fetch[j4], $fetch[j5], $fetch[j6],
+							  $fetch[j7], $fetch[j8], $fetch[j9], $fetch[j10]);
+            }
+        }
                     
                     ?>
-<table width="80%" border="1" class="tab" align="center">
-                      <tr>
-                        <td height="25" align="center" class="header">No.</td>
-                        <td height="25" align="center" class="header">Rentang</td>
-                        <td height="25" align="center" class="header">Jumlah Siswa</td>
-                      </tr>
+					<table width="80%" border="1" class="tab" align="center">
+                      <tr height="25" >
+						<td width='10%' align="center" class="header">No.</td>
+						<td width='*' align="center" class="header">Rentang</td>
+						<td width='35%' align="center" class="header">Jumlah Siswa</td>
+					  </tr>
                       <?
                       for ($i=0;$i<count($lab);$i++){
                       ?>
@@ -205,6 +227,9 @@ $aspekket = $row2[0];
 	</td>
 </tr>    
 </table>
+<?
+CloseDb();
+?>
 </body>
 <script language="javascript">
 window.print();

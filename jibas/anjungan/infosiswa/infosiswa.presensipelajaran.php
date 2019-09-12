@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -40,7 +40,9 @@ OpenDb();
 $check_nis = $nis_awal;
 do
 {
-	$sql = "SELECT replid, departemen, nislama FROM riwayatdeptsiswa WHERE nis='$check_nis'";
+	$sql = "SELECT replid, departemen, IF(nislama IS NULL, '', nislama) AS nislama
+		  	  FROM riwayatdeptsiswa
+			 WHERE nis='$check_nis'";
 	$result = QueryDb($sql);
 	$nrow = mysql_num_rows($result);
 	if ($nrow > 0)
@@ -48,7 +50,10 @@ do
 		$row = mysql_fetch_array($result);
 		$dep[] = array($row['departemen'], $check_nis);
 		
-		$check_nis = $row['nislama'];
+		if (strlen($row['nislama']) > 0)
+			$check_nis = $row['nislama'];
+		else
+			$nrow = 0;
 	}
 }
 while($nrow > 0);

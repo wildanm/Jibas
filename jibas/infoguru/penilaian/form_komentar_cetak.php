@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -48,7 +48,7 @@ $row = mysql_fetch_array($result);
 <head>
 <link rel="stylesheet" type="text/css" href="../style/style.css">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>JIBAS SIMAKA [Cetak Form Pengisian Komentar Rapor Siswa]</title>
+<title>JIBAS InfoGuru [Cetak Form Pengisian Komentar Rapor Siswa]</title>
 </head>
 
 <body topmargin="0" leftmargin="0">
@@ -97,7 +97,12 @@ $row = mysql_fetch_array($result);
         <td width="20%">Nama</td>
         <td width="*">Komentar</td>
   	</tr>
-<?  $sql_get_siswa="SELECT nis,nama,aktif FROM jbsakad.siswa WHERE idkelas='$kelas' ORDER BY nama";
+<?  $sql_get_siswa="SELECT nis,nama,aktif
+				      FROM jbsakad.siswa
+					 WHERE idkelas='$kelas'
+					   AND aktif=1
+					   AND alumni=0
+					 ORDER BY nama";
 	$result_get_siswa=QueryDb($sql_get_siswa);
  	$cnt=1;
   	while ($row_siswa=@mysql_fetch_array($result_get_siswa))

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -50,7 +50,7 @@ function validate() {
 </script>
 </head>
 	
-<body leftmargin="0" style="background-color:#EEEEEE">
+<body leftmargin="5" style="background-color:#f5f5f5">
 
 <form name="main" enctype="multipart/form-data" >
 <strong>Pilih Guru </strong>

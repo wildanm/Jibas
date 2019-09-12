@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -35,7 +35,7 @@ $K = new CK();
 ?>
 <form name="panelkeu">
 <input type="hidden" name="nis_awal" id="nis_awal" value="<?= $_SESSION['infosiswa.nis'] ?> " />
-<table border="0" cellpadding="2">
+<table border="0" cellpadding="2" width='700'>
 <tr>
     <td align='left'>
 <?  $K->ShowDepartemenComboBox(); ?>

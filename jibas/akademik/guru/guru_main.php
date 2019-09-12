@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -26,8 +26,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Guru Main</title>
 </head>
-	<frameset cols = "28%, *" border ="1">
-    <frame src = "guru_menu.php" style="border:1; border-right:1; border-right-color:#000000; border-right-style:solid" />
+	<frameset cols = "28%, *" border ="0" frameborder="0" framespacing="0">
+    <frame src = "guru_menu.php" style="border:1px; border-right:1px; border-right-color:#000000; border-right-style:solid" />
     <frame src = "blank_guru.php" name ="isi" />
     </frameset><noframes></noframes>
 

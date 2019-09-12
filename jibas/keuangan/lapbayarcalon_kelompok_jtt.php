@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 17 (May 10, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -78,19 +78,19 @@ if (isset($_REQUEST['urutan']))
 <script language="javascript" src="script/tools.js"></script>
 <script language="javascript">
 function refresh() {	
-	document.location.href = "lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>";	
+	document.location.href = "lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>";
 }
 
 function cetak() {
 	var total = document.getElementById("tes").value;
 	
-	var addr = "lapbayarcalon_kelompok_jtt_cetak.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris=<?=$varbaris?>&page=<?=$page?>&total="+total;
+	var addr = "lapbayarcalon_kelompok_jtt_cetak.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris=<?=$varbaris?>&page=<?=$page?>&total="+total;
 	newWindow(addr, 'CetakLapPembayaranJttCalonSiswa','1000','580','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
 function excel() {
 	var total = document.getElementById("tes").value;
-	var addr = "lapbayarcalon_kelompok_jtt_excel.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris=<?=$varbaris?>&page=<?=$page?>&total="+total;
+	var addr = "lapbayarcalon_kelompok_jtt_excel.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris=<?=$varbaris?>&page=<?=$page?>&total="+total;
 	newWindow(addr, 'ExcelLapPembayaranJttCalonSiswa','1000','580','resizable=1,scrollbars=1,status=0,toolbar=0');
 }
 
@@ -103,26 +103,26 @@ function change_urut(urut,urutan) {
 		urutan="ASC"
 	}
 	
-	document.location.href = "lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&urut="+urut+"&urutan="+urutan+"&page=<?=$page?>&hal=<?=$hal?>&varbaris="+varbaris;
+	document.location.href = "lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&urut="+urut+"&urutan="+urutan+"&page=<?=$page?>&hal=<?=$hal?>&varbaris="+varbaris;
 }
 
 function change_page(page) {
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&page="+page+"&hal="+page+"&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris;
+	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&page="+page+"&hal="+page+"&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris;
 }
 
 function change_hal() {
 	var hal = document.getElementById("hal").value;
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris+"&page="+hal+"&hal="+hal;
+	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris+"&page="+hal+"&hal="+hal;
 }
 
 function change_baris() {
 	var varbaris=document.getElementById("varbaris").value;
 	
-	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&statuslunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris;
+	document.location.href="lapbayarcalon_kelompok_jtt.php?idtahunbuku=<?=$idtahunbuku?>&kelompok=<?=$kelompok ?>&idpenerimaan=<?=$idpenerimaan ?>&lunas=<?=$statuslunas ?>&urut=<?=$urut?>&urutan=<?=$urutan?>&varbaris="+varbaris;
 }
 </script>
 </head>

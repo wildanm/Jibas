@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -24,30 +24,65 @@
 require_once('../inc/config.php');
 require_once('../inc/db_functions.php');
 require_once('../inc/common.php');
+
 OpenDb();
-$idanggota=$_REQUEST[idanggota];
-$from=$_REQUEST[from];
-$to=$_REQUEST[to];
-$sql = "SELECT pu.judul, p.tglpinjam, pu.replid FROM pinjam p, daftarpustaka d, pustaka pu WHERE p.tglpinjam BETWEEN '$from' AND '$to' AND p.idanggota = '$idanggota' AND p.kodepustaka=d.kodepustaka AND d.pustaka=pu.replid";
-$result = QueryDb($sql);
-$cnt=1;
+
+$idperpustakaan = -1;
+if (isset($_REQUEST['idperpustakaan']))
+  $idperpustakaan = (int)$_REQUEST['idperpustakaan'];
+
+$filter2="";
+if ($idperpustakaan != -1)
+  $filter2="AND d.perpustakaan=".$idperpustakaan;
+  
+$jenisanggota = $_REQUEST['jenisanggota'];
+$idanggota = $_REQUEST['idanggota'];
+$from = $_REQUEST['from'];
+$to = $_REQUEST['to'];
+
+if ($jenisanggota == "siswa")
+  $filter = "AND p.nis = '$idanggota'";
+elseif ($jenisanggota == "pegawai")
+  $filter = "AND p.nip = '$idanggota'";
+else
+  $filter = "AND p.idmember = '$idanggota'";
+
 ?>
-<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab">
-  <tr>
-    <td height="25" align="center" class="header">No</td>
-    <td height="25" align="center" class="header">Judul Pustaka</td>
-    <td height="25" align="center" class="header">Tgl Pinjam</td>
-    <td height="25" align="center" class="header">&nbsp;</td>
-  </tr>
-  <? while ($row = @mysql_fetch_row($result)) { ?>
-  <tr>
-    <td height="20" align="center"><?=$cnt?></td>
-    <td height="20"><div style="padding-left:5px;"><?=$row[0]?></div></td>
-    <td height="20" align="center"><?=LongDateFormat($row[1])?></td>
-    <td height="20" align="center">
-        <a href="javascript:ViewDetail('<?=$row[2]?>')"><img src="../img/ico/lihat.png" width="16" height="16" border="0" /></a>
+<table width="100%" border="1" cellspacing="0" cellpadding="5" class="tab">
+<tr height='25'>
+  <td width='5%' align="center" class="header">No</td>
+  <td width='15%' align="center" class="header">Tgl Pinjam</td>
+  <td width='*' align="center" class="header">Pustaka</td>
+  <td width='5%' align="center" class="header">&nbsp;</td>
+</tr>
+<?
+$sql = "SELECT pu.judul, p.tglpinjam, pu.replid, d.kodepustaka
+          FROM pinjam p, daftarpustaka d, pustaka pu
+         WHERE p.tglpinjam BETWEEN '$from' AND '$to'
+               $filter $filter2
+           AND p.kodepustaka=d.kodepustaka
+           AND d.pustaka=pu.replid
+         ORDER BY tglpinjam DESC";
+$result = QueryDb($sql);
+$cnt = 0;
+while ($row = @mysql_fetch_row($result))
+{
+  $cnt += 1;  ?>
+  <tr height="20">
+    <td align="center"><?=$cnt?></td>
+    <td align="center"><?=LongDateFormat($row[1])?></td>
+    <td align='left'>
+      <font style='font-size: 9px'><?=$row[3]?></font><br>
+	  <font style='font-size: 11px; font-weight: bold;'><?=$row[0]?></font>
+    </td>
+    <td align="center">
+        <a href="javascript:ViewDetail('<?=$row[2]?>')">
+        <img src="../img/ico/lihat.png" width="16" height="16" border="0" />
+        </a>
     </td>
   </tr>
-  <? $cnt++; ?>
-  <? } ?>
+<?
+}
+CloseDb();
+?>
 </table>

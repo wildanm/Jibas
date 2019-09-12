@@ -1,6 +1,6 @@
-function validate(count){
+function validate(count)
+{
 	var judul = document.getElementById('judul').value;
-	//var harga = unformatRupiah(document.getElementById('harga').value);
 	unformatRupiah('harga');	
 	var harga = document.getElementById('harga').value;
 	var katalog = document.getElementById('katalog').value;
@@ -11,8 +11,6 @@ function validate(count){
 	var keyword = document.getElementById('keyword').value;
 	var ketfisik = document.getElementById('keteranganfisik').value;
 	var cover = document.getElementById('cover').value;
-	
-
 
 	if (judul.length==0)
 	{
@@ -20,12 +18,14 @@ function validate(count){
 		document.getElementById('judul').focus();
 		return false;
 	}
+	
 	if (harga.length==0)
 	{
 		alert ('Anda harus mengisikan nilai untuk Harga Pustaka!');
 		document.getElementById('harga').focus();
 		return false;
 	}
+	
 	if (isNaN(harga))
 	{
 		alert ('Harga Pustaka harus berupa bilangan!');
@@ -33,30 +33,35 @@ function validate(count){
 		document.getElementById('harga').focus();
 		return false;
 	}
+	
 	if (katalog.length==0)
 	{
 		alert ('Anda harus menentukan Katalog Pustaka!');
 		document.getElementById('katalog').focus();
 		return false;
 	}
+	
 	if (penerbit.length==0)
 	{
 		alert ('Anda harus menentukan Penerbit Pustaka!');
 		document.getElementById('penerbit').focus();
 		return false;
 	}
+	
 	if (penulis.length==0)
 	{
 		alert ('Anda harus menentukan Penulis Pustaka!');
 		document.getElementById('penulis').focus();
 		return false;
 	}
+	
 	if (tahun.length==0)
 	{
 		alert ('Anda harus mengisikan nilai untuk Tahun Terbit!');
 		document.getElementById('tahun').focus();
 		return false;
 	}
+	
 	if (isNaN(tahun))
 	{
 		alert ('Tahun Terbit harus berupa bilangan!');
@@ -64,12 +69,14 @@ function validate(count){
 		document.getElementById('tahun').focus();
 		return false;
 	}
+	
 	if (format.length==0)
 	{
 		alert ('Anda harus menentukan Format Pustaka!');
 		document.getElementById('format').focus();
 		return false;
 	}
+	
 	if (keyword.length==0)
 	{
 		alert ('Anda harus mengisikan nilai untuk Keyword!');
@@ -77,7 +84,8 @@ function validate(count){
 		return false;
 	}
 
-	if (cover.length>0){
+	if (cover.length>0)
+	{
 		var ext = "";
 		var i = 0;
 		var string4split='.';
@@ -85,13 +93,14 @@ function validate(count){
 		z = cover.split(string4split);
 		ext = z[z.length-1];
 		
-		if (ext!='JPG' && ext!='jpg' && ext!='Jpg' && ext!='JPg' && ext!='JPEG' && ext!='jpeg'){
+		if (ext!='JPG' && ext!='jpg' && ext!='Jpg' && ext!='JPg' && ext!='JPEG' && ext!='jpeg')
+		{
 			alert ('Format Gambar harus ber-extensi jpg atau JPG !');
-			//document.getElementById('cover').value='';
-	
+			
 			return false;
 		} 
 	}
+	
 	var acc=0;
 	var i=0;
 	while (i<count)
@@ -106,11 +115,15 @@ function validate(count){
 		if (parseInt(y)>0){
 			acc=1;
 		} 
-	i++;
+		i++;
 	}
-	return advance_val(acc);
+	
+	return advance_val(acc) &&
+		   confirm('Data sudah benar?');
 }
-function advance_val(x){
+
+function advance_val(x)
+{
 	if (x==0)
 	{
 		alert ('Setidaknya ada 1 pustaka pada salah satu perpustakaan!');
@@ -122,13 +135,19 @@ function advance_val(x){
 		return true;
 	}
 }
-function ManagePenulis(){
+
+function ManagePenulis()
+{
 	newWindow('../ref/penulis.add.php?flag=2', 'TambahPenulis','355','448','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function ManagePenerbit(){
+
+function ManagePenerbit()
+{
 	newWindow('../ref/penerbit.add.php?flag=2', 'TambahPenerbit','355','448','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
-function getfresh(id,lastid){
+
+function getfresh(id,lastid)
+{
 	if (id=='penulis'){
 		show_wait("PenulisInfo");
 		sendRequestText("GetPenulis.php", showPenulis, "penulis="+lastid);

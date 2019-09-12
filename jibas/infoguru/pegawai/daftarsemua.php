@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -175,8 +175,54 @@ function Cetak() {
 <tr>
 	<td align="right" valign="top">Keterangan :</td>
     <td width="*" colspan="2" align="left" valign="top">
-	<?=$keterangan?>    </td>
+	<?=$keterangan?>
+    </td>
 </tr>
+    <?php
+    $sql = "SELECT ds.replid, ds.idtambahan, td.kolom, ds.jenis, ds.teks, ds.filename 
+              FROM jbssdm.tambahandatapegawai ds, jbssdm.tambahandata td
+             WHERE ds.idtambahan = td.replid
+               AND ds.nip = '$nip'
+             ORDER BY td.urutan   ";
+    $res = QueryDb($sql);
+    $ntambahandata = mysql_num_rows($res);
+
+    if ($ntambahandata > 0)
+    {
+        $first = true;
+        while($row = mysql_fetch_array($res))
+        {
+            $no += 1;
+            $replid = $row['replid'];
+            $kolom = $row['kolom'];
+            $jenis = $row['jenis'];
+
+            if ($jenis == 1 || $jenis == 3)
+            {
+                $data = $row['teks'];
+            }
+            else
+            {
+                $filename = $row['filename'];
+                $data = "<a href='datapribadi.file.php?replid=$replid'>$filename</a>";
+            }
+
+            $rowspan = "";
+            if ($first)
+            {
+                $rowspan = "<td rowspan='$ntambahandata' bgcolor='#FFFFFF'></td>";
+                $first = false;
+            }
+            ?>
+            <tr>
+                <td align="right" valign="top"><?=$kolom?> :</td>
+                <td width="*" colspan="2" align="left" valign="top">
+                    <?=$data?>
+                </td>
+            </tr>
+        <?  }
+    }
+    ?>
 </table>
 
 <br />

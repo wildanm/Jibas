@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -156,6 +156,19 @@ function hide_info(){
 		    <td style="padding-right:5px" valign="top"> <div align="center"> <a style="text-decoration:none" href="penilaian.php" target="content" onClick="MM_nbGroup('down','group1','penilaianoff','images/ico/Icon Header/penilaian2.png',0)" onMouseOver="MM_nbGroup('over','penilaianoff','images/ico/Icon Header/penilaian2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/penilaian.png" alt="" name="penilaianoff" width="60" height="35" border="0" onLoad="" /><br />
 		      
 		        <span class="style7">Penilaian</span></a></div></td>
+
+            <td style="padding-right:5px" valign="top">
+
+                <div align="center">
+                    <a style="text-decoration:none" href="exim.php" target="content"
+                       onClick="MM_nbGroup('down','group1','eximoff','images/ico/Icon Header/exim2.png',0)"
+                       onMouseOver="MM_nbGroup('over','eximoff','images/ico/Icon Header/exim2.png','',0)"
+                       onMouseOut="MM_nbGroup('out')">
+                        <img src="images/ico/Icon Header/exim.png" alt="" name="penilaianoff" width="60" height="35" border="0" onLoad="" /><br />
+
+                      <span class="style7">Ekspor Impor</span></a>
+                </div>
+            </td>
 		    
 		   <td style="padding-right:5px" valign="top">  <div align="center"><a style="text-decoration:none" href="kelulusan.php" target="content" class="style3" onClick="MM_nbGroup('down','group1','kenaikan','images/ico/Icon Header/kenaikan2.png',0)" onMouseOver="MM_nbGroup('over','kenaikan','images/ico/Icon Header/kenaikan2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/kenaikan.png" alt="" name="kenaikan" width="60" height="35" border="0" onLoad="" /><br />
 		     <span class="style7">Kenaikan&nbsp;&amp;<br />Kelulusan</span></a></div></td>
@@ -163,7 +176,16 @@ function hide_info(){
                <td style="padding-right:5px" valign="top"> <div align="center"> 
 				<a style="text-decoration:none" href="mutasi.php" target="content" onClick="MM_nbGroup('down','group1','mutasioff','images/ico/Icon Header/mutasi2.png',0)" onMouseOver="MM_nbGroup('over','mutasioff','images/ico/Icon Header/mutasi2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/mutasi.png" alt="MUTASI" name="mutasioff" width="60" height="35" border="0" id="mutasioff" onload="" /><br />
                 <span class="style7">Mutasi</span></a></div></td>
-           
+			   
+			<td style="padding-right:5px" valign="top">
+				<div align="center">
+					<a style="text-decoration:none" href="pelaporanmenu.php" target="content"
+					   onClick="MM_nbGroup('down','group1','pelaporan','images/ico/Icon Header/pelaporan2.png',0)"
+					   onMouseOver="MM_nbGroup('over','pelaporan','images/ico/Icon Header/pelaporan2.png','',0)"
+					   onMouseOut="MM_nbGroup('out')">	<img src="images/ico/Icon Header/pelaporan.png"
+					   alt="Pelaporan" name="pelaporan" height="34" border="0" onLoad="" /><br /><span class="style7">Pelaporan</span></a>
+				</div>
+			</td>
             
 		       <td style="padding-right:5px" valign="top"> <div align="center"> <a style="text-decoration:none" href="usermenu.php" target="content"  onClick="MM_nbGroup('down','group1','user','images/ico/Icon Header/pengaturan2.png',0)" onMouseOver="MM_nbGroup('over','user','images/ico/Icon Header/pengaturan2.png','',0)" onMouseOut="MM_nbGroup('out')"><img src="images/ico/Icon Header/pengaturan.png" alt="Manajemen User" name="user" width="60" height="35" border="0" onLoad="" /><br />
 	            <span class="style7">Pengaturan</span></a></div></td>

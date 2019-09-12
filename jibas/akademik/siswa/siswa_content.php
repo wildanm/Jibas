@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -68,19 +68,38 @@ if ($op == "dw8dxn8w9ms8zs22")
 } 
 else if ($op == "xm8r389xemx23xb2378e23") 
 {
-	$sql = "DELETE FROM siswa WHERE replid = '$_REQUEST[replid]'"; 	
-	$success = QueryDb($sql);
-	
+    $success = true;
+    BeginTrans();
+
+    $sql = "SELECT nis FROM siswa WHERE replid = '$_REQUEST[replid]'";
+    $res = QueryDb($sql);
+    $row = mysql_fetch_row($res);
+    $nis = $row[0];
+
+    $sql = "DELETE FROM tambahandatasiswa WHERE nis = '$nis'";
+    QueryDbTrans($sql, $success);
+
+    if ($success)
+    {
+        $sql = "DELETE FROM siswa WHERE replid = '$_REQUEST[replid]'";
+        QueryDbTrans($sql, $success);
+    }
+
 	if ($success) 
 	{
-		$sql="SELECT * FROM calonsiswa WHERE replidsiswa = '$_REQUEST[replid]'";
+		$sql = "SELECT * FROM calonsiswa WHERE replidsiswa = '$_REQUEST[replid]'";
 		$result = QueryDb($sql);
 		if (mysql_num_rows($result) > 0) 
 		{
-			$sql="UPDATE calonsiswa SET replidsiswa=NULL WHERE replidsiswa = '$_REQUEST[replid]'";
-			$success = QueryDb($sql);
+			$sql = "UPDATE calonsiswa SET replidsiswa = NULL WHERE replidsiswa = '$_REQUEST[replid]'";
+            QueryDbTrans($sql, $success);
 		}
 	}
+
+	if ($success)
+	    CommitTrans();
+    else
+        RollbackTrans();
 	
 	if ($success) 
 	{	?>
@@ -118,7 +137,7 @@ function tambah() {
 	var kelas = document.getElementById('kelas').value;
 	var tahunajaran = document.getElementById('tahunajaran').value;
 	var tingkat = document.getElementById('tingkat').value;
-	newWindow('siswa_add.php?departemen='+departemen+'&kelas='+kelas+'&tahunajaran='+tahunajaran+'&tingkat='+tingkat, 'TambahSiswa','825','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+	newWindow('siswa_add.php?departemen='+departemen+'&kelas='+kelas+'&tahunajaran='+tahunajaran+'&tingkat='+tingkat, 'TambahSiswa','905','650','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
 function edit(replid, nis) {
@@ -126,7 +145,7 @@ function edit(replid, nis) {
 	var tahunajaran = document.getElementById('tahunajaran').value;
 	var kelas = document.getElementById('kelas').value;
 	var tingkat = document.getElementById('tingkat').value;
-	newWindow('siswa_edit.php?replid='+replid+'&departemen='+departemen+'&tahunajaran='+tahunajaran+'&kelas='+kelas+'&tingkat='+tingkat, 'UbahSiswa','825','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+	newWindow('siswa_edit.php?replid='+replid+'&departemen='+departemen+'&tahunajaran='+tahunajaran+'&kelas='+kelas+'&tingkat='+tingkat, 'UbahSiswa','905','650','resizable=1,scrollbars=1,status=0,toolbar=0')
 }
 
 function hapus(replid, nis) {
@@ -375,7 +394,7 @@ function change_baris() {
         <td height="25" align="center">
         	<a href="JavaScript:tampil(<?=$row[9]?>)" ><img src="../images/ico/lihat.png" border="0" onMouseOver="showhint('Detail Data Siswa!', this, event, '80px')" /></a>&nbsp;        
         	<a href="#" onClick="newWindow('siswa_cetak_detail.php?replid=<?=$row[9]?>', 'DetailSiswa','800','650','resizable=1,scrollbars=1,status=0,toolbar=0')"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak Detail Data Siswa!', this, event, '80px')"/></a>&nbsp;
-			<a href="JavaScript:edit(<?=$row[9]?>)" /><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Calon Siswa!', this, event, '80px')"/></a>&nbsp;
+			<a href="JavaScript:edit(<?=$row[9]?>)" /><img src="../images/ico/ubah.png" border="0" onMouseOver="showhint('Ubah Data Siswa!', this, event, '80px')"/></a>&nbsp;
   		<? 	if (SI_USER_LEVEL() != $SI_USER_STAFF) {	?>             	
         	<a href="JavaScript:hapus(<?=$row[9] ?>,'<?=$row[0] ?>')"><img src="../images/ico/hapus.png" border="0" onMouseOver="showhint('Hapus Data Siswa!', this, event, '80px')"/></a>
 		<?	} ?>

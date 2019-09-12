@@ -1,0 +1,3 @@
+<?
+$IsAllowStudentEdit = false;
+?>

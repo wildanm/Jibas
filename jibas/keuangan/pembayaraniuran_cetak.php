@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -175,11 +175,17 @@ $namapenerimaan = $row[0];
 </td>
 </tr>
 <?  
-$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.tanggal as tgl, p.keterangan, p.jumlah, p.petugas
-          FROM penerimaaniuran p, jurnal j 
-			WHERE j.replid = p.idjurnal AND j.idtahunbuku = '$idtahunbuku'
-			  AND p.idpenerimaan = '$idpenerimaan' AND p.nis = '$nis' 
-	   ORDER BY p.tanggal, p.replid";
+$sql =  "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal, p.keterangan, p.jumlah, p.petugas,
+				jd.koderek AS rekkas, ra.nama AS namakas
+		   FROM penerimaaniuran p, jurnal j, jurnaldetail jd, rekakun ra 
+		  WHERE j.replid = p.idjurnal
+			AND j.replid = jd.idjurnal
+			AND jd.koderek = ra.kode
+			AND j.idtahunbuku = '$idtahunbuku'
+			AND p.idpenerimaan = '$idpenerimaan'
+			AND p.nis = '$nis'
+			AND ra.kategori = 'HARTA'
+		 ORDER BY p.tanggal, p.replid";
 
 $result = QueryDb($sql);    
 ?>
@@ -189,8 +195,9 @@ $result = QueryDb($sql);
 <table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="center" bordercolor="#000000">
 <tr height="30" align="center">
     <td class="header" width="5%">No</td>
-    <td class="header" width="20%">No. Jurnal/Tgl</td>
-    <td class="header" width="18%">Jumlah</td>
+    <td class="header" width="15%">No. Jurnal/Tgl</td>
+    <td class="header" width="15%">Rek. Kas</td>
+    <td class="header" width="15%">Jumlah</td>
     <td class="header" width="*">Keterangan</td>
     <td class="header" width="15%">Petugas</td>
 </tr>
@@ -203,7 +210,8 @@ while ($row = mysql_fetch_array($result)) {
 ?>
 <tr height="25">
     <td align="center"><?=++$cnt?></td>
-    <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . LongDateFormat($row['tgl'])?></i></td>
+    <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
+	<td align="left"><?= $row['rekkas'] . " " . $row['namakas']  ?> </td>
     <td align="right"><?=FormatRupiah($row['jumlah'])?></td>
     <td align="left"><?=$row['keterangan'] ?></td>
     <td align="center"><?=$row['petugas'] ?></td>
@@ -212,7 +220,7 @@ while ($row = mysql_fetch_array($result)) {
 }
 ?>
 <tr height="35">
-    <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
+    <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
     <td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
     <td bgcolor="#996600" colspan="3">&nbsp;</td>
 </tr>

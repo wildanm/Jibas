@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -26,10 +26,6 @@ require_once('../include/db_functions.php');
 require_once('../include/common.php');
 
 OpenDb();
-
-echo "<pre>";
-print_r($_REQUEST);
-echo "</pre>";
 
 $op	= $_REQUEST['op'];
 
@@ -137,12 +133,12 @@ if ($op=='SavePenilaian')
 	//echo "Jumlah".count($ALLNIS);
 	//exit;
 	$x	= split('-',$Date1);
-	$Tgl1 = $x[2];
+	$Tgl1 = (int)$x[2];
 	$Bln1 = (int)$x[1];
 	$Thn1 = $x[0];
 	
 	$x	= split('-',$Date2);
-	$Tgl2 = $x[2];
+	$Tgl2 = (int)$x[2];
 	$Bln2 = (int)$x[1];
 	$Thn2 = $x[0];
 
@@ -150,38 +146,50 @@ if ($op=='SavePenilaian')
 	$res = QueryDb($sql);
 	$row = @mysql_fetch_row($res);
 	$format = $row[0];
+	
+	$TextMsg = "";
 	$Receiver = 0;
-	for ($i=0;$i<count($ALLNIS);$i++){
+	for ($i = 0; $i < count($ALLNIS); $i++)
+	{
 		$nisnya = trim($ALLNIS[$i]);
-		//echo "<span style='background-color:#FF0000; font-family:Courier'>".$ALLNIS[$i]."</span><br>";
 		$filterpesan = "";
+		
 		//Get Idkelas & IdSemester
-		$sql =	"SELECT s.idkelas,ti.departemen FROM $db_name_akad.siswa s, $db_name_akad.kelas k, $db_name_akad.tahunajaran ta, $db_name_akad.tingkat ti ".
-				"WHERE s.nis='$nisnya' AND s.idkelas=k.replid AND k.idtingkat=ti.replid AND k.idtahunajaran=ta.replid ";
-		//echo $sql."<br>";
+		$sql =	"SELECT s.idkelas, ti.departemen, s.nama
+				   FROM $db_name_akad.siswa s, $db_name_akad.kelas k, $db_name_akad.tahunajaran ta, $db_name_akad.tingkat ti 
+				  WHERE s.nis = '$nisnya'
+				    AND s.idkelas = k.replid
+					AND k.idtingkat = ti.replid
+					AND k.idtahunajaran = ta.replid ";
+		
 		$res = QueryDb($sql);
 		$row = @mysql_fetch_row($res);
-		$idkelas	= $row[0];
+		$idkelas = $row[0];
 		$departemen = $row[1];
+		$namasiswa = $row[2];
 
-		$sql = "SELECT replid FROM $db_name_akad.semester WHERE aktif=1 AND departemen='$departemen'";
-		//echo $sql."<br>";
+		$sql = "SELECT replid
+				  FROM $db_name_akad.semester
+				 WHERE aktif = 1
+				   AND departemen = '$departemen'";
 		$res = QueryDb($sql);
 		$row = @mysql_fetch_row($res);
 		$idsemester	= $row[0];
-		//echo "Dep=".$departemen." idsemester=".$idsemester." idkelas=".$idkelas."<br>";
 
 		//Set Filter
 		$filter = '';
-		if ($IDPel!='-1'){
+		if ($IDPel != '-1')
+		{
 			$filter .= " AND idpelajaran='".$IDPel."' ";
+			
 			$sql1 = "SELECT kode FROM $db_name_akad.pelajaran WHERE replid='$IDPel'";
 			$res1 = QueryDb($sql1);
 			$row1 = @mysql_fetch_row($res1);
 			$namapelajaran	= $row1[0];
 			$filterpesan = ", $namapelajaran : ";
 			
-			if ($IDUjian!='-1'){
+			if ($IDUjian != '-1')
+			{
 				$sql2 = "SELECT info1 FROM $db_name_akad.jenisujian WHERE replid='$IDUjian'";
 				$res2 = QueryDb($sql2);
 				$row2 = @mysql_fetch_row($res2);
@@ -191,15 +199,18 @@ if ($op=='SavePenilaian')
 			}
 		}
 			
-		$sql = "SELECT replid,idpelajaran,idjenis FROM $db_name_akad.ujian WHERE tanggal>='$Date1' AND tanggal<='$Date2' AND idkelas='$idkelas' AND idsemester='$idsemester' $filter ORDER BY replid DESC LIMIT $NumData";
-		//echo $sql."<br>";
-		//echo " NIS ".$ALLNIS[$i]."_";
+		$sql = "SELECT replid,idpelajaran,idjenis
+				  FROM $db_name_akad.ujian
+				 WHERE tanggal>='$Date1' AND tanggal<='$Date2'
+				   AND idkelas='$idkelas'
+				   AND idsemester='$idsemester' $filter
+				 ORDER BY replid DESC LIMIT $NumData";
+		
+		
 		$res = QueryDb($sql);
-		$x	 = @mysql_num_rows($res);
-		//echo "Jumlah nilai".$x."<br>";
-
-		while ($row = @mysql_fetch_row($res)){
-						
+		$x = @mysql_num_rows($res);
+		while ($row = @mysql_fetch_row($res))
+		{
 			$sql1 = "SELECT kode FROM $db_name_akad.pelajaran WHERE replid='$row[1]'";
 			$res1 = QueryDb($sql1);
 			$row1 = @mysql_fetch_row($res1);
@@ -217,88 +228,96 @@ if ($op=='SavePenilaian')
 			$nilai = $row2[0];
 			if ($nilai=='')
 				$nilai = '0';	
-			//$filterpesan = "";
-			if ($IDPel=='-1'){
+			
+			if ($IDPel=='-1')
+			{
 				$filterpesan .= ", $namajenisujian $namapelajaran ".$nilai;
-			} else {
-				if ($IDUjian=='-1'){
+			}
+			else
+			{
+				if ($IDUjian=='-1')
+				{
 					$filterpesan .= " $namajenisujian ".$nilai;
-				} else {
+				}
+				else
+				{
 					$filterpesan .= " ".$nilai." ";
 				}
 			}
 
-			//Finding Phone Number
-			$query	= "SELECT nis,hpsiswa,namaayah,hportu,nama FROM $db_name_akad.siswa WHERE nis='$nisnya'";
-			$result = QueryDb($query);
-			$data	= @mysql_fetch_row($result);
-			
-			$hpsiswa	= $data[1];
-			/*
-			for ($x=0;$x<strlen($hpsiswa);$x++){
-				if ($x==0)
-					$newhpsiswa = "+62";
-				else
-					$newhpsiswa .= substr($hpsiswa,$x,1);
-			}
-			$hpsiswa	= $newhpsiswa;
-			*/
-			$hportu		= $data[3];
-			/*
-			for ($x=0;$x<strlen($hportu);$x++){
-				if ($x==0)
-					$newhportu = "+62";
-				else
-					$newhportu .= substr($hportu,$x,1);
-			}
-			$hportu		= $newhportu;
-			*/
-			$namasiswa	= $data[4];
-			//echo ", Pesan = ".$filterpesan;
-			$newformat = str_replace('[SISWA]',$namasiswa,$format);
-			$newformat = str_replace('[TANGGAL1]',$Tgl1,$newformat);
-			$newformat = str_replace('[BULAN1]',$Bln1,$newformat);
-			//$newformat = str_replace('#TAHUN1',$Thn1,$newformat);
-			$newformat = str_replace('[TANGGAL2]',$Tgl2,$newformat);
-			$newformat = str_replace('[BULAN2]',$Bln2,$newformat);
-			//$newformat = str_replace('#TAHUN2',$Thn2,$newformat);
-			$newformat = str_replace('. [PENGIRIM]',$filterpesan.'. [PENGIRIM]',$newformat);
-			$newformat = str_replace('[PENGIRIM]',$Sender,$newformat);
+			$newformat = str_replace('[SISWA]', $namasiswa, $format);
+			$newformat = str_replace('[TANGGAL1]', $Tgl1, $newformat);
+			$newformat = str_replace('[BULAN1]', $Bln1, $newformat);
+			$newformat = str_replace('[TANGGAL2]', $Tgl2, $newformat);
+			$newformat = str_replace('[BULAN2]', $Bln2, $newformat);
+			$newformat = str_replace('. [PENGIRIM]', $filterpesan . '. [PENGIRIM]', $newformat);
+			$newformat = str_replace('[PENGIRIM]', $Sender, $newformat);
 			$TextMsg = CQ($newformat);
-			//echo $TextMsg."<br>";
-		}
+			
+			
+		} // end while
+		
+		if ($TextMsg != '')
+		{
+			$query = "SELECT nis, hpsiswa, namaayah, hportu, info1, info2
+						FROM $db_name_akad.siswa
+					   WHERE nis='$nisnya'";
+			$result = QueryDb($query);
+			$data = @mysql_fetch_row($result);
+		
+			if ($KeOrtu == 1)
+			{
+				for($j = 3; $j <= 5; $j++)
+				{
+					$hportu = trim($data[$j]);
+					if (strlen($hportu) < 7)
+						continue;
+					if (substr($hportu, 0, 1) == "#")
+						continue;
+					
+					$nohp = $hportu;
+					$nohp = str_replace(" 62","0",$nohp);
+					$nohp = str_replace("+62","0",$nohp);
+					
+					$sql = "INSERT INTO outbox
+							   SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp',
+								   SenderID='$Sender', CreatorID='$Sender', idsmsgeninfo=$idsmsgeninfo";
+					QueryDb($sql);
 
-		if ($filterpesan!=''){
-			if ($KeOrtu==1 && $hportu!=''){
-				$nohp = $hportu;
-				$nohp = str_replace(" 62","0",$nohp);
-				$nohp = str_replace("+62","0",$nohp);
-				$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp', SenderID='$Sender', CreatorID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-				//echo $sql."_Ortu<br>";
-				QueryDb($sql);
+					$sql = "INSERT INTO outboxhistory
+							   SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp',
+								   SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
+					QueryDb($sql);
 
-				$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp', SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-				QueryDb($sql);
+					$Receiver++;						
+				} // end for
+			} // end if
+			
+			if ($KeSiswa == 1)
+			{
+				$hpsiswa = trim($data[1]);
+				if (strlen($hpsiswa) >= 7 && substr($hpsiswa, 0, 1) != "#")
+				{
+					$nohp = $hpsiswa;
+					$nohp = str_replace(" 62","0",$nohp);
+					$nohp = str_replace("+62","0",$nohp);
 
-				$Receiver++;
-			}
-			if ($KeSiswa==1 && $hpsiswa!=''){
-				$nohp = $hpsiswa;
-				$nohp = str_replace(" 62","0",$nohp);
-				$nohp = str_replace("+62","0",$nohp);
+					$sql = "INSERT INTO outbox
+							   SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp',
+								   SenderID='$Sender',CreatorID='$Sender', idsmsgeninfo=$idsmsgeninfo";
+					QueryDb($sql);
 
-				$sql = "INSERT INTO outbox SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp', SenderID='$Sender',CreatorID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-				//echo $sql."_Siswa<br>";
-				QueryDb($sql);
-
-				$sql = "INSERT INTO outboxhistory SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp', SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
-				QueryDb($sql);
-				$Receiver++;
-			}
-		}
-		//echo $filterpesan."<br>";
-		//echo "<hr>";
- 	}
+					$sql = "INSERT INTO outboxhistory
+							   SET InsertIntoDB=now(), SendingDateTime='$SendDate', Text='$TextMsg', DestinationNumber='$nohp',
+								   SenderID='$Sender', idsmsgeninfo=$idsmsgeninfo";
+					QueryDb($sql);
+					
+					$Receiver++;	
+				} // end if				 	
+			} // end if
+		} // end if
+		
+ 	} // end for 
 }
 
 ?>

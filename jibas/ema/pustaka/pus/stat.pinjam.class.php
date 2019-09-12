@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,255 +21,297 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CStat{
-	function OnStart(){
+class CStat
+{
+	function OnStart()
+	{
 		$this->Limit=10;
 		if (isset($_REQUEST[Limit]))
 			$this->Limit = $_REQUEST[Limit];
+			
 		$this->perpustakaan = $_REQUEST[perpustakaan];
+		
 		$this->BlnAwal = date('m');
 		if (isset($_REQUEST[BlnAwal]))
 			$this->BlnAwal = $_REQUEST[BlnAwal];
+			
 		$this->ThnAwal = date('Y');
 		if (isset($_REQUEST[ThnAwal]))
 			$this->ThnAwal = $_REQUEST[ThnAwal];
+			
 		$this->BlnAkhir = date('m');
 		if (isset($_REQUEST[BlnAkhir]))
 			$this->BlnAkhir = $_REQUEST[BlnAkhir];
+			
 		$this->ThnAkhir = date('Y');
 		if (isset($_REQUEST[ThnAkhir]))
 			$this->ThnAkhir = $_REQUEST[ThnAkhir];
 	}
-	function reload_page(){
+	
+	function reload_page()
+	{
 		?>
 		<script language='JavaScript'>
 			document.location.href="pustaka.baru.php";
         </script>
 		<?
 	}
-	function OnFinish(){
+	
+	function OnFinish()
+	{
 		?>
 		<script language='JavaScript'>
 			Tables('table', 1, 0);
 		</script>
 		<?
     }
-	function GetPerpus(){
+	
+	function GetPerpus()
+	{
 		global $db_name_perpus;
-		//if (SI_USER_LEVEL()==2){
-			//$sql = "SELECT replid,nama FROM $db_name_perpus.perpustakaan WHERE replid=".SI_USER_DEPT()." ORDER BY nama";
-		//} else {
+		
 		$sql = "SELECT replid,nama FROM $db_name_perpus.perpustakaan ORDER BY nama";
-		//echo $sql;
-		//}
+		
 		$result = QueryDb($sql);
 		?>
-		<link href="../../style/style.css" rel="stylesheet" type="text/css" />
 		<select name="perpustakaan" id="perpustakaan" class="cmbfrm"  onchange="chg()">
 		<?
-		//if (SI_USER_LEVEL()!=2){
 			echo "<option value='-1' ".IntIsSelected('-1',$this->perpustakaan).">(Semua)</option>";
-		//}
-		while ($row = @mysql_fetch_row($result)){
-		if ($this->perpustakaan=="")
-			$this->perpustakaan = $row[0];	
-		?>
-			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->perpustakaan)?>><?=$row[1]?></option>
-		<?
-		}
-		?>
+		
+			while ($row = @mysql_fetch_row($result))
+			{
+				if ($this->perpustakaan=="")
+					$this->perpustakaan = $row[0];	
+				?>
+				<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->perpustakaan)?>><?=$row[1]?></option>
+<?			}	?>
 		</select>
 		<?
 	}
-    function Content(){
+	
+    function Content()
+	{
 		global $G_START_YEAR;
 		?>
-		<link href="../sty/style.css" rel="stylesheet" type="text/css">
+		
         <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
+        <tr>
             <td valign="top">
-           	  <div align="left">
-                  <table width="100%" border="0" cellspacing="2" cellpadding="2">
-                    <tr>
-                      <td width="20">Perpustakaan </td>
-                      <td width="200"><?=$this->GetPerpus()?></td>
-                        <td width="66%" rowspan="3">
-                        	<a href="javascript:show()"><img src="../../img/view.png" width="48" height="48" border="0" /></a>                        </td>
-                    </tr>
-                    <tr>
-                      <td>Bulan</td>
-                      <td width="*">
-                      		<?
-							$yearnow = date(Y);
-							?>
-                            <table width="100%" border="0" cellspacing="0" cellpadding="1">
-                              <tr>
-                                <td>
-                                	<?="<select name='BlnAwal' id='BlnAwal' class='cmbfrm' onchange='chg()'>";
-                                    for ($i=1;$i<=12;$i++){
-                                        if ($this->BlnAwal=="")
-                                            $this->BlnAwal = $i;
-                                        echo "<option value='".$i."' ".IntIsSelected($i,$this->BlnAwal).">".NamaBulan($i)."</option>";
-                                    }
-                                    echo "</select>";
-									?>                                </td>
-                                <td>
-                                	<?="<select name='ThnAwal' id='ThnAwal' class='cmbfrm' onchange='chg()'>";
-                                    for ($i=$G_START_YEAR;$i<=$yearnow;$i++){
-                                        if ($this->ThnAwal=="")
-                                            $this->ThnAwal = $i;
-                                        echo "<option value='".$i."' ".IntIsSelected($i,$this->ThnAwal).">".$i."</option>";
-                                    }
-                                    echo "</select>";
-									?>                                </td>
-                                <td>
-                                	<?="&nbsp;s.d.&nbsp;";
-									?>                                </td>
-                                <td>
-                                	<?="<select name='BlnAkhir' id='BlnAkhir' class='cmbfrm' onchange='chg()'>";
-                                    for ($i=1;$i<=12;$i++){
-                                        if ($this->BlnAkhir=="")
-                                            $this->BlnAkhir = $i;
-                                        echo "<option value='".$i."' ".IntIsSelected($i,$this->BlnAkhir).">".NamaBulan($i)."</option>";
-                                    }
-                                    echo "</select>";
-									?>                                </td>
-                                <td>
-                                	<?="<select name='ThnAkhir' id='ThnAkhir' class='cmbfrm' onchange='chg()'>";
-                                    for ($i=$G_START_YEAR;$i<=$yearnow;$i++){
-                                        if ($this->ThnAkhir=="")
-                                            $this->ThnAkhir = $i;
-                                        echo "<option value='".$i."' ".IntIsSelected($i,$this->ThnAkhir).">".$i."</option>";
-                                    }
-                                    echo "</select>";
-									?>                                </td>
-                              </tr>
-                            </table>						</td>
-                    </tr>
-                    <tr>
-                      <td>Jumlah&nbsp;data&nbsp;yang&nbsp;ditampilkan</td>
-                      <td>
-                      	<?="<select name='Limit' id='Limit' class='cmbfrm' onchange='chg()'>";
-						for ($i=5;$i<=20;$i+=5){
+           	<div align="left">
+                <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                <tr>
+                    <td width="20">Perpustakaan </td>
+                    <td width="200"><?=$this->GetPerpus()?></td>
+                    <td width="66%" rowspan="3">
+                        <a href="javascript:show()"><img src="../../img/view.png" width="48" height="48" border="0" /></a>
+					</td>
+                </tr>
+                <tr>
+                    <td>Bulan</td>
+                    <td width="*">
+<?						$yearnow = date(Y);	?>
+                        <table width="100%" border="0" cellspacing="0" cellpadding="1">
+                        <tr>
+                            <td>
+<?								echo "<select name='BlnAwal' id='BlnAwal' class='cmbfrm' onchange='chg()'>";
+                                for ($i=1;$i<=12;$i++)
+								{
+                                    if ($this->BlnAwal=="")
+                                        $this->BlnAwal = $i;
+										
+                                    echo "<option value='".$i."' ".IntIsSelected($i,$this->BlnAwal).">".NamaBulan($i)."</option>";
+                                }
+                                echo "</select>"; ?>
+							</td>
+                            <td>
+<?								echo "<select name='ThnAwal' id='ThnAwal' class='cmbfrm' onchange='chg()'>";
+                                for ($i=$G_START_YEAR;$i<=$yearnow;$i++)
+								{
+                                    if ($this->ThnAwal=="")
+                                        $this->ThnAwal = $i;
+                                    echo "<option value='".$i."' ".IntIsSelected($i,$this->ThnAwal).">".$i."</option>";
+                                }
+                                echo "</select>";	?>
+							</td>
+                            <td>
+<?								echo "&nbsp;s.d.&nbsp;";	?>
+							</td>
+                            <td>
+<?								echo "<select name='BlnAkhir' id='BlnAkhir' class='cmbfrm' onchange='chg()'>";
+                                for ($i=1;$i<=12;$i++)
+								{
+                                    if ($this->BlnAkhir=="")
+                                        $this->BlnAkhir = $i;
+                                    echo "<option value='".$i."' ".IntIsSelected($i,$this->BlnAkhir).">".NamaBulan($i)."</option>";
+                                }
+                                echo "</select>";	?>
+							</td>
+                            <td>
+<?								echo "<select name='ThnAkhir' id='ThnAkhir' class='cmbfrm' onchange='chg()'>";
+                                for ($i=$G_START_YEAR;$i<=$yearnow;$i++)
+								{
+                                    if ($this->ThnAkhir=="")
+                                        $this->ThnAkhir = $i;
+                                    echo "<option value='".$i."' ".IntIsSelected($i,$this->ThnAkhir).">".$i."</option>";
+                                }
+                                echo "</select>"; ?>
+							</td>
+                        </tr>
+                        </table>
+					</td>
+                </tr>
+                <tr>
+                    <td>Jumlah&nbsp;data&nbsp;yang&nbsp;ditampilkan</td>
+                    <td>
+<?						echo "<select name='Limit' id='Limit' class='cmbfrm' onchange='chg()'>";
+						for ($i=5;$i<=20;$i+=5)
+						{
 							if ($this->Limit=="")
 								$this->Limit = $i;
 							echo "<option value='".$i."' ".IntIsSelected($i,$this->Limit).">".$i."</option>";
 						}
-						echo "</select>";
-						?>                      </td>
-                    </tr>
-                  </table>
-              </div>            </td>
+						echo "</select>"; ?>
+					</td>
+                </tr>
+                </table>
+			</div>
+			</td>
             <td valign="top">
-            	<div id="title" align="right">
-                	<font style="background-color: rgb(255, 204, 102);" face="Verdana, Arial, Helvetica, sans-serif" size="4">&nbsp;</font>&nbsp;					
-        			<span class="news_title2">Statistik Peminjam Terbanyak</span>
-                </div>
+            <div id="title" align="right">
+                <font style="color:#FF9900; font-size:30px;"><strong>.:</strong></font>
+                <font style="font-size:18px; color:#999999">Statistik Peminjam Terbanyak</font><br />
+                <a href="pustaka.php" class="welc">Pustaka</a><span class="welc"> > Statistik Peminjam</span><br /><br /><br />
+            </div>
             </td>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
             <td colspan="2" valign="top">
-				<? if (isset($_REQUEST[ShowState])) {
+<? 				if (isset($_REQUEST[ShowState]))
+				{
 					echo $this->ShowStatistik();
-				} else {
+				}
+				else
+				{
 					echo "&nbsp;";	
 				} ?>
             </td>
-          </tr>
+        </tr>
         </table>
         <br />
-        <?
-	}
-	function ShowStatistik(){
-		global $db_name_perpus;
+<?	}
+
+	function ShowStatistik()
+	{
 		$filter="";
 		if ($this->perpustakaan!='-1')
 			$filter=" AND d.perpustakaan=".$this->perpustakaan;
-		$sql = "SELECT count(*) as num, p.idanggota FROM $db_name_perpus.pinjam p, $db_name_perpus.daftarpustaka d WHERE p.tglpinjam BETWEEN '".$this->ThnAwal."-".$this->BlnAwal."-01' AND '".$this->ThnAkhir."-".$this->BlnAkhir."-31' AND d.kodepustaka=p.kodepustaka $filter GROUP BY p.idanggota ORDER BY num DESC LIMIT ".$this->Limit;		
+			
+		$sql = "SELECT COUNT(x.replid) AS num, x.idanggota, x.jenis
+				  FROM
+					   (SELECT p.replid, p.info1 AS jenis, IF(p.nis IS NOT NULL, p.nis, IF(p.nip IS NOT NULL, p.nip, p.idmember)) AS idanggota
+						  FROM jbsperpus.pinjam p, jbsperpus.daftarpustaka d
+						 WHERE p.tglpinjam BETWEEN '".$this->ThnAwal."-".$this->BlnAwal."-01'
+						   AND '".$this->ThnAkhir."-".$this->BlnAkhir."-31'
+						   AND d.kodepustaka=p.kodepustaka $filter) AS x
+				 GROUP BY x.idanggota, x.jenis
+				 ORDER BY num DESC
+				 LIMIT $this->Limit";
+		
 		$result = QueryDb($sql);
 		$cnt=1;
-		$key = $this->ThnAwal."-".$this->BlnAwal."-01,".$this->ThnAkhir."-".$this->BlnAkhir."-31";
-		?>
+		$key = $this->ThnAwal."-".$this->BlnAwal."-01,".$this->ThnAkhir."-".$this->BlnAkhir."-31"; ?>
+		
 		<table width="100%" border="0" cellspacing="2" cellpadding="2">
-		  <? if (@mysql_num_rows($result)>0) { ?>
-          <tr>
-		    <td colspan="2" align="center" valign="top"><a href="javascript:Cetak()"><img src="../../img/ico/print1.png" width="16" height="16" border="0" />&nbsp;Cetak</a></td>
-	      </tr>
-		  <tr>
+<? 		if (@mysql_num_rows($result)>0)
+		{ ?>
+        <tr>
+		    <td colspan="2" align="center" valign="top"><a href="javascript:Cetak()"><img src="../img/ico/print1.png" width="16" height="16" border="0" />&nbsp;Cetak</a></td>
+	    </tr>
+		<tr>
 			<td width="50%" align="center" valign="top">
-            	<img src="<?="statimage.php?type=bar&key=$key&Limit=$this->Limit&krit=1&perpustakaan=$this->perpustakaan" ?>" />            </td>
+            	<img src="<?="statimage.php?type=bar&key=$key&Limit=$this->Limit&krit=1&perpustakaan=$this->perpustakaan" ?>" />
+			</td>
 			<td align="center" valign="top">
-            	<img src="<?="statimage.php?type=pie&key=$key&Limit=$this->Limit&krit=1&perpustakaan=$this->perpustakaan" ?>" />            </td>
-		  </tr>
-          <? } ?>
-		  <tr>
-			<td colspan="2" valign="top">
-				<table width="100%" border="0" cellspacing="0" cellpadding="0">
-				  <tr>
-					<td width="350" valign="top">
-						<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab">
-						  <tr>
-							<td height="25" align="center" class="header">No</td>
-							<td height="25" align="center" class="header">Anggota</td>
-							<td height="25" align="center" class="header">Jumlah</td>
-							<td height="25" align="center" class="header">&nbsp;</td>
-						  </tr>
-                          <? if (@mysql_num_rows($result)>0) { ?>
-						  <? while ($row = @mysql_fetch_row($result)) { ?>
-						  <? 
+            	<img src="<?="statimage.php?type=pie&key=$key&Limit=$this->Limit&krit=1&perpustakaan=$this->perpustakaan" ?>" />
+			</td>
+		</tr>
+<? 		} ?>
+		<tr>
+		<td colspan="2" valign="top">
+			<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr>
+				<td width="350" valign="top">
+					<table width="100%" border="1" cellspacing="0" cellpadding="5" class="tab">
+					<tr height="25">
+						<td width='10%' align="center" class="header">No</td>
+						<td width='*' align="center" class="header">Anggota</td>
+						<td width='15%' align="center" class="header">Jumlah</td>
+						<td width='15%' align="center" class="header">&nbsp;</td>
+					</tr>
+<? 					if (@mysql_num_rows($result)>0)
+					{
+						while ($row = @mysql_fetch_row($result))
+						{ 
 							$this->idanggota = $row[1];
-							$NamaAnggota = $this->GetMemberName();
-						  ?>
-						  <tr>
-							<td height="20" align="center"><?=$cnt?></td>
-							<td height="20">&nbsp;<?=$this->idanggota?> - <?=$NamaAnggota?></td>
-							<td height="20" align="center"><?=$row[0]?></td>
-							<td height="20" align="center">
-                            	<a href="javascript:ViewList('<?=$this->idanggota?>')"><img src="../../img/lihat.png" width="16" height="16" border="0" /></a>                            </td>
-						  </tr>
-                          <? $cnt++; ?>
-                          <? } ?>
-						  <? } else { ?>
-						  <tr>
+							$this->jenisanggota = $row[2];
+							$NamaAnggota = $this->GetMemberName();  ?>
+							<tr height="20">
+								<td align="center"><?=$cnt?></td>
+								<td align="left">
+									<font style='font-size: 9px'><?=$this->idanggota?></font><br>
+									<font style='font-size: 11px; font-weight: bold;'><?=$NamaAnggota?></font>
+								</td>	
+								<td align="center"><?=$row[0]?></td>
+								<td align="center">
+									<a href="javascript:ViewList('<?=$this->jenisanggota?>','<?=$this->idanggota?>')"><img src="../../img/ico/lihat.png" width="16" height="16" border="0" /></a>
+								</td>
+							</tr>
+<? 							$cnt++;
+						}
+					}
+					else
+					{ ?>
+						<tr>
 							<td height="20" align="center" colspan="4" class="nodata">Tidak ada data</td>
-						  </tr>	
-						  <? } ?>
-				    </table>					</td>
-					<td valign="top">
-                   	  <div id="ListInfo" style="padding-left:15px">                      </div>                    </td>
-				  </tr>
-				</table>			</td>
-		  </tr>
-		</table>
-		<?
-	}
-	function GetMemberName(){
-		global $db_name_akad;
-		global $db_name_sdm;
-		global $db_name_perpus;
-		$idanggota = $this->idanggota;
-		$sql1 = "SELECT nama FROM $db_name_akad.siswa WHERE nis='$idanggota'";
-		$result1 = QueryDb($sql1);
-		if (@mysql_num_rows($result1)>0){
-			$row1 = @mysql_fetch_array($result1);
-			return $row1[nama];
-		} else {
-			$sql2 = "SELECT nama FROM $db_name_sdm.pegawai WHERE nip='$idanggota'";
-			$result2 = QueryDb($sql2);
-			if (@mysql_num_rows($result2)>0){
-				$row2 = @mysql_fetch_array($result2);
-				return $row2[nama];
-			} else {
-				$sql3 = "SELECT nama FROM $db_name_perpus.anggota WHERE noregistrasi='$idanggota'";
-				$result3 = QueryDb($sql3);
-				if (@mysql_num_rows($result3)>0){
-					$row3 = @mysql_fetch_array($result3);
-					return $row3[nama];
-				} else {
-					return "Tanpa Nama";
-				}
-			}
+						</tr>	
+<? 					} ?>
+				    </table>
+				</td>
+				<td valign="top">
+                   	<div id="ListInfo" style="padding-left:15px"></div>
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	</table>
+<?	}
+	
+	function GetMemberName()
+	{
+		if ($this->jenisanggota == "siswa")
+		{
+			$sql = "SELECT nama
+					  FROM jbsakad.siswa
+					 WHERE nis = '$this->idanggota'";
 		}
+		elseif ($this->jenisanggota == "pegawai")
+		{
+			$sql = "SELECT nama
+					  FROM jbssdm.pegawai
+					 WHERE nip = '$this->idanggota'";
+		}
+		else
+		{
+			$sql = "SELECT nama
+					  FROM jbsperpus.anggota
+					 WHERE noregistrasi = '$this->idanggota'";
+		}
+		$res = QueryDb($sql);
+		$row = mysql_fetch_row($res);
+		$namaanggota = $row[0];
+		
+		return $namaanggota;
 	}
 }
 ?>

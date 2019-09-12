@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,72 +27,86 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../library/departemen.php');
+require_once('../sessionchecker.php');
+
 OpenDb();
 $error = "";
 
 if (isset($_REQUEST['error']))
 	$error = $_REQUEST['error'];
+
 $departemen = "";
 if (isset($_REQUEST['departemen']))
 	$departemen = $_REQUEST['departemen'];
+
 $tahunajaran ="";
 if (isset($_REQUEST['tahunajaran']))
 	$tahunajaran = $_REQUEST['tahunajaran'];
+
 $semester = "";
 if (isset($_REQUEST['semester']))
 	$semester = $_REQUEST['semester'];
+
 $pelajaran = "";
 if (isset($_REQUEST['pelajaran']))
 	$pelajaran = $_REQUEST['pelajaran'];
+
 $tingkat = "";
 if (isset($_REQUEST['tingkat']))
 	$tingkat = $_REQUEST['tingkat'];
+
 $kelas = "";
 if (isset($_REQUEST['kelas']))
 	$kelas = $_REQUEST['kelas'];
+
+$jenis = 0;
+if (isset($_REQUEST['jenis']))
+    $jenis = $_REQUEST['jenis'];
+
 $op = "";
 if (isset($_REQUEST['op'])){
 	$op = $_REQUEST['op'];
 
 $sql1 = "SELECT k.replid as replid, s.nis, s.nama, k.komentar FROM siswa s, komennap k, infonap i WHERE s.idkelas = '$kelas' AND k.nis = s.nis AND k.idinfo = i.replid AND i.idkelas = '$kelas' AND i.idpelajaran = '$pelajaran' AND i.idsemester='$semester'";
 $result1 = QueryDb($sql1);
-if ($op=="lihat"){
-if (@mysql_num_rows($result1)>0){
+if ($op=="lihat")
+{
+    if (@mysql_num_rows($result1)>0)
+    {
 ?>
-	<script language="javascript">
-	parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
-		parent.footer.location.href = "komentar_lihat.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
-		</script>
+        <script language="javascript">
+        parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
+        parent.footer.location.href = "komentar.lihat.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
+        </script>
 <?
-} else {
+    } else {
 ?>
-<script language="javascript">
-	parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&error=1";
-	parent.footer.location.href = "blank_komentar.php";
-	//alert ('Belum ada data rapor untuk kriteria-kriteria ini  \nSilakan hitung terlebih dahulu nilai rapor untuk kriteria-kriteria tersebut!');
-</script>
+        <script language="javascript">
+            parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&error=1";
+            parent.footer.location.href = "blank_komentar.php";
+        </script>
 <?
-		
+    }
 }
-} 
-if ($op=="show"){
-	if (@mysql_num_rows($result1)>0){
+
+if ($op=="show")
+{
+	if (@mysql_num_rows($result1)>0)
+	{
 	?>
 	<script language="javascript">
 	parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
-		parent.footer.location.href = "komentar_footer.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>";
-		</script>
-		<?
-}  else {
+    parent.footer.location.href = "komentar_footer.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&jenis=<?=$jenis?>";
+    </script>
+<?
+    }  else {
 ?>
-<script language="javascript">
+    <script language="javascript">
 	parent.header.location.href = "komentar_header.php?departemen=<?=$departemen?>&tahunajaran=<?=$tahunajaran?>&semester=<?=$semester?>&tingkat=<?=$tingkat?>&pelajaran=<?=$pelajaran?>&kelas=<?=$kelas?>&error=1";
 	parent.footer.location.href = "blank_komentar.php";
-	//alert ('Belum ada data rapor untuk kriteria-kriteria ini  \nSilakan hitung terlebih dahulu nilai rapor untuk kriteria-kriteria tersebut!');
-</script>
+    </script>
 <?
-	
-} 
+    }
 }
 		
 }
@@ -143,7 +157,7 @@ parent.footer.location.href = "blank_komentar.php";
 }
 
 
-function show() {	
+function show(jenis) {
 	var departemen = document.getElementById("departemen").value;
 	var tahunajaran = document.getElementById("tahunajaran").value;
 	var semester = document.getElementById("semester").value;	
@@ -158,7 +172,7 @@ function show() {
 	} else if (pelajaran.length == 0){
 		alert ('Pastikan pelajaran sudah ada!');			
 	} else {		
-		document.location.href = "komentar_header.php?departemen="+departemen+"&tahunajaran="+tahunajaran+"&semester="+semester+"&tingkat="+tingkat+"&pelajaran="+pelajaran+"&kelas="+kelas+"&op=show";
+		document.location.href = "komentar_header.php?departemen="+departemen+"&tahunajaran="+tahunajaran+"&semester="+semester+"&tingkat="+tingkat+"&pelajaran="+pelajaran+"&kelas="+kelas+"&op=show&jenis="+jenis;
 		//parent.footer.location.href = "komentar_footer.php?departemen="+departemen+"&tahunajaran="+tahunajaran+"&semester="+semester+"&tingkat="+tingkat+"&pelajaran="+pelajaran+"&kelas="+kelas;
 	}
 }
@@ -273,9 +287,21 @@ function lihat() {
 <?			} ?>
    		</select>        
         </td>
-        <td colspan="2"><div align="center">
-            <input type="button" name="tampil" value="Lihat Komentar" class="but" style="width:200px" title="Lihat Komentar per Kelas per Pelajaran" onClick="lihat()" />
-        </div></td>
+          <td colspan="3" rowspan="2">
+              <table border="0" cellspacing="0">
+              <tr>
+                  <td>
+                      <input type="button" name="input" value="Input Komentar Pelajaran" class="but" style="width:200px; height: 40px;"  title="Input Komentar Pelajaran"  onClick="show(0)" />
+                  </td>
+                  <td>
+                      <input type="button" name="input" value="Input Komentar Spiritual & Sosial" class="but" style="width:240px; height: 40px;"  title="Input Komentar Spiritual & Sosial" onClick="show(1)" />
+                  </td>
+                  <td>
+                      <input type="button" name="tampil" value="Lihat Komentar" class="but" style="width:200px; height: 40px;" title="Lihat Komentar per Kelas" onClick="lihat()" />
+                  </td>
+              </tr>
+              </table>
+          </td>
       </tr>
       <tr>
         <td align="left"><strong>Semester </strong></td>
@@ -295,9 +321,6 @@ function lihat() {
 			}
     		?>
         </select></td>
-        <td colspan="2"><div align="center">
-            <input type="button" name="input" value="Input Komentar" class="but" style="width:200px"  title="Input Komentar" onClick="show()" />
-        </div></td>
       </tr>
     </table></td>
 </tr>

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -529,41 +529,40 @@ mso-break-type:section-break'>
   </tr>
   <tr>
     <td>
-
-	<table width="100%" border="1" bordercolor="#b8b8b8" class="tab" id="table" cellpadding="0" cellspacing="0">
+        
+    <table border="1" id="table" bordercolor="#b8b8b8" class="tab" width="100%" cellpadding="0" cellspacing="0">
 	<tr>
-	<td width="27%" height="30" align="center" bgcolor="#b8b8b8" class="header"><font face="Verdana" size="2" color="#000000" ><strong>Pelajaran</strong></font></td>
-	<td width="73%" height="30" align="center" bgcolor="#b8b8b8" class="header"><font face="Verdana" size="2" color="#000000" ><strong>Komentar</strong></font></td>
+	<td width="27%" height="30" align="center" bgcolor="#b8b8b8" class="header"><strong>Pelajaran</strong></td>
+	<td width="73%" height="30" align="center" bgcolor="#b8b8b8" class="header"><strong>Komentar</strong></td>
 	</tr>
 	<!-- Ambil pelajaran per departemen-->
 	<?
-	$sql_get_pelajaran_komentar="SELECT pel.replid as replid,pel.nama as nama FROM infonap info, komennap komen, siswa sis, pelajaran pel ".
-								"WHERE info.replid=komen.idinfo ".
-								"AND komen.nis=sis.nis ".
-								"AND info.idpelajaran=pel.replid ".
-								"AND info.idsemester='$semester' ".
-								"AND info.idkelas='$kelas' ".
-								"AND sis.nis='$nis' ".
-								"GROUP BY pel.nama";
-	$result_get_pelajaran_komentar=QueryDb($sql_get_pelajaran_komentar);
-	$cntpel_komentar=1;
-	while ($row_get_pelajaran_komentar=@mysql_fetch_array($result_get_pelajaran_komentar))
-    {
-    	$sql_get_komentar = "SELECT k.komentar
-                               FROM jbsakad.komennap k, jbsakad.infonap i
-                              WHERE k.nis='$nis'
-                                AND i.idpelajaran='$row_get_pelajaran_komentar[replid]'
-                                AND i.idsemester = '$semester'
-                                AND i.replid=k.idinfo";
-    	$result_get_komentar=QueryDb($sql_get_komentar);
-    	$row_get_komentar=@mysql_fetch_row($result_get_komentar);
-	?>
+	$sql = "SELECT pel.replid as replid,pel.nama as nama 
+	          FROM infonap info, komennap komen, siswa sis, pelajaran pel 
+			 WHERE info.replid = komen.idinfo 
+			   AND komen.nis = sis.nis 
+			   AND info.idpelajaran = pel.replid 
+			   AND info.idsemester = '$semester' 
+			   AND info.idkelas = '$kelas' 
+			   AND sis.nis = '$nis' 
+		  GROUP BY pel.nama";
+	$res = QueryDb($sql);
+	$cntpel_komentar = 1;
+	
+	while ($row = @mysql_fetch_array($res))
+	{
+		$sql = "SELECT k.komentar 
+		          FROM jbsakad.komennap k, jbsakad.infonap i 
+				 WHERE k.nis='$nis' AND i.idpelajaran='$row[replid]' AND i.replid=k.idinfo 
+				   AND i.idsemester='$semester' AND i.idkelas='$kelas'";
+      
+		$res2 = QueryDb($sql);
+		$row2 = @mysql_fetch_row($res2); ?>
 	<tr>
-	<td height="25"><span class="style5"><?=$row_get_pelajaran_komentar[nama]?></span></td>
-	<td height="25"><?=$row_get_komentar[0]?></td>
+	<td height="25"><?=$row['nama']?></td>
+	<td height="25"><?=$row2[0]?></td>
 	</tr>
-	<?
-	$cntpel_komentar++;
+<?		$cntpel_komentar++;
 	}
 	?>
 	</table>

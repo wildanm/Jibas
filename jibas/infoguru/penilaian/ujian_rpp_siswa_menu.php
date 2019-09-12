@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -57,7 +57,7 @@ function pilih(kelas,rpp){
 }
 </script>
 </head>
-<body topmargin="0" leftmargin="0">
+<body  topmargin="5" leftmargin="5" style="background-color: #f5f5f5; line-height: 22px;">
 <?
 //$query_aturan = "SELECT DISTINCT u.idrpp, r.rpp FROM ujian u, rpp r, kelas k WHERE u.idrpp = r.replid AND r.idtingkat = k.idtingkat AND k.replid = $kelas AND r.idsemester = $semester AND r.idpelajaran = $pelajaran AND r.aktif = 1 ORDER BY koderpp";
 
@@ -66,12 +66,13 @@ $query_aturan = "SELECT r.replid, r.rpp FROM rpp r, kelas k WHERE r.idtingkat = 
 $result_aturan = QueryDb($query_aturan);
 if (!mysql_num_rows($result_aturan)==0){ ?>
 
-<table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
+<strong>RPP:</strong>
+<table class="tab" id="table" border="1" style="border-collapse:collapse; border-width: 1px; border-color: #f5f5f5;" width="100%" align="left" bordercolor="#000000">
 <!-- TABLE CONTENT -->
-    
-<tr height="30">    	
-    <td width="100%" class="header" align="center">RPP</td>
-</tr>	
+
+<tr style="height: 2px;">
+    <td></td>
+</tr>
 <? 
 	$i=0;
 	$cnt = 0;
@@ -81,7 +82,8 @@ if (!mysql_num_rows($result_aturan)==0){ ?>
 		
 ?>
 <tr>   	
-    <td align="center" height="25" onclick="pilih(<?=$kelas?>,<?=$row_aturan['replid']?>)" style="cursor:pointer"><u><b><?=$row_aturan['rpp']?></b></u>
+    <td align="left" height="25" onclick="pilih(<?=$kelas?>,<?=$row_aturan['replid']?>)" style="cursor:pointer">
+        <?=$row_aturan['rpp']?>
     </td>
 </tr>
 <!-- END TABLE CONTENT -->

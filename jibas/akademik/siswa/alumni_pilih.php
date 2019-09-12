@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,6 +27,7 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../cek.php');
+
 $jenis="xxxx";
 if (isset($_REQUEST['departemen']))
 	$departemen=$_REQUEST['departemen'];
@@ -96,81 +97,97 @@ if (isset($_REQUEST['bln']))
 	$bln = $_REQUEST['bln'];
 
 $string = "";
-if ($pilihan == 1) {			
+if ($pilihan == 1)
+{			
 	if ($namadicari == "")			
 		$string = " s.nis LIKE '%$nisdicari%' AND ";
 	if ($nisdicari == "")
 		$string = " s.nama LIKE '%$namadicari%' AND ";
 	if ($nisdicari <> "" && $namadicari <> "")
 		$string = " s.nis LIKE '%$nisdicari%' OR s.nama LIKE '%$namadicari%' AND ";
-} else if ($pilihan == 2) {			
+}
+elseif ($pilihan == 2)
+{			
 	$string = " s.idkelas = $kelas AND ";
 } 
-//echo $pilihan."_".$nisdicari."_".$namadicari."_".$kelas."_".$string; 
 
 $n = JmlHari($bln, $th);	
 	
 OpenDb();	
-$sql="SELECT YEAR(tgllulus) AS tahun FROM alumni WHERE departemen='$departemen' GROUP BY tahun ORDER BY tahun DESC";
-$result=QueryDb($sql);
- 
+$sql = "SELECT YEAR(tgllulus) AS tahun
+	  	  FROM alumni
+		 WHERE departemen='$departemen'
+		 GROUP BY tahun
+		 ORDER BY tahun DESC";
+$result = QueryDb($sql);
+if (isset($_REQUEST['alumnikan']))
+{
+	$success = true;
+	BeginTrans();
+	
+	$thn = $_REQUEST['th'];
+	$bln = $_REQUEST['bln'];
+	$tgl = $_REQUEST['tgl'];
+	$tgllulus = $thn."-".$bln."-".$tgl;
 
-if (isset($_REQUEST['alumnikan'])){
-	$thn=$_REQUEST['th'];
-	$bln=$_REQUEST['bln'];
-	$tgl=$_REQUEST['tgl'];
-	$tgllulus=$thn."-".$bln."-".$tgl;
-
-	$jumalumni=(int)$_REQUEST['total'];
-	for ($ialumni=1;$ialumni<=$jumalumni;$ialumni++){
-		$nis=$_REQUEST["nis".$ialumni];
-		$cek=$_REQUEST["ceknis".$ialumni];
+	$jumalumni = (int)$_REQUEST['total'];
+	for ($ialumni = 1; $success && $ialumni <= $jumalumni; $ialumni++)
+	{
+		$nis = $_REQUEST["nis".$ialumni];
+		$cek = $_REQUEST["ceknis".$ialumni];
 		
-		if ($nis && $cek) {
-			OpenDb();
-			$sql1="SELECT k.replid, k.idtingkat FROM jbsakad.siswa s, jbsakad.kelas k WHERE s.nis='$nis' AND s.idkelas = k.replid";
-			
-			$result1=QueryDb($sql1);
-			$row1=@mysql_fetch_array($result1);
+		if ($nis && $cek)
+		{
+			$sql1 = "SELECT k.replid, k.idtingkat
+					   FROM jbsakad.siswa s, jbsakad.kelas k
+					  WHERE s.nis = '$nis'
+					    AND s.idkelas = k.replid";
+			$result1 = QueryDb($sql1);
+			$row1 = @mysql_fetch_array($result1);
 			$idtingkat = $row1['idtingkat'];
 			$idkelas = $row1['replid'];
 			
-			BeginTrans();
-			$success=0;
-			//nonaktifkan siswa sekaligus alumnikan siswa
-			$sql_siswa="UPDATE jbsakad.siswa SET aktif=0, alumni=1 WHERE nis='$nis'";
+			$sql_siswa = "UPDATE jbsakad.siswa SET aktif=0, alumni=1 WHERE nis='$nis'";
 			QueryDbTrans($sql_siswa, $success);
-			//$result_siswa=QueryDb($sql_siswa);
-			
-			//nonaktifkan nis di riwayatkelas
-			if ($success) {	
-				$sql_kelas="UPDATE jbsakad.riwayatkelassiswa SET aktif=0 WHERE nis='$nis' AND aktif=1";
-				QueryDbTrans($sql_kelas,$success);
+
+			if ($success)
+			{	
+				$sql_kelas = "UPDATE jbsakad.riwayatkelassiswa
+								 SET aktif=0
+							   WHERE nis='$nis'
+							     AND aktif=1";
+				QueryDbTrans($sql_kelas, $success);
 			}
-			//nonaktifkan nis di riwayatdept
-			if ($success) {
-				$sql_dept="UPDATE jbsakad.riwayatdeptsiswa SET aktif=0 WHERE nis='$nis' AND aktif=1";
+			
+			if ($success)
+			{
+				$sql_dept = "UPDATE jbsakad.riwayatdeptsiswa
+				                SET aktif = 0
+						  	  WHERE nis='$nis'
+							    AND aktif=1";
 				QueryDbTrans($sql_dept,$success);
 			}
 			
-			if ($success){
-			//isi tabel alumni
-				$sql_alumni="INSERT INTO jbsakad.alumni SET nis='$nis', tgllulus='$tgllulus', tktakhir='$idtingkat', klsakhir='$idkelas', departemen = '$departemen'";
-				QueryDbTrans($sql_alumni,$success);
-				
+			if ($success)
+			{
+				$sql_alumni = "INSERT INTO jbsakad.alumni
+								  SET nis='$nis', tgllulus='$tgllulus', tktakhir='$idtingkat',
+									  klsakhir='$idkelas', departemen = '$departemen'";
+				QueryDbTrans($sql_alumni, $success);
 			}
-			
-			if ($success) {
-				CommitTrans(); 
-			?>
-				<script language="javascript">
-					parent.alumni_content.location.href="alumni_content.php?departemen=<?=$departemen?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&tahun=<?=$th?>";
-				</script>	
-			<? 
-			} else  {
-				RollbackTrans();
-			}
-		}
+		} // if
+	} // for
+	
+	if ($success)
+	{
+		CommitTrans(); ?>
+		<script language="javascript">
+			parent.alumni_content.location.href="alumni_content.php?departemen=<?=$departemen?>&tingkat=<?=$tingkat?>&tahunajaran=<?=$tahunajaran?>&tahun=<?=$th?>";
+		</script>	
+<? 	}
+	else
+	{
+		RollbackTrans();
 	}
 }
 
@@ -339,6 +356,7 @@ function refresh_pilih() {
 
 </script>
 </head>
+
 <body topmargin="0" leftmargin="0">
 <form name="pilih" id="pilih" onSubmit="return alumnikeun()">
 <input type="hidden" name="pilihan" id="pilihan" value="<?=$pilihan?>">
@@ -351,19 +369,33 @@ function refresh_pilih() {
 <input type="hidden" name="jenis" id="jenis" value="<?=$jenis?>" />
 
 <?
-if ($jenis <> ""){ 
+if ($jenis <> "")
+{ 
 	OpenDb();
-	$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = '$tingkat'"; 
-	//echo $sql_tot;
+	$sql_tot = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat
+				  FROM jbsakad.siswa s, kelas k, tingkat t
+				 WHERE $string s.idkelas = k.replid
+				   AND k.idtahunajaran = '$tahunajaran'
+				   AND s.aktif=1
+				   AND k.idtingkat = t.replid
+				   AND t.replid = '$tingkat'"; 
 	$result_tot = QueryDb($sql_tot);
 	$total=ceil(mysql_num_rows($result_tot)/(int)$varbaris);
 	$jumlah = mysql_num_rows($result_tot);
 	$akhir = ceil($jumlah/5)*5;	
 	
-	$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat FROM jbsakad.siswa s, kelas k, tingkat t WHERE $string s.idkelas = k.replid AND k.idtahunajaran = '$tahunajaran' AND s.aktif=1 AND k.idtingkat = t.replid AND t.replid = '$tingkat' ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
+	$sql_siswa = "SELECT s.nis,s.nama,s.idkelas,k.kelas,s.replid,t.tingkat
+				    FROM jbsakad.siswa s, kelas k, tingkat t
+				   WHERE $string s.idkelas = k.replid
+				     AND k.idtahunajaran = '$tahunajaran'
+					 AND s.aktif=1 AND k.idtingkat = t.replid
+					 AND t.replid = '$tingkat'
+				   ORDER BY $urut $urutan
+				   LIMIT ".(int)$page*(int)$varbaris.",$varbaris";
 	
 	$result_siswa = QueryDb($sql_siswa);
-	if (@mysql_num_rows($result_siswa)>0) {
+	if (@mysql_num_rows($result_siswa)>0)
+	{
 ?>	
 <input type="hidden" name="total" id="total" value="<?=$jumlah?>">
 <table width="100%" border="0" align="center">
@@ -430,21 +462,16 @@ if ($jenis <> ""){
         <td align="center">
             <input type="checkbox" name="ceknis<?=$cnt?>" id="ceknis<?=$cnt?>" value="1"/>
             <input type="hidden" name="nis<?=$cnt?>" id="nis<?=$cnt?>" value="<?=$row_siswa[0]?>" />
-            <!--<input type="hidden" name="alumni<?=$cnt?>" id="alumni<?=$cnt?>"/>-->
         </td>
         <? if ($cnt==1){ ?>
         <td rowspan="<?=$jumlah?>" align="center">
             <input name="alumnikan" id="alumnikan" type="submit" class="but" value=" > " onMouseOver="showhint('Alumnikan siswa ini', this, event, '120px')"/>
         </td>
         <? } ?>
-<? //if ($cnt<=1){ ?>
-<!--<td style="background-color:#C0C0C0" align="center" rowspan="<?=$ada?>" bgcolor="white"><input name="alumnikan" id="alumnikan" type="submit" class="but" value=" >> " onMouseOver="showhint('Alumnikan siswa ini', this, event, '120px')"/></td>-->
-<? //} ?>
 	</tr>
 <?		$cnt++;
 	}
 ?>
-<!--<input type="hidden" name="numsiswa" id="numsiswa" value="<?=$cnt-1?>" />-->
 </table>
     <script language='JavaScript'>
 		Tables('table', 1, 0);
@@ -479,31 +506,15 @@ if ($jenis <> ""){
         <? } ?>
      	</select>
 	  	dari <?=$total?> hal
-		
-		<? 
-     // Navigasi halaman berikutnya dan sebelumnya
-        ?>
         </td>
     	<td align="center">
-    	<!--<input <?=$disback?> type="button" class="but" name="back" value=" << " onClick="change_page('<?=(int)$page-1?>')" onMouseOver="showhint('Sebelumnya', this, event, '75px')">-->
-		<?
-		/*for($a=0;$a<$total;$a++){
-			if ($page==$a){
-				echo "<font face='verdana' color='red'><strong>".($a+1)."</strong></font> "; 
-			} else { 
-				echo "<a href='#' onClick=\"change_page('".$a."')\">".($a+1)."</a> "; 
-			}
-				 
-	    }*/
-		?>
-	    <!--<input <?=$disnext?> type="button" class="but" name="next" value=" >> " onClick="change_page('<?=(int)$page+1?>')" onMouseOver="showhint('Berikutnya', this, event, '75px')">-->
+		&nbsp;
  		</td>
         <td width="45%" align="right">Jml baris per hal
       	<select name="varbaris" id="varbaris" onChange="change_baris()">
         <? 	for ($m=5; $m <= $akhir; $m=$m+5) { ?>
         	<option value="<?=$m ?>" <?=IntIsSelected($varbaris,$m) ?>><?=$m ?></option>
         <? 	} ?>
-       
       	</select></td>
     </tr>
     </table>		

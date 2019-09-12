@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -28,7 +28,6 @@ require_once('include/config.php');
 require_once('include/db_functions.php');
 require_once('include/sessioninfo.php');
 require_once('library/departemen.php');
-require_once('library/openthinksas.jibas.php');
 
 $idkategori = "";
 if (isset($_REQUEST['idkategori']))
@@ -132,7 +131,7 @@ function focusNext(elemName, evt) {
         foreach($dep as $value) {
             if ($departemen == "")
                 $departemen = $value; ?>
-            <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?>><?=getDepartemenInOpenThinkSAS($value) ?></option>
+            <option value="<?=$value ?>" <?=StringIsSelected($value, $departemen) ?>><?=$value ?></option>
         <? } ?>    
         </select>&nbsp;
         <strong>Tahun Buku&nbsp;</strong>

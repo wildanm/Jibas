@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -216,7 +216,7 @@ if ($idtingkat == -1)
 			 WHERE p.nis = s.nis AND s.idkelas = k.replid AND s.idangkatan = $idangkatan 
 			   AND p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
 			   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid 
-		  ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+		  ORDER BY $urut $urutan"; 
 } 
 else 
 {
@@ -232,7 +232,7 @@ else
 		          FROM penerimaaniuran p, jurnal j, jbsakad.siswa s, jbsakad.kelas k, jbsakad.tingkat t 
 				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
 				   AND p.nis = s.nis AND s.idkelas = k.replid AND k.idtingkat = $idtingkat AND s.idangkatan = $idangkatan 
-				   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				   AND p.idpenerimaan = $idpenerimaan AND k.idtingkat = t.replid ORDER BY $urut $urutan"; 
 	} 
 	else 
 	{
@@ -246,7 +246,7 @@ else
 		          FROM penerimaaniuran p, jurnal j, jbsakad.siswa s, jbsakad.kelas k 
 				 WHERE p.idjurnal = j.replid AND j.idtahunbuku = $idtahunbuku 
 				   AND p.nis = s.nis AND s.idkelas = k.replid AND s.idkelas = $idkelas 
-				   AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan ORDER BY $urut $urutan LIMIT ".(int)$page*(int)$varbaris.",$varbaris"; 
+				   AND s.idangkatan = $idangkatan AND p.idpenerimaan = $idpenerimaan ORDER BY $urut $urutan"; 
 	}
 }
 

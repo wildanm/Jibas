@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -58,7 +58,7 @@ if (isset($_REQUEST['Simpan']))
 		$set .= "$fkd = '$kd', $fnm = '$nm'";
 	}
 	
-	for($i = 1; $i <= 5; $i++)
+	for($i = 1; $i <= 10; $i++)
 	{
 		if ($set != "")
 			$set .= ", ";
@@ -97,6 +97,11 @@ if ($ndata > 0)
 	$kdujian3 = $row['kdujian3']; $nmujian3 = $row['nmujian3'];
 	$kdujian4 = $row['kdujian4']; $nmujian4 = $row['nmujian4'];
 	$kdujian5 = $row['kdujian5']; $nmujian5 = $row['nmujian5'];
+	$kdujian6 = $row['kdujian6']; $nmujian6 = $row['nmujian6'];
+	$kdujian7 = $row['kdujian7']; $nmujian7 = $row['nmujian7'];
+	$kdujian8 = $row['kdujian8']; $nmujian8 = $row['nmujian8'];
+	$kdujian9 = $row['kdujian9']; $nmujian9 = $row['nmujian9'];
+	$kdujian10 = $row['kdujian10']; $nmujian10 = $row['nmujian10'];
 }
 
 CloseDb();
@@ -176,6 +181,31 @@ function validate()
     	<td align="left">Ujian #5</td>
         <td align="center"><input type="text" id="kdujian5" value="<?= $kdujian5 ?>" name="kdujian5" size="5" maxlength="5" /></td>
         <td align="left"><input type="text" id="nmujian5" value="<?= $nmujian5 ?>" name="nmujian5" size="30" maxlength="50" /></td>
+    </tr>
+	<tr>
+    	<td align="left">Ujian #6</td>
+        <td align="center"><input type="text" id="kdujian6" value="<?= $kdujian6 ?>" name="kdujian6" size="5" maxlength="5" /></td>
+        <td align="left"><input type="text" id="nmujian6" value="<?= $nmujian6 ?>" name="nmujian6" size="30" maxlength="50" /></td>
+    </tr>
+	<tr>
+    	<td align="left">Ujian #7</td>
+        <td align="center"><input type="text" id="kdujian7" value="<?= $kdujian7 ?>" name="kdujian7" size="5" maxlength="5" /></td>
+        <td align="left"><input type="text" id="nmujian7" value="<?= $nmujian7 ?>" name="nmujian7" size="30" maxlength="50" /></td>
+    </tr>
+	<tr>
+    	<td align="left">Ujian #8</td>
+        <td align="center"><input type="text" id="kdujian8" value="<?= $kdujian8 ?>" name="kdujian8" size="5" maxlength="5" /></td>
+        <td align="left"><input type="text" id="nmujian8" value="<?= $nmujian8 ?>" name="nmujian8" size="30" maxlength="50" /></td>
+    </tr>
+	<tr>
+    	<td align="left">Ujian #9</td>
+        <td align="center"><input type="text" id="kdujian9" value="<?= $kdujian9 ?>" name="kdujian9" size="5" maxlength="5" /></td>
+        <td align="left"><input type="text" id="nmujian9" value="<?= $nmujian9 ?>" name="nmujian9" size="30" maxlength="50" /></td>
+    </tr>
+	<tr>
+    	<td align="left">Ujian #10</td>
+        <td align="center"><input type="text" id="kdujian10" value="<?= $kdujian10 ?>" name="kdujian10" size="5" maxlength="5" /></td>
+        <td align="left"><input type="text" id="nmujian10" value="<?= $nmujian10 ?>" name="nmujian10" size="30" maxlength="50" /></td>
     </tr>
     <tr>
         <td colspan="3" align="center" style="background-color:#CCC">

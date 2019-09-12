@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -109,14 +109,30 @@ function scrollMiddle() {
 			<a href="penilaian/ujian_rpp_kelas.php" onMouseOver="showhint('Daftar Nilai RPP Setiap Kelas', this, event, '100px')"><img src="images/penilaian_06.jpg" alt="" width="110" height="39" border="0"></a></td>
 		<td rowspan="15" valign="top" align="right">
 			<table border="0" cellpadding="0" width="95%">
-			<tr>
-				<td width="10%">
-				<img src="images/table_small.png" border="0" width="40">	
-				</td>
-				<td>
-				<a href="penilaian/lap_legger.php">Laporan Legger Nilai</a>
-				</td>
-			</tr>	
+            <tr>
+                <td width="10%">
+                    <img src="images/table_small.png" border="0" width="40">
+                </td>
+                <td>
+                    <a href="penilaian/lap_legger.php">Laporan Legger Nilai</a>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">
+                    <img src="images/table_small.png" border="0" width="40">
+                </td>
+                <td>
+                    <a href="penilaian/legger.rapor.php">Legger Nilai Rapor Per Pelajaran</a>
+                </td>
+            </tr>
+            <tr>
+                <td width="10%">
+                    <img src="images/table_small.png" border="0" width="40">
+                </td>
+                <td>
+                    <a href="penilaian/legger.kelas.php">Legger Nilai Rapor Per Kelas</a>
+                </td>
+            </tr>
 			</table>
 		</td>
 		<td>

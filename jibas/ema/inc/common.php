@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -100,19 +100,25 @@ function NamaBulan($bln) {
 		return "Desember";		
 }
 
-function NamaHari($hari) {
-	if ($hari == 1)
-		return "Senin";
-	elseif ($hari == 2)
-		return "Selasa";		
-	elseif ($hari == 3)
-		return "Rabu";		
-	elseif ($hari == 4)
-		return "Kamis";		
-	elseif ($hari == 5)
-		return "Jumat";
-	elseif ($hari == 6)
-		return "Sabtu";
+function NamaHari($hari)
+{
+	switch($hari)
+	{
+		case 0:
+			return "Senin";
+		case 1:
+			return "Selasa";
+		case 2:
+			return "Rabu";
+		case 3:
+			return "Kamis";
+		case 4:
+			return "Jum'at";
+		case 5:
+			return "Sabtu";
+		default:
+			return "Minggu";
+	}
 }
 
 function rpad($string, $padchar, $length) {
@@ -354,10 +360,9 @@ function getname2($field,$table,$field2,$cond){
 	$row = @mysql_fetch_array($result);
 	return $row[0];
 }
-function CQ($string){
-	$string = trim($string);
-	$string = str_replace("'","`",$string);
-	$string = str_replace('"','`',$string);
+
+function CQ($string)
+{
 	return $string;
 }
 

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -50,6 +50,24 @@
    <font style="font-family:Arial, Helvetica, sans-serif; font-size:10px; text-decoration:none">Tutup Buku</font>
 	</a>
    </td>
+</tr>
+<tr height='20'>
+	<td colspan='3'>&nbsp;</td>
+</tr>
+<tr>
+	<td align='center' valign='top'>
+		<a href='referensi/formatsms.php' style='font-weight: normal;'>
+			<img src="images/formatsms.png" height='64' border="0" /><br>
+			Format SMS Informasi Pembayaran
+		</a>
+	</td>
+	<td align='center' valign='top'>
+		<a href='referensi/riwayatsms.php' style='font-weight: normal;'>
+			<img src="images/riwayatsms.png" height='64' border="0" /><br>
+			Riwayat Pengiriman SMS Informasi Pembayaran
+		</a>
+	</td>
+	<td>&nbsp;</td>
 </tr>
 </table>
 

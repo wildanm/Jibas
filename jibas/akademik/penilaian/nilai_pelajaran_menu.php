@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,16 +31,23 @@ require_once('../library/dpupdate.php');
 
 if(isset($_REQUEST["departemen"]))
 	$departemen = $_REQUEST["departemen"];
+
 if(isset($_REQUEST["tingkat"]))
 	$tingkat = $_REQUEST["tingkat"];
+
 if(isset($_REQUEST["semester"]))
 	$semester = $_REQUEST["semester"];
+
 if(isset($_REQUEST["kelas"]))
 	$kelas = $_REQUEST["kelas"];
+
 if(isset($_REQUEST["nip"]))
 	$nip = $_REQUEST["nip"];
-	
-$warna = array('fcf5ca','d5fcca','cafcf3','cae6fc','facafc');
+
+$idpelajaran = 0;
+if(isset($_REQUEST["idpelajaran"]))
+    $idpelajaran = $_REQUEST["idpelajaran"];
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -56,88 +63,109 @@ function klik(kelas,semester,idaturan)
 	parent.nilai_pelajaran_content.location.href="nilai_pelajaran_content.php?&kelas="+kelas+"&semester="+semester+"&idaturan="+idaturan;
 }
 
+function changePel()
+{
+    var idpelajaran = document.getElementById('pelajaran').value;
+    var addr = "nilai_pelajaran_menu.php?departemen=<?=$departemen?>&tingkat=<?=$tingkat?>&semester=<?=$semester?>&kelas=<?=$kelas?>&nip=<?=$nip?>&idpelajaran="+idpelajaran;
+    document.location.href = addr;
+}
+
 </script>
 </head>
-<body style="margin-left:0px; margin-top:0px; margin-right:1px">
+<body style="margin-left:5px; margin-top:5px; margin-right:5px; background-color: #f5f5f5">
 <? 
 OpenDb();
 $query_aturan = "SELECT DISTINCT aturannhb.idpelajaran, pelajaran.nama 
 				   FROM jbsakad.aturannhb aturannhb, jbsakad.pelajaran pelajaran 
-				  WHERE aturannhb.nipguru = '$nip' AND idpelajaran=pelajaran.replid AND pelajaran.departemen='$departemen' 
-				    AND aturannhb.idtingkat='$tingkat' AND aturannhb.aktif = 1 ORDER BY pelajaran.nama";
+				  WHERE aturannhb.nipguru = '$nip' 
+				    AND idpelajaran=pelajaran.replid 
+				    AND pelajaran.departemen='$departemen' 
+				    AND aturannhb.idtingkat='$tingkat' 
+				    AND aturannhb.aktif = 1 
+				  ORDER BY pelajaran.nama";
 
-//echo $query_aturan;
-$result_aturan = QueryDb($query_aturan);
-if (!mysql_num_rows($result_aturan) == 0)
+$arrpel = array();
+
+$res = QueryDb($query_aturan);
+while($row = mysql_fetch_row($res))
 {
-?>
-<table width="100%" border="0">
-<?	$i = 0;
-	$cnt = 0;
-	while ($row_aturan = @mysql_fetch_array($result_aturan))
-	{
-		if ($i >= 5)
-			$i = 0; ?>
-<tr>
-	<td>
-    <fieldset style="background-color:#<?=$warna[$i]?>">
-    <legend><strong><font size="2" face="verdana">
-		<?=$row_aturan['nama']; ?></font></strong>
-    </legend> 
-    <table width="100%" cellspacing="2" >
-<?	$query_ap = "SELECT DISTINCT a.dasarpenilaian, dp.keterangan 
-				   FROM jbsakad.aturannhb a, dasarpenilaian dp
-				  WHERE idpelajaran = '$row_aturan[idpelajaran]' 
-				    AND a.dasarpenilaian = dp.dasarpenilaian 
-				    AND idtingkat = '$tingkat' AND nipguru = '$nip' ORDER BY keterangan";
-	$result_ap = QueryDb($query_ap);
-	while($row_ap = @mysql_fetch_array($result_ap))
-	{
-		$cnt++;	?> 
-	   	<tr>
-   		<td>  
-        	<table class="tab" id="table<?=$cnt?>" border="1" style="border-collapse:collapse" width="100%" align="left" bordercolor="#000000">
-        	<tr height="30" class="header" align="center">
-            	<td><?=$row_ap['keterangan']?></td>
-	        </tr>
-    <? 	$query_jp = "SELECT a.idjenisujian, j.jenisujian, j.replid, a.replid 
-					   FROM jbsakad.aturannhb a, jbsakad.jenisujian j 
-					  WHERE a.idpelajaran='$row_aturan[idpelajaran]' AND a.dasarpenilaian='$row_ap[dasarpenilaian]' 
-					    AND a.idjenisujian=j.replid AND a.idtingkat='$tingkat' AND a.nipguru='$nip' ORDER BY j.jenisujian";
-		$result_jp = QueryDb($query_jp);
-		while($row_jp = @mysql_fetch_row($result_jp))
-		{	?>
-        	<tr>
-            <td height="25" style="cursor:pointer" onclick="klik('<?=$kelas?>','<?=$semester?>','<?=$row_jp[3]?>')" align="center">
-            	<u><strong><?=$row_jp[1]?></strong></u>
-            </td>
-        	</tr>
+    $arrpel[] = array($row[0], $row[1]);
+}
+
+if (count($arrpel) == 0)
+{ ?>
+    <table width="100%" border="0" align="center">
+    <tr>
+        <td align="center" valign="middle" height="300">
+            <font size = "2" color ="red"><b>Tidak ditemukan adanya data. <br /><br />Tambah aturan perhitungan nilai rapor yang akan diajar oleh guru <?=$_REQUEST['nama']?> di menu Aturan Perhitungan Nilai Rapor pada bagian Guru & Pelajaran. </b></font>
+        </td>
+    </tr>
+    </table>
+    </body>
+    </html>
+<?php
+    CloseDb();
+    exit;
+}
+
+echo "<strong>Pelajaran:</strong>";
+echo "<select id='pelajaran' name='pelajaran' style='width: 185px; height: 30px; font-size: 14px; background-color: #fcffc6' onchange='changePel()'>";
+for($p = 0; $p < count($arrpel); $p++)
+{
+    $idpel = $arrpel[$p][0];
+    $nmpel = $arrpel[$p][1];
+
+    if ($idpelajaran == 0) $idpelajaran = $idpel;
+    $selected = $idpelajaran == $idpel ? "selected" : "";
+
+    echo "<option value='$idpel' $selected>$nmpel</option>";
+}
+echo "</select><br><br>";
+
+echo "<strong>Jenis Ujian:</strong>";
+
+$query_ap = "SELECT DISTINCT a.dasarpenilaian, dp.keterangan 
+               FROM jbsakad.aturannhb a, dasarpenilaian dp
+              WHERE idpelajaran = '$idpelajaran' 
+                AND a.dasarpenilaian = dp.dasarpenilaian 
+                AND idtingkat = '$tingkat' 
+                AND nipguru = '$nip' 
+              ORDER BY keterangan";
+$result_ap = QueryDb($query_ap);
+
+$cnt = 0;
+while($row_ap = @mysql_fetch_array($result_ap))
+{
+    $cnt++;	?>
+    <table class="tab" id="table<?=$cnt?>" border="1" style="border-collapse:collapse; border-width: 1px;"
+           width="100%" align="left" bordercolor="#000000" cellpadding="3">
+    <tr height="22" class="header" align="left">
+        <td><?=$row_ap['keterangan']?></td>
+    </tr>
+<? 	$query_jp = "SELECT a.idjenisujian, j.jenisujian, j.replid, a.replid 
+				   FROM jbsakad.aturannhb a, jbsakad.jenisujian j 
+				  WHERE a.idpelajaran = '$idpelajaran' 
+				    AND a.dasarpenilaian = '$row_ap[dasarpenilaian]' 
+				    AND a.idjenisujian = j.replid 
+				    AND a.idtingkat = '$tingkat' 
+				    AND a.nipguru='$nip' 
+				  ORDER BY j.jenisujian";
+    $result_jp = QueryDb($query_jp);
+    while($row_jp = @mysql_fetch_row($result_jp))
+    {	?>
+        <tr>
+        <td height="22" style="cursor:pointer" onclick="klik('<?=$kelas?>','<?=$semester?>','<?=$row_jp[3]?>')" align="left">
+            <?=$row_jp[1]?>
+        </td>
+        </tr>
 	<?	} ?>
-  			</table>
-	   		<script language='JavaScript'>Tables('table<?=$cnt?>', 1, 0);</script>
-    	</td>
-    </tr>	
-<?	} ?>
-	</table> 
-    </fieldset>
-    </td>
-</tr>
+    </table>
+    <font style="font-size: 15px"><br>&nbsp;</font>
+    <script language='JavaScript'>Tables('table<?=$cnt?>', 1, 0);</script>
+
 <?
-  $i++;
-  } 
+} // while
 ?>
-</table>  
-<? 
-} else { 
-?>
-<table width="100%" border="0" align="center">          
-<tr>
-    <td align="center" valign="middle" height="300">
-    <font size = "2" color ="red"><b>Tidak ditemukan adanya data. <br /><br />Tambah aturan perhitungan nilai rapor yang akan diajar oleh guru <?=$_REQUEST['nama']?> di menu Aturan Perhitungan Nilai Rapor pada bagian Guru & Pelajaran. </b></font>
-    </td>
-</tr>
-</table>
-<? } ?>
 </body>
-<? CloseDb(); ?>
 </html>
+<? CloseDb(); ?>

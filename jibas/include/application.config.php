@@ -3,7 +3,7 @@
  * JIBAS Education Community 
  * Jaringan Informasi Bersama Antar Sekolah 
  *  
- * @version: 3.0 (January 09, 2013) 
+ * @version: 18.0 (August 01, 2019) 
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net) 
@@ -29,11 +29,11 @@ $G_START_YEAR='2011';
      PERHATIAN:
        UNTUK PENGGUNAAN MULTIUSER di LOCAL AREA NETWORK
        JANGAN MENGGUNAKAN localhost, TETAPI GUNAKAN IP Address atau Hostname */
-$G_SERVER_ADDR='http://jibas.wm/';
+$G_SERVER_ADDR='localhost/jibas';
 
 /* Sistem operasi yang digunakan ( win | lin ) */
-$G_OS='lin';
+$G_OS='win';
 
 /* Lokasi Sekolah */
-$G_LOKASI="Depok";
+$G_LOKASI="Bandung";
 ?>

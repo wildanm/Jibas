@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -124,15 +124,15 @@ while ($row = mysql_fetch_array($result)) {
 		
 	if ($cnt % 2 == 0) { ?>
 	<tr>
-		<td rowspan="4" align="center" bgcolor="#CCCC66"><font size="2" face="Arial"><strong>
+		<td rowspan="4" align="center"><font size="2" face="Arial"><strong>
 	    <?=++$no ?>
 		</strong></font></td>
-      <td colspan="7" align="left" bgcolor="#CCCC66"><font size="2" face="Arial"><em><strong>Perubahan dilakukan oleh 
+      <td colspan="7" align="left"><font size="2" face="Arial"><em><strong>Perubahan dilakukan oleh
       <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?>
       </strong></em></font></td>
   </tr>
     <tr>
-    	<td colspan="7" bgcolor="#E5E5E5"><font size="2" face="Arial"><strong>No. Jurnal :</strong> 
+    	<td colspan="7"><font size="2" face="Arial"><strong>No. Jurnal :</strong>
         <?=$row['nokas'] ?>
 &nbsp;&nbsp;<strong>Alasan : </strong>
 <?=$row['alasan'];?>
@@ -143,7 +143,7 @@ while ($row = mysql_fetch_array($result)) {
   </tr>
 <?  } ?>
 
-	<tr bgcolor="<?=$bgcolor?>">
+	<tr>
 		<td><font size="2" face="Arial">
 	    <?=$statusdata ?>
 		</font></td>

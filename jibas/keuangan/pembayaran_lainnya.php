@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -41,6 +41,12 @@ $errmsg = $_REQUEST['errmsg'];
 
 OpenDb();
 
+// -- ambil nama penerimaan -------------------------------
+$sql = "SELECT nama, rekkas FROM datapenerimaan WHERE replid = '$idpenerimaan'";
+$row = FetchSingleRow($sql);
+$namapenerimaan = $row[0];
+$defrekkas = $row[1];
+
 if (1 == (int)$_REQUEST['issubmit']) 
 {
 	$jbayar = $_REQUEST['jbayar'];
@@ -50,6 +56,7 @@ if (1 == (int)$_REQUEST['issubmit'])
 	$kbayar = CQ($_REQUEST['kbayar']);
 	$sumber = CQ($_REQUEST['sumber']);
 	
+	$idpetugas = getIdUser();
 	$petugas = getUserName();
 	
 	//Ambil nama penerimaan
@@ -72,6 +79,10 @@ if (1 == (int)$_REQUEST['issubmit'])
 		$rekpendapatan = $row[2];
 		$rekpiutang = $row[3];
 	}
+	
+	// rek kas from selected value
+	if (isset($_REQUEST['rekkas']) && strlen(trim($_REQUEST['rekkas'])) > 0)
+		$rekkas = trim($_REQUEST['rekkas']);
 	
 	//Ambil awalan dan cacah tahunbuku untuk bikin nokas;
 	$sql = "SELECT awalan, cacah FROM tahunbuku WHERE replid = '$idtahunbuku'";
@@ -96,18 +107,26 @@ if (1 == (int)$_REQUEST['issubmit'])
 	//Simpan ke jurnal
 	$ketjurnal = "Dana $namapenerimaan tanggal $_REQUEST[tcicilan] dari $sumber";
 	$idjurnal = 0;
-	$success = SimpanJurnal($idtahunbuku, $tbayar, $ketjurnal, $nokas, "", $petugas, "penerimaanlain", $idjurnal);
+	$success = SimpanJurnal($idtahunbuku, $tbayar, $ketjurnal, $nokas, "", $idpetugas, $petugas, "penerimaanlain", $idjurnal);
 	
 	//Simpan ke jurnaldetail
-	if ($success) $success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jbayar);
-	if ($success) $success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
+	if ($success)
+		$success = SimpanDetailJurnal($idjurnal, "D", $rekkas, $jbayar);
+	if ($success)
+		$success = SimpanDetailJurnal($idjurnal, "K", $rekpendapatan, $jbayar);
 	
 	//increment cacah di tahunbuku
-	$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
-	QueryDbTrans($sql, $success);
+	if ($success)
+	{
+		$sql = "UPDATE tahunbuku SET cacah=cacah+1 WHERE replid='$idtahunbuku'";
+		QueryDbTrans($sql, $success);
+	}
 	
-	$sql = "INSERT INTO penerimaanlain SET idpenerimaan='$idpenerimaan', idjurnal='$idjurnal', sumber='$sumber', jumlah='$jbayar', tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
-	QueryDbTrans($sql, $success);
+	if ($success)
+	{
+		$sql = "INSERT INTO penerimaanlain SET idpenerimaan='$idpenerimaan', idjurnal='$idjurnal', sumber='$sumber', jumlah='$jbayar', tanggal='$tbayar', keterangan='$kbayar', petugas='$petugas'";
+		QueryDbTrans($sql, $success);
+	}
 	
 	if ($success) 
 		CommitTrans();
@@ -139,7 +158,7 @@ $namapenerimaan = $row[0];
 <script type="text/javascript" src="script/calendar.js"></script>
 <script type="text/javascript" src="script/lang/calendar-en.js"></script>
 <script type="text/javascript" src="script/calendar-setup.js"></script>
-<script language="javascript" src="script/rupiah.js"></script>
+<script language="javascript" src="script/rupiah2.js"></script>
 <script language="javascript" src="script/validasi.js"></script>
 <script language="javascript" src="script/tables.js"></script>
 <script language="javascript" src="script/tooltips.js"></script>
@@ -282,6 +301,24 @@ function panggil(elem){
                 <td colspan="2"><input type="text" name="jbayar" id="jbayar" onblur="formatRupiah('jbayar')" onfocus="unformatRupiah('jbayar');panggil('jbayar')" onKeyPress="return focusNext('tcicilan', event)" onkeyup="salinangka()"/>
                 	<input type="hidden" name="angkabesar" id="angkabesar" value="<?=$jbayar ?>" />
             </tr>
+			<tr>
+				<td><strong>Rek. Kas</strong></td>
+				<td colspan="2">
+					<select name="rekkas" id="rekkas" style="width: 200px">
+		<?				OpenDb();
+						$sql = "SELECT kode, nama
+								  FROM jbsfina.rekakun
+								 WHERE kategori = 'HARTA'
+								 ORDER BY nama";        
+						$res = QueryDb($sql);
+						while($row = mysql_fetch_row($res))
+						{
+							$sel = $row[0] == $defrekkas ? "selected" : "";
+							echo "<option value='$row[0]' $sel>$row[0] $row[1]</option>";
+						} ?>                
+					</select>
+				</td>
+			</tr>			
             <tr>
                 <td><strong>Tanggal</strong></td>
                 <td>
@@ -306,18 +343,24 @@ function panggil(elem){
  		</td>
      	<td valign="top">
 <?      $sql = "SELECT p.replid AS id, j.nokas, p.sumber,  date_format(p.tanggal, '%d-%b-%Y') as tanggal, 
-					   p.keterangan, p.jumlah, p.petugas 
-				  FROM penerimaanlain p, jurnal j 
-				 WHERE j.replid = p.idjurnal AND p.idpenerimaan = '$idpenerimaan' ORDER BY p.tanggal, p.replid";
+					   p.keterangan, p.jumlah, p.petugas, jd.koderek AS rekkas, ra.nama AS namakas 
+				  FROM penerimaanlain p, jurnal j, jurnaldetail jd, rekakun ra   
+				 WHERE j.replid = p.idjurnal
+				   AND j.replid = jd.idjurnal
+			       AND jd.koderek = ra.kode
+				   AND p.idpenerimaan = '$idpenerimaan'
+				   AND ra.kategori = 'HARTA'
+				 ORDER BY p.tanggal, p.replid DESC";
         $result = QueryDb($sql);
         if (mysql_num_rows($result) > 0) 
 		{ ?>            
             <table class="tab" id="table" width="100%" cellpadding="5" cellspacing="0">
             <tr height="30" align="center">
                 <td class="header" width="5%">No</td>
-                <td class="header" width="20%">No. Jurnal/Tgl</td>
+                <td class="header" width="15%">No. Jurnal/Tgl</td>
                 <td class="header" width="15%">Sumber</td>
-                <td class="header" width="18%">Jumlah</td>
+				<td class="header" width="15%">Rek. Kas</td>
+                <td class="header" width="15%">Jumlah</td>
                 <td class="header" width="*">Keterangan</td>
                 <td class="header" width="8%">Petugas</td>
                 <td class="header">&nbsp;</td>
@@ -331,6 +374,7 @@ function panggil(elem){
                 <td align="center"><?=++$cnt?></td>
                 <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
                 <td align="left"><?=$row['sumber'] ?></td>
+				<td align="left"><?= $row['rekkas'] . " " . $row['namakas']  ?> </td>
                 <td align="right"><?=FormatRupiah($row['jumlah'])?></td>
                 <td><?=$row['keterangan'] ?></td>
                 <td><?=$row['petugas'] ?></td>
@@ -345,7 +389,7 @@ function panggil(elem){
             }
             ?>
             <tr height="35">
-                <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
+                <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
                 <td bgcolor="#996600" align="right" colspan="2"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
                 <td bgcolor="#996600" colspan="3">&nbsp;</td>
             </tr>

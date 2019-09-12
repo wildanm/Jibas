@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -188,6 +188,11 @@ function gantipin(field, nip) {
 	}	
 }
 
+function exel()
+{
+	newWindow('pegawai_excel.php', 'ExcelPegawai','790','650','resizable=1,scrollbars=1,status=0,toolbar=0')
+}
+
 </script>
 
 </head>
@@ -258,6 +263,7 @@ function gantipin(field, nip) {
     	<td width="60%" align="right">
         	<a href="#" onClick="refresh()"><img src="../images/ico/refresh.png" border="0" onMouseOver="showhint('Refresh!', this, event, '50px')"/>&nbsp;Refresh</a>&nbsp;&nbsp;
           
+		    <a href="#" onClick="JavaScript:exel()"><img src="../images/ico/excel.png" border="0" onMouseOver="showhint('Excel!', this, event, '80px')"/>&nbsp;Excel</a>&nbsp;&nbsp;
             <a href="JavaScript:cetak('<?=$urut?>','<?=$urutan?>')"><img src="../images/ico/print.png" border="0" onMouseOver="showhint('Cetak!', this, event, '50px')" />&nbsp;Cetak</a>&nbsp;&nbsp;
      
      	<?	if (SI_USER_LEVEL() != $SI_USER_STAFF) { ?>

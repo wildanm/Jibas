@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -36,7 +36,9 @@ class CPustaka{
 		</script>
 		<?
     }
-    function Content(){
+	
+    function Content()
+	{
 		$sql = "SELECT * FROM perpustakaan ORDER BY nama";
 		$result = QueryDb($sql);
 		$num = @mysql_num_rows($result);
@@ -51,25 +53,31 @@ class CPustaka{
 		</div>
         <table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab" id="table">
           <tr>
-            <td width="19" align="center" class="header">No</td>
-            <td width="148" height="30" align="center" class="header">Nama</td>
-			<td width="236" height="30" align="center" class="header">Jumlah Judul</td>
-            <td width="276" height="30" align="center" class="header">Jumlah Pustaka</td>
-            <td width="197" height="30" align="center" class="header">Keterangan</td>
+            <td width="3%" align="center" class="header">No</td>
+            <td width="20%" height="30" align="center" class="header">Nama</td>
+			<td width="10%" height="30" align="center" class="header">Departemen</td>
+			<td width="7%" height="30" align="center" class="header">Jumlah<br>Judul</td>
+            <td width="7%" height="30" align="center" class="header">Jumlah<br>Pustaka</td>
+            <td width="*" height="30" align="center" class="header">Keterangan</td>
             <? if(IsAdmin()){ ?>
-			<td width="107" height="30" align="center" class="header">&nbsp;</td>
+			<td width="5%" height="30" align="center" class="header">&nbsp;</td>
 			<? } ?>
 		  </tr>
           <?
-		  if ($num>0){
+		  if ($num>0)
+		  {
 		  	  $cnt=1;	
-			  while ($row=@mysql_fetch_array($result)){
+			  while ($row=@mysql_fetch_array($result))
+			  {
+					$dep = (strlen(trim($row['departemen'])) == 0) ? "Semua Departemen" : $row[departemen];
+					
 					$num_judul = @mysql_num_rows(QueryDb("SELECT * FROM pustaka p, daftarpustaka d WHERE d.perpustakaan='$row[replid]' AND p.replid=d.pustaka GROUP BY d.pustaka"));
 					$num_pustaka = @mysql_fetch_row(QueryDb("SELECT COUNT(d.replid) FROM pustaka p, daftarpustaka d WHERE d.pustaka=p.replid AND d.perpustakaan='$row[replid]'"));
 			  ?>
 			  <tr>
 			    <td width="19" align="center"><?=$cnt?></td>
 				<td height="25">&nbsp;<?=$row[nama]?></td>
+				<td height="25">&nbsp;<?=$dep?></td>
 				<td height="25" align="center">&nbsp;<?=$num_judul?>
                 <? if ($num_judul!=0){ ?>
                     &nbsp;<img src="../img/ico/lihat.png" style="cursor:pointer" onclick="ViewByTitle('<?=$row[replid]?>')" />
@@ -77,7 +85,14 @@ class CPustaka{
 				<td height="25" align="center">&nbsp;<?=(int)$num_pustaka[0]?></td>
 				<td height="25">&nbsp;<?=$row[keterangan]?></td>
 				<? if(IsAdmin()){ ?>
-				<td height="25" align="center" bgcolor="#FFFFFF"><a href="javascript:ubah('<?=$row[replid]?>')"><img src="../img/ico/ubah.png" width="16" height="16" border="0"></a>&nbsp;<a href="javascript:hapus('<?=$row[replid]?>')"><img src="../img/ico/hapus.png" border="0"></a></td>
+				<td height="25" align="center">
+					<a href="javascript:ubah('<?=$row[replid]?>')">
+					<img src="../img/ico/ubah.png" width="16" height="16" border="0">
+					</a>&nbsp;
+					<a href="javascript:hapus('<?=$row[replid]?>')">
+					<img src="../img/ico/hapus.png" border="0">
+					</a>
+				</td>
 				<? } ?>
 			  </tr>
 			  <?

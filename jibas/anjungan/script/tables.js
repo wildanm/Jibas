@@ -17,10 +17,10 @@ function Tables (
 	var col_config = [];
 	col_config.header_offset = (num_header_offset ? num_header_offset : 0);
 	col_config.footer_offset = (num_footer_offset ? num_footer_offset : 0);
-	col_config.odd_color = (str_odd_color ? str_odd_color : '#E7E7CF'); //#CCFF66
+	col_config.odd_color = (str_odd_color ? str_odd_color : '#e5fdff'); //#CCFF66
 	col_config.even_color = (str_even_color ? str_even_color : '#FFFFFF');
-	col_config.mover_color = (str_mover_color ? str_mover_color : '#FBF625');
-	col_config.onclick_color = (str_onclick_color ? str_onclick_color : '#CDC923');
+	col_config.mover_color = (str_mover_color ? str_mover_color : '#d9ffc1');
+	col_config.onclick_color = (str_onclick_color ? str_onclick_color : '#fff08c');
 	
 	// init multiple tables with same ID
 	if (obj_tables.length)

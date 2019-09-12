@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -31,7 +31,8 @@ class CPinjam
 		$this->jenisanggota = $_REQUEST['jenisanggota'];
 		$jenis = 'pegawai';
 
-		switch($this->jenisanggota){
+		switch($this->jenisanggota)
+		{
 			case '0' : $jenis = 'pegawai'; break;
 			case '1' : $jenis = 'siswa'; break;
 			case '2' : $jenis = 'lain'; break;
@@ -41,27 +42,66 @@ class CPinjam
 		$this->numcode = 0;
 		$this->kodepustaka = $_REQUEST[kodepustaka];
 		
-		$op = "";
+		$this->op = "";
 		if (isset($_REQUEST[op]))
-			$op = $_REQUEST[op];
-			
-		if ($op=="addnew")
+			$this->op = $_REQUEST[op];
+		
+		if ($this->op == "newuser")
 		{
-			$sql = "SELECT d.replid, d.kodepustaka, p.judul FROM pustaka p, daftarpustaka d WHERE p.replid=d.pustaka AND d.kodepustaka='$this->kodepustaka'";
+			$sql = "DELETE FROM pinjam
+					 WHERE idanggota = '$_REQUEST[noanggota]'
+					   AND status = 0";
+			QueryDb($sql);					
+		}
+		
+		if ($this->op == "addnew")
+		{
+			$sql = "SELECT d.replid, d.kodepustaka, p.judul, d.status
+					  FROM pustaka p, daftarpustaka d
+					 WHERE p.replid = d.pustaka
+					   AND (d.kodepustaka='$this->kodepustaka' OR d.info1 = '$this->kodepustaka')";
 			$result=QueryDb($sql);
 			$this->numcode=@mysql_num_rows($result);
 			$row=@mysql_fetch_row($result);
 			$this->replid = $row[0];
+			$this->kodepustaka = $row[1];
 			$this->judul = $row[2];
+			$this->isavaiable = (0 == (int)$row[3]) ? -1 : 1;
 		}
 		
-		if ($op=="addtochart")
+		if ($this->op == "addtochart")
 		{
-			$sql = "SELECT * FROM pinjam WHERE kodepustaka='$_REQUEST[kodepustaka]' AND idanggota='$_REQUEST[noanggota]'";
+			$sql = "DELETE FROM pinjam
+					 WHERE kodepustaka = '$_REQUEST[kodepustaka]'
+					   AND idanggota = '$_REQUEST[noanggota]'
+					   AND status = 0";
+			QueryDb($sql);		   
+					   
+			$sql = "SELECT *
+					  FROM pinjam
+					 WHERE kodepustaka = '$_REQUEST[kodepustaka]'
+					   AND idanggota = '$_REQUEST[noanggota]'
+					   AND status = 1";
 			$result = QueryDb($sql);
 			$num = @mysql_num_rows($result);
-			if ($num==0){
-				$sql = "INSERT INTO pinjam SET kodepustaka='$_REQUEST[kodepustaka]',tglpinjam='".MySqlDateFormat($_REQUEST[tglpinjam])."',tglkembali='".MySqlDateFormat($_REQUEST[tglkembali])."',idanggota='$_REQUEST[noanggota]',keterangan='".CQ($_REQUEST['keterangan'])."',info1='$jenis'";
+			if ($num == 0)
+			{
+				$idmember = "";
+				if ($jenis == "siswa")
+					$idmember = "nis = '".$_REQUEST[noanggota]."'";
+				elseif ($jenis == "pegawai")
+					$idmember = "nip = '".$_REQUEST[noanggota]."'";
+				else
+					$idmember = "idmember = '".$_REQUEST[noanggota]."'";
+					
+				$sql = "INSERT INTO pinjam
+						   SET kodepustaka='".$_REQUEST[kodepustaka]."',
+							   tglpinjam = '".MySqlDateFormat($_REQUEST[tglpinjam])."',
+							   tglkembali = '".MySqlDateFormat($_REQUEST[tglkembali])."',
+							   idanggota = '".$_REQUEST[noanggota]."',
+							   keterangan = '".CQ($_REQUEST['keterangan'])."',
+							   info1 = '$jenis',
+							   $idmember";
 				QueryDb($sql);
 			}
 			$this->replid = '';
@@ -69,27 +109,36 @@ class CPinjam
 			$this->judul = '';
 		}
 		
-		if ($op=='delqueue')
+		if ($this->op == 'delqueue')
 		{
-			$sql = "DELETE FROM pinjam WHERE replid=$_REQUEST[replid]";
+			$sql = "DELETE FROM pinjam
+					 WHERE replid = $_REQUEST[replid]";
 			QueryDb($sql);
 		}
 		
-		if ($op=='DontSave')
+		if ($this->op == 'DontSave')
 		{
-			$sql = "DELETE FROM pinjam WHERE replid IN ($_REQUEST[idstr])";
+			$sql = "DELETE FROM pinjam
+			         WHERE replid IN ($_REQUEST[idstr])";
 			QueryDb($sql);
 		}
 		
-		if ($op=='Save')
+		if ($this->op=='Save')
 		{
-			$sql = "UPDATE pinjam SET status=1 WHERE replid IN ($_REQUEST[idstr])";
+			$sql = "UPDATE pinjam
+					   SET status = 1
+					 WHERE replid IN ($_REQUEST[idstr])";
 			QueryDb($sql);
-			$sql = "SELECT kodepustaka FROM pinjam WHERE replid IN ($_REQUEST[idstr])";
+			
+			$sql = "SELECT kodepustaka
+					  FROM pinjam
+					 WHERE replid IN ($_REQUEST[idstr])";
 			$result = QueryDb($sql);
 			while ($row = @mysql_fetch_array($result))
 			{
-				$sql = "UPDATE daftarpustaka SET status=0 WHERE kodepustaka='$row[kodepustaka]'";
+				$sql = "UPDATE daftarpustaka
+						   SET status = 0
+						 WHERE kodepustaka='$row[kodepustaka]'";
 				QueryDb($sql);
 			}
 		}
@@ -133,10 +182,10 @@ class CPinjam
 	
     function Content()
 	{
+		global $WaktuPinjamSiswa, $WaktuPinjamPegawai, $WaktuPinjamLain;
+		
 		if ($this->state=='') 
-		{
 			$this->state='1';
-		}
 		
 		$this->datenow = "";
 		$this->oc1 = "";
@@ -144,18 +193,30 @@ class CPinjam
 		$this->dsp1 = "style=\"display:none\"";
 		$this->dsp2 = "style=\"display:none\"";
 		
-		if ($this->kodepustaka!='') 
+		$addDay = 0;
+		if ($this->state == 0)
+			$addDay = $WaktuPinjamPegawai;
+		elseif ($this->state == 1)
+			$addDay = $WaktuPinjamSiswa;
+		elseif ($this->state == 2)
+			$addDay = $WaktuPinjamLain;
+		
+		if ($this->kodepustaka != '') 
 		{
-			$sql = "SELECT DATE_FORMAT(now(), '%d-%m-%Y')";
+			$sql = "SELECT DATE_FORMAT(NOW(), '%d-%m-%Y'),
+						   DATE_FORMAT(DATE_ADD(NOW(), INTERVAL $addDay DAY), '%d-%m-%Y')";
+			//echo $this->state . " -- $sql";			   
 			$result = QueryDb($sql);
 			$row = @mysql_fetch_row($result);
 			$this->datenow = $row[0];
+			$this->datereturn = $row[1];
+			
 			$this->oc1 = "onclick=\"TakeDate('tglpjm')\"";
 			$this->oc2 = "onclick=\"TakeDate('tglkem')\"";
 			$this->dsp1 = "";
 			$this->dsp2 = "";
 		}
-		
+			
 		$sql = "SELECT DATE_FORMAT(now(),'%Y-%m-%d')";
 		$result = QueryDb($sql);
 		$row = @mysql_fetch_row($result);
@@ -175,39 +236,52 @@ class CPinjam
             <td>
                 <fieldset><legend class="welc">Pilih Anggota</legend>
 					<table width="100%" border="0" cellspacing="3" cellpadding="0">
-                      <tr>
+                    <tr>
                         <td width="9%" align="right"><span class="news_content1">Status&nbsp;Peminjam</span></td>
-                  		<td width="91%">
-                        	<table width="100%" border="0" cellspacing="0" cellpadding="0">
-                              <tr></tr>
-                              
-                              <tr>
-                                <td width="5" align="right">
-                                	<input name="state" type="radio" value="0" onclick="fillstate('0')" <?=StringIsChecked($this->state,'0')?> />
-                                </td>
-                                <td ><span class="news_content1">Pegawai</span></td>
-                                <td width="5" align="right">
-                                	<input name="state" type="radio" value="1" onclick="fillstate('1')" <?=StringIsChecked($this->state,'1')?>/>
-                                </td>
-                                <td><span class="news_content1">Siswa</span></td>
-                                <td width="5" align="right">
-                                	<input name="state" type="radio" value="2" onclick="fillstate('2')" <?=StringIsChecked($this->state,'2')?>/>
-                                </td>
-                                <td><span class="news_content1">Anggota Luar Sekolah</span></td>
-                              </tr>
-                            </table>                        
-                         </td>
-                      </tr>
-                      <tr>
-                        <td align="right"><span class="news_content1">Peminjam</span></td>
-                  		<td>
-                        	<input type="hidden" id="statuspeminjam" value="<?=$this->state?>" />
+                        <td width="91%">
+                            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                <tr>
+                                    <td width="5" align="right">
+                                        <input name="state" type="radio" value="0" onclick="fillstate('0')" <?=StringIsChecked($this->state,'0')?> />
+                                    </td>
+                                    <td ><span class="news_content1">Pegawai</span></td>
+                                    <td width="5" align="right">
+                                        <input name="state" type="radio" value="1" onclick="fillstate('1')" <?=StringIsChecked($this->state,'1')?>/>
+                                    </td>
+                                    <td><span class="news_content1">Siswa</span></td>
+                                    <td width="5" align="right">
+                                        <input name="state" type="radio" value="2" onclick="fillstate('2')" <?=StringIsChecked($this->state,'2')?>/>
+                                    </td>
+                                    <td><span class="news_content1">Anggota Luar Sekolah</span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            <span class="news_content1">Peminjam</span>
+                        </td>
+                        <td>
+                            &nbsp;
+                            <input type="hidden" id="statuspeminjam" value="<?=$this->state?>" />
                             <input type="text" name="noanggota" id="noanggota" readonly="readonly" class="btnfrm" onclick="cari()" value="<?=$this->noanggota?>" size="30" />
-    &nbsp;
                             <input id="nama" name="nama" type="text" readonly="readonly" class="btnfrm" onclick="cari()" value="<?=$this->nama?>" size="50"/>
-        &nbsp;
-                          <a href="javascript:cari()"><img src="../img/ico/cari.png" width="16" height="16" border="0" /></a>                        </td>
-                      </tr>
+                            <a href="javascript:cari()"><img src="../img/ico/cari.png" width="16" height="16" border="0" /></a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            <span class="news_content1">Scan Barcode</span>
+                        </td>
+                        <td>
+                            &nbsp;
+                            <input type="text" id="txBarcode" name="txBarcode" style="font-size: 18px; width: 220px;"
+                                   onfocus="this.style.background = '#27d1e5'"
+                                   onblur="this.style.background = '#FFFFFF'"
+                                   onkeyup="return scanBarcode(event)"><br>
+                            <span id="spScanInfo" name="spScanInfo" style="color: red"></span>
+                        </td>
+                    </tr>
                     </table>
                 </fieldset>
             </td>
@@ -283,11 +357,37 @@ class CPinjam
             <table width="100%" border="0" cellspacing="5" cellpadding="0">
       <tr>
                         <td width="9%" align="right" class="news_content1">Nomor Pustaka</td>
-                        <td colspan="2"><input name="kodepustaka" id="kodepustaka" type="text" size="40" maxlength="45" value="<?=$this->kodepustaka?>" onkeypress="return KeyPress('kodepustaka',event)" />&nbsp;<a href="javascript:CariPustaka()"><img src="../img/ico/cari.png" border="0" /></a></td>
+                        <td colspan="2">
+							<!--
+							<input name="kodepustaka" id="kodepustaka" type="text" size="40"
+								   maxlength="45" value="<?=$this->kodepustaka?>"
+								   onkeypress="return KeyPress('kodepustaka',event)" />&nbsp;
+							//-->
+							<input name="kodepustaka" id="kodepustaka" type="text"
+                                   size="30" style="font-size: 18px;"
+								   maxlength="45" value="<?=$this->kodepustaka?>"
+                                   onkeyup="return OnEnterKodePustaka(event)"
+                                   onfocus="this.style.background = '#27d1e5'"
+                                   onblur="this.style.background = '#FFFFFF'" />&nbsp;
+							<a href="javascript:CariPustaka()">
+								<img src="../img/ico/cari.png" border="0" />
+								&nbsp;<font style='font-size: 11px; color: blue'>cari pustaka</font>
+							</a>
+							&nbsp;<font style='font-size: 11px; color: blue'>|</font>&nbsp;
+							<img src="../img/barcode.png" height='16' border="0" />&nbsp;
+							<font style='font-size: 11px; color: blue; font-weight: bold;'>scan barcode</font>
+							&nbsp;<font style='font-size: 11px; color: blue'>|</font>&nbsp;
+							<a href="javascript:ClearData()">
+								<img src="../img/broom.png" height='16' border="0" />&nbsp;
+								<font style='font-size: 11px; color: blue; font-weight: bold;'>bersihkan data</font>
+							</a>	
+						</td>
                       </tr>
                       <tr height="30">
                         <td align="right" class="news_content1">Judul</td>
-                        <td colspan="2"><div id="title" class="btnfrm" style="height:30px">&nbsp;<?=$this->judul?></div>                        </td>
+                        <td colspan="2">
+							<input type="textbox" id="judul" name="judul" class="btnfrm" style="height:30px; width:520px;" value="<?=$this->judul?>"> 
+						</td>
                       </tr>
                       <tr>
                         <td align="right" class="news_content1">Tanggal&nbsp;Pinjam</td>
@@ -297,7 +397,7 @@ class CPinjam
                             <td><input name="tglpjm" type="text" class="btnfrm" id="tglpjm" value="<?=$this->datenow?>" size="20" maxlength="10" readonly="true" <?=$this->oc1?> /></td>
                             <td width="18" align="right"><a href="javascript:TakeDate('tglpjm')" <?=$this->dsp1?>><img src="../img/ico/calendar.png" width="16" height="16" border="0" /></a></td>
                             <td>&nbsp;&nbsp;&nbsp;<span class="news_content1">Tanggal&nbsp;Kembali</span>&nbsp;</td>
-                            <td><input name="tglkem" type="text" class="btnfrm" id="tglkem" value="<?=$this->datenow?>" size="20" maxlength="10" readonly="true" <?=$this->oc2?> /></td>
+                            <td><input name="tglkem" type="text" class="btnfrm" id="tglkem" value="<?=$this->datereturn?>" size="20" maxlength="10" readonly="true" <?=$this->oc2?> /></td>
                             <td width="18" align="right"><a href="javascript:TakeDate('tglkem')" <?=$this->dsp2?> ><img src="../img/ico/calendar.png" border="0" /></a></td>
                           </tr>
                         </table>
@@ -316,8 +416,11 @@ class CPinjam
                       
                       <tr>
                         <td colspan="2" align="center">
-						<? if ($this->numcode>0){ ?>
+						<? if ($this->numcode > 0 && $this->isavaiable == 1) { ?>
 						<input name="button" type="button" class="cmbfrm2" id="button" value="Tambahkan ke daftar pustaka yang akan dipinjam" onclick="AddToChart()" />
+						<? } ?>
+						<? if ($this->isavaiable == -1) { ?>
+						<font style='color: red; font-weight: bold;'>Status buku ini sedang dipinjam</font>
 						<? } ?>
 						</td>
                       </tr>
@@ -333,7 +436,12 @@ class CPinjam
           <input type="hidden" name="num" id="num" value="0" />
           <? } ?>
         </table>
-
+		
+		<? if ($this->op == "newuser" || $this->op == "addtochart") { ?>
+		<script>
+			setTimeout(function() { focusKodePustaka() }, 250);
+		</script>
+		<? } ?>
         <?
 	}
 }

@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -21,151 +21,179 @@
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
 <?
-class CPustaka{
-	function OnStart(){
-		$op=$_REQUEST[op];
-		if ($op=="del"){
-			$sql = "DELETE FROM format WHERE replid='$_REQUEST[id]'";
+class CPustaka
+{
+	function OnStart()
+	{
+		$op = $_REQUEST[op];
+		if ($op == "del")
+		{
+			$sql = "DELETE FROM format
+					 WHERE replid='$_REQUEST[id]'";
 			QueryDb($sql);
 		}
+		
 		if (isset($_REQUEST[simpan]))
 			$this->save();
 	}
-	function reload_page(){
+	
+	function reload_page()
+	{
 		?>
 		<script language='JavaScript'>
 			document.location.href="pustaka.baru.php";
         </script>
 		<?
 	}
-	function OnFinish(){
-		?>
-		<script language='JavaScript'>
-		//	Tables('table', 1, 0);
-		</script>
-		<?
+	
+	function OnFinish()
+	{
+		//
     }
-	function GetKatalog(){
+	
+	function GetKatalog()
+	{
 		$this->katalog = $_REQUEST[katalog];
-		$sql = "SELECT replid,kode,nama FROM katalog ORDER BY nama";
+		
+		$sql = "SELECT MAX(LENGTH(kode))
+			      FROM katalog";
 		$result = QueryDb($sql);
-		$max=0;
-		while ($row = @mysql_fetch_row($result)){
-			$newmax = strlen($row[2]);
-			if ($newmax>$max)
-				$max=$newmax;
-		}
+		$row = mysql_fetch_row($result);
+		$maxlen = $row[0];
 		?>
+		
 		<select name="katalog" id="katalog" class="cmbfrm" style="width:100%; font-family:'Courier New'">
-		<?
-        $sql = "SELECT replid,kode,nama FROM katalog ORDER BY nama";
+		
+<?      $sql = "SELECT replid, kode, nama
+			      FROM katalog
+				 ORDER BY nama";
 		$result = QueryDb($sql);
-		while ($row = @mysql_fetch_row($result)){
-		$len = strlen($row[2]);
-		$space = $this->GetSpace($max,$len);
-		if ($this->katalog=="")
-			$this->katalog = $row[0];	
-		?>
-			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->katalog)?>>
-				<?=$row[2]?><?=$space?> - <?=$row[1]?>
+		while ($row = @mysql_fetch_row($result))
+		{
+			$len = strlen(trim($row[1]));
+			$space = $this->GetSpace($maxlen, $len);
+			
+			if ($this->katalog=="")
+				$this->katalog = $row[0];	?>
+			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0], $this->katalog)?>>
+				<?= "$space$row[1] - $row[2]" ?>
             </option>
-		<?
-		}
-		?>
-		</select>
-		<?
-	}
-	function GetPenulis(){
-		$this->penulis = $_REQUEST[penulis];
-		$sql = "SELECT replid,kode,nama FROM penulis ORDER BY nama";
-		$result = QueryDb($sql);
-		$max=0;
-		while ($row = @mysql_fetch_row($result)){
-			$newmax = strlen($row[2]);
-			if ($newmax>$max)
-				$max=$newmax;
-		}
-		?>
-		<select name="penulis" id="penulis" class="cmbfrm" style="width:100%; font-family:'Courier New'">
-		<?
-		$sql = "SELECT replid,kode,nama FROM penulis ORDER BY nama";
-		$result = QueryDb($sql);
-		while ($row = @mysql_fetch_row($result)){
-		$len = strlen($row[2]);
-		$space = $this->GetSpace($max,$len);
-		if ($this->penulis=="")
-			$this->penulis = $row[0];	
-		?>
-			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->penulis)?>>
-			<?=$row[2]?><?=$space?> - <?=$row[1]?> 
-            </option>
-		<?
-		}
-		?>
+<?		} ?>
 		</select>
 		<?
 	}
 	
-	function GetPenerbit(){
+	function GetPenulis()
+	{
+		$this->penulis = $_REQUEST[penulis];
+		
+		$sql = "SELECT MAX(LENGTH(kode))
+			      FROM penulis";
+		$result = QueryDb($sql);
+		$row = mysql_fetch_row($result);
+		$maxlen = $row[0];	?>
+		
+		<select name="penulis" id="penulis" class="cmbfrm" style="width:100%; font-family:'Courier New'">
+			
+<?		$sql = "SELECT replid, kode, nama
+			      FROM penulis
+				 ORDER BY nama";
+		$result = QueryDb($sql);
+		while ($row = @mysql_fetch_row($result))
+		{
+			$len = strlen(trim($row[1]));
+			$space = $this->GetSpace($maxlen, $len);
+			
+			if ($this->penulis=="")
+				$this->penulis = $row[0]; ?>
+				
+			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0], $this->penulis)?>>
+				<?= "$space$row[1] - $row[2]" ?>
+            </option>
+			
+<?		}	?>
+		</select>
+		<?
+	}
+	
+	function GetPenerbit()
+	{
 		$this->penerbit = $_REQUEST[penerbit];
-		$sql = "SELECT replid,kode,nama FROM penerbit ORDER BY nama";
+		
+		$sql = "SELECT MAX(LENGTH(kode))
+			      FROM penerbit";
 		$result = QueryDb($sql);
-		$max=0;
-		while ($row = @mysql_fetch_row($result)){
-			$newmax = strlen($row[2]);
-			if ($newmax>$max)
-				$max=$newmax;
-		}
-		?>
+		$row = mysql_fetch_row($result);
+		$maxlen = $row[0];	?>
+		
 		<select name="penerbit" id="penerbit" class="cmbfrm" style="width:100%; font-family:'Courier New'">
-		<?
-        $sql = "SELECT replid,kode,nama FROM penerbit ORDER BY nama";
+			
+<?      $sql = "SELECT replid, kode, nama
+				  FROM penerbit
+				 ORDER BY nama";
 		$result = QueryDb($sql);
-		while ($row = @mysql_fetch_row($result)){
-		$len = strlen($row[2]);
-		$space = $this->GetSpace($max,$len);
-		if ($this->penerbit=="")
-			$this->penerbit = $row[0];	
-		?>
-			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->penerbit)?>><?=$row[2]?><?=$space?> - <?=$row[1]?></option>
-		<?
-		}
-		?>
+		while ($row = @mysql_fetch_row($result))
+		{
+			$len = strlen(trim($row[1]));
+			$space = $this->GetSpace($maxlen, $len);
+			if ($this->penerbit=="")
+				$this->penerbit = $row[0];	?>
+			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0], $this->penerbit)?>>
+				<?= "$space$row[1] - $row[2]" ?>
+			</option>
+<?		}	?>
 		</select>
 		<?
 	}
-	function GetFormat(){
+	
+	function GetFormat()
+	{
 		$this->format = $_REQUEST[format];
-		$sql = "SELECT replid,kode,nama FROM format ORDER BY nama";
+		
+		$sql = "SELECT MAX(LENGTH(kode))
+			      FROM format";
 		$result = QueryDb($sql);
-		?>
-		<select name="format" id="format" class="cmbfrm" style="width:100%">
-		<?
-		while ($row = @mysql_fetch_row($result)){
-		if ($this->format=="")
-			$this->format = $row[0];	
-		?>
-			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->format)?>><?=$row[1]?> - <?=$row[2]?></option>
-		<?
-		}
-		?>
+		$row = mysql_fetch_row($result);
+		$maxlen = $row[0]; ?>
+		
+		<select name="format" id="format" class="cmbfrm" style="width:100%; font-family:'Courier New'">
+			
+<?		$sql = "SELECT replid, kode, nama
+				  FROM format
+				 ORDER BY nama";
+		$result = QueryDb($sql);
+		
+		while ($row = @mysql_fetch_row($result))
+		{
+			$len = strlen(trim($row[1]));
+			$space = $this->GetSpace($maxlen, $len);
+			
+			if ($this->format == "")
+				$this->format = $row[0];	?>
+				
+			<option value="<?=$row[0]?>" <?=IntIsSelected($row[0],$this->format)?>>
+				<?= "$space$row[1] - $row[2]" ?>
+			</option>
+			
+<?		}	?>
 		</select>
 		<?
 	}
-    function Content(){
-		?>
-		<link href="../sty/style.css" rel="stylesheet" type="text/css">
+	
+    function Content()
+	{	?>
         <form action="pustaka.baru.php" method="post" onsubmit="return validate(<?=$this->CountPustaka()?>)" enctype="multipart/form-data">
 		<table width="100%" border="0" cellspacing="2" cellpadding="2">
-          <tr>
+        <tr>
             <td width="47%" valign="top">
-            	<fieldset><legend><strong>Informasi Pustaka</strong></legend>
+            	<fieldset>
+					<legend><strong>Informasi Pustaka</strong></legend>
                     <table width="99%" border="0" cellspacing="2" cellpadding="2">
-                      <tr>
+                    <tr>
                         <td width="24%" align="right" valign="top">&nbsp;<strong>Judul</strong></td>
                         <td colspan="2"><textarea name="judul" cols="45" rows="3" class="areatxt2" id="judul" style="width:100%"></textarea></td>
-                      </tr>
-                      <tr>
+                    </tr>
+                    <tr>
                         <td align="right">&nbsp;<strong>Harga&nbsp;Satuan</strong></td>
                         <td colspan="2"><input name="harga" type="text" class="inputtxt" id="harga" onfocus="unformatRupiah('harga')" onblur="formatRupiah('harga')" onkeyup="tempel('harga','hargaasli')" /><input name="hargaasli" type="hidden" class="inputtxt" id="hargaasli" /></td>
                       </tr>
@@ -197,14 +225,15 @@ class CPustaka{
                       </tr>
                       <tr>
                         <td align="right">&nbsp;<strong>Tahun&nbsp;Terbit</strong></td>
-                        <td width="27%"><input name="tahun" type="text" class="inputtxt" id="tahun" maxlength="4" /></td>
+                        <td width="27%"><input name="tahun" type="text" class="inputtxt" id="tahun" size='5' maxlength="4" /></td>
                         <td width="49%">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                               <tr>
                                 <td align="right"><strong>Format&nbsp;</strong></td>
                                 <td><?=$this->GetFormat()?></td>
                               </tr>
-                            </table>                    </td>
+                            </table>
+						</td>
                       </tr>
                       <tr>
                         <td align="right">&nbsp;<strong>Keyword</strong></td>
@@ -215,36 +244,47 @@ class CPustaka{
                         <td colspan="2"><textarea name="keteranganfisik" cols="45" rows="5" class="areatxt2" id="keteranganfisik" style="width:100%"></textarea></td>
                       </tr>
                 	</table>
-            	</fieldset>              <fieldset>
+            	</fieldset>
+				
+				<fieldset>
                 <legend><strong>Alokasi Jumlah</strong></legend>
-            <?=$this->GetPustaka()?>
-                </fieldset></td>
+				<?=$this->GetPustaka()?>
+                </fieldset>
+				
+			</td>
             <td width="53%" valign="top">
                 <table width="100%" border="0" cellspacing="2" cellpadding="0">
-                  <tr>
+                <tr>
                     <td colspan="2">
-                    	<fieldset><legend><strong>Gambar Cover</strong></legend>
+                    	<fieldset>
+							<legend><strong>Gambar Cover</strong></legend>
                     		<table width="130" border="0" cellspacing="0" cellpadding="0" bgcolor="#CCCCCC">
-                              <tr height="130">
-                                <td align="center" valign="middle"><img src="../img/noimage.png" /></td>
-                              </tr>
+                            <tr height="130">
+								<td align="center" valign="middle"><img src="../img/noimage.png" /></td>
+                            </tr>
                             </table><br />
-                        <input name="cover" id="cover" type="file" />
-                        </fieldset>                    </td>
-                  </tr>
-                  <tr>
+							<input name="cover" id="cover" type="file" />
+                        </fieldset>
+					</td>
+                </tr>
+                <tr>
                     <td colspan="2">
-                    <fieldset><legend><strong>Abstraksi</strong></legend>
-                    <textarea name="abstraksi" id="abstraksi" cols="" rows="" style="width:100%"></textarea>
-                    </fieldset>                    </td>
-                  </tr>
-                  <tr>
-                    <td width="25%" align="right" valign="top" colspan="2">
-                    	<fieldset><legend><strong>Keterangan&nbsp;Tambahan</strong></legend>                    
-                        	<textarea name="keterangan" id="keterangan" cols="45" rows="5"></textarea>
-                    	</fieldset>                    </td>
-                  </tr>
-                </table>            </td>
+						<fieldset>
+							<legend><strong>Abstraksi</strong></legend>
+							<textarea name="abstraksi" id="abstraksi" cols="" rows="" style="width:100%"></textarea>
+						</fieldset>
+					</td>
+                </tr>
+                <tr>
+                    <td width="25%" align="left" valign="top" colspan="2">
+                    	<fieldset>
+							<legend><strong>Keterangan&nbsp;Tambahan</strong></legend>
+							<textarea name="keterangan" id="keterangan" cols="45" rows="5"></textarea>
+                    	</fieldset>
+					</td>
+                </tr>
+                </table>
+			</td>
           </tr>
           
           <tr>
@@ -255,37 +295,43 @@ class CPustaka{
 		</form>
         <?
 	}
-	function GetPustaka(){
-		 if (SI_USER_LEVEL()==2){
-			$sql = "SELECT * FROM perpustakaan WHERE replid='".SI_USER_IDPERPUS()."' ORDER BY nama";
-		 } else {
-			$sql = "SELECT * FROM perpustakaan ORDER BY nama";
-		 }
-		$result = QueryDb($sql);
-		?>
-		<table width="100%" border="1" cellspacing="0" cellpadding="0" class="tab">
-             <tr>
-               <td width="63%" height="25" align="center" valign="middle" class="header">Perpustakaan</td>
-               <td width="37%" height="25" align="center" valign="middle" class="header">Jumlah</td>
-             </tr>
-             <?
-			 $cnt=0;
-			 while ($row = @mysql_fetch_array($result)){
-			 ?>
-             <tr>
+	
+	function GetPustaka()
+	{
+		if (SI_USER_LEVEL()==2)
+			$sql = "SELECT *
+					  FROM perpustakaan
+					 WHERE replid = '".SI_USER_IDPERPUS()."'
+					 ORDER BY nama";
+		 else 
+			$sql = "SELECT *
+					  FROM perpustakaan
+					 ORDER BY nama";
+		 
+		$result = QueryDb($sql); ?>
+		<table width="100%" border="1" cellspacing="0" cellpadding="5" class="tab">
+        <tr>
+            <td width="63%" height="25" align="center" valign="middle" class="header">Perpustakaan</td>
+            <td width="37%" height="25" align="center" valign="middle" class="header">Jumlah</td>
+        </tr>
+		
+<?		$cnt = 0;
+		while ($row = @mysql_fetch_array($result))
+		{
+			?>
+            <tr>
                <td height="25" valign="middle">&nbsp;<?=$row[nama]?></td>
-               <td height="20" align="center" valign="middle">
-               		<input type="text" name="jumlah<?=$cnt?>" id="jumlah<?=$cnt?>" class="inputtxt" />
+               <td height="20" align="left" valign="middle">
+               		<input type="text" name="jumlah<?=$cnt?>" maxlength='3' size='4' id="jumlah<?=$cnt?>" class="inputtxt" />&nbsp;buah
  		            <input type="hidden" name="replid<?=$cnt?>" id="replid<?=$cnt?>" class="inputtxt" value="<?=$row[replid]?>" />     
                </td>
              </tr>
-             <?
-			 $cnt++;
-			 }
-			 ?>
+<?	 		$cnt++;
+		}  ?>
         </table>
-		<?
-		if (SI_USER_LEVEL()==2){
+		
+<?		if (SI_USER_LEVEL() == 2)
+		{
 			$sql = "SELECT * FROM perpustakaan WHERE replid<>".SI_USER_IDPERPUS()." ORDER BY nama";
 			$result = QueryDb($sql);
 			$cnt=1;
@@ -307,10 +353,42 @@ class CPustaka{
 		return $num;
 	}
 	
+	function GenerateBarcode($length = 6)
+	{
+		$dict = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		$barcode = "";
+		for($i = 0; $i < $length; $i++)
+		{
+			$pos = rand(0, strlen($dict) - 1);
+			$barcode .= substr($dict, $pos, 1);
+		}
+		
+		return $barcode;
+	}
+	
+	function GetNewBarcode()
+	{
+		$barcode = "";
+		do
+		{
+			$barcode = $this->GenerateBarcode(6);
+			
+			$sql = "SELECT COUNT(replid)
+					  FROM daftarpustaka
+					 WHERE info1 = '$barcode'";
+			$res = QueryDb($sql);
+			$row = mysql_fetch_row($res);
+			$ndata = (int)$row[0];		 
+		}
+		while($ndata != 0);
+		
+		return $barcode;
+	}
+	
 	function save()
 	{
 		$judul = trim(addslashes($_REQUEST[judul]));
-		$abstraksi = $_REQUEST[abstraksi];
+		$abstraksi = trim(addslashes($_REQUEST[abstraksi]));
 		$keyword = trim(addslashes($_REQUEST[keyword]));
 		$harga = UnformatRupiah(trim(addslashes($_REQUEST[harga])));
 		$tahun = trim(addslashes($_REQUEST[tahun]));
@@ -340,56 +418,116 @@ class CPustaka{
 			
 			$fill_cover = ", cover='$cover_binary'"; 
 		}
+		
+		BeginTrans();
+		$success = true;
 
-		$sql = "SELECT * FROM pustaka WHERE judul='$judul' AND penulis='$penulis' AND format='$format' AND katalog='$katalog' AND penerbit='$penerbit'";
-		$result = QueryDb($sql);
+		$sql = "SELECT *
+				  FROM pustaka
+				 WHERE judul='$judul'
+				   AND penulis='$penulis'
+				   AND format='$format'
+				   AND katalog='$katalog'
+				   AND penerbit='$penerbit'";
+		//echo "$sql<br>";		   
+		$result = QueryDbTrans($sql, $success);
 		$num = @mysql_num_rows($result);
-		$goon=0;
-		if ($num==0) 
+		$goon = 0;
+		
+		if ($success)
 		{
-			$sql = "INSERT INTO pustaka SET harga='$harga', judul='$judul', abstraksi='$abstraksi', keyword='$keyword', tahun='$tahun', keteranganfisik='$keteranganfisik', penulis='$penulis', format='$format', katalog='$katalog', penerbit='$penerbit', keterangan='$keterangan' $fill_cover ";
-			$result = QueryDb($sql);
-			if ($result) 
+			if ($num == 0) 
 			{
-				$sql = "SELECT replid FROM pustaka ORDER BY replid DESC LIMIT 1";
-				$result = QueryDb($sql);
+				$sql = "INSERT INTO pustaka
+						   SET harga='$harga', judul='$judul', abstraksi='$abstraksi', keyword='$keyword',
+							   tahun='$tahun', keteranganfisik='$keteranganfisik', penulis='$penulis',
+							   format='$format', katalog='$katalog', penerbit='$penerbit',
+							   keterangan='$keterangan' $fill_cover ";
+				//echo "$sql<br>";			   
+				$result = QueryDbTrans($sql, $success);
+				if ($success) 
+				{
+					$sql = "SELECT LAST_INSERT_ID()";
+					//echo "$sql<br>";
+					$result = QueryDb($sql);
+					$row = @mysql_fetch_row($result);
+					$lastid = $row[0];
+					
+					$goon = 1;
+				}
+			} 
+			else 
+			{
+				$sql = "SELECT replid
+						  FROM pustaka
+						 WHERE judul='$judul'
+						   AND penulis='$penulis'
+						   AND format='$format'
+						   AND katalog='$katalog'
+						   AND penerbit='$penerbit'
+						 ORDER BY replid DESC
+						 LIMIT 1";
+				//echo "$sql<br>";		 
+				$result = QueryDbTrans($sql, $success);
 				$row = @mysql_fetch_row($result);
 				$lastid = $row[0];
-				$goon=1;
+				
+				$goon = 1;
 			}
-		} 
-		else 
-		{
-			$sql = "SELECT replid FROM pustaka WHERE judul='$judul' AND penulis='$penulis' AND format='$format' AND katalog='$katalog' AND penerbit='$penerbit' ORDER BY replid DESC LIMIT 1";
-			$result = QueryDb($sql);
-			$row = @mysql_fetch_row($result);
-			$lastid = $row[0];
-			$goon=1;
 		}
 		
-		if ($goon==1)
+		if ($success && $goon == 1)
 		{
-			$sql = "SELECT counter FROM katalog WHERE replid='$katalog'";
-			$result = QueryDb($sql);
+			$sql = "SELECT counter
+					  FROM katalog
+					 WHERE replid = '$katalog'";
+			//echo "$sql<br>";		 
+			$result = QueryDbTrans($sql, $success);
 			$r = @mysql_fetch_row($result);
 			$counter = $r[0];
-			for ($i=0;$i<$this->CountPustaka();$i++){
+			for ($i = 0; $success && $i < $this->CountPustaka(); $i++)
+			{
 				$replid = $_REQUEST['replid'.$i];
-				if ($_REQUEST['jumlah'.$i]!="" && $_REQUEST['jumlah'.$i]>0){
-					for ($j=1;$j<=$_REQUEST['jumlah'.$i];$j++){
+				$parm = "jumlah$i";
+				if ($_REQUEST[$parm] != "" && $_REQUEST[$parm] > 0)
+				{
+					for ($j = 1; $success && $j <= $_REQUEST[$parm]; $j++)
+					{
 						$counter++;
-						$sql = "UPDATE katalog SET counter=".$counter." WHERE replid='$katalog'";
-						QueryDb($sql);
-						$kodepustaka = $this->GenKodePustaka($katalog,$penulis,$judul,$format,$counter);
-						$sql = "INSERT INTO daftarpustaka SET pustaka='$lastid', perpustakaan='$replid', kodepustaka='$kodepustaka'";
-						//echo $sql."<br>";
-						QueryDb($sql);
+						$kodepustaka = $this->GenKodePustaka($katalog, $penulis, $judul, $format, $counter);
+						$barcode = $this->GetNewBarcode();
+						$sql = "INSERT INTO daftarpustaka
+								   SET pustaka='$lastid', perpustakaan='$replid',
+									   kodepustaka='$kodepustaka', info1='$barcode'";
+						//echo "$sql<br>";			   
+						QueryDbTrans($sql, $success);
 					}
 				}
 			}
+			
+			if ($success)
+			{
+				$sql = "UPDATE katalog
+						   SET counter = $counter
+						 WHERE replid = '$katalog'";
+				//echo "$sql<br>";		 
+				QueryDbTrans($sql, $success);	
+			}
 		}
-		//$this->delete_file($filename);
-		//exit;
+		
+		if ($success)
+		{
+			//echo "OK";
+			//RollbackTrans();
+			CommitTrans();
+		}
+		else
+		{
+			//echo "FAILED";
+			RollbackTrans();
+		}
+		//exit();
+		
 		$this->reload_page();	
 	}
 	
@@ -437,31 +575,12 @@ class CPustaka{
 		return $kode;
 	}
 	
-	function delete_file($file){ 
-	  $delete = @unlink($file); 
-	  clearstatcache();
-	  if (@file_exists($file)) { 
-		 $filesys = eregi_replace("/","\\",$file); 
-		 $delete = @system("del $filesys");
-		 clearstatcache();
-		 if (@file_exists($file)) { 
-			$delete = @chmod ($file, 0775); 
-			$delete = @unlink($file); 
-			$delete = @system("del $filesys");
-		 }
-	  }
-	  clearstatcache();
-	  if (@file_exists($file)){
-		 return false;
-		 }
-		 else{
-			   return true;
-			   }
-	}  // end function
-	function GetSpace($maxlength,$length){
-		$spacer="";
-		for ($i=1;$i<=$maxlength-$length;$i++)
-			$spacer .="&nbsp;";
+	function GetSpace($maxlength, $length)
+	{
+		$spacer = "";
+		for ($i = 1; $i <= $maxlength - $length; $i++)
+			$spacer .= "&nbsp;";
+			
 		return $spacer;	
 	}
 }

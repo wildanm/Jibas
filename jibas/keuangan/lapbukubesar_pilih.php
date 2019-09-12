@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -78,9 +78,9 @@ function cetak() {
 	<td align="left">
 <? 	OpenDb();
 	if ($kategori != "ALL")
-		$sql = "SELECT r.nama, r.kode, sum(jd.debet), sum(jd.kredit) FROM jurnal j, jurnaldetail jd, rekakun r WHERE j.replid = jd.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND  jd.koderek = r.kode AND r.kategori = '$kategori' GROUP BY r.nama, r.kode ORDER BY r.nama";
+		$sql = "SELECT r.nama, r.kode, sum(jd.debet), sum(jd.kredit) FROM jurnal j, jurnaldetail jd, rekakun r WHERE j.replid = jd.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND  jd.koderek = r.kode AND r.kategori = '$kategori' GROUP BY r.nama, r.kode ORDER BY r.kode";
 	else
-		$sql = "SELECT r.nama, r.kode, sum(jd.debet), sum(jd.kredit) FROM jurnal j, jurnaldetail jd, rekakun r WHERE j.replid = jd.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND  jd.koderek = r.kode GROUP BY r.nama, r.kode ORDER BY r.nama";
+		$sql = "SELECT r.nama, r.kode, sum(jd.debet), sum(jd.kredit) FROM jurnal j, jurnaldetail jd, rekakun r WHERE j.replid = jd.idjurnal AND j.idtahunbuku = '$idtahunbuku' AND j.tanggal BETWEEN '$tanggal1' AND '$tanggal2' AND  jd.koderek = r.kode GROUP BY r.nama, r.kode ORDER BY r.kode";
 		
 	$result = QueryDb($sql);
 	if (mysql_num_rows($result) > 0) {

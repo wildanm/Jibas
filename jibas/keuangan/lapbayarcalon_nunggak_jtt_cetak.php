@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 17 (May 10, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -172,6 +172,7 @@ if ($kelompok <> -1) {
     <td class="header" width="80" align="center">Telat<br /><em>(hari)</em></td>
     <td class="header" width="120" align="center"><?=$namapenerimaan ?></td>
     <td class="header" width="120" align="center">Total Pembayaran</td>
+    <td class="header" width="120" align="center">Total Diskon</td>
     <td class="header" width="120" align="center">Total Tunggakan</td>
     <td class="header" width="200" align="center">Keterangan</td>
 </tr>
@@ -189,6 +190,7 @@ $result = QueryDb($sql);
 $cnt = 0;
 $totalbiayaall = 0;
 $totalbayarall = 0;
+$totaldiskonall = 0;
 
 while ($row = mysql_fetch_array($result)) {
 	$idbesarjtt = $row['id'];
@@ -213,12 +215,15 @@ while ($row = mysql_fetch_array($result)) {
 	$nbayar = $row2[0];
 	$nblank = $max_n_cicilan - $nbayar;
 	$totalbayar = 0;
+	$totaldiskon = 0;
 	
 	if ($nbayar > 0) {
-		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' ORDER BY tanggal";
+		$sql = "SELECT date_format(tanggal, '%d-%b-%y'), jumlah, info1 FROM penerimaanjttcalon WHERE idbesarjttcalon = '$idbesarjtt' ORDER BY tanggal";
 		$result2 = QueryDb($sql);
 		while ($row2 = mysql_fetch_row($result2)) {
-			$totalbayar = $totalbayar + $row2[1]; ?>
+			$totalbayar = $totalbayar + $row2[1];
+            $totaldiskon = $totaldiskon + $row2[2];
+			?>
             <td>
                 <table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-collapse:collapse" bordercolor="#000000">
                 <tr height="20"><td align="center"><?=FormatRupiah($row2[1]) ?></td></tr>
@@ -227,6 +232,8 @@ while ($row = mysql_fetch_array($result)) {
             </td>
  <?		}
  		$totalbayarall += $totalbayar;
+        $totaldiskonall += $totaldiskon;
+
 	}	
 	for ($i = 0; $i < $nblank; $i++) { ?>
 	    <td>
@@ -244,7 +251,8 @@ while ($row = mysql_fetch_array($result)) {
     </td>
     <td align="right"><?=FormatRupiah($besarjtt) ?></td>
     <td align="right"><?=FormatRupiah($totalbayar) ?></td>
-    <td align="right"><?=FormatRupiah($besarjtt - $totalbayar) ?></td>
+    <td align="right"><?=FormatRupiah($totaldiskon) ?></td>
+    <td align="right"><?=FormatRupiah($besarjtt - $totalbayar - $totaldiskon) ?></td>
     <td><?=$ketjtt ?></td>
 </tr>
 <?
@@ -254,7 +262,8 @@ while ($row = mysql_fetch_array($result)) {
 	<td align="center" colspan="<?=5 + $max_n_cicilan ?>" bgcolor="#999900"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
 	<td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($totalbiayaall) ?></strong></font></td>
     <td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($totalbayarall) ?></strong></font></td>
-    <td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($totalbiayaall - $totalbayarall) ?></strong></font></td>
+    <td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($totaldiskonall) ?></strong></font></td>
+    <td align="right" bgcolor="#999900"><font color="#FFFFFF"><strong><?=FormatRupiah($totalbiayaall - $totalbayarall - $totaldiskonall) ?></strong></font></td>
     <td bgcolor="#999900">&nbsp;</td>
 </tr>
 </table>

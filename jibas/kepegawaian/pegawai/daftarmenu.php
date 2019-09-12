@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -63,7 +63,9 @@ function ChangePage(menu)
 		else if (menu == 10)
 			parent.daftarisi.location.href = "daftarkeluarga.php?nip=" + nip;				
 		else if (menu == 11)
-			parent.daftarisi.location.href = "daftarsemua.php?nip=" + nip;
+			parent.daftarisi.location.href = "daftarpresensi.php?nip=" + nip;
+		else if (menu == 12)
+			parent.daftarisi.location.href = "daftarsemua.php?nip=" + nip;	
 			
 	}
 }
@@ -125,11 +127,14 @@ function UpdateNip(newnip)
 			<td width="60" align="left" valign="middle" style="background-color: #E7BB1C">
 				<input type="radio" name="menu" id="menu" value="9" onclick="JavaScript:ChangePage(9)"/><a style='font-weight:normal' href="JavaScript:ChangePage2(9)">Kerja</a>
 			</td>
-			<td width="100" align="left" valign="middle" style="background-color: #E7BB1C">
+			<td width="80" align="left" valign="middle" style="background-color: #E7BB1C">
 				<input type="radio" name="menu" id="menu" value="10" onclick="JavaScript:ChangePage(10)"/><a style="font-weight:normal" href="JavaScript:ChangePage2(10)">Keluarga</a>
 			</td>
+			<td width="80" align="left" valign="middle" style="background-color: #E7BB1C">
+				<input type="radio" name="menu" id="menu" value="11" onclick="JavaScript:ChangePage(11)"/><a style="font-weight:normal" href="JavaScript:ChangePage2(11)">Presensi</a>
+			</td>
 			<td width="100" align="left" valign="middle" style="background-color: #000">
-				&nbsp;<input type="radio" name="menu" id="menu" value="11" onclick="JavaScript:ChangePage(11)"/><a style="color:#FFF" href="JavaScript:ChangePage2(11)">[Semua]</a>
+				&nbsp;<input type="radio" name="menu" id="menu" value="12" onclick="JavaScript:ChangePage(12)"/><a style="color:#FFF" href="JavaScript:ChangePage2(12)">[Semua]</a>
 			</td>
 		</tr>
 		</table>

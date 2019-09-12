@@ -181,3 +181,52 @@ a.more:hover{
 	border-top:#3675a8 solid 1px; 
 }	
 
+
+.mainTitle
+{
+	font-family: Verdana;
+	font-size: 30px;
+	color: #999
+}
+
+.mainSubTitle
+{
+	font-family: Verdana;
+	font-size: 18px;
+	color: #999
+}
+
+.mainMenuTitle
+{
+	font-family: Arial;
+	font-size: 14px;
+	font-weight: bold;
+	color: black;
+	line-height: 22px;
+}
+
+.mainMenuTitle:hover
+{
+	font-family: Arial;
+	font-size: 14px;
+	font-weight: bold;
+	color: maroon;
+}
+
+.mainMenuInfo
+{
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: italic;
+	color: black;
+}
+
+.mainMenuInfo:hover
+{
+	font-family: Arial;
+	font-size: 11px;
+	font-weight: normal;
+	font-style: italic;
+	color: maroon;
+}

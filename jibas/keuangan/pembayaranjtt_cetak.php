@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -262,6 +262,16 @@ else
 			  FROM penerimaanjtt p, besarjtt b, jurnal j 
 			 WHERE p.idbesarjtt = b.replid AND b.info2='$idtahunbuku' AND j.replid = p.idjurnal AND b.replid = '$idbesarjtt' 
 		  ORDER BY p.tanggal ASC";
+	$sql = "SELECT p.replid AS id, j.nokas, date_format(p.tanggal, '%d-%b-%Y') as tanggal,
+                   p.keterangan, p.jumlah, p.petugas, p.info1 AS diskon, jd.koderek AS rekkas, ra.nama AS namakas
+			  FROM penerimaanjtt p, besarjtt b, jurnal j, jurnaldetail jd, rekakun ra
+		     WHERE p.idbesarjtt = b.replid
+			   AND j.replid = p.idjurnal
+			   AND j.replid = jd.idjurnal
+			   AND jd.koderek = ra.kode
+			   AND ra.kategori = 'HARTA'
+			   AND b.replid = '$idbesarjtt'
+		     ORDER BY p.tanggal, p.replid ASC";	  
     $result = QueryDb($sql);
    
     $info = "Pembayaran Pertama";
@@ -276,7 +286,8 @@ else
     <table class="tab" id="table" border="1" style="border-collapse:collapse" width="100%" align="center" bordercolor="#000000">
     <tr height="30" align="center">
         <td class="header" width="5%">No</td>
-        <td class="header" width="20%">No.Jurnal/Tgl</td>
+        <td class="header" width="15%">No.Jurnal/Tgl</td>
+		<td class="header" width="15%">Rek. Kas</td>
         <td class="header" width="15%">Besar</td>
 		<td class="header" width="15%">Diskon</td>
         <td class="header" width="*">Keterangan</td>
@@ -294,7 +305,8 @@ else
     ?>
     <tr height="25">
         <td align="center"><?=++$cnt?></td>
-        <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . LongDateFormat($row['tgl'])?></i></td>
+        <td align="center"><?="<strong>" . $row['nokas'] . "</strong><br><i>" . $row['tanggal']?></i></td>
+		<td align="left"><?= $row['rekkas'] . " " . $row['namakas']  ?> </td>
         <td align="right"><?=FormatRupiah($row['jumlah'] + $row['diskon'])?></td>
 		<td align="right"><?=FormatRupiah($row['diskon'])?></td>
         <td align="left"><?=$row['keterangan'] ?></td>
@@ -304,7 +316,7 @@ else
         }
         $sisa = $besar - $total;?>
     <tr height="35">
-        <td bgcolor="#996600" colspan="2" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
+        <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF"><strong>T O T A L</strong></font></td>
         <td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total) ?></strong></font></td>
 		<td bgcolor="#996600" align="right"><font color="#FFFFFF"><strong><?=FormatRupiah($total_diskon) ?></strong></font></td>
         <td bgcolor="#996600" colspan="3" align="center"><font color="#FFFFFF">Sisa <strong><?=FormatRupiah($sisa) ?></strong></font></td>

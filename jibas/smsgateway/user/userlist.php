@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -180,41 +180,64 @@ class UserList{
 		ob_flush();
 	}
 		
-	public function addUser(){
+	public function addUser()
+	{
 		ob_start();
-			if (isset($_REQUEST['op']) && $_REQUEST['op']=='Simpan'){
-				global $db_name_user;
-				$nip	= $_REQUEST['nip'];
-				$pass	= md5($_REQUEST['password1']);
-				$ket	= addslashes($_REQUEST['ket']);
-				$tingkat= $_REQUEST['tingkat'];
+		
+		if (isset($_REQUEST['op']) && $_REQUEST['op']=='Simpan')
+		{
+			global $db_name_user;
+			
+			$nip	= $_REQUEST['nip'];
+			$pass	= md5($_REQUEST['password1']);
+			$ket	= addslashes($_REQUEST['ket']);
+			$tingkat= $_REQUEST['tingkat'];
 				
-				OpenDb();
-				$sql = "SELECT COUNT(replid) FROM $db_name_user.hakakses WHERE login='$nip' AND modul='SMSG'";
+			OpenDb();
+			
+			$sql = "SELECT COUNT(replid)
+					  FROM $db_name_user.hakakses
+					 WHERE login = '$nip'
+					   AND modul='SMSG'";
+			$res = QueryDb($sql);
+			$row = @mysql_fetch_row($res);
+			$num = $row[0];
+			if ($num > 0)
+			{
+				echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Pengguna sudah terdaftar di Jibas SMS Gateway</div>";
+			}
+			else
+			{
+				$sql = "SELECT COUNT(replid)
+					      FROM $db_name_user.login
+						 WHERE login='$nip'";
 				$res = QueryDb($sql);
 				$row = @mysql_fetch_row($res);
-				$num = $row[0];
-				if ($num>0)
-					echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Pengguna sudah terdaftar di Jibas SMS Gateway</div>";	
-				else {
-					$sql = "SELECT COUNT(replid) FROM $db_name_user.login WHERE login='$nip'";
-					$res = QueryDb($sql);
-					$row = @mysql_fetch_row($res);
-					if ($row[0]<1){
-						$sql = "INSERT INTO $db_name_user.login SET login='$nip',password='$password'";
-						QueryDb($sql);
-					}
-					
-					
-					$sql = "INSERT INTO $db_name_user.hakakses SET login='$nip',tingkat='$tingkat',keterangan='$ket',modul='SMSG'";
-					$res = QueryDb($sql);
-					if ($res){
-						echo "<script>parent.opener.location.href='userlist.php';window.close();</script>";
-					} else 
-						echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Gagal menyimpan Data Pengguna</div>";	
+				
+				if ($row[0] < 1)
+				{
+					$sql = "INSERT INTO $db_name_user.login
+							   SET login='$nip',
+								   password='$pass'";
+					QueryDb($sql);
 				}
 				
+				$sql = "INSERT INTO $db_name_user.hakakses
+						   SET login = '$nip',
+							   tingkat='$tingkat',
+							   keterangan='$ket',
+							   modul='SMSG'";
+				$res = QueryDb($sql);
+				if ($res)
+				{
+					echo "<script>parent.opener.location.href='userlist.php';window.close();</script>";
+				}
+				else
+				{
+					echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Gagal menyimpan Data Pengguna</div>";	
+				}
 			}
+		}
 			?>
 			<title>Tambah Pengguna</title>
             <form action="userlist.php?cmd=add" method="post" onsubmit="return saveUser()">
@@ -239,12 +262,12 @@ class UserList{
 			  <tr class='passfield'>
 				<td>Password</td>
 				<td>:</td>
-				<td><input type="text" id="password1" class='InputTxt' name="password1" style='width:98%' value="" /></td>
+				<td><input type="password" id="password1" class='InputTxt' name="password1" style='width:98%' value="" /></td>
 			  </tr>
 			  <tr class='passfield'>
 			    <td>Password (ulangi)</td>
 			    <td>:</td>
-			    <td><input type="text" id="password2" class='InputTxt' style='width:98%' value="" /></td>
+			    <td><input type="password" id="password2" class='InputTxt' style='width:98%' value="" /></td>
 		      </tr>
               <tr class='hasspassword' style="display:none">
 			    <td></td>
@@ -276,26 +299,33 @@ class UserList{
 		ob_flush();
 	}
 	
-	public function editUser(){
+	public function editUser()
+	{
 		ob_start();
-			global $db_name_sdm;
-			global $db_name_user;
-			$id	= $_REQUEST['id'];
-			OpenDb();
-			if (isset($_REQUEST['op']) && $_REQUEST['op']=='Simpan'){
+		
+		global $db_name_sdm;
+		global $db_name_user;
+		
+		$id	= $_REQUEST['id'];
+		OpenDb();
+		if (isset($_REQUEST['op']) && $_REQUEST['op']=='Simpan')
+		{
+			$nip	= $_REQUEST['nip'];
+			$ket	= $_REQUEST['ket'];
+			$tingkat= $_REQUEST['tingkat'];
 				
-				$nip	= $_REQUEST['nip'];
-				$ket	= $_REQUEST['ket'];
-				$tingkat= $_REQUEST['tingkat'];
-				
-				$sql = "UPDATE $db_name_user.hakakses SET tingkat='$tingkat',keterangan='$ket' WHERE replid='$id'";
-				$res = QueryDb($sql);
-				if ($res){
-					echo "<script>parent.opener.location.href='userlist.php';window.close();</script>";
-				} else 
-					echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Gagal menyimpan Data Pengguna</div>";	
-				
+			$sql = "UPDATE $db_name_user.hakakses
+					   SET tingkat='$tingkat',keterangan='$ket'
+					 WHERE replid='$id'";
+			$res = QueryDb($sql);
+			if ($res)
+			{
+				echo "<script>parent.opener.location.href='userlist.php';window.close();</script>";
 			}
+			else 
+				echo "<div align='center' style='border:1px solid #ce0000; background-color:#fbd9d9;padding:4px;font-weight:bold;color:#4b4b4b;margin-bottom:5px'>Gagal menyimpan Data Pengguna</div>";	
+			}
+			
 			$sql = "SELECT login,tingkat,keterangan FROM $db_name_user.hakakses WHERE replid='$id'";
 			$res = QueryDb($sql);
 			$row = @mysql_fetch_row($res);

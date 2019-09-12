@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -117,8 +117,16 @@ function scrollMiddle() {
 				<td>
 				<a href="penilaian/lap_legger.php">Laporan Legger Nilai</a>
 				</td>
-			</tr>	
-			</table>
+			</tr>
+            <tr>
+                <td width="10%">
+                    <img src="images/table_small.png" border="0" width="40">
+                </td>
+                <td>
+                    <a href="penilaian/legger.rapor.php">Legger Nilai Rapor</a>
+                </td>
+            </tr>
+            </table>
 		</td>
 		<td>
 			<img src="images/spacer.gif" width="1" height="39" alt=""></td>

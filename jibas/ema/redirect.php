@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -35,9 +35,15 @@ require_once('inc/db_functions.php');
 OpenDb();
 
 $username = trim($_POST[username]);
-if ($username == "jibas") 
-	$username = "landlord";
+if ($username == "jibas") $username = "landlord";
 $password = trim($_POST[password]);
+
+$username = str_replace("'", "\'", $username);
+$username = str_replace("--", " ", $username);
+$login = $username;
+$username = "'$username'";
+
+$password = str_replace("'", "\'", $password);
 
 $user_exists = false;
 if (isset($_SESSION["login"]))
@@ -45,7 +51,7 @@ if (isset($_SESSION["login"]))
 	
 if(!isset($_SESSION["login"])) 
 {
-	if ($username=="landlord")
+	if ($login == "landlord")
 	{
 		$sql_la = "SELECT password FROM $db_name_user.landlord";
 		$result_la = QueryDb($sql_la) ;//or die(mysql_error());
@@ -64,8 +70,10 @@ if(!isset($_SESSION["login"]))
 	} 
 	else 
 	{
-		$query = "SELECT login,password FROM jbsuser.login WHERE login = '$username' ".
-				 "AND password='".md5($password)."'";
+		$query = "SELECT login,password 
+                    FROM jbsuser.login 
+                   WHERE login = $username
+                     AND password = '".md5($password)."'";
 		$result = QueryDb($query) or die(mysql_error());
 		$row = mysql_fetch_array($result);
 		$num = mysql_num_rows($result);
@@ -74,13 +82,15 @@ if(!isset($_SESSION["login"]))
 			$query2 = "SELECT h.departemen as departemen, h.tingkat as tingkat, p.nama as nama, 
 							  p.panggilan as panggilan, h.theme as tema 
 						 FROM jbsuser.hakakses h, jbssdm.pegawai p 
-						WHERE h.login = '$username' AND p.nip=h.login AND h.modul='EMA'";
+						WHERE h.login = $username 
+						  AND p.nip=h.login 
+						  AND h.modul='EMA'";
 			$result2 = QueryDb($query2) or die(mysql_error());
 			$row2 = mysql_fetch_array($result2);
 			$num2 = mysql_num_rows($result2);
 			if($num2 != 0) 
 			{
-				$_SESSION['login'] = $username;
+				$_SESSION['login'] = $login;
 				$_SESSION['nama'] = $row2[nama];
 				$_SESSION['tingkat'] = 2;
 				$_SESSION['panggilan'] = $row2[panggilan];
@@ -109,10 +119,10 @@ if(!$user_exists)
 }
 else
 {
-	if ($username=="landlord")
+	if ($login == "landlord")
     	$query = "UPDATE $db_name_user.landlord SET lastlogin='".date("Y-m-d H:I:s")."' WHERE password='".md5($password)."'";
     else 
-		$query = "UPDATE $db_name_user.hakakses SET lastlogin='".date("Y-m-d H:I:s")."' WHERE login='$username' AND modul = 'EMA'";
+		$query = "UPDATE $db_name_user.hakakses SET lastlogin='".date("Y-m-d H:I:s")."' WHERE login=$username AND modul = 'EMA'";
 	$result = queryDb($query);
 	
 	if ((isset($_SESSION['login'])) && (isset($_SESSION['tingkat'])))

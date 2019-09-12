@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -69,6 +69,7 @@ tinyMCE.init({
 });
 </script>
 
+<font style="font-family: 'Times New Roman'; font-size: 18px;">Pengaturan Halaman Beranda</font><br><br>
 <form>
 <div>
 	 <div>
@@ -77,7 +78,7 @@ tinyMCE.init({
 		  </textarea>
 	 </div>
 	 <br />
-	 <input type="button" value="Simpan" onclick="b_Save()" />
-	 <input type="button" value="Tutup" onclick="b_Close()" />
+	 <input type="button" value="Simpan" onclick="b_Save()"   style="width: 80px; height: 40px" class="but" />
+	 <input type="button" value="Tutup" onclick="b_Close()"   style="width: 80px; height: 40px" class="but" />
 </div>
 </form>

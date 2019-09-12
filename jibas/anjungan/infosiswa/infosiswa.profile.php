@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -23,301 +23,782 @@
 <?
 require_once('infosiswa.session.php');
 require_once('infosiswa.security.php');
+require_once('infosiswa.config.php');
+require_once('infosiswa.profile.func.php');
 require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/rupiah.php');
+require_once('../library/datearith.php');
 require_once('../include/db_functions.php');
 
 OpenDb();
 
 $nis = $_SESSION["infosiswa.nis"];
 
-$sql  =	"SELECT * FROM siswa c, kelas k, tahunajaran t ".
-		"WHERE c.nis='".$nis."' AND k.replid = c.idkelas AND k.idtahunajaran = t.replid ";
-$result = QueryDb($sql);
-$row = mysql_fetch_array($result);
+$sql = "SELECT *
+	      FROM jbsakad.siswa
+		 WHERE nis = '$nis'";
+$res = QueryDb($sql);
+$row = mysql_fetch_array($res);
+$asalsekolah = $row['asalsekolah'];
+
+$sql = "SELECT departemen
+          FROM jbsakad.asalsekolah
+         WHERE sekolah = '$asalsekolah'";
+$res2 = QueryDb($sql);
+$row2 = mysql_fetch_array($res2);
+$jenjangsekolah = $row2['departemen'];
+
+$sql = "SELECT departemen 
+          FROM jbsakad.siswa s, jbsakad.angkatan a 
+         WHERE s.idangkatan = a.replid
+           AND s.nis = '$nis'";
+$res2 = QueryDb($sql);
+$row2 = mysql_fetch_array($res2);
+$departemen = $row2['departemen'];
 ?>
-<form name="paneldp">    
-<input type="hidden" name="nis" id="nis" value="<?=$nis?>" />    
-<br>    
-<table border="0" cellpadding="0" cellspacing="0" width="100%" align="left" >
-  <tr height="30">
-	<td colspan="4" align="left"><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Data Pribadi Siswa</strong></font>
-		<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-	<td align="right">&nbsp;</td>    
-  </tr>
-  <tr height="20">
-    <td width="5%" rowspan="15"  ></td>
-    <td class="tab2">1.</td>
-    <td class="tab2">NISN</td>
-    <td class="tab2">:
-	  <?=$row['nisn']?></td>
-    <td rowspan="15" ><div align="center"><img src="library/gambar.php?nis=<?=$nis?>"  /> </div></td>
-  </tr>
-  <tr height="20">
-	<td width="5%" class="tab2">2.</td>
-	<td colspan="2" class="tab2">Nama Peserta Didik</td>
-	</tr>
-  <tr height="20">
-	<td >&nbsp;</td>
-	<td width="20%" class="tab2">a. Lengkap</td>
-	<td class="tab2">:
-	  <?=$row['nama']?></td>
-  </tr>
-  <tr height="20">
-	<td >&nbsp;</td>
-	<td class="tab2">b. Panggilan</td>
-	<td class="tab2">:
-	  <?=$row['panggilan']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2" >3.</td>
-	<td class="tab2">Jenis Kelamin</td>
-	<td class="tab2" >:
-	  <? 	if ($row['kelamin']=="l")
-				echo "Laki-laki"; 
-			if ($row['kelamin']=="p")
-				echo "Perempuan"; 
-		?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">4.</td>
-	<td class="tab2">Tempat Lahir</td>
-	<td class="tab2">:
-	  <?=$row['tmplahir']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">5.</td>
-	<td class="tab2">Tanggal Lahir</td>
-	<td class="tab2">:
-	  <?=LongDateFormat($row['tgllahir']) ?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">6.</td>
-	<td class="tab2" >Agama</td>
-	<td class="tab2">:
-	  <?=$row['agama']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">7.</td>
-	<td class="tab2">Kewarganegaraan</td>
-	<td class="tab2">:
-	  <?=$row['warga']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">8.</td>
-	<td class="tab2">Anak ke berapa</td>
-	<td class="tab2">:
-	<? if ($row['anakke']!=0) { echo $row['anakke']; }?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">9.</td>
-	<td class="tab2">Jumlah Saudara</td>
-	<td class="tab2">:
-	<? if ($row['jsaudara']!=0) { echo $row['jsaudara']; }?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">10.</td>
-	<td class="tab2">Kondisi Siswa</td>
-	<td class="tab2">:
-	  <?=$row['kondisi']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">11.</td>
-	<td class="tab2">Status Siswa</td>
-	<td class="tab2">:
-	  <?=$row['status']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">12.</td>
-	<td class="tab2">Bahasa Sehari-hari</td>
-	<td class="tab2">:
-	  <?=$row['bahasa']?></td>
-  </tr>
-  <tr>
-	<td  colspan="4">&nbsp;</td>
-  </tr>
-  <tr height="30">
-	<td colspan="5" align="left" ><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Keterangan Tempat Tinggal</strong></font>
-		<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-  </tr>
-  <tr height="20">
-	<td rowspan="5" ></td>
-	<td class="tab2">13.</td>
-	<td class="tab2">Alamat</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['alamatsiswa']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">14.</td>
-	<td class="tab2">Telepon</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['telponsiswa']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">15.</td>
-	<td class="tab2">Handphone</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['hpsiswa']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">16.</td>
-	<td class="tab2">Email</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['emailsiswa']?></td>
-  </tr>
-  <tr>
-	<td colspan="4" >&nbsp;</td>
-  </tr>
-  <tr height="30">
-	<td colspan="5" align="left" ><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Keterangan Kesehatan</strong></font>
-		<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-  </tr>
-  <tr height="20">
-	<td rowspan="5" ></td>
-	<td class="tab2">17.</td>
-	<td class="tab2" >Berat Badan</td>
-	<td colspan="2" class="tab2">:
-	<? if ($row['berat']!=0) { echo $row['berat']." Kg"; }?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">18.</td>
-	<td class="tab2">Tinggi Badan</td>
-	<td colspan="2" class="tab2">:
-	<? if ($row['tinggi']!=0) { echo $row['tinggi']." cm"; }?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">19.</td>
-	<td class="tab2" >Golongan Darah</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['darah']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">20.</td>
-	<td class="tab2" >Riwayat Penyakit</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['kesehatan']?></td>
-  </tr>
-  <tr >
-	<td colspan="4" >&nbsp;</td>
-  </tr>
-  <tr height="30">
-	<td colspan="5" align="left" ><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Keterangan Pendidikan Sebelumnya</strong></font>
-		<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-  </tr>
-  <tr height="20">
-	<td rowspan="2" ></td>
-	<td class="tab2">21.</td>
-	<td class="tab2" >Asal Sekolah</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['asalsekolah']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">22.</td>
-	<td class="tab2" >Keterangan</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['ketsekolah']?></td>
-  </tr>
-  <tr >
-	<td colspan="5" >&nbsp;</td>
-  </tr>
-  <tr height="30">
-	<td colspan="5" align="left" ><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Keterangan Orang Tua</strong></font>
-		<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-  </tr>
-  <tr height="20">
-	<td rowspan="10" ></td>
-	<td >&nbsp;</td>
-	<td class="news_content1"><strong>Orang Tua</strong></td>
-	<td width="30%" bgcolor="#FFFFCC" class="news_content1"><div align="center"><strong>Ayah</strong></div></td>
-	<td bgcolor="#FFCCFF" class="news_content1"><div align="center"><strong>Ibu</strong></div></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">23.</td>
-	<td class="tab2" >Nama</td>
-	<td bgcolor="#FFFFCC" class="tab2" >:
-	  <?=$row['namaayah']?>
-		<?
-		if ($row['almayah']==1)
-		echo "&nbsp;(alm)";
-		?></td>
-	<td bgcolor="#FFCCFF" class="tab2"><?=$row['namaibu']?>
-		<?
-		if ($row['almibu']==1)
-		echo "&nbsp;(alm)";
-		?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">24.</td>
-	<td class="tab2" >Pendidikan</td>
-	<td bgcolor="#FFFFCC" class="tab2" >:
-	  <?=$row['pendidikanayah']?></td>
-	<td bgcolor="#FFCCFF" class="tab2"><?=$row['pendidikanibu']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">25.</td>
-	<td class="tab2" >Pekerjaan</td>
-	<td bgcolor="#FFFFCC" class="tab2" >:
-	  <?=$row['pekerjaanayah']?></td>
-	<td bgcolor="#FFCCFF" class="tab2"><?=$row['pekerjaanibu']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">26.</td>
-	<td class="tab2" >Penghasilan</td>
-	<td bgcolor="#FFFFCC" class="tab2" >:
-	<? if ($row['penghasilanayah']!=0){ echo FormatRupiah($row['penghasilanayah']) ; } ?></td>
-	<td bgcolor="#FFCCFF" class="tab2"><? if ($row['penghasilanibu']!=0){ echo FormatRupiah($row['penghasilanibu']) ; } ?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">27.</td>
-	<td class="tab2" >Email</td>
-	<td bgcolor="#FFFFCC" class="tab2" >: <?=$row['emailayah']?></td>
-	<td bgcolor="#FFCCFF" class="tab2"><?=$row['emailibu']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">28. </td>
-	<td class="tab2" >Nama Wali</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['wali']?></td>
-  </tr>
-  <tr >
-	<td class="tab2">29.</td>
-	<td class="tab2" >Alamat</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['alamatortu']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">30.</td>
-	<td class="tab2" >Telepon</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['telponortu']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">31.</td>
-	<td class="tab2" >Handphone</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['hportu']?></td>
-  </tr>
-  <tr height="20">
-	<td ></td>
-	<td  >&nbsp;</td>
-  </tr>
-  <tr height="30">
-	<td colspan="6" ><font size="3" face="Verdana, Arial, Helvetica, sans-serif" style="background-color:#87c759">&nbsp;</font>&nbsp;<font size="3" face="Verdana, Arial, Helvetica, sans-serif" color="Gray"><strong>Keterangan Lainnya</strong></font>
-	<hr width="300" style="line-height:1px; border-style:dashed" align="left" /></td>
-  </tr>
-  <tr height="20">
-	<td rowspan="2" ></td>
-	<td class="tab2">32.</td>
-	<td class="tab2">Alamat Surat</td>
-	<td colspan="2" class="tab2">:
-	  <?=$row['alamatsurat']?></td>
-  </tr>
-  <tr height="20">
-	<td class="tab2">33.</td>
-	<td class="tab2" >Keterangan</td>
-	<td colspan="2">:
-	  <?=$row['keterangan']?></td>
-  </tr>
-</table>    
+<script language="javascript" src="infosiswa/infosiswa.profile.js"></script>
+<div id="is_profile">
+<form name="is_form" id="is_form" method="post">
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+    <td colspan="2" align="left">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Data Pribadi Siswa</font>
+        <br><br>
+    </td>
+</tr>    
+<tr>
+    <td width="15%" align="right">
+        N I S N:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_nisn" id="is_nisn" size="40" maxlength="100" class="inputbox" value="<?=$row['nisn']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        N I K:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_nik" id="is_nik" size="40" maxlength="100" class="inputbox" value="<?=$row['nik']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        No UN Sebelumnya:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_noun" id="is_noun" size="40" maxlength="100" class="inputbox" value="<?=$row['noun']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        N I S
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_nis" id="is_nis" size="40" maxlength="100" class="inputbox" value="<?=$row['nis']?>" style='background-color: #ccc' readonly >
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Nama:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_nama" id="is_nama" size="70" maxlength="255" class="inputbox" value="<?=$row['nama']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Panggilan:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_panggilan" id="is_panggilan" size="40" maxlength="100" class="inputbox" value="<?=$row['panggilan']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Jenis Kelamin:
+    </td>
+    <td width="*" align="left">
+        <input type="radio" name="is_kelamin" id="is_kelamin" value="l" class="inputbox" <?= StringIsChecked($row['kelamin'], "l") ?> />&nbsp;Laki-laki&nbsp;&nbsp;
+        <input type="radio" name="is_kelamin" id="is_kelamin" value="p" class="inputbox" <?= StringIsChecked($row['kelamin'], "p") ?> />&nbsp;Perempuan
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Tempat Lahir:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_tmplahir" id="is_tmplahir" size="40" maxlength="100" class="inputbox" value="<?=$row['tmplahir']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Tanggal Lahir:
+    </td>
+    <td width="*" align="left">
+<?      $thn = date('Y');
+        $bln = date('n');
+        $tgl = date('j');
+        
+        $date = split("-", $row['tgllahir']);
+        if (count($date) == 3)
+        {
+            $thn = $date[0];
+            $bln = $date[1];
+            $tgl = $date[2];
+        } ?>        
+<?      ShowYearCombo('is_thnlahir', 'is_changeTahunLahirSiswa()', 1990, date('Y') + 1, $thn); ?>&nbsp;
+<?      ShowMonthCombo('is_blnlahir', 'is_changeBulanLahirSiswa()', $bln); ?>&nbsp;
+        <span id="is_divTglLahirSiswa">
+<?      ShowDateCombo('is_tgllahir', 'is_changeTanggalLahirSiswa()', date('Y'), date('n'), $tgl); ?>
+        </span>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Agama:
+    </td>
+    <td width="*" align="left">
+<?      ShowAgamaCombo($row['agama']); ?>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Suku:
+    </td>
+    <td width="*" align="left">
+<?      ShowSukuCombo($row['suku']); ?>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Status:
+    </td>
+    <td width="*" align="left">
+<?      ShowStatusCombo($row['status']); ?>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Kondisi:
+    </td>
+    <td width="*" align="left">
+<?      ShowKondisiCombo($row['kondisi']); ?>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Kewarganegaraan:
+    </td>
+    <td width="*" align="left">
+        <input type="radio" name="is_warga" id="is_warga" value="WNI" <?= StringIsChecked($row['warga'], "WNI") ?> />&nbsp;WNI&nbsp;&nbsp;
+        <input type="radio" name="is_warga" id="is_warga" value="WNA" <?= StringIsChecked($row['warga'], "WNA") ?>/>&nbsp;WNA
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Anak ke:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_urutananak" id="is_urutananak" size="3" maxlength="3" class="inputbox" value="<?=$row['anakke']?>">&nbsp;dari&nbsp;
+        <input type="text" name="is_jumlahanak" id="is_jumlahanak" size="3" maxlength="3" class="inputbox" value="<?=$row['jsaudara']?>">&nbsp;bersaudara
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Status Anak:
+    </td>
+    <td width="*" align="left">
+<?      ShowStatusAnakCombo( $row['statusanak'] ); ?>        
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Jumlah Saudara Kandung:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_jkandung" id="is_jkandung" size="3" maxlength="3" class="inputbox" value="<?=$row['jkandung']?>">&nbsp;orang
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Jumlah Saudara Tiri:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_jtiri" id="is_jtiri" size="3" maxlength="3" class="inputbox" value="<?=$row['jtiri']?>">&nbsp;orang
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Bahasa:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_bahasa" id="is_bahasa" size="40" maxlength="100" class="inputbox" value="<?=$row['bahasa']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Alamat:
+    </td>
+    <td width="*" align="left">
+        <textarea name="is_alamatsiswa" id="is_alamatsiswa" rows="2" cols="40" class="inputbox" ><?= $row['alamatsiswa'] ?></textarea>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Kode Pos:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_kodepos" id="is_kodepos" size="5" maxlength="8" class="inputbox" value="<?=$row['kodepossiswa']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Jarak ke Sekolah:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_jarak" id="is_jarak" size="4" maxlength="4" class="inputbox" value="<?=$row['jarak']?>">&nbsp;km
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Telpon:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_telponsiswa" id="is_telponsiswa" size="20" maxlength="20" class="inputbox" value="<?=$row['telponsiswa']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Handphone:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_hpsiswa" id="is_hpsiswa" size="20" maxlength="20" class="inputbox" value="<?=$row['hpsiswa']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Email:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_emailsiswa" id="is_emailsiswa" size="40" maxlength="100" class="inputbox" value="<?=$row['emailsiswa']?>">
+    </td>
+</tr>
+<tr>
+    <td colspan="2" align="left">
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Data Sekolah Siswa</font>
+        <br><br>
+    </td>
+</tr>    
+<tr>
+    <td width="15%" align="right" valign='top'>
+        Asal Sekolah:
+    </td>
+    <td width="*" align="left">
+<?      ShowJenjangSekolahCombo($jenjangsekolah) ?><br>
+        <span id='is_divAsalSekolah'>
+<?      ShowAsalSekolahCombo($jenjangsekolah, $asalsekolah) ?>
+        </span>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        No Ijasah:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_noijasah" id="is_noijasah" size="40" maxlength="100" class="inputbox" value="<?=$row['noijasah']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right">
+        Tgl Ijasah:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_tglijasah" id="is_tglijasah" size="40" maxlength="100" class="inputbox" value="<?=$row['tglijasah']?>">
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Keterangan:
+    </td>
+    <td width="*" align="left">
+        <textarea name="is_ketsekolah" id="is_ketsekolah" rows="2" cols="40" class="inputbox"><?=$row['ketsekolah']?></textarea>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" align="left">
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Riwayat Kesehatan Siswa</font>
+        <br><br>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Golongan Darah:
+    </td>
+    <td width="*" align="left">
+        <input type="radio" name="is_gol" id="is_gol" value="A" <?= StringIsChecked($row['darah'], "A") ?>/>&nbsp;A&nbsp;&nbsp;
+        <input type="radio" name="is_gol" id="is_gol" value="AB" <?= StringIsChecked($row['darah'], "AB") ?>/>&nbsp;AB&nbsp;&nbsp;
+        <input type="radio" name="is_gol" id="is_gol" value="B" <?= StringIsChecked($row['darah'], "B") ?>/>&nbsp;B&nbsp;&nbsp;
+        <input type="radio" name="is_gol" id="is_gol" value="O" <?= StringIsChecked($row['darah'], "O") ?>/>&nbsp;O&nbsp;&nbsp;
+        <input type="radio" name="is_gol" id="is_gol" value=""  <?= StringIsChecked($row['darah'], "") ?>/>&nbsp;<em>(belum ada data)</em>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">Berat:</td>
+    <td colspan="2">
+        <input type="text" name="is_berat" id="is_berat" size="4" maxlength="4" class="inputbox" value="<?=$row['berat']?>">&nbsp;kg        	
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">Tinggi:</td>
+    <td colspan="2">
+        <input type="text" name="is_tinggi" id="is_tinggi" size="4" maxlength="4" class="inputbox" value="<?=$row['tinggi']?>">&nbsp;cm      	
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Riwayat Penyakit:
+    </td>
+    <td width="*" align="left">
+        <textarea name="is_kesehatan" id="is_kesehatan" rows="3" cols="40" class="inputbox"><?= $row['kesehatan'] ?></textarea>
+    </td>
+</tr>
+</table>
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+    <td colspan="4" align="left">
+        <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Data Orangtua Siswa</font>
+        <br><br>
+    </td>
+</tr>
+<tr height='25'>
+    <td width="18%" align="right" valign="top">
+        &nbsp;
+    </td>
+    <td width="20%" align="center" valign="middle" bgcolor="#DBD8F3">
+        <strong>Ayah</strong>
+    </td>
+    <td width="20%" align="center" valign="middle" bgcolor="#E9AFCF">
+        <strong>Ibu</strong>
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Nama:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+        <input type="text" name="is_namaayah" id="is_namaayah" size="40" maxlength="100" class="inputbox" value="<?=$row['namaayah']?>"><br>
+        <input type="checkbox" name="is_almayah" id="is_almayah" value="1" title="Klik disini jika Ayah Almarhum" <?= IntIsChecked($row['almayah'], 1) ?>/>&nbsp;&nbsp;<font color="#990000" size="1">(Almarhum)</font>
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+        <input type="text" name="is_namaibu" id="is_namaibu" size="40" maxlength="100" class="inputbox" value="<?=$row['namaibu']?>"><br>
+        <input type="checkbox" name="is_almibu" id="is_almibu" value="1" title="Klik disini jika Ayah Almarhumah" <?= IntIsChecked($row['almibu'], 1) ?>/>&nbsp;&nbsp;<font color="#990000" size="1">(Almarhumah)</font>
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Status Orangtua:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+        <? ShowStatusOrtuCombo('is_statusayah', $row['statusayah']) ?>
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+        <? ShowStatusOrtuCombo('is_statusibu', $row['statusibu']) ?>
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Tempat Lahir:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+        <input type="text" name="is_tmplahirayah" id="is_tmplahirayah" size="40" maxlength="100" class="inputbox" value="<?=$row['tmplahirayah']?>">
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+        <input type="text" name="is_tmplahiribu" id="is_tmplahiribu" size="40" maxlength="100" class="inputbox" value="<?=$row['tmplahiribu']?>">
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Tanggal Lahir:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+<?      $thn = date('Y');
+        $bln = date('n');
+        $tgl = date('j');
+        
+        $date = split("-", $row['tgllahirayah']);
+        if (count($date) == 3)
+        {
+            $thn = $date[0];
+            $bln = $date[1];
+            $tgl = $date[2];
+        } ?>          
+<?      ShowYearCombo('is_thnlahirayah', 'is_changeTahunLahirAyah()', 1970, date('Y') + 1, $thn); ?>&nbsp;
+<?      ShowMonthCombo('is_blnlahirayah', 'is_changeBulanLahirAyah()', $bln); ?>&nbsp;
+        <span id="is_divTglLahirAyah">
+<?      ShowDateCombo('is_tgllahirayah', 'is_changeTanggalLahirAyah()', date('Y'), date('n'), $tgl); ?>
+        </span>
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+<?      $thn = date('Y');
+        $bln = date('n');
+        $tgl = date('j');
+        
+        $date = split("-", $row['tgllahiribu']);
+        if (count($date) == 3)
+        {
+            $thn = $date[0];
+            $bln = $date[1];
+            $tgl = $date[2];
+        } ?>          
+<?      ShowYearCombo('is_thnlahiribu', 'is_changeTahunLahirIbu()', 1970, date('Y') + 1, $thn); ?>&nbsp;
+<?      ShowMonthCombo('is_blnlahiribu', 'is_changeBulanLahirIbu()', $bln); ?>&nbsp;
+        <span id="is_divTglLahirIbu">
+<?      ShowDateCombo('is_tgllahiribu', 'is_changeTanggalLahirIbu()', date('Y'), date('n'), $tgl); ?>
+        </span>
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Pendidikan:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+<?      ShowPendidikanCombo('is_pendidikanayah', $row['pendidikanayah']) ?>        
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+<?      ShowPendidikanCombo('is_pendidikanibu', $row['pendidikanibu']) ?>                
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Pekerjaan:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+<?      ShowPekerjaanCombo('is_pekerjaanayah', $row['pekerjaanayah']) ?>        
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+<?      ShowPekerjaanCombo('is_pekerjaanibu', $row['pekerjaanibu']) ?>                
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Penghasilan:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+        <input type="text" name="is_penghasilanayah" id="is_penghasilanayah" size="40" maxlength="100" class="inputbox"
+               onblur="formatRupiah('is_penghasilanayah')" onfocus="unformatRupiah('is_penghasilanayah')" value="<?= FormatRupiah($row['penghasilanayah']) ?>" >
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+        <input type="text" name="is_penghasilanibu" id="is_penghasilanibu" size="40" maxlength="100" class="inputbox"
+               onblur="formatRupiah('is_penghasilanibu')" onfocus="unformatRupiah('is_penghasilanibu')" value="<?= FormatRupiah($row['penghasilanibu']) ?>" >
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Email:
+    </td>
+    <td width="*" align="left" bgcolor="#DBD8F3">
+        <input type="text" name="is_emailayah" id="is_emailayah" size="40" maxlength="100" class="inputbox" value="<?=$row['emailayah']?>">
+    </td>
+    <td width="*" align="left" bgcolor="#E9AFCF">
+        <input type="text" name="is_emailibu" id="is_emailibu" size="40" maxlength="100" class="inputbox" value="<?=$row['emailibu']?>">
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Nama Wali:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_namawali" id="is_namawali" size="40" maxlength="100" class="inputbox" value="<?=$row['wali']?>">
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Alamat Orangtua:
+    </td>
+    <td width="*" align="left">
+        <textarea name="is_alamatortu" id="is_alamatortu" rows="2" cols="30" class="inputbox"><?= $row['alamatortu'] ?></textarea>
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        Telepon:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_telponortu" id="is_telponortu" size="40" maxlength="100" class="inputbox" value="<?=$row['telponortu']?>">
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        HP Ortu #1:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_hportu" id="is_hportu" size="40" maxlength="100" class="inputbox" value="<?=$row['hportu']?>">
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        HP Ortu #2:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_hportu2" id="is_hportu2" size="40" maxlength="100" class="inputbox" value="<?=$row['info1']?>">
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">
+        HP Ortu #3:
+    </td>
+    <td width="*" align="left">
+        <input type="text" name="is_hportu3" id="is_hportu3" size="40" maxlength="100" class="inputbox" value="<?=$row['info2']?>">
+    </td>
+    <td width="*" align="left">
+        &nbsp;
+    </td>
+    <td width="*" align="right" valign="top">
+        &nbsp;
+    </td>
+</tr>
+</table>
+<br>
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+    <td colspan="2" align="left">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Informasi Tambahan</font>
+        <br><br>
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">Hobi:</td>
+    <td align="left" valign="top">
+        <textarea name="is_hobi" id="is_hobi" rows="2" cols="40" class="inputbox"><?= $row['hobi'] ?></textarea>    	
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">Alamat Surat:</td>
+    <td align="left" valign="top">
+        <textarea name="is_alamatsurat" id="is_alamatsurat" rows="2" cols="40" class="inputbox"><?= $row['alamatsurat'] ?></textarea>    	
+    </td>
+</tr>
+<tr>
+    <td width="15%" align="right" valign="top">Keterangan:</td>
+    <td align="left" valign="top">
+        <textarea name="is_keterangan" id="is_keterangan" rows="2" cols="40" class="inputbox"><?= $row['keterangan'] ?></textarea>    	
+    </td>
+</tr>
+</table>
+<br>
+
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+    <td colspan="2" align="left">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <font style="background-color: #557d1d; font-size: 16px;">&nbsp;&nbsp;</font>&nbsp;
+        <font style="color: #557d1d; font-size: 16px;">Data Tambahan</font>
+        <br><br>
+    </td>
+</tr>
+<?php
+    $sql = "SELECT replid, kolom, jenis
+              FROM tambahandata 
+             WHERE aktif = 1
+               AND departemen = '$departemen'
+             ORDER BY urutan";
+    $res = QueryDb($sql);
+    $idtambahan = "";
+    while($row = mysql_fetch_row($res))
+    {
+        $replid = $row[0];
+        $kolom = $row[1];
+        $jenis = $row[2];
+
+        if ($idtambahan != "") $idtambahan .= ",";
+        $idtambahan .= $replid;
+
+        $replid_data = 0;
+        $data = "";
+        if ($jenis == 1)
+        {
+            $sql = "SELECT replid, teks FROM tambahandatasiswa WHERE nis = '$nis' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $data = $row2[1];
+            }
+        }
+        else if ($jenis == 2)
+        {
+            $sql = "SELECT replid, filename FROM tambahandatasiswa WHERE nis = '$nis' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $filename = $row2[1];
+                $data = "<a href='infosiswa/infosiswa.profile.file.php?replid=$replid_data'>$filename</a>";
+            }
+            else
+            {
+                $replid_data = 0;
+                $data = "(belum ada)";
+            }
+        }
+        else if ($jenis == 3)
+        {
+            $sql = "SELECT replid, teks FROM tambahandatasiswa WHERE nis = '$nis' AND idtambahan = '$replid'";
+            $res2 = QueryDb($sql);
+            if ($row2 = mysql_fetch_row($res2))
+            {
+                $replid_data = $row2[0];
+                $data = $row2[1];
+            }
+
+            $sql = "SELECT pilihan 
+                      FROM jbsakad.pilihandata 
+                     WHERE idtambahan = '$replid'
+                       AND aktif = 1
+                     ORDER BY urutan";
+            $res2 = QueryDb($sql);
+
+            $arrList = array();
+            if (mysql_num_rows($res2) == 0)
+                $arrList[] = "-";
+
+            while($row2 = mysql_fetch_row($res2))
+            {
+                $arrList[] = $row2[0];
+            }
+
+            $opt = "";
+            for($i = 0; $i < count($arrList); $i++)
+            {
+                $pilihan = CQ($arrList[$i]);
+                $sel = $pilihan == $data ? "selected" : "";
+                $opt .= "<option value='$pilihan' $sel>$pilihan</option>";
+            }
+        }
+
+        ?>
+        <tr style="height: 24px;">
+            <td width="15%" align="right" valign="top"><?=$kolom?>:</td>
+            <td colspan="2">
+                <? if ($jenis == 1) { ?>
+                    <input type="hidden" id="is_jenisdata-<?=$replid?>" name="is_jenisdata-<?=$replid?>" value="1">
+                    <input type="hidden" id="is_repliddata-<?=$replid?>" name="is_repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <input type="text" class="inputbox" name="is_tambahandata-<?=$replid?>" id="is_tambahandata-<?=$replid?>" size="40" maxlength="1000" value="<?=$data?>">
+                <? } else if ($jenis == 2) { ?>
+                    <input type="hidden" id="is_jenisdata-<?=$replid?>" name="is_jenisdata-<?=$replid?>" value="2">
+                    <input type="hidden" id="is_repliddata-<?=$replid?>" name="is_repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <input type="hidden" name="is_tambahandata-<?=$replid?>" id="is_tambahandata-<?=$replid?>" value="">
+                    <i><?=$data?></i>
+                <? } else { ?>
+                    <input type="hidden" id="is_jenisdata-<?=$replid?>" name="is_jenisdata-<?=$replid?>" value="3">
+                    <input type="hidden" id="is_repliddata-<?=$replid?>" name="is_repliddata-<?=$replid?>" value="<?=$replid_data?>">
+                    <select class="inputbox" name="is_tambahandata-<?=$replid?>" id="is_tambahandata-<?=$replid?>" style="width:215px">
+                        <?= $opt ?>
+                    </select>
+                <? } ?>
+            </td>
+        </tr>
+        <?
+    }
+    ?>
+    <input type="hidden" id="is_idtambahan" name="is_idtambahan" value="<?=$idtambahan?>">
+</table>
+<br>
+
+<table border="0" width="100%" cellpadding="2" cellspacing="0">
+<tr>
+    <td width="15%" align="right" valign="top">&nbsp;</td>
+    <td align="left" valign="top">
+<?		if ($IsAllowStudentEdit) { ?>		
+        <input type="button" value="Simpan" class="but" style="height: 30px; width: 140px;"  onclick="is_Simpan()">
+<?		} else { ?>
+		<font style='color: red; font-weight: bold;'>
+			Tidak dapat mengubah data pribadi siswa. Silahkan hubungi Administrator JIBAS untuk mengatur perubahan data pribadi siswa.
+		</font>
+<?		} ?>
+    </td>
+</tr> 
+</table>
 </form>
+</div>
+<?
+CloseDb();
+?>

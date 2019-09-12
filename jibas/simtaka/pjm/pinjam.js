@@ -36,10 +36,18 @@ function cari(){
 		}
 	}
 }
-function acceptPegawai(noanggota,nama,flag){
-	var status = document.getElementById('statuspeminjam').value;
-	document.location.href="../pjm/pinjam.php?state="+status+"&noanggota="+noanggota+"&nama="+nama;
+
+function focusKodePustaka()
+{
+	$('#kodepustaka').focus();	
 }
+
+function acceptPegawai(noanggota,nama,flag)
+{
+	var status = document.getElementById('statuspeminjam').value;
+	document.location.href = "../pjm/pinjam.php?op=newuser&state="+status+"&noanggota="+noanggota+"&nama="+nama;
+}
+
 function fillstate(val){
 	document.getElementById('statuspeminjam').value=val;
 	document.getElementById('noanggota').value='';
@@ -59,19 +67,26 @@ function AcceptPustaka(kodepustaka){//(replid,kodepustaka,judul)
 	var nama = document.getElementById('nama').value;
 	document.location.href="../pjm/pinjam.php?op=addnew&state="+status+"&noanggota="+noanggota+"&nama="+nama+"&kodepustaka="+kodepustaka;
 }
-function AddToChart(){
+
+function AddToChart()
+{
 	var jenisanggota = document.getElementById('statuspeminjam').value;
 	var borrowed = document.getElementById('borrowed').value;
 	var maxqueue = document.getElementById('max_queue').value;
 	var kodepustaka = document.getElementById('kodepustaka').value;
-	if (borrowed>=maxqueue){
+	if (borrowed>=maxqueue)
+	{
 			alert ('Tidak dapat menyimpan data\nkarena Anggota sedang meminjam '+borrowed+' pustaka dan belum mengembalikannya');
-	} else {
+	}
+	else
+	{
 		if (kodepustaka=="")
 		{
 			alert ('Anda harus mengisikan kode pustaka!');
 			document.getElemntById('kodepustaka').focus();
-		} else {
+		}
+		else
+		{
 			var status = document.getElementById('statuspeminjam').value;
 			var noanggota = document.getElementById('noanggota').value;
 			var nama = document.getElementById('nama').value;
@@ -82,7 +97,9 @@ function AddToChart(){
 		}
 	}
 }
-function ValidatePeminjaman(){
+
+function ValidatePeminjaman()
+{
 	var borrowed = document.getElementById('borrowed').value;
 	var status = document.getElementById('statuspeminjam').value;
 	var noanggota = document.getElementById('noanggota').value;
@@ -90,25 +107,32 @@ function ValidatePeminjaman(){
 	var num = document.getElementById('num').value;
 	var maxqueue = document.getElementById('max_queue').value;
 	var idstr;
+	
 	if (num>maxqueue)
 	{
 		alert('Jumlah peminjaman tidak boleh melebihi '+maxqueue);
-	} else {
+	}
+	else
+	{
 		if (num==0)
 		{
 			alert ('Tidak ada pustaka yang akan dipinjam!');
-		} else {
+		}
+		else
+		{
 			for (i=1; i<=num; i++)
 			{
 				var id = document.getElementById('idpinjam'+i).value;
 				if (i==1)
 				{
 					idstr = id;
-				} else {
+				}
+				else
+				{
 					idstr += ','+id;
 				}
-				
 			}
+			
 			if (confirm('Data sudah benar?'))
 			{
 				document.location.href="../pjm/pinjam.php?op=Save&state="+status+"&noanggota="+noanggota+"&nama="+nama+"&idstr="+idstr;
@@ -116,6 +140,7 @@ function ValidatePeminjaman(){
 		}
 	}
 }
+
 function CancelPeminjaman(){
 	var status = document.getElementById('statuspeminjam').value;
 	var noanggota = document.getElementById('noanggota').value;
@@ -181,14 +206,40 @@ function AcceptDate(date,elementid){
 	document.getElementById(elementid).value=date;
 }
 function KeyPress(elemName, evt) {
+		
     var KodeValue=document.getElementById('kodepustaka').value;
 	evt = (evt) ? evt : event;
     var charCode = (evt.charCode) ? evt.charCode :
         ((evt.which) ? evt.which : evt.keyCode);
+	alert(charCode);	
     if (charCode == 13) {
-		//alert ('Masuk');
+		alert ('Masuk');
 		AcceptPustaka(KodeValue);
         return false;
     }
     return true;
+}
+
+function OnEnterKodePustaka(e)
+{
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+	if (keycode != 13)
+		return;
+
+	var kode = $.trim($('#kodepustaka').val());
+	if (kode.length == 0)
+		return;
+
+    AcceptPustaka(kode);
+}
+
+function ClearData()
+{
+	$('#kodepustaka').val('');
+	$('#judul').val('');
+	$('#tglpjm').val('');
+	$('#tglkem').val('');
+	$('#keterangan').val('');
+	
+	$('#kodepustaka').focus();
 }

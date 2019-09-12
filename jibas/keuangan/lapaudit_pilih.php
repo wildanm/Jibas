@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -74,6 +74,10 @@ function show_detail(lap)
 	else if (lap == 'jurnalumum') 
 	{
 		parent.content.location.href = "lapaudit_content_jurnalumum.php?idtahunbuku=<?=$idtahunbuku?>&departemen=<?=$departemen?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>";
+	}
+	else if (lap == 'tabungan') 
+	{
+		parent.content.location.href = "lapaudit_content_tabungan.php?idtahunbuku=<?=$idtahunbuku?>&departemen=<?=$departemen?>&tanggal1=<?=$tanggal1?>&tanggal2=<?=$tanggal2?>";
 	} 
 	else if (lap == 'besarjtt' || lap == 'besarjttcalon') 
 	{
@@ -109,7 +113,7 @@ function show_detail(lap)
 		   $sql = "SELECT info1 FROM besarjttcalon WHERE replid = '$idsumber'";
 		 elseif ($table == "penerimaanjtt")
 		   $sql = "SELECT idjurnal FROM penerimaanjtt WHERE replid = '$idsumber'";
-       elseif ($table == "penerimaanjttcalon")
+		 elseif ($table == "penerimaanjttcalon")
 		   $sql = "SELECT idjurnal FROM penerimaanjttcalon WHERE replid = '$idsumber'";			
   		 elseif ($table == "penerimaaniuran")
 		   $sql = "SELECT idjurnal FROM penerimaaniuran WHERE replid = '$idsumber'";
@@ -119,7 +123,9 @@ function show_detail(lap)
 		   $sql = "SELECT idjurnal FROM penerimaanlain WHERE replid = '$idsumber'";
 		 elseif ($table == "pengeluaran")
 		   $sql = "SELECT idjurnal FROM pengeluaran WHERE replid = '$idsumber'";
-       elseif ($table == "jurnalumum")
+		 elseif ($table == "tabungan")
+		   $sql = "SELECT idjurnal FROM tabungan WHERE replid = '$idsumber'";  
+		 elseif ($table == "jurnalumum")
 		   $sql = "SELECT $idsumber";			
 			
 		 $res2 = QueryDb($sql);
@@ -158,7 +164,7 @@ function show_detail(lap)
     while($row = mysql_fetch_row($result)) 
 	 { 
         switch($row[0]) 
-		  {	
+		{	
             case 'jurnalumum':
                 $jurnal = "Jurnal Umum"; break;
             case 'penerimaanjtt':
@@ -169,14 +175,16 @@ function show_detail(lap)
                 $jurnal = "Penerimaan Lain-Lain"; break;
             case 'pengeluaran':
                 $jurnal = "Pengeluaran"; break;
-				case 'penerimaanjttcalon':
+			case 'penerimaanjttcalon':
                 $jurnal = "Penerimaan Iuran Wajib Calon Siswa"; break;
-				case 'penerimaaniurancalon':
+			case 'penerimaaniurancalon':
                 $jurnal = "Penerimaan Iuran Sukarela Calon Siswa"; break;
-				case 'besarjtt':
-					 $jurnal = "Pendataan Besar Iuran Wajib Siswa"; break;
-				case 'besarjttcalon':
-					 $jurnal = "Pendataan Besar Iuran Wajib Calon Siswa"; break;					 
+			case 'besarjtt':
+				$jurnal = "Pendataan Besar Iuran Wajib Siswa"; break;
+			case 'besarjttcalon':
+				$jurnal = "Pendataan Besar Iuran Wajib Calon Siswa"; break;
+			case 'tabungan':
+				$jurnal = "Tabungan Siswa"; break;					 	
         } ?>
     <tr height="25" onclick="show_detail('<?=$row[0]?>')">
         <td align="center"><?=++$cnt ?></td>

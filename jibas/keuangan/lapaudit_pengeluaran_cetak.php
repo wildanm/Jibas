@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -108,11 +108,11 @@ while ($row = mysql_fetch_array($result)) {
 		
 	if ($cnt % 2 == 0) { ?>
 	<tr>
-		<td rowspan="4" align="center" bgcolor="#CCCC66"><strong><?=++$no ?></strong></td>
-        <td colspan="6" align="left" bgcolor="#CCCC66"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></td>
+		<td rowspan="4" align="center" bgcolor="#ededed"><strong><?=++$no ?></strong></td>
+        <td colspan="6" align="left" style="background-color: #3994c6; color: #ffffff;"><em><strong>Perubahan dilakukan oleh <?=$row['petugasubah'] . " tanggal " . $row['tanggalubah'] ?></strong></em></td>
 	</tr>
     <tr>
-    	<td colspan="6" bgcolor="#E5E5E5"><strong>No. Jurnal :</strong> <?=$row['nokas'] ?>   
+    	<td colspan="6" style="background-color: #e5fdff;"><strong>No. Jurnal :</strong> <?=$row['nokas'] ?>
          &nbsp;&nbsp;<strong>Alasan : </strong><?=$row['alasan'];?>
         <br /><strong>Transaksi :</strong> <?=$row['transaksi'] ?></td>
     </tr>

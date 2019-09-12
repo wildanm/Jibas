@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -20,10 +20,10 @@
  * 
  * You should have received a copy of the GNU General Public License
  **[N]**/ ?>
-<frameset cols = "30%, *" border="1" frameborder="1" framespacing="yes">
-<frameset rows = "25%, *" border="0" >
+<frameset cols = "275, *" border="1" frameborder="0" framespacing="0">
+<frameset rows = "80, *" border="1" frameborder="0" framespacing="0" >
 	<frame src = "lap_pelajaran_header.php"  noresize scrolling="no" />
-    <frame src = "../blank2.php" name = "footer" noresize scrolling="yes" style="border:1; border-top-style:solid; border-top-color:#000000" />
+    <frame src = "../blank2.php" name = "footer" noresize scrolling="yes" style="border:1px; border-top-style:solid; border-top-color:#000000" />
     </frameset><noframes></noframes>
-	<frame src = "blank_lap_pelajaran.php" name = "isi" noresize scrolling="yes" style="border:1; border-left-color:#000000; border-left-style:solid" />
+	<frame src = "blank_lap_pelajaran.php" name = "isi" noresize scrolling="yes" style="border:1px; border-left-color:#000000; border-left-style:solid" />
 </frameset>

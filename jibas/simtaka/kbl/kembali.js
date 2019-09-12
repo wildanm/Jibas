@@ -5,15 +5,24 @@ jQuery(document).ready(function() {
 			selectFirst: false			
 		});
 });
-function ProsesKode(){
-	var kodepustaka = document.getElementById('kodepustaka').value;
+
+function ProsesKode()
+{
+	var kodepustaka = $.trim($('#kodepustaka').val());
+	if (kodepustaka.length == 0)
+		return;
+
 	document.location.href = "kembali.php?op=ViewPeminjaman&kodepustaka="+kodepustaka;
 }
-function BatalkanPengembalian(){
+
+function BatalkanPengembalian()
+{
 	var kodepustaka = document.getElementById('kodepustaka').value;
 	document.location.href = "kembali.php?kodepustaka="+kodepustaka;
 }
-function Kembalikan(){
+
+function Kembalikan()
+{
 	var kodepustaka = document.getElementById('kodepustaka').value;
 	var idpinjam = document.getElementById('idpinjam').value;
 	var denda = document.getElementById('denda').value;
@@ -37,6 +46,7 @@ function Kembalikan(){
 		document.location.href = "kembali.php?op=KembalikanPustaka&idpinjam="+idpinjam+"&denda="+denda+"&kodepustaka="+kodepustaka+"&telat="+telat+"&keterangan="+keterangan;
 	}
 }
+
 function KeyPress(elemName, evt) {
     var KodeValue=document.getElementById('kodepustaka').value;
 	evt = (evt) ? evt : event;
@@ -52,4 +62,17 @@ function KeyPress(elemName, evt) {
         return false;
     }
     return true;
+}
+
+function OnEnterKodePustaka(e)
+{
+    var keycode = (e.keyCode ? e.keyCode : e.which);
+	if (keycode != 13)
+		return;
+
+	var kode = $.trim($('#kodepustaka').val());
+	if (kode.length == 0)
+		return;
+
+    ProsesKode();
 }

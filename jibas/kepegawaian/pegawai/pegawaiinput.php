@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  *  
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -265,6 +265,70 @@ $P = new PegawaiInput();
     <td width="*" align="left" valign="top">
     <textarea id="txKeterangan" name="txKeterangan" rows="3" cols="60" onKeyPress="return focusNext('btSubmit', event)"><?=$P->keterangan?></textarea>    </td>
 </tr>
+<?php
+    $sql = "SELECT replid, kolom, jenis
+              FROM tambahandata 
+             WHERE aktif = 1
+             ORDER BY urutan";
+    $res = QueryDb($sql);
+    $idtambahan = "";
+    while($row = mysql_fetch_row($res))
+    {
+        $replid = $row[0];
+        $kolom = $row[1];
+        $jenis = $row[2];
+
+        if ($idtambahan != "") $idtambahan .= ",";
+        $idtambahan .= $replid;
+
+        if ($jenis == 3)
+        {
+            $sql = "SELECT pilihan 
+                      FROM pilihandata 
+                     WHERE idtambahan = '$replid'
+                       AND aktif = 1
+                     ORDER BY urutan";
+            $res2 = QueryDb($sql);
+
+            $arrList = array();
+            if (mysql_num_rows($res2) == 0)
+                $arrList[] = "-";
+
+            while($row2 = mysql_fetch_row($res2))
+            {
+                $arrList[] = $row2[0];
+            }
+
+            $opt = "";
+            for($i = 0; $i < count($arrList); $i++)
+            {
+                $pilihan = CQ($arrList[$i]);
+                $opt .= "<option value='$pilihan'>$pilihan</option>";
+            }
+        }
+
+        ?>
+        <tr>
+            <td align="right" valign="top"><?=$kolom?> :</td>
+            <td width="*" align="left" valign="top">
+                <? if ($jenis == 1) { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="1">
+                    <input type="text" name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" size="40" maxlength="1000"/>
+                <? } else if ($jenis == 2) { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="2">
+                    <input type="file" name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" size="25" style="width:215px"/>
+                <? } else { ?>
+                    <input type="hidden" id="jenisdata-<?=$replid?>" name="jenisdata-<?=$replid?>" value="3">
+                    <select name="tambahandata-<?=$replid?>" id="tambahandata-<?=$replid?>" style="width:215px">
+                        <?= $opt ?>
+                    </select>
+                <? } ?>
+            </td>
+        </tr>
+        <?
+    }
+    ?>
+    <input type="hidden" id="idtambahan" name="idtambahan" value="<?=$idtambahan?>">
 <tr>
 	<td align="center" valign="top" colspan="2" bgcolor="#CCCCCC">
     <input type="submit" value="Simpan" name="btSubmit" id="btSubmit" class="but" />    </td>

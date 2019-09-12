@@ -3,7 +3,7 @@
  * JIBAS Education Community
  * Jaringan Informasi Bersama Antar Sekolah
  * 
- * @version: 3.0 (January 09, 2013)
+ * @version: 18.0 (August 01, 2019)
  * @notes: JIBAS Education Community will be managed by Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
  * 
  * Copyright (C) 2009 Yayasan Indonesia Membaca (http://www.indonesiamembaca.net)
@@ -27,6 +27,7 @@ require_once('../include/common.php');
 require_once('../include/config.php');
 require_once('../include/db_functions.php');
 require_once('../include/getheader.php');
+
 OpenDb();
 
 	$kalender = $_REQUEST['kalender'];
@@ -98,13 +99,20 @@ OpenDb();
 $color = array("#afafaf","#000000");
 
 
-OpenDb();
-function loadKalender1($kalender) {
-	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' ORDER BY tanggalawal"; 
+function loadKalender1($kalender)
+{
+	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir,
+				   MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir),
+				   YEAR(tanggalawal), YEAR(tanggalakhir)
+			  FROM aktivitaskalender
+			 WHERE idkalender = '$kalender'
+			 ORDER BY tanggalawal";
+	//echo $sql;		 
 	
 	$result = QueryDb($sql);
 	$i = 0;	
-	while($row = mysql_fetch_row($result)) {		
+	while($row = mysql_fetch_row($result))
+	{		
 		$tgl1 = explode('-',$row[2]);
 		$tgl2 = explode('-',$row[3]);
 		$awal = $tgl1[2].'/'.$tgl1[1].'/'.substr($tgl1[0],2,2).' - '.$tgl2[2].'/'.$tgl2[1].'/'.substr($tgl2[0],2,2);
@@ -117,12 +125,25 @@ function loadKalender1($kalender) {
 	return true;
 }	
 
-function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2) {
+function loadKalender2($kalender, $bulan1, $tahun1, $bulan2, $tahun2)
+{
 	global $keg;
+	
+	unset($GLOBALS[jadwal]);
+	
 	$batastgl1 = $tahun1."-".$bulan1."-1";
 	$batastgl2 = $tahun2."-".$bulan2."-31";
 	
-	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir, MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir), YEAR(tanggalawal), YEAR(tanggalakhir) FROM aktivitaskalender WHERE idkalender = '$kalender' AND (('$batastgl1' BETWEEN tanggalawal AND tanggalakhir) OR ('$batastgl2' BETWEEN tanggalawal AND tanggalakhir) OR (tanggalawal BETWEEN '$batastgl1' AND '$batastgl2') OR (tanggalakhir BETWEEN '$batastgl1' AND '$batastgl2')) ORDER BY tanggalawal";  
+	$sql = "SELECT replid, kegiatan, tanggalawal, tanggalakhir,
+				   MONTH(tanggalawal), MONTH(tanggalakhir), DAY(tanggalawal), DAY(tanggalakhir),
+				   YEAR(tanggalawal), YEAR(tanggalakhir)
+			  FROM aktivitaskalender
+			 WHERE idkalender = '$kalender'
+			   AND (('$batastgl1' BETWEEN tanggalawal AND tanggalakhir)
+			     OR ('$batastgl2' BETWEEN tanggalawal AND tanggalakhir)
+				 OR (tanggalawal BETWEEN '$batastgl1' AND '$batastgl2')
+				 OR (tanggalakhir BETWEEN '$batastgl1' AND '$batastgl2'))
+		     ORDER BY tanggalawal";  
 	//echo "<br>".$sql;
 	$result = QueryDb($sql);
 	
@@ -304,7 +325,7 @@ function getCell1($r, $c, $id, $m) {
 <!-- TABLE CENTER -->
 <tr>
 	<td>
-    <? 	OpenDb();
+    <? 	
 		$sql = "SELECT * FROM aktivitaskalender WHERE idkalender = '$kalender'";
 		$result = QueryDb($sql);
 		
@@ -314,92 +335,87 @@ function getCell1($r, $c, $id, $m) {
 	?>
     <table border="0" width="100%" align="center">
     <tr>
-        <td width="*" align="right">
-        </td>
+        <td width="*" align="right"></td>
         <td align="right" width="320">
-        	<? 	if ($next == 1) {?>
-            		<!--<input type="button" class="but" onClick="GoToPrevMonth()" value=" < Bulan sebelumnya " style="width:150px">-->
-        		<? } 
-				
-				if ($next == 0 || $last == 0) {
-						$batasthn = $thn;
-						//echo "1_".$batasthn;
-						for ($i=$bln;$i<=$bln+5;$i++) { 	
-							$n = $i;
-							if ($i > 12) {
-								$n = $i-12;							
-								$batasthn = $thn+1;
-							}
-						}
-						
-						$batas = $batasthn."-".$n."-31";
-					
-					
-						//$sql = "SELECT MONTH(tanggalakhir) AS bulan, YEAR(tanggalakhir) AS tahun FROM aktivitaskalender WHERE idkalender = '$kalender' AND MONTH(tanggalakhir) < '$n' AND YEAR(tanggalakhir) = '".$batasthn."'"; 
-						$sql = "SELECT * FROM aktivitaskalender 
-								WHERE idkalender = '$kalender' AND tanggalakhir > '$batas'";
-						
-						$result = QueryDb($sql);
-						if (mysql_num_rows($result) > 0) {
-			?>   
-            		<!--<input type="button" class="but" onClick="GoToNextMonth()" value=" Bulan berikutnya > " style="width:150px">-->  
-        			<? } ?>
-				<? } ?>	
+<?
+			if ($next == 0 || $last == 0)
+			{
+				$batasthn = $thn;
+				//echo "1_".$batasthn;
+				for ($i = $bln; $i <= $bln + 5; $i++)
+				{
+					$n = $i;
+					if ($i > 12)
+					{
+						$n = $i - 12;							
+						$batasthn = $thn + 1;
+					}
+				}
+				$batas = $batasthn."-".$n."-31";
+			}
+?>	
         </td>
     </tr>
-    <!--<tr>
-        <td align="center" valign="top" colspan="2">    -->
     </table>
     <br>
-    <table border="1" cellpadding="0" cellspacing="0" width="100%" style="border-color:#000000; border-collapse:collapse; border:solid" align="center">
+		
+    <table border="1" cellpadding="0" cellspacing="0" width="100%"
+		   style="border-color:#000000; border-collapse:collapse; border:solid" align="center">
     <tr height="30">
         <td width="22%" align="center" style="border-color:#000000;color:#000000" rowspan="2" colspan="2">
-        <b>Kegiatan</b></td>
-        <? 	$batasthn = $thn;			
-            for ($i=$bln;$i<=$bln+5;$i++) { 	
-                $n = $i;
-                if ($i > 12) {
-                    $n = $i-12;
-                    $batasthn = $thn+1;
-                } 
-        ?>
+			<b>Kegiatan</b>
+		</td>
+<? 		$batasthn = $thn;			
+        for ($i=$bln;$i<=$bln+5;$i++)
+		{ 	
+            $n = $i;
+            if ($i > 12)
+			{
+                $n = $i - 12;
+                $batasthn = $thn + 1;
+            } 
+?>
         <td width="*" align="center" style="border-color:#000000;color:#000000" colspan="4">
             <b><?=$bulan[$n]." '".substr($batasthn,2,2)?></b>
-        <!--&nbsp;<a href="JavaScript:lihat()"><img src="../images/ico/lihat.png" border="0" /></a>-->
         </td>
-        <? 	} 
-			
-			if ($n == 12) {
-				$nextbln = 1;
-				$nextthn = $thn+1;
-			} else {
-				$nextbln = $n+1;
-				$nextthn = $thn;
-			}
-		?>
+<? 		}
+
+		if ($n == 12)
+		{
+			$nextbln = 1;
+			$nextthn = $thn+1;
+		}
+		else
+		{
+			$nextbln = $n+1;
+			$nextthn = $thn;
+		}
+?>
     </tr>
     <tr>
-        <? 	
-            for ($j=$bln;$j<=$bln+5;$j++) {								
-                for ($p = 1; $p <=4; $p++) {
-        ?>
-        <td width="25" align="center" style="background-color:#afafaf; color:#000000"><?=$p?></td>
-           
-        <?		}
+<? 	    for ($j = $bln; $j <= $bln + 5; $j++)
+		{								
+            for ($p = 1; $p <= 4; $p++)
+			{   ?>
+			<td width="25" align="center" style="background-color:#afafaf; color:#000000">
+			<?=$p?>
+			</td>
+<?		}
             } ?>
     </tr>
-    <?
-    
+<?
     $mask = NULL;
     $s = 0;
     $mask[1] = 0;
-        
-    loadKalender1($kalender);
-    ?> <input type="hidden" name="kegiatan" id="kegiatan" value="<?=$keg[row]?>"> <?
-   // echo $batasthn."_".$n;
-	//loadKalender2($kalender,$nextbln,$nextthn,$n,$batasthn);
+	
+    loadKalender1($kalender);   ?>
+	
+	<input type="hidden" name="kegiatan" id="kegiatan" value="<?=$keg[row]?>">
+	
+<?
 	loadKalender2($kalender,$bln,$thn,$n,$batasthn);
-    if (isset($keg[row])) {
+	
+	if (isset($keg[row])) {
         for ($i = 0; $i < count($keg[row]); $i++ ){
             $id = $keg[row][$i][id];
             $m = $i;
@@ -502,6 +518,7 @@ function getCell1($r, $c, $id, $m) {
     loadKalender1($kalender);
     ?> <input type="hidden" name="kegiatan" id="kegiatan" value="<?=$keg[row]?>"> <?
     loadKalender2($kalender,$bln,$thn,$n,$batasthn);
+	
 	//loadKalender2($kalender,$nextbln,$nextthn,$n+6,$batasthn);
    
 	if (isset($keg[row])) {
